@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!--
+ / XML Schema for declaring response modification hooks.
+ /
+ / Isaac Councill
+ / 11/2/06
+ /-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://citeseerx.psu.edu/modificationhook"
+  xmlns="http://citeseerx.psu.edu/modificationhook"
+  elementFormDefault="qualified">
+
+  <!--
+   / A modification hook may declare a list of target scripts
+   / along with a set of additional tasks to perform and
+   / a dependency mapping.
+   /-->
+  <xs:element name="ModificationHook">
+    <xs:complexType>
+      <xs:sequence>
+
+        <xs:element name="DataTarget"
+                    minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:attribute name="name" type="xs:string"
+                          use="required" />
+            <xs:attribute name="type" type="xs:string"
+                          use="required" />
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="ScriptTarget" type="ScriptTargetType"
+                    minOccurs="1" maxOccurs="unbounded" />
+
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string"
+                    use="required" />
+      <xs:attribute name="codebase" type="FullyQualifiedObjectName"
+                    use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   / Definition of target script and dependencies.
+   /-->
+  <xs:complexType name="ScriptTargetType">
+    <xs:sequence>
+      <xs:element name="SupplementalTask" type="SupTaskType"
+                  minOccurs="0" maxOccurs="unbounded" />
+      <xs:element name="TargetMapping" type="TargetMappingType"
+                  minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="script" type="xs:string"
+                  use="required" />
+  </xs:complexType>
+
+  <!--
+   / Supplemental task description.
+   /-->
+  <xs:complexType name="SupTaskType">
+    <xs:sequence>
+      <xs:element name="input" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string"
+                        use="required" />
+          <xs:attribute name="source" type="xs:string"
+                        use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string"
+                  use="required" />
+    <xs:attribute name="required" type="xs:boolean"
+                  use="required" />
+  </xs:complexType>
+
+
+  <!--
+   / Data target declaration.
+   /-->
+  <xs:complexType name="TargetMappingType">
+    <xs:attribute name="datatarget" type="xs:string"
+                  use="required" />
+    <xs:attribute name="source" type="xs:string"
+                  use="required" />
+  </xs:complexType>
+
+  <!--
+   / Restriction that matches a fully qualified Java object name.
+   /-->
+  <xs:simpleType name="FullyQualifiedObjectName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(\w+\.)*\w+" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

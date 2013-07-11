@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+  xmlns:axis2="http://doi.citeseerx.psu.edu"
+  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:ns0="http://doi.citeseerx.psu.edu/xsd"
+  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:ns1="http://org.apache.axis2/xsd"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  targetNamespace="http://doi.citeseerx.psu.edu">
+
+  <wsdl:documentation>DOIServer</wsdl:documentation>
+
+<wsdl:types>
+<xs:schema xmlns:ns="http://doi.citeseerx.psu.edu/xsd"
+           attributeFormDefault="qualified"
+           elementFormDefault="qualified"
+           targetNamespace="http://doi.citeseerx.psu.edu/xsd">
+<xs:element name="ExceptionFault">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="Exception" nillable="true" type="xs:anyType" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getDOI">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="doiType" nillable="true" type="xs:int" />
+</xs:sequence>
+</xs:complexType>
+name</xs:element>
+<xs:element name="getDOIResponse">
+
+<xs:complexType>
+<xs:sequence>
+<xs:element name="return" nillable="true" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getPrefixResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="return" nillable="true" type="xs:string" />
+
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema>
+
+</wsdl:types>
+
+<wsdl:message name="getDOIMessage">
+<wsdl:part name="part1" element="ns0:getDOI" />
+</wsdl:message><wsdl:message name="getDOIResponse">
+<wsdl:part name="part1" element="ns0:getDOIResponse" />
+</wsdl:message>
+
+<wsdl:message name="getDOIFault">
+<wsdl:part name="part1" element="ns0:ExceptionFault" />
+</wsdl:message>
+
+<wsdl:message name="getPrefixMessage" />
+<wsdl:message name="getPrefixResponse">
+<wsdl:part name="part1" element="ns0:getPrefixResponse" />
+</wsdl:message>
+
+<wsdl:message name="getPrefixFault">
+<wsdl:part name="part1" element="ns0:ExceptionFault" />
+</wsdl:message>
+
+<wsdl:portType name="DOIServerPortType">
+<wsdl:operation name="getDOI">
+<wsdl:input xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+            message="axis2:getDOIMessage"
+            wsaw:Action="urn:getDOI" />
+<wsdl:output message="axis2:getDOIResponse" />
+<wsdl:fault message="axis2:getDOIFault" name="getDOIFault" />
+
+</wsdl:operation>
+<wsdl:operation name="getPrefix">
+<wsdl:input xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"
+            message="axis2:getPrefixMessage"
+            wsaw:Action="urn:getPrefix" />
+<wsdl:output message="axis2:getPrefixResponse" />
+<wsdl:fault message="axis2:getPrefixFault"
+            name="getPrefixFault" />
+</wsdl:operation>
+</wsdl:portType>
+
+<wsdl:binding name="DOIServerSOAP11Binding"
+              type="axis2:DOIServerPortType">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+              style="document" />
+
+<wsdl:operation name="getDOI">
+<soap:operation soapAction="urn:getDOI" style="document" />
+<wsdl:input><soap:body use="literal" /></wsdl:input>
+<wsdl:output><soap:body use="literal" /></wsdl:output>
+<wsdl:fault name="getDOIFault">
+<soap12:fault use="literal" name="getDOIFault" />
+</wsdl:fault></wsdl:operation>
+
+<wsdl:operation name="getPrefix">
+<soap:operation soapAction="urn:getPrefix" style="document" />
+<wsdl:input><soap:body use="literal" /></wsdl:input>
+<wsdl:output><soap:body use="literal" /></wsdl:output>
+<wsdl:fault name="getPrefixFault">
+<soap12:fault use="literal" name="getPrefixFault" />
+</wsdl:fault>
+
+</wsdl:operation>
+</wsdl:binding>
+
+<wsdl:binding name="DOIServerSOAP12Binding" type="axis2:DOIServerPortType">
+<soap12:binding transport="http://schemas.xmlsoap.org/soap/http"
+                style="document" />
+
+<wsdl:operation name="getDOI">
+<soap12:operation soapAction="urn:getDOI" style="document" />
+<wsdl:input><soap12:body use="literal" /></wsdl:input>
+<wsdl:output><soap12:body use="literal" /></wsdl:output>
+<wsdl:fault name="getDOIFault">
+<soap12:fault use="literal" name="getDOIFault" />
+</wsdl:fault>
+</wsdl:operation>
+
+<wsdl:operation name="getPrefix">
+<soap12:operation soapAction="urn:getPrefix" style="document" />
+<wsdl:input><soap12:body use="literal" /></wsdl:input>
+<wsdl:output><soap12:body use="literal" /></wsdl:output>
+<wsdl:fault name="getPrefixFault">
+<soap12:fault use="literal" name="getPrefixFault" />
+</wsdl:fault>
+</wsdl:operation>
+
+</wsdl:binding>
+
+<wsdl:binding name="DOIServerHttpBinding" type="axis2:DOIServerPortType">
+<http:binding verb="POST" />
+
+<wsdl:operation name="getDOI">
+<http:operation location="getDOI" />
+<wsdl:input><mime:content type="text/xml" /></wsdl:input>
+<wsdl:output><mime:content type="text/xml" /></wsdl:output>
+</wsdl:operation>
+
+<wsdl:operation name="getPrefix">
+<http:operation location="getPrefix" />
+<wsdl:input><mime:content type="text/xml" /></wsdl:input>
+<wsdl:output><mime:content type="text/xml" /></wsdl:output>
+
+</wsdl:operation>
+</wsdl:binding>
+
+<wsdl:service name="DOIServer">
+<wsdl:port name="DOIServerSOAP11port_http"
+           binding="axis2:DOIServerSOAP11Binding">
+<soap:address
+  location="http://proc2.ist.psu.edu:8080/axis2/services/DOIServer" />
+</wsdl:port>
+
+<wsdl:port name="DOIServerSOAP12port_http"
+           binding="axis2:DOIServerSOAP12Binding">
+<soap12:address
+  location="http://proc2.ist.psu.edu:8080/axis2/services/DOIServer" />
+</wsdl:port>
+
+<wsdl:port name="DOIServerHttpport"
+           binding="axis2:DOIServerHttpBinding">
+<http:address
+  location="http://proc2.ist.psu.edu:8080/axis2/services/DOIServer" />
+</wsdl:port>
+
+</wsdl:service>
+
+<plnk:partnerLinkType name="doiPartnerLT">
+<plnk:role name="Identifier" portType="axis2:DOIServerPortType" />
+</plnk:partnerLinkType>
+
+</wsdl:definitions>

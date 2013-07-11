@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!--
+ / XML Schema for task registration in CiteSeerX core modules.
+ /
+ / Isaac Councill
+ / 10/5/06
+ /-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://citeseerx.psu.edu/taskregistry"
+  xmlns="http://citeseerx.psu.edu/taskregistry"
+  elementFormDefault="qualified">
+
+  <!--
+   / Root element contains a list of tasks.  There can be only
+   / one root.
+   /-->
+  <xs:element name="TaskRegistry">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Task" type="TaskType"
+                    minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   / Tasks are defined according to their name (based on the
+   / Java code that implements the task) and a list of inputs
+   / and outputs.  All inputs must appear before any outputs.
+   /-->
+  <xs:complexType name="TaskType">
+    <xs:sequence>
+      <xs:element name="input" type="InputType"
+                  minOccurs="1" maxOccurs="unbounded" />
+      <xs:element name="output" type="OutputType"
+                  minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="codebase" type="FullyQualifiedObjectName"
+                  use="required" />
+  </xs:complexType>
+
+  <!--
+   / Input and Output declarations must contain an id attribute and
+   / the tag content must reference the codebase of the expected object.
+   /-->
+  <xs:complexType name="InputType">
+    <xs:simpleContent>
+      <xs:extension base="FullyQualifiedObjectName">
+        <xs:attribute name="id" type="xs:string" use="required" />
+        <xs:attribute name="use" type="UseType" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:complexType name="OutputType">
+    <xs:simpleContent>
+      <xs:extension base="FullyQualifiedObjectName">
+        <xs:attribute name="id" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!--
+   / Restriction that matches a fully qualified Java object name.
+   /-->
+  <xs:simpleType name="FullyQualifiedObjectName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(\w+\.)*\w+" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="UseType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="required" />
+      <xs:enumeration value="optional" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

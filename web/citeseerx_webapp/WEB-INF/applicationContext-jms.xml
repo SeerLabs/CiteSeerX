@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+  <bean id="jmsResourceAdapter" class="org.apache.activemq.ra.ActiveMQResourceAdapter">
+    <property name="serverUrl" value="${activemq.url}"/>
+  </bean>
+  
+  <bean id="jmsTransactionManager" class="org.jencks.factory.TransactionManagerFactoryBean"/>
+  
+  <bean id="connectionManager" class="org.jencks.factory.ConnectionManagerFactoryBean">
+    <property name="transactionManager" ref="jmsTransactionManager"/>
+  </bean>
+  
+  <bean id="jmsManagedConnectionFactory" class="org.apache.activemq.ra.ActiveMQManagedConnectionFactory">
+    <property name="resourceAdapter" ref="jmsResourceAdapter"/>
+  </bean>
+
+  <bean id="jmsConnectionFactory" class="org.jencks.factory.ConnectionFactoryFactoryBean">
+    <property name="managedConnectionFactory" ref="jmsManagedConnectionFactory"/>
+    <property name="connectionManager" ref="connectionManager"/>
+  </bean>
+
+
+  <!--========================-->
+  <!-- OUTBOUND CONFIGURATION -->
+  <!--========================-->
+  
+  <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+    <property name="connectionFactory" ref="jmsConnectionFactory"/>
+    <property name="pubSubDomain" value="false"/>
+  </bean>
+  
+  <bean id="destination" class="org.apache.activemq.command.ActiveMQQueue"
+    	autowire="constructor">
+    <constructor-arg value="csx.ingestion.newSubmissions"/>
+  </bean>
+
+  <bean id="messageProducer" class="edu.psu.citeseerx.myciteseer.messaging.SubmissionSender">
+    <property name="template" ref="jmsTemplate"/>
+    <property name="destination" ref="destination"/>
+  </bean>
+
+
+  <!--========================-->
+  <!-- INBOUND CONFIGURATION  -->
+  <!--========================-->
+
+  <bean id="jencks" class="org.jencks.JCAContainer">
+    <property name="transactionManager" ref="jmsTransactionManager"/>
+    <property name="threadPoolSize" value="20"/>
+    <property name="resourceAdapter" ref="jmsResourceAdapter"/>
+  </bean>
+
+  <bean id="inboundNotifications" class="org.jencks.JCAConnector">
+    <property name="jcaContainer" ref="jencks"/>
+    
+    <property name="activationSpec">
+      <bean class="org.apache.activemq.ra.ActiveMQActivationSpec">
+        <property name="destination" value="csx.ingestion.statusUpdates"/>
+        <property name="destinationType" value="javax.jms.Queue"/>
+      </bean>
+    </property>
+    
+    <property name="ref" value="notificationReceiver"/>
+  </bean>
+  
+</beans>

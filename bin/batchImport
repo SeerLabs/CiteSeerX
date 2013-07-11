@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Imports document data into the repository.  This
+# utility expects all metadata to be pre-extracted in XML
+# files alongside document files.
+#
+# Expects one or more arguments specifying the directories
+# from which to import content.
+#
+# IGC
+#
+
+LOADER="edu.psu.citeseerx.loaders.BatchIngesterLoader"
+BOOT_FILE="updates.txt"
+
+source common

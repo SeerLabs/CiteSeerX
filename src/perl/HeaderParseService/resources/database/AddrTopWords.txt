@@ -1,0 +1,17 @@
+25 Park
+21 Box
+15 Street
+14 St
+13 Avenue
+8 Hill
+8 Road
+8 Way
+8 Hall
+7 Suite
+7 Square
+6 Center
+5 City
+4 Campus
+3 Building
+3 Ave
+3 Address

@@ -1,0 +1,42 @@
+# This files shows customization people need to do to TOMCAT's server.xml in 
+# order to configure the webapp.
+
+# Add the attribute URIEncoding to the HTTP connector default port. 
+# The connector will looks like:
+
+    <Connector port="8080" protocol="HTTP/1.1" 
+               URIEncoding="UTF-8"
+               connectionTimeout="20000" 
+               redirectPort="8443" />
+               
+# If personal portal is enabled you need to enable SSL. Follow TOMCAT SSL 
+# guide. After obtained what is needed your configure the HTTP connector
+# which will listen for SSL connections. It should look similar to:
+
+<Connector port="8443" minProcessors="5" maxProcessors="75"
+               minSpareThreads="5" maxSpareThreads="75" maxThreads="200"
+               enableLookups="true" disableUploadTimeout="true"
+               SSLEnabled="true" keyAlias="tomcat"
+               acceptCount="100" debug="0" scheme="https" secure="true"
+               keystoreFile="/etc/ssl/keystore" keystorePass="changeit"
+               clientAuth="false" sslProtocol="TLS"/>
+               
+# A good way to increase the performance of your web site is to compress the
+# response if the client supports it. TOMCAT already has native support for
+# GZIP compression (You don't need to write a compression filter!) but it's
+# disabled by default to enable it add the compression attribute to your HTTP
+# connector. 
+    <Connector port="8080" protocol="HTTP/1.1" 
+               URIEncoding="UTF-8"
+               connectionTimeout="20000" 
+               compression="1024"
+               compressableMimeType="text/javascript,application/x-javascript,text/html,text/xml,application/xml,text/css,text/plain"
+               redirectPort="8443" />
+               
+# by default HTTP access logs are disable on Tomcat. To enable it just remove 
+# the comments in the AccessLogValve. It should look like:
+
+ <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+        prefix="locahost_access_log." suffix=".txt" pattern="combined" 
+        resolveHosts="false" rotatable="true" fileDateFormat="yyyy-MM-dd"/>
+ 

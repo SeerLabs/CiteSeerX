@@ -1,0 +1,20 @@
+Metadata-Version: 1.1
+Name: django-simple-captcha
+Version: 0.3.0
+Summary: A very simple, yet powerful, Django captcha application
+Home-page: http://code.google.com/p/django-simple-captcha/
+Author: Marco Bonetti
+Author-email: mbonetti@gmail.com
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Security
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Framework :: Django
+Requires: PIL (>=1.1.6)

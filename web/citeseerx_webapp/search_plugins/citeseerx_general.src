@@ -1,0 +1,21 @@
+# Mozilla CiteSeerX Plugin by csx-system@ist.psu.edu
+<search name="CiteSeerX"
+        description="CiteSeerX General Search"
+        method="get"
+        action="http://citeseerx.ist.psu.edu/search"
+        searchForm="http://citeseerx.ist.psu.edu"
+        queryCharset="utf-8"
+>
+ <input name="sourceid" value="Mozilla-search">
+ <input name="q" user>
+ <input name="sort" value="cite">
+ <interpret resultListStart="<!--LRIS-->"
+            resultListEnd="<!--ELRIS-->"
+            resultItemStart="<!--RIS-->"
+            resultItemEnd="<!--ERIS-->"
+ >
+</search>
+<browser update="http://citeseerx.ist.psu.edu/search_plugins/citeseerx_general.src"
+         updateIcon="http://citeseerx.ist.psu.edu/search_plugins/citeseerx_general.png"
+         updateCheckDays="7"
+>

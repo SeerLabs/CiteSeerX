@@ -1,0 +1,31 @@
+headerno(1) -- lineno(1): 
+ 	 chunk(1) -- class(1 <> content(Protocols for Collecting Responses 
+lineno(2): 
+ 	 chunk(1) -- class(1 <> content(in Multi-hop Radio Networks 
+lineno(3): 
+ 	 chunk(1) -- class(2 <> content(Chungki Lee 
+	 chunk(2) -- class(2 <> content(James E. Burns 
+lineno(4): 
+ 	 chunk(1) -- class(2 <> content(Mostafa H. Ammar 
+lineno(5): 
+ 	 chunk(1) -- class(14 <> content(GIT-CC-92/28 
+lineno(6): 
+ 	 chunk(1) -- class(7 <> content(June 1992 
+lineno(7): 
+ 	 chunk(1) -- class(8 <> content(Abstract 
+lineno(8): 
+ 	 chunk(1) -- class(8 <> content(The problem of collecting responses in multi-hop radio networks is considered . A given node ,  called the source ,  is to collect a specified number of 
+lineno(9): 
+ 	 chunk(1) -- class(8 <> content(responses from nodes in a radio network . The problem arises in several 
+lineno(10): 
+ 	 chunk(1) -- class(8 <> content(applications of distributed systems . A deterministic and a randomized protocol for the problem are presented . The two protocols are analyzed and 
+lineno(11): 
+ 	 chunk(1) -- class(8 <> content(their performance is compared . Conclusions are drawn about the suitability 
+lineno(12): 
+ 	 chunk(1) -- class(8 <> content(of our protocols in various network environments. 
+lineno(13): 
+ 	 chunk(1) -- class(3 <> content(College of Computing 
+lineno(14): 
+ 	 chunk(1) -- class(3 <> content(Georgia Institute of Technology 
+lineno(15): 
+ 	 chunk(1) -- class(4 <> content(Atlanta ,  Georgia 30332-0280 

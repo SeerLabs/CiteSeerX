@@ -1,0 +1,34 @@
+412 university
+111 univ
+262 department
+103 institute
+62 laboratory
+45 dept
+45 science department
+38 center
+36 division
+34 system
+30 school
+23 science division
+19 college
+14 science institute
+14 research center
+14 universitat
+13 science university
+12 research laboratory
+11 universita
+11 dipartimento di
+11 dipartimento
+11 universita di
+10 lab
+9 institut
+7 corporation
+7 inc
+7 department university
+6 institut fur
+6 research group
+6 science dept
+5 system laboratory
+4 universitat gh
+4 research institute
+1 laboratoire

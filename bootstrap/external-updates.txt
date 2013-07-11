@@ -1,0 +1,2 @@
+applicationContext-csx-ext-metadata-jdbc.xml
+applicationContext-external-updates.xml

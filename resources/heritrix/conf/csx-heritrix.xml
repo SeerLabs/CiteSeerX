@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<serviceConfiguration>
+<edu><psu><citeseerx>
+
+<utility>
+  <ConfigurationManager>
+    <autoSave>false</autoSave>
+  </ConfigurationManager>
+</utility>
+
+<heritrix>
+
+  <jms>
+    <newSubmissionsChannel>csx.ingestion.newSubmissions</newSubmissionsChannel>
+    <statusUpdateChannel>csx.ingestion.statusUpdates</statusUpdateChannel>
+    <ingestionChannel>csx.ingestion.documentsToIngest</ingestionChannel>
+    <repositoryID>heritrix1</repositoryID>
+    <submissionProfile>CSX_User_Submission</submissionProfile>
+    <hubLinkIndicator>.*(\.(pdf))(\.(g?z))?$</hubLinkIndicator>
+  </jms>
+
+</heritrix>
+
+<messaging>
+
+  <jmsProvider>
+    <url>tcp://example.com:61616</url>
+	<clientID>heritrix1</clientID>
+
+    <queue>
+      <name>csx.ingestion.newSubmissions</name>
+      <role>consumer</role>
+      <acknowledgeMode>CLIENT_ACKNOWLEDGE</acknowledgeMode>
+    </queue>
+
+    <queue>
+      <name>csx.ingestion.statusUpdates</name>
+      <role>producer</role>
+      <acknowledgeMode>CLIENT_ACKNOWLEDGE</acknowledgeMode>
+    </queue>
+    
+    <queue>
+      <name>csx.ingestion.documentsToIngest</name>
+      <role>producer</role>
+      <acknowledgeMode>CLIENT_ACKNOWLEDGE</acknowledgeMode>
+    </queue>
+    
+  </jmsProvider>
+
+</messaging>
+
+</citeseerx></psu></edu>
+</serviceConfiguration>

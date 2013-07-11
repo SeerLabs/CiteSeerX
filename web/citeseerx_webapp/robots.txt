@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /myciteseer/
+Disallow: /mcsutils/
+Disallow: /metacart
+Disallow: /correct
+Disallow: /feedback
+Disallow: /dwr/

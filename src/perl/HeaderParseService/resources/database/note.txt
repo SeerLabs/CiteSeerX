@@ -1,0 +1,121 @@
+111 research
+88 support
+74 grant
+64 science
+52 part
+42 appear
+38 nsf
+38 work
+32 paper
+31 author
+30 contract
+28 foundation
+26 acm
+25 system
+25 national
+24 computer
+24 proceedings
+24 ccr
+23 project
+22 conference
+21 institute
+21 department
+20 agency
+20 technology
+19 defense
+19 advanced
+19 center
+18 advanced research
+18 national science
+18 report
+17 office
+17 science foundation
+17 computer science
+17 corporation
+16 copyright
+16 artificial
+16 submit
+16 project agency
+16 nsf grant
+15 computation
+15 fellowship
+15 research project
+14 international
+14 laboratory
+13 arpa
+13 classification
+13 provided
+12 copy
+12 sponsor
+12 grant ccr
+12 permission
+12 version
+11 naval
+11 ieee
+11 onr
+11 engineering
+10 partially
+10 dimac
+10 fund
+10 edu
+10 government
+10 proc
+10 subject classification
+10 defense advanced
+10 subject
+10 number
+9 express
+9 iri
+9 ams
+9 view
+9 naval research
+9 partially support
+9 abstract
+9 international conference
+9 neural
+9 pp
+9 award
+9 symposium
+9 press
+9 information
+8 graduate
+8 address
+8 describe
+8 software
+8 compute
+8 program
+8 conclusion
+8 process
+7 contained
+7 interpret
+7 application
+7 policy
+7 workshop
+7 extend abstract
+7 extend
+7 language
+7 official
+6 distribute
+6 technical
+6 contact
+6 technology center
+6 equipment
+6 parallel
+6 pub
+6 paper appear
+6 imply
+6 publish
+6 lab
+6 represent
+6 ftp
+6 digital
+6 force
+6 scientific
+6 commission
+6 implementation
+6 official policy
+5 grant number
+5 note
+5 vol
+5 technical report
+1 working note

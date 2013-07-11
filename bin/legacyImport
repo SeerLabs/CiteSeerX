@@ -1,0 +1,10 @@
+#!/bin/bash
+
+LOADER="edu.psu.citeseerx.ingestion.LegacyIngester"
+BOOT_FILE="updates.txt"
+
+source common
+
+
+#/usr/java/jdk1.6.0_03_x64/bin/java -DCSX_HOME=$CSX_HOME -DCSX_CONF=$CSX_CONF \
+#  edu.psu.citeseerx.ingestion.LegacyIngester $1 $2 $3

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  MyCiteSeerX people index specification
+  Juan Pablo Fernandez Ramirez
+  Based on work of .....
+-->
+<schema name="mcsxpeople" version="1.2">
+ 
+  <types>
+
+    <fieldType name="string" class="solr.StrField"   sortMissingLast="true"
+               omitNorms="true"/>
+    <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"
+               omitNorms="true"/>
+
+    <fieldType name="integer" class="solr.IntField"    omitNorms="true"/>
+    <fieldType name="long"    class="solr.LongField"   omitNorms="true"/>
+    <fieldType name="float"   class="solr.FloatField"  omitNorms="true"/>
+    <fieldType name="double"  class="solr.DoubleField" omitNorms="true"/>
+
+    <fieldType name="sint"            class="solr.SortableIntField" 
+               sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="slong"           class="solr.SortableLongField"
+               sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="sfloat"          class="solr.SortableFloatField"
+               sortMissingLast="true" omitNorms="true"/>
+    <fieldType name="sdouble"         class="solr.SortableDoubleField"
+               sortMissingLast="true" omitNorms="true"/>
+
+    <fieldType name="date"            class="solr.DateField" 
+               sortMissingLast="true" omitNorms="true"/>
+
+    <!--
+    <fieldType name="random" class="solr.RandomSortField" indexed="true" />
+    -->
+
+    <fieldType name="text" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter    class="solr.StopFilterFactory" ignoreCase="true" 
+                   words="stopwords.txt"/>
+        <filter    class="solr.WordDelimiterFilterFactory"
+                   generateWordParts="1" generateNumberParts="1"
+                   catenateWords="1" catenateNumbers="1" catenateAll="0"
+                   splitOnCaseChange="1"/>
+        <filter    class="solr.ISOLatin1AccentFilterFactory"/>
+        <filter    class="solr.LowerCaseFilterFactory"/>
+        <filter    class="solr.EnglishPorterFilterFactory"
+                   protected="protwords.txt"/>
+        <filter    class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter    class="solr.StopFilterFactory" ignoreCase="true"
+                   words="stopwords.txt"/>
+        <filter    class="solr.WordDelimiterFilterFactory"
+                   generateWordParts="1" generateNumberParts="1"
+                   catenateWords="1" catenateNumbers="1" catenateAll="0"
+                   splitOnCaseChange="1"/>
+        <filter    class="solr.ISOLatin1AccentFilterFactory"/>
+        <filter    class="solr.LowerCaseFilterFactory"/>
+        <filter    class="solr.EnglishPorterFilterFactory"
+                   protected="protwords.txt"/>
+        <filter    class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="atext" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter    class="solr.WordDelimiterFilterFactory"
+                   generateWordParts="1" generateNumberParts="1"
+                   catenateWords="1" catenateNumbers="1" catenateAll="0"
+                   splitOnCaseChange="1"/>
+        <filter    class="solr.ISOLatin1AccentFilterFactory"/>
+        <filter    class="solr.LowerCaseFilterFactory"/>
+        <filter    class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter    class="solr.WordDelimiterFilterFactory"
+                   generateWordParts="1" generateNumberParts="1"
+                   catenateWords="1" catenateNumbers="1" catenateAll="0"
+                   splitOnCaseChange="1"/>
+        <filter    class="solr.ISOLatin1AccentFilterFactory"/>
+        <filter    class="solr.LowerCaseFilterFactory"/>
+        <filter    class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="tokens" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter    class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter    class="solr.RemoveDuplicatesTokenFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+  </types>
+
+  <fields>
+
+    <field name="id"          type="string" indexed="true" stored="true"
+           required="false"   omitNorms="true"/>
+    <field name="userid"      type="string" indexed="true" stored="true"
+           required="true"    omitNorms="true"/>
+    <field name="firstName"   type="text"   indexed="true" stored="true"
+           multivalued="true" required="true"/>
+    <field name="middleName"  type="text"   indexed="true" stored="true"
+           required="false"/>
+    <field name="lastName"    type="text"   indexed="true" stored="true"
+           multivalued="true" required="true"/>
+    <field name="fullName"    type="atext"  indexed="true" stored="false"
+           multiValued="true"/>
+    <field name="affil1"      type="text"   indexed="true" stored="true"
+           multivalued="true" required="false"/>
+    <field name="affil2"      type="text"   indexed="true" stored="true"
+           multivalued="true" required="false"/>
+    <field name="country"     type="text"   indexed="true" stored="true"
+           required="false"/>
+    <field name="province"    type="text"   indexed="true" stored="true"
+           required="false"/>
+    <field name="webpage"     type="text"   indexed="true" stored="true"
+           required="false"/>
+
+    <dynamicField name="*_i"  type="sint"    indexed="true"  stored="true"/>
+    <dynamicField name="*_s"  type="string"  indexed="true"  stored="true"/>
+    <dynamicField name="*_l"  type="slong"   indexed="true"  stored="true"/>
+    <dynamicField name="*_t"  type="text"    indexed="true"  stored="true"/>
+    <dynamicField name="*_b"  type="boolean" indexed="true"  stored="true"/>
+    <dynamicField name="*_f"  type="sfloat"  indexed="true"  stored="true"/>
+    <dynamicField name="*_d"  type="sdouble" indexed="true"  stored="true"/>
+    <dynamicField name="*_dt" type="date"    indexed="true"  stored="true"/>
+
+    <!--
+    <dynamicField name="random*" type="random" />
+    -->
+
+  </fields>
+
+  <uniqueKey>id</uniqueKey>
+
+  <defaultSearchField>fullName</defaultSearchField>
+
+  <solrQueryParser defaultOperator="AND"/>
+
+</schema>

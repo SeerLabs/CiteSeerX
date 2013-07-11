@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Application context definition for CiteSeerX schedules.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+       
+  <!-- JobDetails for author deduplication -->
+  <bean id="correctAuthorsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="name" value="correctAuthorsJob"/>
+    <property name="group" value="corrections"/>
+    <property name="targetObject" ref="correctAuthors"/>
+    <property name="targetMethod" value="process"/>
+  </bean>
+  
+  <!-- This the one which does author deduplication -->
+  <bean id="correctAuthors" class="edu.psu.citeseerx.corrections.CorrectAuthors">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="updateManager" ref="updateManager"/>
+    <property name="modelFile" value="${name.model}"/>
+    <property name="similarityFactor" value="0.8"></property>
+  </bean>
+  
+  <!-- Trigger to define when correctAuthors job is executed using the defined
+       Job Details -->
+  <bean id="correctAuthorsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="beanName" value="CorrectAuthorsTrigger"/>
+    <property name="group" value="corrections"/>
+    <property name="jobDetail" ref="correctAuthorsJobDetail"/>
+    <!-- Fire at 11:00 PM every day -->
+    <property name="cronExpression" value="0 00 23 * * ?"/>
+  </bean>
+  
+  <!-- JobDetails for Home Page Statistics generator -->
+  <bean id="HomePageStatsJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="name" value="HomePageStatsGenerator"/>
+    <property name="group" value="statistics"/>
+    <property name="targetObject" ref="homePageStatsGenerator"/>
+    <property name="targetMethod" value="genStats"/>
+  </bean>
+  
+  <!-- This the one which calculates the statistics -->
+  <bean id="homePageStatsGenerator" class="edu.psu.citeseerx.updates.HomePageStatisticsGenerator">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="outputDir" value="${stats.folder}"/>
+  </bean>
+  
+  <!-- Trigger to define when home page statistics are generated using the 
+       defined Job Details -->
+  <bean id="homePageStatsTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="beanName" value="homePageStatsTrigger"/>
+    <property name="group" value="statistics"/>
+    <property name="jobDetail" ref="HomePageStatsJobDetail"/>
+    <!-- Fire at 23:15 PM every day -->
+    <property name="cronExpression" value="0 15 23 * * ?"/>
+  </bean>
+  
+  <bean id="csxScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name="autoStartup" value="false"/>
+    <property name="triggers">
+      <!-- A list of Triggers to be scheduled and executed by Quartz -->
+      <list>
+        <ref bean="correctAuthorsTrigger"/>
+        <ref bean="homePageStatsTrigger"/>
+      </list>
+    </property>
+  </bean>
+  
+</beans>

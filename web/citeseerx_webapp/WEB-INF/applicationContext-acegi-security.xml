@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+  -->
+
+<beans>
+
+	<bean id="filterChainProxy" class="org.springframework.security.util.FilterChainProxy">
+		<property name="filterInvocationDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/**=channelProcessingFilter,httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,securityContextHolderAwareRequestFilter,rememberMeProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+			</value>
+		</property>
+	</bean>
+
+	<bean id="httpSessionContextIntegrationFilter" class="org.springframework.security.context.HttpSessionContextIntegrationFilter"/>
+	
+	<bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter">
+		<constructor-arg value="/index.jsp"/> <!-- URL redirected to after logout -->
+		<constructor-arg>
+			<list>
+				<ref bean="rememberMeServices"/>
+				<bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="authenticationProcessingFilter" class="edu.psu.citeseerx.myciteseer.web.captcha.CaptchaAuthenticationProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="authenticationFailureUrl" value="/myciteseer/login.jsp?login_error=1"/>
+		<property name="defaultTargetUrl" value="/"/>
+		<property name="filterProcessesUrl" value="/j_spring_security_check"/>
+		<property name="rememberMeServices" ref="rememberMeServices"/>
+	</bean>
+
+<!--<bean id="authenticationProcessingFilter" class="edu.psu.citeseerx.myciteseer.web.captcha.CaptchaAuthenticationProcessingFilter">-->
+<!--	<bean id="authenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="authenticationFailureUrl" value="/myciteseer/login.jsp?login_error=1"/>
+		<property name="defaultTargetUrl" value="/"/>
+		<property name="filterProcessesUrl" value="/j_acegi_security_check"/>
+		<property name="rememberMeServices" ref="rememberMeServices"/>
+	</bean>
+-->
+
+  <bean id="channelProcessingFilter" class="org.springframework.security.securechannel.ChannelProcessingFilter">
+    <property name="channelDecisionManager" ref="channelDecisionManager"/>
+    <property name="filterInvocationDefinitionSource">
+      <value>
+        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+        \A.*/login.jsp.*\Z=REQUIRES_SECURE_CHANNEL
+        \A.*/captcha.jpg.*\Z=REQUIRES_SECURE_CHANNEL
+        \A.*/j_spring_security_check.*\Z=REQUIRES_SECURE_CHANNEL
+        \A.*/myciteseer/action/changepassword.*\Z=REQUIRES_SECURE_CHANNEL
+        \A.*/mcsutils/newaccount.*\Z=REQUIRES_SECURE_CHANNEL
+        \A.*\Z=REQUIRES_INSECURE_CHANNEL
+      </value>
+    </property>
+  </bean>
+
+  <bean id="channelDecisionManager" class="org.springframework.security.securechannel.ChannelDecisionManagerImpl">
+    <property name="channelProcessors">
+      <list>
+          <ref bean="secureChannelProcessor"/>
+          <ref bean="insecureChannelProcessor"/>
+        </list>
+      </property>
+    </bean>
+
+
+	<bean id="securityContextHolderAwareRequestFilter" class="org.springframework.security.wrapper.SecurityContextHolderAwareRequestFilter"/>
+
+	<bean id="rememberMeProcessingFilter" class="org.springframework.security.ui.rememberme.RememberMeProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="rememberMeServices" ref="rememberMeServices"/>
+	</bean>
+
+	<bean id="anonymousProcessingFilter" class="org.springframework.security.providers.anonymous.AnonymousProcessingFilter">
+		<property name="key" value="changeThis"/>
+		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS"/>
+	</bean>
+
+
+    <bean id="portMapper" class="org.springframework.security.util.PortMapperImpl">
+      <property name="portMappings">
+        <map>
+          <entry key="80"><value>443</value></entry>
+          <entry key="8080"><value>8443</value></entry>
+        </map>
+      </property>
+    </bean>
+
+
+    <bean id="retryWithHttpsEntryPoint" class="org.springframework.security.securechannel.RetryWithHttpsEntryPoint">
+      <property name="portMapper" ref="portMapper"/>
+    </bean>
+
+    <bean id="retryWithHttpEntryPoint" class="org.springframework.security.securechannel.RetryWithHttpEntryPoint">
+      <property name="portMapper" ref="portMapper"/>
+    </bean>
+    
+    
+    <bean id="secureChannelProcessor" class="org.springframework.security.securechannel.SecureChannelProcessor">
+      <property name="entryPoint" ref="retryWithHttpsEntryPoint"/>
+    </bean>
+    
+    <bean id="insecureChannelProcessor" class="org.springframework.security.securechannel.InsecureChannelProcessor">
+      <property name="entryPoint" ref="retryWithHttpEntryPoint"/>
+    </bean>
+
+
+	<bean id="exceptionTranslationFilter" class="org.springframework.security.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint">
+			<bean class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+				<property name="loginFormUrl" value="/myciteseer/login.jsp"/>
+			</bean>
+		</property>
+		<property name="accessDeniedHandler">
+			<bean class="org.springframework.security.ui.AccessDeniedHandlerImpl">
+				<property name="errorPage" value="/accessDenied.jsp"/>
+			</bean>
+		</property>
+	</bean>
+
+    <!-- 
+
+	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint">
+			<bean class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+				<property name="loginFormUrl" value="/myciteseer/login.jsp"/>
+				<property name="portMapper" ref="portMapper"/>
+				<property name="forceHttps" value="true"/>
+			</bean>
+		</property>
+		<property name="accessDeniedHandler">
+			<bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
+				<property name="errorPage" value="/myciteseer/accessDenied.jsp"/>
+			</bean>
+		</property>
+	</bean>
+-->
+
+	<bean id="filterInvocationInterceptor" class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="accessDecisionManager">
+			<bean class="org.springframework.security.vote.AffirmativeBased">
+				<property name="allowIfAllAbstainDecisions" value="false"/>
+				<property name="decisionVoters">
+					<list>
+						<bean class="org.springframework.security.vote.RoleVoter"/>
+						<bean class="org.springframework.security.vote.AuthenticatedVoter"/>
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="objectDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+                /search=IS_AUTHENTICATED_ANONYMOUSLY
+                /advanced_search=IS_AUTHENTICATED_ANONYMOUSLY
+                /forgotaccount=IS_AUTHENTICATED_ANONYMOUSLY
+                /privacy=IS_AUTHENTICATED_ANONYMOUSLY
+                /submit=IS_AUTHENTICATED_ANONYMOUSLY
+                /showciting=IS_AUTHENTICATED_ANONYMOUSLY
+                /viewdoc/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /viewauth/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /stats/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /healthcheck=IS_AUTHENTICATED_ANONYMOUSLY
+                /metacart=IS_AUTHENTICATED_ANONYMOUSLY
+                /help/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /about/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /citecharts/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /feedback=IS_AUTHENTICATED_ANONYMOUSLY
+				/myciteseer/login.jsp=IS_AUTHENTICATED_ANONYMOUSLY
+                /myciteseer/accessdenied.jsp=IS_AUTHENTICATED_ANONYMOUSLY
+                /mcsutils/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /=IS_AUTHENTICATED_ANONYMOUSLY
+                /index.jsp=IS_AUTHENTICATED_ANONYMOUSLY
+                /favicon.ico=IS_AUTHENTICATED_ANONYMOUSLY
+                /robots.txt=IS_AUTHENTICATED_ANONYMOUSLY
+                /legacymapper=IS_AUTHENTICATED_ANONYMOUSLY
+                /icons/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /images/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /css/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /js/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /dwr/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /messages/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /search_plugins/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /captcha.jpg=IS_AUTHENTICATED_ANONYMOUSLY
+                /**=IS_AUTHENTICATED_REMEMBERED
+			</value>
+		</property>
+	</bean>
+
+	<bean id="rememberMeServices" class="org.springframework.security.ui.rememberme.TokenBasedRememberMeServices">
+		<property name="userDetailsService" ref="myCiteSeer"/>
+		<property name="key" value="changeThis"/>
+	</bean>
+
+    <!-- 
+	<bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+		<property name="authenticationManager" ref="authenticationManager"/>
+		<property name="accessDecisionManager">
+			<bean class="org.acegisecurity.vote.AffirmativeBased">
+				<property name="allowIfAllAbstainDecisions" value="false"/>
+				<property name="decisionVoters">
+					<list>
+						<bean class="org.acegisecurity.vote.RoleVoter"/>
+						<bean class="org.acegisecurity.vote.AuthenticatedVoter"/>
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="objectDefinitionSource">
+			<value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+                /myciteseer/login.jsp=IS_AUTHENTICATED_ANONYMOUSLY
+                /myciteseer/accessdenied.jsp=IS_AUTHENTICATED_ANONYMOUSLY
+                /mcsutils/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /=IS_AUTHENTICATED_ANONYMOUSLY
+                /index.jsp=IS_AUTHENTICATED_ANONYMOUSLY
+                /favicon.ico=IS_AUTHENTICATED_ANONYMOUSLY
+                /icons/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /images/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /css/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /js/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /dwr/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /messages/**=IS_AUTHENTICATED_ANONYMOUSLY
+                /captcha.jpg=IS_AUTHENTICATED_ANONYMOUSLY
+                /**=IS_AUTHENTICATED_REMEMBERED
+			</value>
+		</property>
+	</bean>
+
+	<bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
+		<property name="userDetailsService" ref="myCiteSeer"/>
+		<property name="key" value="changeThis"/>
+	</bean>
+-->
+
+	<bean id="authenticationManager" class="org.springframework.security.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="daoAuthenticationProvider"/>
+				<bean class="org.springframework.security.providers.anonymous.AnonymousAuthenticationProvider">
+					<property name="key" value="changeThis"/>
+				</bean>
+				<bean class="org.springframework.security.providers.rememberme.RememberMeAuthenticationProvider">
+					<property name="key" value="changeThis"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 
+	<bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref local="daoAuthenticationProvider"/>
+				<bean class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+					<property name="key" value="changeThis"/>
+				</bean>
+				<bean class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
+					<property name="key" value="changeThis"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+ -->
+ 
+	<bean id="daoAuthenticationProvider" class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService" ref="myCiteSeer"/>
+		<property name="saltSource" ref="saltSource"/>
+		<property name="passwordEncoder" ref="passwordEncoder"/>
+		<property name="userCache">
+			<bean class="org.springframework.security.providers.dao.cache.EhCacheBasedUserCache">
+				<property name="cache">
+					<bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+						<property name="cacheManager">
+							<bean class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
+						</property>
+						<property name="cacheName" value="userCache"/>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	
+	<bean id="saltSource" class="org.springframework.security.providers.dao.salt.ReflectionSaltSource">
+	  <property name="userPropertyToUse" value="getUsername"/>
+	</bean>
+
+	<bean id="passwordEncoder" class="org.springframework.security.providers.encoding.ShaPasswordEncoder">
+	  <constructor-arg value="256"/>
+	  <property name="encodeHashAsBase64" value="true"/>
+	</bean>
+
+	<!-- This bean is optional; it isn't used by any other bean as it only listens and logs -->
+	<bean id="loggerListener" class="org.springframework.security.event.authentication.LoggerListener"/>
+
+</beans>

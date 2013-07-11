@@ -1,0 +1,6 @@
+#!/bin/bash
+
+LOADER="edu.psu.citeseerx.myciteseer.loaders.UserIndexUpdateLoader"
+BOOT_FILE="updates.txt"
+
+source common

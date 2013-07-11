@@ -1,0 +1,40 @@
+John Wiley # publisher
+san # not a valid last name!
+San Francisco # place
+John Benjamins # publisher
+Murray Hill # place
+Morgan Kaufman # publisher
+Morgan Kaufmann # publisher
+Morgan Kauf
+Moffett Field # place
+conf # not a valid last name!
+yahoo # not a valid name of any type!
+florida # a place
+miami # a place
+Washington Post # a newspaper
+D. C. Washington # Washington, DC as a name...
+yeah # not valid!
+Press
+B. C. Vancouver
+D. C. Washington
+John Hopkins
+P. O. Box
+U. C. Berkeley
+U. K. London
+West Lafayette
+Addison Wesley
+Ellis Horwood
+Prentice Hall
+Van Nostrand Reinhold
+W. H. Freeman
+May France
+J Royal Stat
+Link Grammar
+Link Fix
+Montague Grammar
+Pembroke Street
+Penn Wall
+Penn Treebank Wall
+U. S. News
+Red Cross
+Walt Disney

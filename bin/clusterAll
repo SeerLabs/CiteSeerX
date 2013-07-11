@@ -1,0 +1,14 @@
+#!/bin/bash
+#
+# Clusters all documents and citations in the database.
+# NOTE: This is only required if you want to re-cluster
+# the data - do not run this without first destroying
+# and rebuilding the csx_citegraph database!
+#
+# IGC
+#
+
+LOADER="edu.psu.citeseerx.loaders.ClusterLoader"
+BOOT_FILE="updates.txt"
+
+source common

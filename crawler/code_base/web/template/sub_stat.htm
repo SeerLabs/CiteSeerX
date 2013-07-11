@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}User Submission Statistics{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load('visualization', '1', {'packages':['columnchart']});
+	
+	google.setOnLoadCallback(drawChart);
+	
+	function drawChart() {		
+		var query = new google.visualization.Query('/sub/stat/data/');
+		query.send(handleQueryResponse);		
+	}
+	
+    function handleQueryResponse(response) {
+      if (response.isError()) {
+        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+        return;
+      }
+    
+      var data = response.getDataTable();
+      var chart = new google.visualization.ColumnChart(document.getElementById('daily_chart_div'));
+      chart.draw(data, {width: 600, height: 300, legend: 'none', is3D: true, title: 'Last 30 Days'});
+    }	
+</script>
+
+</head>
+
+<body>
+<h3 class="alt">User Submission Statistics</h3>
+
+<br />
+<div id="daily_chart_div"></div>
+<br />
+
+{% endblock %}

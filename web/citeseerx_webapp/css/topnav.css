@@ -1,0 +1,79 @@
+#topnav {
+  position: relative;
+  max-width: 960px;
+  min-width: 760px;
+  height: 32px;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+
+/* Search Product List */
+#search_nav {
+  height: 100%;
+  position: relative;
+  width: 500px;
+  list-style: none;
+}
+
+#search_nav li {
+  display: inline;
+}
+
+#topnav a,
+#topnav a:active,
+#topnav a:visited {
+  padding: 6px 16px 4px 16px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #555;
+  display: block;
+  float: left;
+}
+
+#search_nav a {
+  border-right: 1px solid #eee;
+}
+
+#search_nav a.active {
+  border-bottom: 3px solid #1B77A4;
+}
+
+#topnav a:hover {
+  color: #000;
+}
+
+#activeLine {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0px;
+  height: 3px;
+  background: #1B77A4;
+  display: block;
+}
+
+/* myCiteSeer Login and controls */
+#toptools {
+  position: absolute;
+  right: 0;
+  list-style: none;
+  top: 0;
+/*  width: 50%;*/
+  height: 100%;
+}
+
+#toptools li {
+	display: inline;
+}
+
+#toptools a,
+#toptools a:active,
+#toptools a:hover,
+#toptools a:visited {
+	top: 0;
+	display: inline;
+  float:right;
+  border-left: 1px solid #eee;
+}

@@ -1,0 +1,28 @@
+25 park
+15 st
+15 street
+14 avenue
+11 hall
+10 road
+9 box
+8 west
+8 way
+8 hill
+7 technology square
+7 square
+7 boulder
+6 center
+6 building
+6 co
+6 boulder co
+5 ave
+5 city
+4 address
+4 center st
+4 campus
+4 mountain
+3 gate
+3 lake
+2 drive
+2 field
+2 room

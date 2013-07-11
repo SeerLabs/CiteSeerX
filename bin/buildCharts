@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Builds citation year histograms for documents, storing
+# the output alongside documents in the repository.
+#
+# IGC
+#
+
+LOADER="edu.psu.citeseerx.loaders.CiteChartLoader"
+BOOT_FILE="updates.txt"
+
+source common

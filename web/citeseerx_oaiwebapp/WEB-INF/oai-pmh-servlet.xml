@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+    <property name="basename"><value>views</value></property>
+  </bean>
+  
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+  
+  <bean name="/" class="edu.psu.citeseerx.web.oai.OAIController">
+    <property name="serviceUnavailable" value ="${oai.serviceUnavailable}"/>
+    <property name="retryAfter" value="${oai.retryAfter}"/>
+    <property name="identify" ref="identify"/>
+    <property name="badVerb" ref="badVerb"/>
+    <property name="listSets" ref="listSets"/>
+    <property name="listMetadataFormats" ref="listMetadataFormats"/>
+    <property name="listIdentifiers" ref="listIdentifiers"/>
+    <property name="getRecord" ref="getRecord"/>
+    <property name="listRecords" ref="listRecords"/>
+  </bean>
+</beans>

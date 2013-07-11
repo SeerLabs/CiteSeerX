@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Application context definition for AOI-PMH CiteSeerX functionality.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+       
+  <bean id="identify" class="edu.psu.citeseerx.oai.verbs.Identify">
+    <property name="baseURL" value="${oai.baseURL}"/>
+    <property name="granularity" value="${oai.granularity}"/>
+    <property name="repositoryIdentifier" value="${oai.repository.identifier}"/>
+    <property name="earliestDatestamp" value="${oai.earliestDatestamp}"/>
+    <property name="delimiter" value="${oai.repository.delimiter}"/>
+    <property name="repositoryName" value="${oai.repositoryName}"/>
+    <property name="deletedRecord" value="${oai.deletedRecord}"/>
+    <property name="adminEmail" value="${oai.adminEmail}"/>
+    <property name="compressionFormats" value="${oai.compression.formats}"/>
+    <property name="eprintsContent" value="${oai.eprints.content}"/>
+    <property name="eprintsMetadataPolicy" value="${oai.eprints.metadataPolicy}"/>
+    <property name="eprintsDataPolicy" value="${oai.eprints.dataPolicy}"/>
+  </bean>
+  
+  <bean id="badVerb" class="edu.psu.citeseerx.oai.verbs.BadVerb">
+    <property name="baseURL" value="${oai.baseURL}"/>
+    <property name="granularity" value="${oai.granularity}"/>
+    <property name="repositoryIdentifier" value="${oai.repository.identifier}"/>
+    <property name="earliestDatestamp" value="${oai.earliestDatestamp}"/>
+    <property name="delimiter" value="${oai.repository.delimiter}"/>
+  </bean>
+  
+  <bean id="listSets" class="edu.psu.citeseerx.oai.verbs.ListSets">
+    <property name="baseURL" value="${oai.baseURL}"/>
+    <property name="granularity" value="${oai.granularity}"/>
+    <property name="repositoryIdentifier" value="${oai.repository.identifier}"/>
+    <property name="earliestDatestamp" value="${oai.earliestDatestamp}"/>
+    <property name="delimiter" value="${oai.repository.delimiter}"/>
+  </bean>
+  
+  <bean id="listMetadataFormats" class="edu.psu.citeseerx.oai.verbs.ListMetadataFormats">
+    <property name="baseURL" value="${oai.baseURL}"/>
+    <property name="granularity" value="${oai.granularity}"/>
+    <property name="repositoryIdentifier" value="${oai.repository.identifier}"/>
+    <property name="earliestDatestamp" value="${oai.earliestDatestamp}"/>
+    <property name="delimiter" value="${oai.repository.delimiter}"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+  
+  <bean id="listIdentifiers" class="edu.psu.citeseerx.oai.verbs.ListIdentifiers">
+    <property name="baseURL" value="${oai.baseURL}"/>
+    <property name="granularity" value="${oai.granularity}"/>
+    <property name="repositoryIdentifier" value="${oai.repository.identifier}"/>
+    <property name="earliestDatestamp" value="${oai.earliestDatestamp}"/>
+    <property name="delimiter" value="${oai.repository.delimiter}"/>
+    <property name="maxReturnRecords" value="${oai.repository.max_records}"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+  
+  <bean id="getRecord" class="edu.psu.citeseerx.oai.verbs.GetRecord">
+    <property name="baseURL" value="${oai.baseURL}"/>
+    <property name="granularity" value="${oai.granularity}"/>
+    <property name="repositoryIdentifier" value="${oai.repository.identifier}"/>
+    <property name="earliestDatestamp" value="${oai.earliestDatestamp}"/>
+    <property name="delimiter" value="${oai.repository.delimiter}"/>
+    <property name="maxReturnRecords" value="${oai.repository.max_records}"/>
+    <property name="contributor" value="${oai.repository.contributor}"/>
+    <property name="viewDocURL" value="${csx.viewDocUrl}"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+  </bean>
+  
+  <bean id="listRecords" class="edu.psu.citeseerx.oai.verbs.ListRecords">
+    <property name="baseURL" value="${oai.baseURL}"/>
+    <property name="granularity" value="${oai.granularity}"/>
+    <property name="repositoryIdentifier" value="${oai.repository.identifier}"/>
+    <property name="earliestDatestamp" value="${oai.earliestDatestamp}"/>
+    <property name="delimiter" value="${oai.repository.delimiter}"/>
+    <property name="maxReturnRecords" value="${oai.repository.max_records}"/>
+    <property name="contributor" value="${oai.repository.contributor}"/>
+    <property name="viewDocURL" value="${csx.viewDocUrl}"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+  </bean>
+</beans>

@@ -1,0 +1,36 @@
+/*
+ * Copyright 2007 Penn State University
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package edu.psu.citeseerx.exec.respmod.Config;
+
+import java.util.concurrent.TimeUnit;
+
+public class Configuration {
+	
+		public static final long responseHandlerTimeout = -1;
+		public static final TimeUnit responseHandlerTimeoutUnit = 
+												TimeUnit.NANOSECONDS;
+
+		public static final int minNumberOfThreadsPerModifierTask = 3;
+		public static final int maxNumberOfThreadsPerModifierTask = 10;
+
+		public static final int minInitialThreadCount = 5;
+		public static final int maxInitialThreadCount = 20;
+		
+		public static final long modifierThreadPoolKeepAliveTimeout =
+												Long.MAX_VALUE;
+		public static final TimeUnit modifierThreadPoolKeepAliveTimeoutUnit = 
+												TimeUnit.NANOSECONDS;
+		
+		public static final boolean compress = false;
+		public static final int compressedBlockSize = 1024;
+}

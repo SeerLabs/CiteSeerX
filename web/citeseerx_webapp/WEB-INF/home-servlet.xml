@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  - Configuration of servlet in charge of the home page.
+  - Author: Juan Pablo Fernandez Ramirez
+  - Version: $Rev: 1034 $ $Date: 2009-03-10 11:02:38 -0400 (Tue, 10 Mar 2009) $
+  -->
+  
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+       
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+  
+  <!-- 
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+  -->
+  <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="mappings">
+      <props>
+        <prop key="/index">homeController</prop>
+      </props>
+    </property>
+  </bean>
+  
+  <bean id="homeController" class="edu.psu.citeseerx.web.HomeController">
+    <property name="statDir" value="/WEB-INF/stats"/>
+  </bean>
+  
+</beans>

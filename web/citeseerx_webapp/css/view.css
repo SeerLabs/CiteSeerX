@@ -1,0 +1,230 @@
+#viewHeader {
+  position: relative;
+  font-size: 12px;
+  padding: 10px;
+}
+
+#viewHeader.viewDoc {
+  min-height: auto;
+}
+
+#viewHeader.viewAuth {
+  min-height: 140px;
+  font-size: 14px;
+}
+
+#viewHeader li {
+  list-style: none;
+}
+
+#clinks {
+  display:block;
+}
+
+#clinks li {
+  display: inline;
+}
+
+#docAuthors {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+#downloads {
+  width: 260px;
+  height: 140px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  float: right;
+  border-left: 1px solid #ccc;
+  font-size: 12px;
+  padding: 8px 12px 8px 8px;
+}
+
+#downloads h3 {
+  font-size: 14px;
+}
+
+#downloads ul {
+  margin: 4px 4px;
+}
+
+#docInfo {
+  width: auto;
+}
+
+
+#docInfo td {
+  padding: 4px 8px 4px 0;
+  vertical-align: top;
+}
+
+#docInfo td.title {
+  font-weight: bold;
+}
+
+#docTools li {
+  display: block;
+}
+
+#docMenu {
+  width: 100%;
+  height: 25px;
+  display:block;
+  margin: 20px 0 10px;
+}
+
+#docMenu ul {
+  margin: 0;
+}
+
+#docTools {
+  float: right;
+  border: 1px solid #ccc;
+  width: 120px;
+  margin: 0px 18px;
+}
+
+#docTools li {
+  padding: 4px 8px;
+}
+
+#viewContent {
+  min-width: 760px;
+  padding: 8px;
+  margin-bottom: 16px;
+  position: relative;
+}
+
+#viewContent.no-menu {
+  margin-top: 0;
+}
+
+#viewContent.sidebar {
+  padding: 0;
+}
+
+#viewContent-inner {
+  padding: 8px;
+}
+
+#viewContent h3 {
+  margin-bottom: 4px;
+}
+
+#viewContent .link {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Citations Table */
+table.refs {
+/*  max-width: 430px;*/
+}
+
+table.refs .title {
+  font-weight: bold;
+  text-align: right;
+}
+
+table.refs td {
+  padding: 2px 4px;
+  font-size: 13px;
+}
+
+
+#viewSidebar {
+  width: 300px;
+  float: right;
+  height: 100%;
+  margin-left:10px;
+}
+
+#viewSidebar div {
+  padding: 8px;
+}
+
+#viewSidebar h3 {
+  font-size: 16px;
+  padding: 8px;
+  background: #eee;
+  margin-bottom: 4px;
+}
+
+#bibtex p {
+  font-family: monospace;
+  border: 1px solid #ccc;
+  padding: 4px;
+  overflow-y: hidden;
+}
+
+#bookmark table {
+  width: 100%;
+}
+
+#bookmark td {
+  text-align: center;
+  padding: 8px;
+}
+
+#abstract {
+  margin-bottom: 16px;
+}
+
+/* Versions View */
+table.version th {
+  border-bottom: solid 2px #aaa;
+  font-weight: bold;
+  padding: 4px 8px;
+}
+table.version td {
+  border-: 1px solid #efefef;
+  border-bottom: 1px solid #ccc;
+  padding: 4px 8px;
+}
+
+#versions .active a {
+  color: #333;
+  text-decoration: underline;
+}
+
+#versions.block li {
+  list-style: none;
+  padding: 4px 16px;
+}
+
+/* View Authors */
+table#authInfo {
+  width: 600px;
+}
+
+#authInfo td {
+  padding: 2px 8px;
+}
+
+#authInfo td.title {
+  font-weight: bold;
+}
+
+#authSort {
+  float: right;
+}
+
+.viewAuth {
+  border-bottom: 1px solid #ccc;
+}
+
+
+#tags input {
+	display: inline;
+}
+
+#tags .tagField {
+	width: 150px;
+}
+
+.tdnumber {
+	text-align: right;
+	vertical-align: bottom;
+}
+

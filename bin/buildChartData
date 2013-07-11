@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# Collect the data to build citation year histograms for documents, storing
+# the data collected in the database in JSON format.
+# 
+# The default call to this script will collect data for documents which 
+# citation count have change since the last time. If you need to collect data
+# for all documents in the corpus use as a "all" parameter.
+#
+# Juan Pablo Fernandez Ramirez
+#
+LOADER="edu.psu.citeseerx.loaders.ChartDataBuilderLoader"
+BOOT_FILE="updates.txt"
+
+source common

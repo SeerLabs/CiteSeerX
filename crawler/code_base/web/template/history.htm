@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CiteSeerX Crawler</title>
+<style type="text/css">
+<!--
+.style2 {font-size: x-large}
+.style3 {
+	color: #336600;
+	font-weight: bold;
+}
+-->
+</style>
+
+<!--Load the AJAX API-->
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+      google.load('visualization', '1', {'packages':['columnchart', 'piechart']});
+      
+      google.setOnLoadCallback(drawChart);
+      
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Year');
+        data.addColumn('number', 'Number of Documents');
+        data.addRows([
+{% for x in year_history %}
+			['{{x.year}}', {{x.count}}],
+{% endfor %}
+		]);
+        var chart = new google.visualization.ColumnChart(document.getElementById('year_history_div'));
+        chart.draw(data, {width: 360, height: 240, is3D: true, legend: 'bottom', title: 'Last 5 Years'});
+		
+		
+		var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Month');
+        data.addColumn('number', 'Number of Documents');
+        data.addRows([
+{% for x in month_history %}
+			['{{x.month}}', {{x.count}}],
+{% endfor %}
+		]);
+        var chart = new google.visualization.ColumnChart(document.getElementById('month_history_div'));
+        chart.draw(data, {width: 540, height: 360, is3D: true, legend: 'bottom', title: 'Last 12 Months'});		
+		
+		
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Status');
+        data.addColumn('number', 'Number of Documents');
+        data.addRows([
+          ['In System', {{ in_sys_count }}],
+          ['Not Ingested', {{ todo_count }}]
+        ]);
+
+        var chart = new google.visualization.PieChart(document.getElementById('ingest_number_div'));
+        chart.draw(data, {width: 400, height: 240, is3D: true, title: 'Documents for Ingestion'});		
+      }
+    </script>
+
+</head>
+
+<body>
+<span class="style2">Crawl History {% if host_suffix %} of <span class="style3">{{ host_suffix }}</span> {% endif %} </span><br />
+<br />
+<br />
+    <div id="ingest_number_div"></div>
+<br />
+    <div id="year_history_div"></div>
+<br />
+    <div id="month_history_div"></div>
+<br />
+</body>
+</html>

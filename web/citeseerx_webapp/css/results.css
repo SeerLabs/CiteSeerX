@@ -1,0 +1,129 @@
+#result_info {
+	background: #ececec;
+	padding: 4px;
+	max-width: 720px;
+
+}
+
+#result_list {
+	padding: 6px;
+	max-width: 720px;
+
+}
+
+/* search results */
+.result {
+  border-bottom: 1px solid #bbb;
+  padding: 8px;
+  width: auto;
+}
+
+.result h3 {
+  margin: 4px 0 6px 0;
+}
+
+.result h3 a {
+  text-decoration: underline;
+}
+
+.pubinfo {
+  color: #333;
+}
+
+.pubvenue,
+.pubyear {
+  font-style: italic;
+}
+
+.snippet {
+  color: #555;
+}
+
+.snippet em {
+  font-weight: bold;
+}
+
+.abstract_toggle {
+  cursor: pointer;
+}
+
+.pubabstract {
+  border: 1px solid #bbb;
+  background: #eee;
+  margin-top: 8px;
+  padding: 8px;
+  display: none;
+  color: #333;
+}
+
+.pubtools {
+	position: relative;
+	width: 100%;
+	height: 20px;
+}
+
+.save_doc {
+/*  position: absolute;
+  right: 0;
+  text-align: right;
+*/
+  cursor: pointer;
+}
+
+#pager {
+	float:right;
+	text-align: right;
+}
+
+/* Author Results */
+
+table.authInfo {
+  max-width:720px;
+}
+
+.authInfo td {
+  padding: 4px 8px;
+}
+
+.authInfo td.title {
+  font-weight: bold;
+  width: 80px;
+}
+
+/* Sidebar */
+
+#sidebar {
+	width: 220px;
+	display:block;
+	height: 100%;
+	float: right;
+	border-left: 1px solid #ccc;
+	background: #fff;
+}
+
+#sidebar h3 {
+  padding: 8px 16px;
+  background: #eee;
+  font-size: 16px;
+}
+
+#sidebar #feeds {
+  float: right;
+}
+
+#sidebar div {
+  border: 1px;
+  margin: 8px;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+}
+
+#sidebar table {
+  width: 100%;
+}
+
+#sidebar td {
+   text-align: center;
+}
+

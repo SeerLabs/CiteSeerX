@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Query Documents</title>
+<style type="text/css">
+<!--
+.style2 {color: #006600}
+-->
+</style>
+</head>
+
+<body>
+ Documents crawled from <span class="style2">{{ url }}</span> <br />
+<br />
+ Found {{doc_count}} documents. <br />
+<br />
+<table width="1000" border="0" cellspacing="1" bgcolor="#666666">
+  <tr>
+    <td width="600" nowrap="nowrap" bgcolor="#CCCCCC">Document Url</td>
+    <td width="150" nowrap="nowrap" bgcolor="#CCCCCC">Discover Date</td>
+    <td width="150" nowrap="nowrap" bgcolor="#CCCCCC">Update Date</td>
+    <td width="100" nowrap="nowrap" bgcolor="#CCCCCC">State</td>
+  </tr>
+  {% for x in docs %}
+  <tr>
+    <td bgcolor="#FFFFFF">{{ x.url }}</td>
+    <td bgcolor="#FFFFFF">{{ x.discover_date }}</td>
+    <td bgcolor="#FFFFFF">{{ x.update_date }}</td>
+    <td bgcolor="#FFFFFF">{{ x.state}}</td>
+  </tr>
+  {% endfor %}
+</table>
+<br />
+
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+  <!-- =================== GENERAL DEFS ==================== -->
+  
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="classpath:csx.config.properties"/>
+  </bean>
+
+
+  <!-- =================== UPDATER OBJECT DEFS ==================== -->
+
+
+  <bean id="userIndexUpdateManager" class="edu.psu.citeseerx.myciteseer.updates.UserIndexUpdateManager">
+    <property name="solrUpdateUrl" value="${solr.updatePeopleUrl}"/>
+    <property name="myciteseer" ref="myCiteSeer"/>
+  </bean>
+
+  <!-- =================== IMPORTER OBJECT DEFS ==================== -->
+
+
+</beans>

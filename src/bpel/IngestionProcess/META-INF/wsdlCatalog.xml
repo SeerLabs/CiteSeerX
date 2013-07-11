@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdlCatalog>
+ <wsdlEntry location="wsdl/DocFilter.wsdl"
+            classpath="wsdl/DocFilter.wsdl"/>
+ <wsdlEntry location="wsdl/SVMHeaderParse.wsdl"
+            classpath="wsdl/SVMHeaderParse.wsdl"/>
+ <wsdlEntry location="wsdl/ParsCit.wsdl"
+            classpath="wsdl/ParsCit.wsdl"/>
+ <wsdlEntry location="wsdl/FileConversion.wsdl"
+            classpath="wsdl/FileConversion.wsdl"/>
+ <wsdlEntry location="wsdl/IngestionService.wsdl"
+            classpath="wsdl/IngestionService.wsdl"/>
+</wsdlCatalog>

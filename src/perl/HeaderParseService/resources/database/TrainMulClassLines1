@@ -1,0 +1,510 @@
+(3 4 ): The Ohio State University <sep>,</sep>     Columbus, OH 43210-1277
+:Cap1DictWord: :state: :Cap1DictWord: :MixCaseWords: :city: , :Cap1DictWord:  :Dig[5]: - :Dig[4]:  
+(3 4 ): University of Texas at Austin <sep>,</sep>    Austin, Texas 78712
+:Confuse4Single1101: :prep: :state: :prep: :MixCaseWords: :city: , :state:  :Dig[5]:  
+(3 4 ): University of California <sep>,</sep>    Berkeley, CA 94720, U.S.A.
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  , :CapWords:-:CapWords:-:CapWords: . 
+(7 14 ): CSRP 220 <sep></sep>      July 1992
+:pubnum: 220, :month:  :Dig[4]:  
+(4 14 ): TR-80815  <sep></sep>    _ Istanbul Turkey
+:CapWords:-:Digs: _ :Cap1DictWord: :country: 
+(:CapWords:1:LowerWords:6 :month: 1997)
+(3 4 ): AT&T Labs|Research <sep></sep>    Murray Hill, New Jersey, USA
+:CapWords:-:CapWords: :MixCaseWords:-:MixCaseWords: :city: :addr: , :Cap1DictWord: :country: , :phone: 
+(7 14 ): Technical Report 28  <sep></sep>    August, 1988
+:Confuse4Single0110: :Confuse4BiGram0110:  :Dig[2]:  :month: ,  :Dig[4]:  
+(2 6 ): ANDREW W. APPEL   <sep></sep>  (appel@princeton.edu)
+:MayName: :SingleCap: :MayName: :Email: 
+(2 6 ): ZHONG SHAO  <sep></sep>   (zsh@princeton.edu)
+:MayName: :MayName: :Email: 
+(3 4 ): Department of Computer Science,   Princeton University <sep>,</sep>    Princeton, NJ 08544-2087
+:Confuse4Single1011: :prep: :note: :MixCaseWords: :city: :MixCaseWords: :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): Odense University <sep>,</sep>   Denmark
+:Cap1NonDictWord: :MixCaseWords: :country: 
+(:LowerWords:5 :DictWord: :DictWord: :DictWord: :DictWord: :DictWord: ":LowerWords:4") :DictWord: :DictWord: :DictWord: :prep: :DictWord: :DictWord: :DictWord:
+(7 14 ): CIM-93-8  <sep></sep>   August 1993
+:CapWords:-:Digs:-:Digs: :month:  :Dig[4]:  
+(3 4 ): McGill University <sep>,</sep> McConnell Engineering Building
+:MayName: :MixCaseWords: :MayName: :Confuse4Single1010: :addr: 
+(:LowerWords:7  :Dig[2]:  :month: 1994)
+(3 4 ): University of California <sep>,</sep>   Berkeley, CA 94720.
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  . 
+(3 4 ): University of Florida <sep>,</sep>  Gainesville, FL 32611.
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  . 
+(3 4 ): Deakin University <sep>,</sep>  Geelong, Victoria, 3217, Australia.
+:Cap1NonDictWord: :MixCaseWords: :Cap1NonDictWord: , :city: ,  :Dig[4]:  , :country: . 
+(3 4 ): The Salk Institute <sep>,</sep>  La Jolla, CA, 92037
+:Cap1DictWord: :Cap1DictWord: :MixCaseWords: :MayName: :Cap1DictWord: , :CapWord2: ,  :Dig[5]:  
+(3 4 10 ): Department of Psychology,   University of Stirling <sep>,</sep>     Stirling, Scotland.     Phone (+44) 786-467679; fax
+:Confuse4Single1011: :prep: :MixCaseWords: :Confuse4Single1101: :prep: :MixCaseWords: :MayName: , :MixCaseWords: :phone: (+:Digs:2)  :Dig[3]: - :Dig[6]:  ; :NonDictWord: 
+(6 10 ): 786-467641 <sep>;</sep>     email hwt@compsci.stirling.ac.uk
+786-467641; :NonDictWord: :Email: 
+(3 4 10 ): Department of Computer Science,   University of Waikato <sep>,</sep>    Hamilton, New Zealand.     Phone (+64 7)
+:Confuse4Single1011: :prep: :note: :MixCaseWords: :Confuse4Single1101: :prep: :MixCaseWords: :city: , :Cap1DictWord: :MixCaseWords: :phone: (+:Digs:2 7) 
+(6 10 ): 856-2889; fax 838-4155 <sep>;</sep>     email singlis@waikato.ac.NZ.
+ :Dig[3]: - :Dig[4]:  ; :NonDictWord: 838-4155; :NonDictWord: :Email: . 
+(3 4 10 ): Department of Computer Science,   University of Waikato <sep>,</sep>     Hamilton, New Zealand.     Phone (+64 7)
+:Confuse4Single1011: :prep: :note: :MixCaseWords: :Confuse4Single1101: :prep: :MixCaseWords: :city: , :Cap1DictWord: :MixCaseWords: :phone: (+:Digs:2 7) 
+(6 10 ): 838-4246; fax 838-4155 <sep>;</sep>     email ihw@waikato.ac.NZ.
+ :Dig[3]: - :Dig[4]:  ; :NonDictWord: 838-4155; :NonDictWord: :Email: . 
+(2 3 ): John K. Ousterhout  <sep></sep>   University of California at Berkeley
+:MayName: :SingleCap: :Cap1NonDictWord: :Confuse4Single1101: :prep: :state: :prep: :city: 
+(3 4 ): School of Computer Science,   University of Birmingham <sep>,</sep>  Birmingham B15 2TT, UK
+:Confuse4Single1001: :prep: :note: :MixCaseWords: :Confuse4Single1101: :prep: :MixCaseWords: :city: :Cap1NonDictWord: 2TT , :CapWord2: 
+(6 12 ): fW.B.Langdon,R.Polig@cs.bham.ac.uk  <sep></sep>   http://www.cs.bham.ac.uk/~wbl, ~rmp
+:Email: :http: , ~:LowerWords:3 
+(7 14 ): Technical Report: CSRP-97-29 <sep>,</sep>     3 December 1997
+:Confuse4Single0110: :Confuse4BiGram0110: : :CapWords:-:Digs:-:Digs:  :Dig[1]:  :month:  :Dig[4]:  
+(3 4 ): School of Computer Science,   The University of Birmingham <sep>,</sep>    Birmingham B15 2TT, UK
+:Confuse4Single1001: :prep: :note: :MixCaseWords: :Cap1DictWord: :Confuse4Single1101: :prep: :MixCaseWords: :city: :Cap1NonDictWord: 2TT , :CapWord2: 
+(6 12 ): fW.B.Langdon,R.Polig@cs.bham.ac.uk  <sep></sep>   http://www.cs.bham.ac.uk/~wbl, ~rmp
+:Email: :http: , ~:LowerWords:3 
+(:CapWords:1:LowerWords:8 :month:  :Dig[2]:  , 1995)
+(3 4 ): Columbia University  <sep></sep>   755 College Road East
+:city: :Confuse4Single1101:  :Dig[3]:  :affi: :addr: :MayName: 
+(3 4 ): Columbia University  <sep>,</sep>    New York, NY 10027
+:city: :MixCaseWords: :Cap1DictWord: :city: , :CapWord2:  :Dig[5]:  
+(3 4 ): Robotics & Vision Laboratory,   Department of Computer Science,   Cornell University <sep>.</sep>     Author's current
+:Cap1DictWord: & :Cap1DictWord: :MixCaseWords: :Confuse4Single1011: :prep: :note: :MixCaseWords: :MayName: :MixCaseWords: :MixCaseWords:-:LowerWords: :DictWord: 
+(3 4 6 ): address:     ALPHA laboratory,   Dept. of Ind. Eng. and Op. Research,   University of California, Berkeley <sep>.</sep>      Email
+:NonDictWord: :Cap1DictWord: :NonDictWord: :affi: . :prep: :Cap1NonDictWord: . :Cap1DictWord: . :conj: :MayName: . :MixCaseWords: :Confuse4Single1101: :prep: :state: , :MixCaseWords: :Cap1NonDictWord: 
+(3 4 ): Dept. of Computer Science,   Dartmouth College <sep>\,</sep> 6211 Sudikoff Laboratory, Hanover, NH 03755-3510.
+:affi: . :prep: :note: :MixCaseWords: :Cap1DictWord: :MixCaseWords:  :Dig[4]:  :Cap1NonDictWord: :Confuse4Single0111: , :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  . 
+(6 12 ): brd@cs.dartmouth.edu <sep>\,</sep>  http://www.cs.dartmouth.edu/ brd/.
+:Email: :http: / :NonDictWord: . 
+(3 4 6 ): x Department of Computer Science,   Tel Aviv University <sep>,</sep>   Tel Aviv 69978, ISRAEL.  <sep></sep>   Email address:
+:NonDictWord: :Confuse4Single1011: :prep: :note: :MixCaseWords: :phone: :Cap1DictWord: :MixCaseWords: :phone: :Cap1DictWord:  :Dig[5]:  , :CapWords: :Cap1NonDictWord: :note: : 
+(5 6 ): halperin@math.tau.ac.il  <sep>.</sep>   Part of the work on this paper was carried out while D.H. was at the Robotics
+:Email: :Confuse4Single1010: :prep: :DictWord: :note: :DictWord: :DictWord: :Confuse4Single1110: :DictWord: :DictWord: :DictWord: :DictWord: :CapWords:-:CapWords: . :DictWord: :prep: :DictWord: :Cap1DictWord: 
+(5 12 ): Available at URL  <sep></sep>   ftp://ftp.cs.dartmouth.edu/kotz/papers/nieuwejaar:jgalley.ps.Z
+:Cap1DictWord: :prep: :CapWord3: :http: 
+(3 4 ): Department of Computer Science,   Dartmouth College <sep>,</sep>     Hanover, NH 03755-3510
+:Confuse4Single1011: :prep: :note: :MixCaseWords: :Cap1DictWord: :MixCaseWords: :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): Dept. of Computer Science, Indiana University <sep>,</sep> Bloomington IN 47405, USA
+:affi: . :prep:  :note: , :city: :MixCaseWords: :city: , :Cap1DictWord:  :Dig[5]:  , :phone: 
+(2 5 ): Published as <sep>:</sep>     F.C. Berger and Th.P. van der
+:Cap1DictWord: :NonDictWord: :CapWords:-:CapWords: . :MayName: :conj: :MixCaseWords:-:CapWords: . :DictWord: :NonDictWord: 
+(1 2 ): Weide <sep>.</sep>     A Feedback Mechanism for Query by
+:MixCaseWords: :SingleCap: :Cap1DictWord: :Cap1DictWord: :DictWord: :Cap1DictWord: :DictWord: 
+(1 14 3 ): Navigation <sep>.</sep> Technical Report CSI-R9413 <sep>,</sep>     Computing Science Institute, University of Nijmegen,
+:MixCaseWords: :Confuse4Single0110: :Confuse4BiGram0110: :CapWords:-:Mix[5]: :Cap1DictWord:  :affi: , :Confuse4Single1101: :prep: :Cap1NonDictWord: , 
+(4 7 ): Nijmegen, The Netherlands <sep>,</sep>  October 1994.
+:Cap1NonDictWord: , :Cap1DictWord: :MixCaseWords: :month:  :Dig[4]:  . 
+(3 4 ): Informatics, University of Nijmegenu <sep>,</sep> Toernooiveld 1, 6525 ED
+:Cap1NonDictWord: , :Confuse4Single1101: :prep: :MixCaseWords: :Cap1NonDictWord: 1,  :Dig[4]:  :MayName: 
+(5 2 1 ): Published as <sep>:</sep> P.J.M. Frederiks, A.H.M. ter Hofstede, and E. Lippe.     A Unifying Framework
+:Cap1DictWord: :NonDictWord: :CapWords:-:CapWords:-:CapWords: . :Cap1NonDictWord: , :CapWords:-:CapWords:-:CapWords: . :NonDictWord: :Cap1NonDictWord: , :conj: :SingleCap: :MixCaseWords: :SingleCap: :Cap1DictWord: :Cap1DictWord: 
+(1 14 3 ): for Conceptual Data Modelling Concepts <sep>.</sep>     Technical Report CSI-R9410 <sep>,</sep>    Computing Science
+:DictWord: :Cap1DictWord: :Cap1DictWord: :Cap1NonDictWord: :MixCaseWords: :Confuse4Single0110: :Confuse4BiGram0110: :CapWords:-:Mix[5]: :Cap1DictWord: :Confuse4Single1010: 
+(3 4 7 ): Institute, University of Nijmegen <sep>,</sep>  Nijmegen, The Netherlands <sep>,</sep>  September 1994.
+:Confuse4Single1011: , :Confuse4Single1101: :prep: :MixCaseWords: :Cap1NonDictWord: , :Cap1DictWord: :MixCaseWords: :month:  :Dig[4]:  . 
+(3 4 ): Department of Computer Science, Rice University <sep>,</sep> Houston, TX 77251-1892
+:Confuse4Single1011: :prep:  :note: , :MayName: :MixCaseWords: :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): Department of Computer Science, University of Maryland <sep>,</sep> College Park,
+:Confuse4Single1011: :prep:  :note: , :Confuse4Single1101: :prep: :MixCaseWords: :affi: :addr: , 
+(7 14 ): TR-1923  <sep></sep> September 1987
+:CapWords:-:Digs: :month:  :Dig[4]:  
+(3 4 ): University of Maryland <sep>,</sep> College Park, MD 20742.
+:Confuse4Single1101: :prep: :MixCaseWords: :affi: :addr: , :CapWord2:  :Dig[5]:  . 
+(3 14 ): Institute for Advanced Computer Studies  <sep></sep>  TR-95-93
+:Confuse4Single1011: :DictWord:  :pubnum: :Cap1DictWord: :CapWords:-:Digs:-:Digs: 
+(3 14 ): Department of Computer Science  <sep></sep>    TR-3535
+:Confuse4Single1011: :prep:  :note: :CapWords:-:Digs: 
+(3 4 5 ): of Maryland,     College Park, MD 20742 <sep>.</sep> This work was supported in part by the National Science
+:prep: :MixCaseWords: :affi: :addr: , :CapWord2: 20742. :Cap1DictWord: :note: :DictWord: :DictWord: :prep: :Confuse4Single1010: :DictWord: :DictWord:  :note: 
+(3 4 ): University of Maryland <sep>,</sep>   College Park, MD 20742
+:Confuse4Single1101: :prep: :MixCaseWords: :affi: :addr: , :CapWord2:  :Dig[5]:  
+(7 14 ): CS-TR-3692  <sep></sep>    Sept. 1996
+:CapWords:-:CapWords:-:Digs: :Cap1DictWord: .  :Dig[4]:  
+(3 4 ): University of Maryland <sep>,</sep> College Park, MD 20742-3255
+:Confuse4Single1101: :prep: :MixCaseWords: :affi: :addr: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): Department of Computer Science, University of North Carolina <sep>,</sep>      Chapel Hill, NC 27599-3175
+:Confuse4Single1011: :prep:  :note: , :Confuse4Single1101: :prep: :MayName: :MixCaseWords: :Cap1DictWord: :addr: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(7 14 ): Technical Report 90  <sep></sep>   January 6, 1995
+:Confuse4Single0110: :Confuse4BiGram0110:  :Dig[2]:  :month: 6,  :Dig[4]:  
+(7 14 ): @reportnumbox(Technical Report #57  <sep></sep> March 1987)
+:Email: :Confuse4Single0110: #:Digs:2 :month: 1987) 
+(2 3 4 ): Robert-Paul Berretty     University of Utrecht <sep>,</sep>  Utrecht, The Netherlands
+:MixCaseWords:-:MixCaseWords: :Cap1NonDictWord: :Confuse4Single1101: :prep: :MixCaseWords: :Cap1DictWord: , :Cap1DictWord: :country: 
+(2 3 4 ): Ken Goldberg  <sep></sep> University of California at Berkeley <sep>,</sep> CA, USA
+:MayName: :MayName: :Confuse4Single1101: :prep: :state: :prep: :MixCaseWords: :CapWord2: , :phone: 
+(2 3 4 ): Mark H. Overmars  <sep></sep> University of Utrecht <sep>,</sep> Utrecht, The Netherlands
+:MayName: :SingleCap: :Cap1NonDictWord: :Confuse4Single1101: :prep: :MixCaseWords: :Cap1DictWord: , :Cap1DictWord: :country: 
+(2 3 4 ): A. Frank van der Stappen  <sep></sep>   University of Utrecht <sep>,</sep>     Utrecht, The Netherlands
+:SingleCap: :MayName: :DictWord: :NonDictWord: :Cap1NonDictWord: :Confuse4Single1101: :prep: :MixCaseWords: :Cap1DictWord: , :Cap1DictWord: :country: 
+(3 4 ): Computer Science Department, University of Virginia <sep>,</sep>     Charlottesville, VA 22903.
+ :note: :Confuse4Single1011: , :Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  . 
+(3 4 ): School of ECE, Georgia Institute of Technology <sep>,</sep>     Atlanta, GA 30332.
+:Confuse4Single1001: :prep: :CapWord3: , :state: :Confuse4Single1011: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  . 
+(3 4 ): ? Hughes Network Systems, Hughes Network Systems <sep>,</sep> Germantown, MD 20876.
+? :MayName: :Cap1DictWord: :Cap1DictWord: , :MayName: :Cap1DictWord: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  . 
+(3 4 ): 1   Department of EE & CS, University of Wisconsin-Milwaukee <sep>,</sep>  Milwaukee WI 53201
+ :Dig[1]:  :Confuse4Single1011: :prep: :CapWord2: & :CapWord2: , :Confuse4Single1101: :prep: :MixCaseWords:-:MixCaseWords: :city: :CapWord2:  :Dig[5]:  
+(3 4 ): The University of New South Wales <sep>,</sep> Sydney, Australia, 2052
+:Cap1DictWord: :Confuse4Single1101: :prep: :Cap1DictWord: :MayName: :MixCaseWords: :MayName: , :country: ,  :Dig[4]:  
+(6 12 ): timm@cse.unsw.edu.au <sep>;</sep>  http://www.cse.unsw.edu.au/~timm
+:Email: :http: 
+(5 7 ): DRAFT  <sep></sep>  June 2, 1996:
+:Cap1DictWord: :month: 2,  :Dig[4]:  : 
+(3 4 ): University of NSW <sep>,</sep>     Australia
+:Confuse4Single1101: :prep: :CapWords: :country: 
+(:CapWords:1:LowerWords:6 , :CapWord2: , :month: 1998) .
+(3 4 ): 1 Dipartimento di Informatica, Universita di Pisa <sep>,</sep>     Corso Italia 40, 56125 Pisa, Italy,
+ :Dig[1]:   :affi: :Cap1DictWord: ,  :affi: :MixCaseWords: :Cap1NonDictWord: :Cap1NonDictWord:  :Dig[2]:  ,  :Dig[5]:  :Cap1DictWord: , :country: , 
+(3 4 ): EECS Department, University of Michigan <sep>,</sep>   Ann Arbor, MI 48109-2122, USA
+:CapWord4: :Confuse4Single1011: , :Confuse4Single1101: :prep: :MixCaseWords: :MayName: :Cap1DictWord: , :MayName:  :Dig[5]: - :Dig[4]:  , :phone: 
+(3 4 ): 1 Heinz Nixdorf Institut, Universitat-GH Paderborn <sep>,</sep>   Furstenallee 11,
+ :Dig[1]:  :MayName: :Cap1NonDictWord: :affi: , :MixCaseWords:-:CapWords: :MixCaseWords: :Cap1NonDictWord:  :Dig[2]:  , 
+(4 6 ): 33102 Paderborn, Germany <sep>,</sep>     fgiusp,glaesserg@uni-paderborn.de
+ :Dig[5]:  :Cap1NonDictWord: , :MixCaseWords: :Email: 
+(3 4 ): 2 FB Mathematik-Informatik, Universitat-GH Paderborn <sep>,</sep>    Warburger Str. 100,
+ :Dig[1]:  :CapWord2: :MixCaseWords:-:MixCaseWords: , :MixCaseWords:-:CapWords: :MixCaseWords: :Cap1NonDictWord: :Cap1NonDictWord: .  :Dig[3]:  , 
+(4 6 ): 33098 Paderborn, Germany <sep>,</sep>     igor@uni-paderborn.de
+ :Dig[5]:  :Cap1NonDictWord: , :MixCaseWords: :Email: 
+(3 4 ): 1 Universita di Pisa, Dipartimento di Informatica <sep>,</sep>     I-56125 Pisa, Italy
+ :Dig[1]:   :affi: :Cap1DictWord: ,  :affi: :MixCaseWords: :CapWords:-:Digs: :Cap1DictWord: , :country: 
+(3 4 ): 2 Universitat Ulm, Fakultat fur Informatik <sep>,</sep>   D-89069 Ulm, Germany
+ :Dig[1]:  :affi: :MayName: , :Cap1NonDictWord: :DictWord: :MixCaseWords: :CapWords:-:Digs: :MayName: , :country: 
+(3 4 6 ): 1 Fernuniversitat-GH Hagen <sep>,</sep>     Germany <sep>,</sep>     christoph.beierle@fernuni-hagen.de
+ :Dig[1]:  :MixCaseWords:-:CapWords: :MixCaseWords: :MixCaseWords: :Email: 
+(3 4 6 ): 2 Universita di Pisa <sep>,</sep>     Italy <sep>,</sep>     boerger@di.unipi.it
+ :Dig[1]:   :affi: :MixCaseWords: :MixCaseWords: :Email: 
+(3 4 6 ): 3 Universitat-GH Paderborn <sep>,</sep>     Germany <sep>,</sep>     igor@uni-paderborn.de
+ :Dig[1]:  :MixCaseWords:-:CapWords: :MixCaseWords: :MixCaseWords: :Email: 
+(3 4 6 ): 4 Universitat-GH Paderborn <sep>,</sep>  Germany <sep>,</sep>     glaesser@uni-paderborn.de
+ :Dig[1]:  :MixCaseWords:-:CapWords: :MixCaseWords: :MixCaseWords: :Email: 
+(3 4 6 ): 5 Universita di Catania <sep>,</sep>     Italy <sep>,</sep>     riccobene@dipmat.unict.it
+ :Dig[1]:   :affi: :MixCaseWords: :MixCaseWords: :Email: 
+(3 4 ): Hebrew University <sep>,</sep>     Jerusalem, Israel
+:Cap1DictWord: :MixCaseWords: :Cap1DictWord: , :country: 
+(3 4 ): University of Michigan <sep>,</sep>     Ann Arbor, Michigan 48109
+:Confuse4Single1101: :prep: :MixCaseWords: :MayName: :Cap1DictWord: , :state:  :Dig[5]:  
+(3 4 ): University of Michigan <sep>,</sep>     Ann Arbor, MI 48109
+:Confuse4Single1101: :prep: :MixCaseWords: :MayName: :Cap1DictWord: , :MayName:  :Dig[5]:  
+(3 4 ): Changsha Institute of Technology <sep>,</sep>     Changsha, Hunan, P.R. China
+:Cap1NonDictWord: :Confuse4Single1011: :prep: :MixCaseWords: :Cap1NonDictWord: , :Cap1NonDictWord: , :CapWords:-:CapWords: . :country: 
+(3 4 ): Dept. of Electrical Engineering and Computer Science, Univ. of Michigan <sep>,</sep>     Ann Arbor, MI48109
+:affi: . :prep: :degree: :Confuse4Single1010: :conj:  :note: , :affi: . :prep: :MixCaseWords: :MayName: :Cap1DictWord: , :Cap1NonDictWord: 
+(3 4 ): Dept. of Electrical Engineering, Changsha Institute of Technology <sep>,</sep>     Changsha, Hunan, China
+:affi: . :prep: :degree: :Confuse4Single1010: , :Cap1NonDictWord: :Confuse4Single1011: :prep: :MixCaseWords: :Cap1NonDictWord: , :Cap1NonDictWord: , :country: 
+(4 5 6 ): International Computer Science Institute <sep>,</sep> Berkeley, CA 94704  <sep>.</sep>    email: aberer@icsi.berkeley.edu <sep>.</sep>     Supported by Schweizerische Gesellschaft zur Forderung der Informatik und ihrer Anwendungen
+:note:  :note: :Confuse4Single1011: , :city: , :CapWord2: 94704. :NonDictWord: : :Email: :Cap1DictWord: :DictWord: :Cap1NonDictWord: :Cap1NonDictWord: :NonDictWord: :Cap1NonDictWord: :NonDictWord: :Cap1NonDictWord: :NonDictWord: :NonDictWord: :Cap1NonDictWord: 
+(3 4 ): 1   Department of Computer Science, University of Bonn <sep>,</sep>     5300 Bonn 1.
+ :Dig[1]:  :Confuse4Single1011: :prep:  :note: , :Confuse4Single1101: :prep: :MixCaseWords:  :Dig[4]:  :Cap1DictWord: 1. 
+(3 4 ): International Computer Science Institute <sep>,</sep>     Berkeley, CA
+:note:  :note: :MixCaseWords: :city: , :CapWord2: 
+(3 4 ): International Computer Science Institute <sep>,</sep>     Berkeley, CA
+:note:  :note: :MixCaseWords: :city: , :CapWord2: 
+(3 4 ): University of Paderborn <sep>,</sep>      Germany
+:Confuse4Single1101: :prep: :MixCaseWords: :country: 
+(3 4 6 ): Xerox Palo Alto Research Center <sep>,</sep>     3333 Coyote Hill Road, Palo Alto CA 94304 USA.     (vgupta@parc.xerox.com)
+:Cap1DictWord: :Cap1DictWord: :Cap1NonDictWord: :Confuse4Single0110: :MixCaseWords:  :Dig[4]:  :Cap1DictWord: :addr: :addr: , :Cap1DictWord: :Cap1NonDictWord: :CapWord2:  :Dig[5]:  :CapWords: :Email: 
+(3 4 6 ): Technical University of Munich <sep>,</sep>     Orleansstr. 34, D-81667 Munich, Germany <sep>.</sep>     (struss@informatik.tu-muenchen.de)
+:Confuse4Single0110: :Confuse4Single1101: :prep: :MixCaseWords: :Cap1NonDictWord: .  :Dig[2]:  , :CapWords:-:Digs: :Cap1DictWord: , :MixCaseWords: :Email: 
+(4 10 ): I 1947 Center St. * Suite 600 * Berkeley, California 94704-1198  <sep>*</sep>  (510) 643-9153 * FAX (510) 643-7684
+:SingleCap:  :Dig[4]:  :Confuse4Single0011: :addr: . * :MayName:  :Dig[3]:  * :city: , :state:  :Dig[5]: - :Dig[4]:  * (:Digs:3)  :Dig[3]: - :Dig[4]:  * :phone: (:Digs:3)  :Dig[3]: - :Dig[4]:  
+(4 10 ): I 1947 Center St. * Suite 600 * Berkeley, California 94704-1198  <sep>*</sep>     (510) 643-9153 * FAX (510) 643-7684
+:SingleCap:  :Dig[4]:  :Confuse4Single0011: :addr: . * :MayName:  :Dig[3]:  * :city: , :state:  :Dig[5]: - :Dig[4]:  * (:Digs:3)  :Dig[3]: - :Dig[4]:  * :phone: (:Digs:3)  :Dig[3]: - :Dig[4]:  
+(4 10 ): I 1947 Center St. * Suite 600 * Berkeley, California 94704-1198     <sep>*</sep>  (510) 643-9153 * FAX (510) 643-7684
+:SingleCap:  :Dig[4]:  :Confuse4Single0011: :addr: . * :MayName:  :Dig[3]:  * :city: , :state:  :Dig[5]: - :Dig[4]:  * (:Digs:3)  :Dig[3]: - :Dig[4]:  * :phone: (:Digs:3)  :Dig[3]: - :Dig[4]:  
+(4 10 ): I 1947 Center St. * Suite 600 * Berkeley, California 94704-1198  <sep>*
+</sep> (510) 643-9153 * FAX (510) 643-7684
+:SingleCap:  :Dig[4]:  :Confuse4Single0011: :addr: . * :MayName:  :Dig[3]:  * :city: , :state:  :Dig[5]: - :Dig[4]:  * (:Digs:3)  :Dig[3]: - :Dig[4]:  * :phone: (:Digs:3)  :Dig[3]: - :Dig[4]:  
+(3 4 ): Dept. of Computer Science & Eng., Pennsylvania State University <sep>,</sep>      University Park, PA16802, USA
+:affi: . :prep:  :note: & :MixCaseWords: , :state: :Cap1DictWord: :MixCaseWords: :Confuse4Single1101: :addr: , :Cap1NonDictWord: , :phone: 
+(3 4 5 ): Department of Computer Science, Stanford University  <sep>,</sep>    Stanford, CA 94305-9045 <sep>.</sep>     Supported by Stanford
+:Confuse4Single1011: :prep:  :note: , :city: :MixCaseWords: :city: , :CapWord2: 94305-9045. :Cap1DictWord: :DictWord: :city: 
+(5 6 ): Corporation <sep>.</sep>     E-mail: moses@cs.stanford.edu.
+:MixCaseWords: :CapWords:-:LowerWords: : :Email: . 
+(3 4 5 ): Dept. of Computer Science, University of Bonn   53117 Bonn and International Computer Science Institute <sep>,</sep> Berkeley <sep>.</sep> This research was partially supported by the DFG Grant KA 673/4-1, by the ESPRIT BR
+:affi: . :prep:  :note: , :Confuse4Single1101: :prep: :MixCaseWords:  :Dig[5]:  :MixCaseWords: :conj: :note:  :note: :MixCaseWords: :MixCaseWords: :Cap1DictWord: :Confuse4Single0110: :DictWord: :note: :DictWord: :DictWord: :DictWord: :CapWord3: :Confuse4Single1010: :CapWord2: 673/4-1 , :DictWord: :DictWord: :Cap1DictWord: :CapWord2: 
+(5 6 ): Grants 7097 and EC-US 030 <sep>.</sep>     Email:marek@cs.uni-bonn.de
+:Cap1DictWord:  :Dig[4]:  :conj: :CapWords:-:CapWords: 030. :Email: 
+(3 4 ): IDSIA <sep>,</sep>     Corso Elvezia 36, 6900 Lugano, Switzerland
+:CapWords: :Cap1NonDictWord: :Cap1NonDictWord:  :Dig[2]:  ,  :Dig[4]:  :Cap1NonDictWord: , :country: 
+(3 4 ): University of Texas <sep>,</sep>  Austin, TX 78712-1084
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): Nimble Computer Corporation <sep>,</sep>     16231 Meadow Ridge Way, Encino, CA 91436
+:Cap1DictWord: :note: :MixCaseWords:  :Dig[5]:  :Cap1DictWord: :city: :addr: , :Cap1NonDictWord: , :CapWord2:  :Dig[5]:  
+(:LowerWords:7 :month: 1996)
+(5 6 ): Grant R01 EY09946 <sep>.</sep>     e-mail wahba@stat.wisc.edu, wang@stat.wisc.edu
+:Confuse4Single1010: :Cap1NonDictWord: :Mix[7]: :NonDictWord: :Email: , :Email: 
+(2 6 ): CLARE VOSS  <sep></sep>   voss@cs.umd.edu
+:MayName: :MayName: :Email: 
+(2 6 ): BONNIE J. DORR  <sep></sep>   bonnie@cs.umd.edu
+:MayName: :SingleCap: :MayName: :Email: 
+(3 4 ): Department of Computer Science, University of Maryland <sep>,</sep>  College Park, MD 20742
+:Confuse4Single1011: :prep:  :note: , :Confuse4Single1101: :prep: :MixCaseWords: :affi: :addr: , :CapWord2:  :Dig[5]:  
+(3 4 6 ): Centro di Scienza Cognitiva, Universita di Torino <sep>,</sep>  Via Lagrange 3, 10100 Torino, Italy <sep>.</sep>     e-mail:
+:Cap1NonDictWord: :NonDictWord: :Cap1NonDictWord: :Cap1NonDictWord: ,  :affi: :MixCaseWords: :MayName: :MayName: 3,  :Dig[5]:  :Cap1NonDictWord: , :MixCaseWords: :NonDictWord: : 
+(3 4 ): flfl Institute for Real Time Systems and Robotics, University of Karlsruhe <sep>,</sep>     Germany.
+:NonDictWord: :Confuse4Single1011: :DictWord: :Cap1DictWord: :Cap1DictWord: :Cap1DictWord: :conj: :Cap1DictWord: , :Confuse4Single1101: :prep: :MixCaseWords: :country: . 
+(3 4 6 ): flflfl Dipartimento di Informatica, Universita di Torino <sep>,</sep>     C.so Svizzera 185, 10149 Torino, Italy <sep>.</sep>  email: attilio@di.unito.it
+:NonDictWord:  :affi: :Cap1DictWord: ,  :affi: :MixCaseWords: :CapWords:-:LowerWords: :Cap1NonDictWord:  :Dig[3]:  ,  :Dig[5]:  :Cap1NonDictWord: , :MixCaseWords: :NonDictWord: : :Email: 
+(3 4 ): Institute for Real-Time Computer Systems & Robotics, University of Karlsruhe <sep>,</sep>      Kaiserstr. 12,
+:Confuse4Single1011: :DictWord: :MixCaseWords:-:MixCaseWords: :note: :Cap1DictWord: & :Cap1DictWord: , :Confuse4Single1101: :prep: :MixCaseWords: :Cap1NonDictWord: .  :Dig[2]:  , 
+(3 4 ): Computer Science Department, University of Massachusetts <sep>,</sep>   Amherst MA 01003, USA
+ :note: :Confuse4Single1011: , :Confuse4Single1101: :prep: :MixCaseWords: :city: :MayName:  :Dig[5]:  , :phone: 
+(4 6 ): 1000 Ljubljana, Slovenia  <sep></sep>   (E-mail: Blaz.Zupan@ijs.si, Saso.Dzeroski@ijs.si)
+ :Dig[4]:  :Cap1NonDictWord: , :country: (:CapWords:1-:LowerWords:4 : :Email: , :Email: 
+(3 4 ): Cadence Design Systems Inc. <sep>,</sep>     San Jose, CA Texas Instruments Inc., Dallas, TX
+:Cap1DictWord: :Cap1DictWord: :Cap1DictWord: :MixCaseWords: :Cap1DictWord: :MayName: , :CapWord2: :state: :Cap1DictWord: :MixCaseWords: , :city: , :CapWord2: 
+(3 4 ): Department of EECS, University of California <sep>,</sep>     Berkeley, CA
+:Confuse4Single1011: :prep: :CapWord4: , :Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2: 
+(3 4 ): 1 Information Technology, Eindhoven University of Technology <sep>,</sep>     The Netherlands
+ :Dig[1]:  :note: :Confuse4Single1010: , :Cap1NonDictWord: :Confuse4Single1101: :prep: :MixCaseWords: :Cap1DictWord: :country: 
+(3 4 ): 2 ILK / Computational Linguistics, Tilburg University <sep>,</sep>     The Netherlands
+ :Dig[1]:  :CapWord3: / :Cap1DictWord: :Cap1DictWord: , :Cap1NonDictWord: :MixCaseWords: :Cap1DictWord: :country: 
+(3 4 ): 3 Department of Computer Science, Universiteit Maastricht <sep>,</sep>    The Netherlands
+ :Dig[1]:  :Confuse4Single1011: :prep:  :note: , :Cap1NonDictWord: :MixCaseWords: :Cap1DictWord: :country: 
+(3 4 ): Universit Libre de Bruxelles <sep>,</sep>     CP 194/6
+:degree: :Cap1NonDictWord: :DictWord: :MixCaseWords: :CapWord2: 194/6 
+(3 4 ): National Research Council <sep>,</sep>     Viale Marx 15, 00137 Rome, Italy
+:note: :Confuse4Single0110: :MixCaseWords: :Cap1NonDictWord: :MayName:  :Dig[2]:  ,  :Dig[5]:  :city: , :country: 
+(3 4 ): University of Aarhus <sep>,</sep>     Ny Munkegade, 8000 Aarhus C., Denmark
+:Confuse4Single1101: :prep: :MixCaseWords: :Cap1NonDictWord: :Cap1NonDictWord: ,  :Dig[4]:  :Cap1DictWord: :SingleCap: , :country: 
+(3 4 ): University of Utah <sep>,</sep>     Salt Lake City, UT 84112 USA
+:Confuse4Single1101: :prep: :MixCaseWords: :Cap1DictWord: :addr: :addr: , :CapWord2:  :Dig[5]:  :phone: 
+(3 4 ): Univ. of Maryland <sep>,</sep>     College Park
+:affi: . :prep: :MixCaseWords: :affi: :addr: 
+(7 14 ): A.I. Memo No. 1565 <sep></sep>    February 2, 1996
+:CapWords:-:CapWords: . :pubnum: :Cap1DictWord: .  :Dig[4]:  :month: 2,  :Dig[4]:  
+(7 14 ): A.I. Memo No. 1164  <sep></sep>   October 1989
+:CapWords:-:CapWords: . :pubnum: :Cap1DictWord: .  :Dig[4]:  :month:  :Dig[4]:  
+(3 4 ): University of Durham <sep>,</sep>     DH1 3LE, UK
+:Confuse4Single1101: :prep: :MixCaseWords: :Cap1NonDictWord: 3LE , :CapWord2: 
+(3 4 ): Caltech <sep>,</sep>    Pasadena CA 91125.
+:MixCaseWords: :city: :CapWord2:  :Dig[5]:  . 
+(3 4 ): Caltech <sep>,</sep>     Pasadena CA 91125.
+:MixCaseWords: :city: :CapWord2:  :Dig[5]:  . 
+(3 4 ): Computer Science Department, Brigham Young University <sep>,</sep>     Provo, Utah 84602
+ :note: :Confuse4Single1011: , :MayName: :MayName: :MixCaseWords: :city: , :state:  :Dig[5]:  
+(3 4 ): Computer Science Department, Brigham Young University <sep>,</sep>     Provo, UT 84602, U.S.A.
+ :note: :Confuse4Single1011: , :MayName: :MayName: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  , :CapWords:-:CapWords:-:CapWords: . 
+(3 4 ): Institute for Computer Science, Hebrew University <sep>,</sep>     Jerusalem, Israel.
+:Confuse4Single1011: :DictWord:  :note: , :Cap1DictWord: :MixCaseWords: :Cap1DictWord: , :country: . 
+(3 4 ): x Institute for Computer Science, Hebrew University <sep>,</sep>   Jerusalem, Israel.
+:NonDictWord: :Confuse4Single1011: :DictWord:  :note: , :Cap1DictWord: :MixCaseWords: :Cap1DictWord: , :country: . 
+(3 4 ): Laboratory for Computer Science, Massachusetts Institute of Technology <sep>,</sep>      545 Technology Square, Cambridge MA 02139,
+:Confuse4Single0111: :DictWord:  :note: , :state: :Confuse4Single1011: :prep: :MixCaseWords:  :Dig[3]:  :Confuse4Single1010: :addr: , :city: :MayName:  :Dig[5]:  , 
+(4 6 ): U.S.A.  <sep></sep>   canetti,rosario@theory.lcs.mit.edu
+:CapWords:-:CapWords:-:CapWords: :Email: 
+(:LowerWords:1.:LowerWords:1. , :DictWord: :prep: :SingleCap: ).
+(3 4 6 ): Sandia National Labs <sep>,</sep>     P.O Box 5800, Albuquerque, NM 87185-1110,     yair@cs.sandia.gov
+:Cap1DictWord: :note: :MixCaseWords: :CapWords:-:CapWords: :addr:  :Dig[4]:  , :city: , :CapWord2: 87185-1110, :Email: 
+(3 4 6 ): Sandia National Labs <sep>,</sep>     P.O Box 5800, Albuquerque, NM 87185-1110 <sep>,</sep>     psgemme@cs.sandia.gov
+:Cap1DictWord: :note: :MixCaseWords: :CapWords:-:CapWords: :addr:  :Dig[4]:  , :city: , :CapWord2: 87185-1110, :Email: 
+(3 4 6 ): Sandia National Labs <sep>,</sep>     P.O Box 5800, Albuquerque, NM 87185-1110 <sep>,</sep>  philmac@cs.sandia.gov.
+:Cap1DictWord: :note: :MixCaseWords: :CapWords:-:CapWords: :addr:  :Dig[4]:  , :city: , :CapWord2: 87185-1110, :Email: . 
+(3 4 6 ): x IBM T. J. Watson Research Center <sep>,</sep>     Yorktown Heights, NY <sep>,</sep>     moti@watson.ibm.com, moti@cs.columbia.edu
+:NonDictWord: :CapWord3: :SingleCap: :SingleCap: :MayName: :Confuse4Single0110: :MixCaseWords: :Cap1DictWord: :Cap1DictWord: , :CapWords: :Email: , :Email: 
+(3 4 ): MIT Media Laboratory <sep>,</sep>     20 Ames St., Cambridge, MA 02139
+:CapWord3: :Cap1DictWord: :MixCaseWords:  :Dig[2]:  :city: :MayName: , :city: , :MayName:  :Dig[5]:  
+(6 12 ): picard@media.mit.edu <sep>,</sep>     http://www.media.mit.edu/~picard/
+:Email: :http: / 
+(3 4 ): Syracuse University <sep>,</sep>     Syracuse, NY 13244-4100, U.S.A.
+:city: :MixCaseWords: :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  , :CapWords:-:CapWords:-:CapWords: . 
+(3 4 ): University of California <sep>,</sep>     Los Angeles, CA 90024
+:Confuse4Single1101: :prep: :MixCaseWords: :Cap1DictWord: :Cap1DictWord: , :CapWord2:  :Dig[5]:  
+(3 4 ): Universita di Genova <sep>,</sep>     via Dodecaneso 35, 16146 Genova, Italy
+ :affi: :MixCaseWords: :DictWord: :Cap1NonDictWord:  :Dig[2]:  ,  :Dig[5]:  :Cap1NonDictWord: , :country: 
+(3 4 ): Universita di Salerno <sep>,</sep>     84081 Baronissi (SA), Italy
+ :affi: :MixCaseWords:  :Dig[5]:  :Cap1NonDictWord: (:CapWords:2) , :country: 
+(3 4 ): University of Waterloo <sep>,</sep>     Waterloo Ontario, N2L 3G1, Canada
+:Confuse4Single1101: :prep: :MixCaseWords: :city: :city: , :Cap1NonDictWord: 3G1 , :country: 
+( :Cap1NonDictWord: ; :Cap1NonDictWord: ) :DictWord: :NonDictWord: :DictWord: :prep: :NonDictWord: :DictWord: , :DictWord: :NonDictWord: :DictWord: :DictWord: :DictWord: :NonDictWord: :DictWord: :prep: :DictWord: :NonDictWord:
+(5 7 ): Final Version <sep>,</sep>     94-Mar-17,     1 of 9
+:Cap1DictWord: :MixCaseWords: 94-Mar-17,  :Dig[1]:  :prep:  :Dig[1]:  
+(3 4 ): 1 Federal Aviation Administration, Technical Center <sep>,</sep>     Atlantic City NJ 08201
+ :Dig[1]:  :Cap1DictWord: :Cap1DictWord: :Cap1DictWord: , :Confuse4Single0110: :MixCaseWords: :Cap1DictWord: :addr: :CapWord2:  :Dig[5]:  
+(3 4 ): 2 Carnegie Mellon University, Robotics Institute <sep>,</sep>     Pittsburgh PA 15213
+ :Dig[1]:  :Cap1DictWord: :MayName: :Confuse4Single1101: , :Cap1DictWord: :MixCaseWords: :city: :CapWord2:  :Dig[5]:  
+(3 4 ): 3 Carnegie Mellon University, CMRI <sep>,</sep>     Pittsburgh PA 15213
+ :Dig[1]:  :Cap1DictWord: :MayName: :Confuse4Single1101: , :CapWords: :city: :CapWord2:  :Dig[5]:  
+(2 3 ): Mads Tofte <sep>,</sep>     Department of Computer Science, University of Copenhagen
+:Cap1NonDictWord: :MixCaseWords: :Confuse4Single1011: :prep:  :note: , :Confuse4Single1101: :prep: :Cap1DictWord: 
+(2 3 ): Lars Birkedal  <sep>,</sep>   School of Computer Science, Carnegie Mellon University
+:MayName: :MixCaseWords: :Confuse4Single1001: :prep:  :note: , :Cap1DictWord: :MayName: :Confuse4Single1101: 
+(5 7 ): Dagstuhl Castle, Germany <sep>,</sep>     July 1991
+:Cap1NonDictWord: :MayName: , :MixCaseWords: :month:  :Dig[4]:  
+(3 4 ): The Robotics Institute, Carnegie Mellon University <sep>,</sep>     Pittsburgh PA 15213
+:Cap1DictWord: :Cap1DictWord: :Confuse4Single1011: , :Cap1DictWord: :MayName: :MixCaseWords: :city: :CapWord2:  :Dig[5]:  
+(3 4 ): Department of Mechanical Engineering, Johns Hopkins University <sep>,</sep>     Baltimore, MD 21218
+:Confuse4Single1011: :prep: :Cap1DictWord: :Confuse4Single1010: , :MayName: :city: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  
+(3 4 ): Stanford University <sep>,</sep>     CA 94305
+:city: :MixCaseWords: :CapWord2:  :Dig[5]:  
+(3 7 ): @1994  <sep></sep>   Temple University
+:Email: :city: :Confuse4Single1101: 
+(3 13 ): University of Massachusetts   <sep></sep>  in partial fulfillment
+:Confuse4Single1101: :prep: :state: :prep:  :degree: 
+(3 4 ): University of Massachusetts <sep>,</sep>     Amherst, MA 01003
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :MayName:  :Dig[5]:  
+(3 4 6 12 5 ): Department of Information and Computer Science, University of California <sep>,</sep>    Irvine, CA 92697, USA <sep>;</sep>     epp-stein@ics.uci.edu <sep>;</sep>     http://www:ics:uci:edu/ ~ eppstein <sep>.</sep>     Research partially supported by NSF grant CCR-9258355 and
+:Confuse4Single1011: :prep: :note: :conj:  :note: , :Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  , :CapWords: :Email: http://www:ics:uci:edu / ~ :NonDictWord: :Confuse4Single0110: :note: :DictWord: :DictWord:  :note: :CapWords:-:Digs: :conj: 
+(3 4 ): Center for Geometric Computing, Department of Computer Science, Duke University <sep>,</sep>     Box 90129, Durham,
+:Confuse4Single0011: :DictWord: :Cap1DictWord: :Cap1DictWord: , :Confuse4Single1011: :prep:  :note: , :MayName: :MixCaseWords: :addr:  :Dig[5]:  , :city: , 
+(4 6 12 5 ): NC 27708-0129, USA <sep>;</sep>     jeffe@cs.duke.edu <sep>;</sep>     http://www:cs:duke:edu/ ~ jeffe <sep>.</sep>     Research supported by NSF grant DMS-9627683 and by U. S. Army Research Office MURI grant DAAH04-96-1-0013.
+:CapWord2:  :Dig[5]: - :Dig[4]:  , :CapWords: :Email: http://www:cs:duke:edu / ~ :NonDictWord: :Confuse4Single0110: :DictWord: :DictWord:  :note: :CapWords:-:Digs: :conj: :DictWord: :SingleCap: :SingleCap: :Cap1DictWord: :Confuse4Single0110: :note: :CapWord4: :Confuse4Single1010: :Mix[6]:-:Digs:-:Digs:-:Digs: . 
+(3 4 ): UC Berkeley <sep>,</sep>     Berkeley, CA 94720
+:CapWord2: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  
+(3 4 ): UCLA <sep>,</sep>     Los Angeles, CA 90095
+:CapWords: :Cap1DictWord: :Cap1DictWord: , :CapWord2:  :Dig[5]:  
+(3 4 ): UC Berkeley <sep>,</sep>     Berkeley, CA 94720
+:CapWord2: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  
+(3 4 ): 1 University of Karlsruhe,     Institute AIFB <sep>,</sep> 76128 Karlsruhe, Germany,
+ :Dig[1]:  :Confuse4Single1101: :prep: :MixCaseWords: :Confuse4Single1011: :CapWord4: ,  :Dig[5]:  :Cap1NonDictWord: , :country: , 
+(3 4 ): 2 Knowledge Media Institute, The Open University <sep>,</sep>     Walton Hall, Milton Keynes, United Kingdom,
+ :Dig[1]:  :Cap1DictWord: :Cap1DictWord: :Confuse4Single1011: , :Cap1DictWord: :Cap1DictWord: :MixCaseWords: :MayName: :addr: , :city: :Cap1DictWord: , :Cap1DictWord: :Cap1DictWord: , 
+(3 4 ): 3 Dept. of Social Science Informatics (SWI), University of Amsterdam <sep>,</sep>      Roetersstraat 15, 1018 WB
+ :Dig[1]:  :affi: . :prep: :Cap1DictWord: :Confuse4Single1010: :Cap1NonDictWord: (:CapWords:3) , :Confuse4Single1101: :prep: :MixCaseWords: :Cap1NonDictWord:  :Dig[2]:  ,  :Dig[4]:  :CapWord2: 
+(4 6 ): Amsterdam, The Netherlands <sep>,</sep>     -richard,schreiber,wielinga-@swi.psy.uva.nl
+:city: , :Cap1DictWord: :MixCaseWords: :Email: 
+(4 6 ): Campus UAB, 08193 Bellaterra, Barcelona, Spain <sep>,</sep>     enric@iiia.csic.es
+:addr: :CapWord3: ,  :Dig[5]:  :Cap1NonDictWord: , :Cap1DictWord: , :MixCaseWords: :Email: 
+(3 7 ): University of Illinois at Urbana-Champaign <sep>,</sep>     1996
+:Confuse4Single1101: :prep: :state: :prep: :MixCaseWords:-:MixCaseWords:  :Dig[4]:  
+(8 11 ): consisting of polygonal objects and polyhedra <sep>,</sep>     Keywords:
+:DictWord: :prep: :NonDictWord: :DictWord: :conj: :NonDictWord: :Cap1DictWord: : 
+(5 7 ): DRAFT 1  <sep></sep>   January 23, 1996
+:Cap1DictWord:  :Dig[1]:  :month:  :Dig[2]:  ,  :Dig[4]:  
+(3 4 ): Columbia University <sep>,</sep>     New York
+:city: :MixCaseWords: :Cap1DictWord: :city: 
+(3 4 ): University of Illinois at Urbana-Champaign <sep>,</sep>     IL 61801
+:Confuse4Single1101: :prep: :state: :prep: :MixCaseWords:-:MixCaseWords: :CapWord2:  :Dig[5]:  
+(3 4 ): University of Illinois at Urbana-Champaign <sep>,</sep>     IL 61801
+:Confuse4Single1101: :prep: :state: :prep: :MixCaseWords:-:MixCaseWords: :CapWord2:  :Dig[5]:  
+(3 4 ): NASA Ames Research Center <sep>,</sep>     MS 269-2
+:Cap1DictWord: :city: :Confuse4Single0110: :MixCaseWords: :CapWord2:  :Dig[3]: - :Dig[1]:  
+(3 4 ): Artificial Intelligence Research Group <sep>,</sep>     Sekr. FR 5-8,
+:note: :Cap1DictWord: :Confuse4Single0110: :MixCaseWords: :Cap1NonDictWord: . :CapWord2:  :Dig[1]: - :Dig[1]:  , 
+(3 4 ): University of California <sep>,</sep>     Berkeley, CA 94720
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  
+(3 4 ): University of California <sep>,</sep>     Berkeley, CA 94720-1774
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): 1 Department of Physics, Tohoku University <sep>,</sep>     980-77 Sendai, Japan
+ :Dig[1]:  :Confuse4Single1011: :prep: :Cap1DictWord: , :Cap1NonDictWord: :MixCaseWords:  :Dig[3]: - :Dig[2]:  :Cap1NonDictWord: , :country: 
+(3 4 ): University of North Carolina at Chapel Hill <sep>,</sep>     Chapel Hill, NC 27599-3255
+:Confuse4Single1101: :prep: :MayName: :MayName: :prep: :Cap1DictWord: :MixCaseWords: :Cap1DictWord: :addr: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): The University of Texas at Austin <sep>,</sep>     Austin, TX, USA
+:Cap1DictWord: :Confuse4Single1101: :prep: :state: :prep: :MixCaseWords: :city: , :CapWord2: , :phone: 
+(4 7 ): BERKELEY, CALIFORNIA 94720  <sep></sep>   August 17, 1997
+:city: , :state:  :Dig[5]:  :month:  :Dig[2]:  ,  :Dig[4]:  
+(3 4 ): University of California <sep>,</sep>     Berkeley CA 94720
+:Confuse4Single1101: :prep: :MixCaseWords: :city: :CapWord2:  :Dig[5]:  
+(3 4 ): University of California <sep>,</sep>     Berkeley, CA 94720
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  
+(3 4 ): 211-85 Cory Hall <sep>,</sep>     Department of EECS
+ :Dig[3]: - :Dig[2]:  :MayName: :MixCaseWords: :Confuse4Single1011: :prep: :CapWord4: 
+(3 4 ): University of California <sep>,</sep>     Berkeley, CA 94720
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :CapWord2:  :Dig[5]:  
+(3 4 ): MS 210-3,     NASA Ames Research Center <sep>,</sep>     Moffett Field CA 94035
+:CapWord2: 210-3, :Cap1DictWord: :city: :Confuse4Single0110: :MixCaseWords: :MayName: :addr: :CapWord2:  :Dig[5]:  
+(4 10 ): Address: 211-109 Cory Hall, EECS, UC Berkeley,  Berkeley, CA 94720-1772, USA <sep>.</sep>     Tel: (USA) 510-643-2383.
+:note: :  :Dig[3]: - :Dig[3]:  :MayName: :addr: , :CapWord4: , :CapWord2: :city: , :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  , :CapWords: :phone: : (:CapWords:3)  :Dig[3]: - :Dig[3]: - :Dig[4]:  . 
+(4 10 ): Address: 211- 98 Cory Hall, EECS, UC Berkeley, Berkeley, CA 94720-1772, USA <sep>.</sep>     Tel: (USA) 510-643-5806.
+:note: :  :Dig[3]: -  :Dig[2]:  :MayName: :addr: , :CapWord4: , :CapWord2: :city: , :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  , :CapWords: :phone: : (:CapWords:3)  :Dig[3]: - :Dig[3]: - :Dig[4]:  . 
+(4 10 ): x Address: 269M Cory Hall, EECS, UC Berkeley, Berkeley, CA 94720-1772, USA <sep>.</sep>  Tel: (USA) 510-642-1857.
+:NonDictWord: :note: : 269M :MayName: :addr: , :CapWord4: , :CapWord2: :city: , :city: , :CapWord2:  :Dig[5]: - :Dig[4]:  , :CapWords: :phone: : (:CapWords:3)  :Dig[3]: - :Dig[3]: - :Dig[4]:  . 
+(3 4 ): Cornell University <sep>,</sep>     USA
+:MayName: :MixCaseWords: :phone: 
+(5 7 ): 07/17/97     10:13  <sep></sep> 1 of 8
+07/17/97 10:13  :Dig[1]:  :prep:  :Dig[1]:  
+(6 10 ): 919-677-1119 x541 <sep>,</sep>     bwoolf@ksccary.com
+ :Dig[3]: - :Dig[3]: - :Dig[4]:  :NonDictWord: :Email: 
+(:LowerWords:1 ; ; :CapWords:-:LowerWords: ; )) :DictWord: . :Cap1DictWord: :DictWord: :DictWord: :DictWord:  :Dig[1]:
+(3 4 ): Department of Computer Science, UCLA <sep>,</sep>     Los Angeles, CA 90024-1596
+:Confuse4Single1011: :prep:  :note: , :CapWords: :Cap1DictWord: :Cap1DictWord: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): y Department of Computer Science,     University of Virginia <sep>,</sep> Charlottesville, VA, 22903-2442
+:NonDictWord: :Confuse4Single1011: :prep: :note: :MixCaseWords: :Confuse4Single1101: :prep: :state: , :city: , :CapWord2: ,  :Dig[5]: - :Dig[4]:  
+(3 4 ): z Department of Computer Science,     University of Washington <sep>,</sep> Seattle, WA 98195
+:NonDictWord: :Confuse4Single1011: :prep: :note: :MixCaseWords: :Confuse4Single1101: :prep: :city: , :city: , :MayName:  :Dig[5]:  
+(3 4 ): UCLA Computer Science Department <sep>,</sep>     Los Angeles, CA 90095-1596 USA
+:CapWord4:  :note: :MixCaseWords: :Cap1DictWord: :Cap1DictWord: , :CapWord2:  :Dig[5]: - :Dig[4]:  :phone: 
+(3 4 ): UCLA Computer Science Dept. <sep>,</sep>     Los Angeles, CA 90095-1596
+:CapWord4:  :note: :MixCaseWords: :Cap1DictWord: :Cap1DictWord: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): UCSD Computer Science & Engineering Dept. <sep>,</sep>     La Jolla, CA 92093-0114
+:CapWord4:  :note: & :Confuse4Single1010: :MixCaseWords: :MayName: :Cap1DictWord: , :CapWord2:  :Dig[5]: - :Dig[4]:  
+(3 4 ): E & CE Dept, University of Waterloo <sep>,</sep>     Waterloo, Ontario, N2L 3G1, Canada.
+:SingleCap: & :CapWord2: :affi: , :Confuse4Single1101: :prep: :MixCaseWords: :city: , :city: , :Cap1NonDictWord: 3G1 , :country: . 
+(3 4 ): EECS Dept, University of California <sep>,</sep>     Berkeley, CA94720.
+:CapWord4: :affi: , :Confuse4Single1101: :prep: :MixCaseWords: :city: , :Cap1NonDictWord: . 
+(5 7 ): Draft 1.6.1  <sep></sep>   August 31, 1998
+:Cap1DictWord: 1.6.1 :month:  :Dig[2]:  ,  :Dig[4]:  
+(3 4 ): Dept. of EECS, UC Berkeley <sep>,</sep>     Berkeley CA 94720
+:affi: . :prep: :CapWord4: , :CapWord2: :MixCaseWords: :city: :CapWord2:  :Dig[5]:  
+(3 4 ): Modelisation et Preuves de Circuits, TIMA Laboratory <sep>,</sep>     BP 53X, 38041 Grenoble Cedex FRANCE
+:Cap1NonDictWord: :DictWord: :Cap1NonDictWord: :DictWord: :Cap1DictWord: , :CapWord4: :MixCaseWords: :CapWord2: 53X ,  :Dig[5]:  :Cap1DictWord: :Cap1NonDictWord: :country: 
+(3 4 ): EECS Department, University of California at Berkeley <sep>,</sep>     CA 94720
+:CapWord4: :Confuse4Single1011: , :Confuse4Single1101: :prep: :state: :prep: :MixCaseWords: :CapWord2:  :Dig[5]:  
+(3 4 ): University of Washington <sep>,</sep>     Seattle, WA
+:Confuse4Single1101: :prep: :MixCaseWords: :city: , :MayName: 
+(3 4 ): Microsoft Research <sep>,</sep>     Redmond, WA
+:Cap1DictWord: :MixCaseWords: :city: , :MayName: 
+(3 4 ): IC-Parc, William Penny Laboratory, Imperial College <sep>,</sep>     London, SW7 2AZ.
+:CapWords:-:MixCaseWords: , :MayName: :MayName: :Confuse4Single0111: , :Cap1DictWord: :MixCaseWords: :Cap1DictWord: , :Cap1NonDictWord: 2AZ . 
+(3 4 ): University of California <sep>,</sep>    Berkeley CA 94720
+:Confuse4Single1101: :prep: :MixCaseWords: :city: :CapWord2:  :Dig[5]:  
+(2 3 4 6 ): Rodney A. Brooks  <sep></sep>   MIT Artificial Intelligence Laboratory   <sep></sep>  545 Technology Square Cambridge, MA 02139 <sep></sep>    brooks@ai.mit.edu
+:MayName: :SingleCap: :MayName: :CapWord3: :note: :Cap1DictWord: :Confuse4Single0111:  :Dig[3]:  :Confuse4Single1010: :addr: :city: , :MayName:  :Dig[5]:  :Email: 
+(3 4 6 ): Department of Computer Science, Tel Aviv University <sep>,</sep>     Tel Aviv 69978, Israel <sep>.</sep>     E-mail:
+:Confuse4Single1011: :prep:  :note: , :phone: :Cap1DictWord: :MixCaseWords: :phone: :Cap1DictWord:  :Dig[5]:  , :MixCaseWords: :CapWords:-:LowerWords: : 
+(3 4 5 6 ): Department of Computer Science, MIT <sep>,</sep>     Cambridge, MA 02139 <sep>.</sep>     E-mail: cshelton@ai.mit.edu <sep>.</sep>     Part of the
+:Confuse4Single1011: :prep:  :note: , :CapWords: :city: , :MayName: 02139. :CapWords:-:LowerWords: : :Email: :Confuse4Single1010: :prep: :DictWord: 
+(3 4 5 ): Author's Address<sep>:</sep>    MIT Artificial Intelligence Laboratory <sep>,</sep>     545 Technology Square,
+:MixCaseWords:-:LowerWords: :MixCaseWords: :CapWord3: :note: :Cap1DictWord: :MixCaseWords:  :Dig[3]:  :Confuse4Single1010: :addr: , 
+(4 6 ): Cambridge Mass, 02139 <sep>,</sep>     DAM@ai.mit.edu
+:city: :Cap1DictWord: , 02139, :Email: 
+(7 14 ): A.I. Memo No. 1591  <sep></sep>   November, 1996
+:CapWords:-:CapWords: . :pubnum: :Cap1DictWord: .  :Dig[4]:  :month: ,  :Dig[4]:  
+(:CapWords:1:LowerWords:5 , 1994) . :Cap1DictWord: :Confuse4Single0110: :NonDictWord: :DictWord: :DictWord: :prep: :DictWord: :DictWord: :prep: :DictWord: :DictWord: . :Cap1DictWord: , :DictWord:
+(2 3 5 ): Address correspondence to  <sep></sep>   Dana S. Nau <sep>,</sep>     Computer Science Dept., University of Maryland,
+:note: :DictWord: :DictWord: :MayName: :SingleCap: :MixCaseWords:  :note: :MixCaseWords: , :Confuse4Single1101: :prep: :state: , 
+(3 4 ): University of Minnesota <sep>,</sep>  Minneapolis MN 55455
+:Confuse4Single1101: :prep: :MixCaseWords: :city: :CapWord2:  :Dig[5]:  
+(3 4 ): Naval Research Laboratory <sep>,</sep>     Code 5510
+ :note: :MixCaseWords: :Cap1DictWord:  :Dig[4]:  
+(3 4 ): Computer Science Division <sep>,</sep>     571 Evans Hall
+ :note: :MixCaseWords:  :Dig[3]:  :city: :addr: 
+(3 4 ): UC Berkeley <sep>,</sep>     Berkeley CA, 94720
+:CapWord2: :MixCaseWords: :city: :CapWord2: ,  :Dig[5]:  
+(5 12 ): URL: http://www.cam.sri.com/tr/crc033/paper.ps.Z  <sep></sep>   Eurospeech, Berlin, 1993
+:CapWord3: : :http: :Cap1NonDictWord: , :city: ,  :Dig[4]:  
+(3 4 ): SRI International <sep>,</sep>     23 Millers Yard, Cambridge, CB2 1RQ, UK
+:Cap1DictWord: :MixCaseWords:  :Dig[2]:  :Cap1NonDictWord: :MayName: , :city: , :Cap1NonDictWord: 1RQ , :CapWord2: 
+(3 4 ): Speech Research Unit, DRA Malvern <sep>,</sep>     St Andrews Road, Malvern, Worcs, WR14 3PS, UK
+:Cap1DictWord: :Confuse4Single0110: :Cap1DictWord: , :CapWord3: :MixCaseWords: :addr: :city: :addr: , :MayName: , :Cap1NonDictWord: , :Cap1NonDictWord: 3PS , :CapWord2: 
+(5 12 ): URL: http://www.cam.sri.com/tr/crc044/paper.ps.ZARPA  <sep></sep>   (HLT) Proceedings, Princeton, 1994
+:CapWord3: : :http: (:CapWords:3) :note: , :city: ,  :Dig[4]:  
+(3 4 ): (1) SRI International <sep>,</sep>     Suite 23, Millers Yard, Cambridge CB2 1RQ, UK
+(3 4 ): (2) SRI International <sep>,</sep>     333 Ravenswood Ave., Menlo Park, CA 94025, USA
+(3 4 ): 1 Department of Otolaryngology, The Ohio State University Hospitals <sep>,</sep>     Columbus, OH
+ :Dig[1]:  :Confuse4Single1011: :prep: :Cap1NonDictWord: , :Cap1DictWord: :state: :Cap1DictWord: :Confuse4Single1101: :MixCaseWords: :city: , :Cap1DictWord: 
+(3 4 ): 2 The Ohio Supercomputer Center <sep>,</sep>     Columbus, OH
+ :Dig[1]:  :Cap1DictWord: :state: :Cap1DictWord: :MixCaseWords: :city: , :Cap1DictWord: 
+(3 4 ): 3 Department of Computer and Information Science, The Ohio State University <sep>,</sep>     Columbus, OH
+ :Dig[1]:  :Confuse4Single1011: :prep: :note: :conj: :note: :Confuse4Single1010: , :Cap1DictWord: :state: :Cap1DictWord: :MixCaseWords: :city: , :Cap1DictWord: 
+(3 4 ): 4 Department of Radiology, The Ohio State University Hospitals <sep>,</sep>     Columbus, OH
+ :Dig[1]:  :Confuse4Single1011: :prep: :Cap1DictWord: , :Cap1DictWord: :state: :Cap1DictWord: :Confuse4Single1101: :MixCaseWords: :city: , :Cap1DictWord: 
+(3 4 ): 5 Immersion Corporation <sep>,</sep>     San Jose, CA
+ :Dig[1]:  :Cap1DictWord: :MixCaseWords: :Cap1DictWord: :MayName: , :CapWord2: 
+(5 6 ): Email address of contact author <sep>:</sep>     ungar@cis.upenn.edu
+:Cap1NonDictWord: :note: :prep: :note: :NonDictWord: :Email: 
+(5 10 ): Phone number of contact author <sep>:</sep>     215 898-7449
+:phone: :note: :prep: :note: :NonDictWord:  :Dig[3]:   :Dig[3]: - :Dig[4]:  
+(3 4 ): Queen Mary and Westfield College <sep>,</sep>     London E1 4NS, U.K.
+:MayName: :MayName: :conj: :city: :MixCaseWords: :Cap1DictWord: :Cap1NonDictWord: 4NS , :CapWords:-:CapWords: . 
+(5 7 ): Draft 16   Nov 94     - 1 - To appear IEEE MICRO <sep></sep> Feb 1995
+:Cap1DictWord:  :Dig[2]:  :Cap1NonDictWord:  :Dig[2]:  -  :Dig[1]:  - :Cap1DictWord: :note: :note: :Cap1DictWord: :Cap1NonDictWord:  :Dig[4]:  
+(7 14 ): SMLI TR-94-28  <sep></sep>   June 1994
+:CapWord4: :CapWords:-:Digs:-:Digs: :month:  :Dig[4]:  
+(1 2 3 4 ): RUNTIME SUPPORT FOR PORTABLE DISTRIBUTED DATA STRUCTURES <sep></sep> Chih-Po Wen , Soumen Chakrabarti, Etienne Deprit, Arvind Krishnamurthy, Katherine Yelick  <sep></sep>   Computer Science Division, Department of EECS University of California <sep>,</sep> Berkeley, California 94720 USA
+:Cap1DictWord: :note: :Cap1DictWord: :Cap1DictWord: :Cap1DictWord: :Cap1DictWord: :Cap1DictWord: :MixCaseWords:-:MixCaseWords: :MayName: , :Cap1NonDictWord: :Cap1NonDictWord: , :MayName: :Cap1NonDictWord: , :Cap1NonDictWord: :Cap1NonDictWord: , :MayName: :Cap1NonDictWord:  :note: :Confuse4Single1001: , :Confuse4Single1011: :prep: :CapWord4: :Confuse4Single1101: :prep: :MixCaseWords: :city: , :state:  :Dig[5]:  :phone: 
+(7 14 ): CS 270 Project Report <sep>,</sep>     spring 1998
+:CapWord2:  :Dig[3]:  :Confuse4Single0110: :MixCaseWords: :DictWord:  :Dig[4]:  
+(5 12 ): See also <sep>:</sep>     http://www.cs.berkeley.edu/~debevec/Research/
+:MayName: :NonDictWord: :http: / 
+(7 14 ): CS 252/265  <sep></sep>   Spring 98
+:CapWord2: 252/265 :city:  :Dig[2]:  
+(3 4 ): Almaden Research Center <sep>,</sep>     Dept. K53-B2
+:Cap1DictWord: :Confuse4Single0110: :MixCaseWords: :affi: . :Mix[3]:-:Mix[2]: 
+(:CapWords:1:LowerWords:10 1995) :DictWord: :DictWord: :DictWord: :NonDictWord: :DictWord: :prep: :DictWord: :DictWord: :DictWord: :DictWord: :DictWord: :DictWord:

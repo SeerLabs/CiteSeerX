@@ -1,0 +1,6 @@
+# all cron jobs
+
+SHELL=/bin/bash
+PATH=/usr/local/bin
+
+@daily /csxbot_code_base/bin/schedule.py 1>/tmp/cron.stdout.csxbot 2>/tmp/cron.stderr.csxbot

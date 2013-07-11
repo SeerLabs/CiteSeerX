@@ -1,0 +1,31 @@
+Protocols for Collecting Responses 
+
+in Multi-hop Radio Networks 
+
+Chungki Lee James E. Burns 
+
+Mostafa H. Ammar
+
+GIT-CC-92/28 
+
+June 1992 
+
+Abstract 
+
+The problem of collecting responses in multi-hop radio networks is considered. A given node, called the source, is to collect a specified number of 
+
+responses from nodes in a radio network. The problem arises in several 
+
+applications of distributed systems. A deterministic and a randomized protocol for the problem are presented. The two protocols are analyzed and 
+
+their performance is compared. Conclusions are drawn about the suitability 
+
+of our protocols in various network environments. 
+
+College of Computing 
+
+Georgia Institute of Technology 
+
+Atlanta, Georgia 30332-0280 
+
+

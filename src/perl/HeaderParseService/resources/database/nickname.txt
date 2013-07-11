@@ -1,0 +1,58 @@
+Albert<>Al
+Andrew<>Andy
+Anthony<>Tony
+Arthur<>Art,Arty
+Bernard<>Bernie,Bern
+Charles<>Charlie,Chuck
+Christopher<>Chris
+Daniel<>Dan,Danny
+Donald<>Don
+Edward<>Ed,Eddie
+Eugene<>Gene
+Francis<>Frank,Fran
+Frederick<>Fred,Freddy
+Henry<>Hank
+Irving<>Irv
+James<>Jim,Jimmy
+Joseph<>Joe
+John<>Jack,Jacky
+Lawrence<>Larry
+Leonard<>Leo
+Nathan<>Nat,Nate
+Nicholas<>Nick
+Patrick<>Pat
+Peter<>Pete
+Raymond<>Ray
+Richard<>Dick,Rick
+Robert<>Bob, Bobby, Rob
+Ronald<>Ron, Ronny
+Russell<>Russ
+Samuel<>Sam, Sammy
+Stephan<>Steve
+Stuart<>Stu
+Theodore<>Ted, Teddy
+Thomas<>Tom, Thom, Tommy
+Timothy<>Tim, Timmy
+Walter<>Walt, Wally
+William<>Bill, Billy, Will, Willy
+Amanda<>Mandy
+Catherine<>Cathy, Cath
+Christine<>Chris, Chrissy
+Cynthia<>Cindy, Cynth
+Deborah<>Deb, Debbie
+Elizabeth<>Betty, Beth, Liz, Bess
+Florence<>Flo
+Frances<>Fran, Francie
+Janet<>Jan
+Katherine<>Kathy, Kate
+Janice<>Jan
+Nancy<>Nan
+Pamela<>Pam
+Patricia<>Pat
+Roberta<>Bobbie
+Sophia<>Sophie
+Susan<>Sue, Suzie
+Teresa<>Terry
+Valerie<>Val
+Veronica<>Ronnie
+Yvonne<>Vonna

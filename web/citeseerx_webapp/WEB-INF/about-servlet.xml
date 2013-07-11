@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="/WEB-INF/header.properties"/>
+  </bean>
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/csx/about/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+  
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+  
+  <bean name="/site" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.about.site.title}"/>
+    <property name="description" value="${app.about.site.description}"/>
+    <property name="keywords" value="${app.about.site.keywords}"/>
+    <property name="viewName" value="site"/>
+  </bean>
+  
+  <bean name="/myciteseer" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.about.myciteseer.title}"/>
+    <property name="description" value="${app.about.myciteseer.description}"/>
+    <property name="keywords" value="${app.about.myciteseer.keywords}"/>
+    <property name="viewName" value="myciteseer"/>
+  </bean>
+  
+  <bean name="/team" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.about.team.title}"/>
+    <property name="description" value="${app.about.team.description}"/>
+    <property name="keywords" value="${app.about.team.keywords}"/>
+    <property name="viewName" value="team"/>
+  </bean>
+  
+  <bean name="/metadata" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.about.metadata.title}"/>
+    <property name="description" value="${app.about.metadata.description}"/>
+    <property name="keywords" value="${app.about.metadata.keywords}"/>
+    <property name="viewName" value="metadata"/>
+  </bean>
+  
+  <bean name="/previous" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.about.previous.title}"/>
+    <property name="description" value="${app.about.previous.description}"/>
+    <property name="keywords" value="${app.about.previous.keywords}"/>
+    <property name="viewName" value="previous"/>
+  </bean>
+  
+  <bean name="/bot" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.about.bot.title}"/>
+    <property name="description" value="${app.about.bot.description}"/>
+    <property name="keywords" value="${app.about.bot.keywords}"/>
+    <property name="viewName" value="bot"/>
+  </bean>
+	
+  <bean name="/terms" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.about.terms.title}"/>
+    <property name="description" value="${app.about.terms.description}"/>
+    <property name="keywords" value="${app.about.terms.keywords}"/>
+    <property name="viewName" value="terms"/>
+  </bean>
+</beans>

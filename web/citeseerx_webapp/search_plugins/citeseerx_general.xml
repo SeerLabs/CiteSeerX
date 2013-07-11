@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>CiteSeerX</ShortName>
+  <Description>CiteSeerX: General Search.</Description>
+  <Tags>web computer science authors citations tags</Tags>
+  <Contact>csx-system@ist.psu.edu</Contact>
+  <Url type="text/html"
+       indexOffset="1"
+       pageOffset="1"
+       method="get"
+       enctype="application/x-www-form-urlencoded"
+       template="http://citeseerx.ist.psu.edu/search?q={searchTerms}&amp;start={startIndex?}&amp;sort=cite">
+    <Param name="q" value="{searchTerms}" />
+    <Param name="start" value="{startIndex?}" minimum="0" />
+    <Param name="sort" value="cite" />
+  </Url>
+  <LongName>CiteSeerX: Digital Library and search engine on literature in computer and information science</LongName>
+  <Image height="16" width="16">data:image/x-icon;base64,AAABAAEAEBAAAAEAGABoAwAAFgAAACgAAAAQAAAAIAAAAAEAGAAAAAAAAAAAABMLAAATCwAAAAAAAAAAAAD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F359LqwIjfoUzfoUzfoUzksGrv0KX89%2FD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F89%2FDhqVvUgRDUgRDXiR%2FDfjnAeC7Oeg%2FUgRDXiR%2Fy17T%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F89%2FDcmT3UgRDcmT3buZ93JhJuFwJuFwJ3JRG7gFbUgRDUgRDv0KX%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FnuHnUgRDhqVv28O93JhJ3JhLbxcDt4t%2BJQzJ3JhLu2sXXiR%2Fv0KX%2F%2F%2F%2F%2F%2F%2F%2F89%2FDUgRDXiR%2F89%2FD28O%2BlbmHbxcD%2F%2F%2F%2F%2F%2F%2F%2FStrBuFwJ7ZmD%2F%2F%2F%2F%2F%2F%2F%2B%2Fv7%2B%2Fv7%2Fy17TUgRDnuHn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2B3i4FuFwKJeHRwcHDf398wMDDv7%2B%2FqwIjUgRD038P%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FIqKBuFwKbYFH%2F%2F%2F9AQEAgICC%2Fv7%2F%2F%2F%2F%2FqwIjUgRD038P%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2BlbmFuFwKJQzL28O%2F%2F%2F%2F%2BAgIAQEBDv7%2B%2F%2F%2F%2F%2FsyJbUgRDsyJb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2BbYFFuFwKufXH%2F%2F%2F%2F%2F%2F%2F%2FPz88wMDCvr69QUFD%2F%2F%2F%2F67%2BHUgRDZkS7%2F%2F%2F%2F%2F%2F%2F%2FIqKBuFwK%2FmZD%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2Bfn5%2Ff39%2F%2F%2F%2F%2Bfn5%2Ff39%2F%2F%2F%2F%2FfoUzUgRDqwIj%2F%2F%2F%2B3i4FuFwL%2F%2F%2F%2F%2F%2F%2F%2Fk08%2FIqKD89%2FDhqVv359L%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F67%2BHXiR%2FUgRDksGrPsaVuFwKlbmHStrB3JhJ2JA7MgijUgRDnuHn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F359LcmT3UgRDXiR%2BoYC92IgpuFwJ8JwnBbQ3UgRDnuHn%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2Fv0KXfoUzUgRDUgRDUgRDZkS7ksGr038P%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</Image>
+  <Query role="example" searchTerms="giles" />
+  <Developer>CiteSeerX Development Team</Developer>
+  <Attribution>
+     Copyright 2007 The Pennsylvania State University
+  </Attribution>
+  <SyndicationRight>open</SyndicationRight>
+  <AdultContent>false</AdultContent>
+  <Language>en-us</Language>
+  <OutputEncoding>UTF-8</OutputEncoding>
+  <InputEncoding>UTF-8</InputEncoding>
+  <moz:SearchForm>http://citeseerx.ist.psu.edu/</moz:SearchForm>
+</OpenSearchDescription>

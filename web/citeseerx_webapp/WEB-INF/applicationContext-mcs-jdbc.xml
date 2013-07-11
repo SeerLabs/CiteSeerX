@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Application context definition for MyCiteSeer using JDBC.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:sec="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd">
+
+
+  <!-- =================== GENERAL DEFS ==================== -->
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="/WEB-INF/csx.config.properties"/>
+  </bean>
+
+  <bean id="mcsDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.mcs.driverClassName}"/>
+    <property name="url" value="${jdbc.mcs.url}"/>
+    <property name="username" value="${jdbc.mcs.username}"/>
+    <property name="password" value="${jdbc.mcs.password}"/>
+  </bean>
+
+  <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+    <property name="basenames">
+      <list>
+        <value>messages</value>
+        <value>labels</value>
+      </list>
+    </property>
+  </bean>
+  
+  
+  <!-- =================== BUSINESS OBJECT DEFS ==================== -->
+
+  <bean id="accountDAO" class="edu.psu.citeseerx.myciteseer.dao.AccountDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="mcsDataSource"/>
+    <property name="groupDAO" ref="groupDAO"/>
+  </bean>
+  
+  <bean id="submissionDAO" class="edu.psu.citeseerx.myciteseer.dao.SubmissionDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="mcsDataSource"/>
+  </bean>
+
+  <bean id="myNetDAO" class="edu.psu.citeseerx.myciteseer.dao.MyNetDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="mcsDataSource"/>
+  </bean>
+  
+  <bean id="configurationDAO" class="edu.psu.citeseerx.myciteseer.dao.ConfigurationDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="mcsDataSource"/>
+  </bean>
+  
+  <bean id="collectionDAO" class="edu.psu.citeseerx.myciteseer.dao.CollectionDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="mcsDataSource" />
+  </bean>
+  
+  <bean id="subscriptionDAO" class="edu.psu.citeseerx.myciteseer.dao.SubscriptionDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="mcsDataSource"/>
+  </bean>
+
+  <bean id="mcsTagDAO" class="edu.psu.citeseerx.myciteseer.dao.TagDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="mcsDataSource"/>
+  </bean>
+  
+  <bean id="feedDAO" class="edu.psu.citeseerx.myciteseer.dao.FeedDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="mcsDataSource"/>
+  </bean>
+  
+  <bean id="groupDAO" class="edu.psu.citeseerx.myciteseer.dao.GroupDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="mcsDataSource"/>
+    <property name="permissionManager" ref="permissionManager"/>
+  </bean>
+  
+  <bean id="permissionManager" class="edu.psu.citeseerx.myciteseer.acl.PermissionManagerImpl" lazy-init="true">
+    <property name="aclService" ref="aclService"/>
+  </bean>
+  
+  <bean id="myCiteSeerTarget" class="edu.psu.citeseerx.myciteseer.domain.logic.MyCiteSeerImpl">
+    
+    <sec:intercept-methods access-decision-manager-ref="businessAccessDecisionManager">
+      <sec:protect method="getGroups" access="ROLE_AUTHENTICATED, AFTER_ACL_COLLECTION_READ"/>
+      <sec:protect method="getGroup" access="ROLE_AUTHENTICATED, AFTER_ACL_READ"/>
+      <sec:protect method="addMember" access="ACL_GROUP_WRITE"/>
+      <sec:protect method="deleteGroup" access="ACL_GROUP_DELETE"/>
+      <sec:protect method="updateGroup" access="ACL_GROUP_WRITE"/>
+      <sec:protect method="leaveGroup" access="ACL_GROUP_READ"/>
+      <sec:protect method="removeMember" access="ACL_GROUP_WRITE"/>
+      <sec:protect method="validateUser" access="ACL_GROUP_WRITE"/>
+    </sec:intercept-methods>
+    
+    
+    <property name="accountDAO" ref="accountDAO"/>
+    <property name="submissionDAO" ref="submissionDAO"/>
+    <property name="myNetDAO" ref="myNetDAO"/>
+    <property name="configurationDAO" ref="configurationDAO"/>
+    <property name="collectionDAO" ref="collectionDAO"/>
+    <property name="subscriptionDAO" ref="subscriptionDAO"/>
+    <property name="tagDAO" ref="mcsTagDAO"/>
+    <property name="feedDAO" ref="feedDAO"/>
+    <property name="groupDAO" ref="groupDAO"/>
+  </bean>
+  
+  <bean id="accountValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.AccountValidator">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="messageSource" ref="messageSource"/>
+  </bean>
+  
+  <bean id="notificationReceiver" class="edu.psu.citeseerx.myciteseer.messaging.NotificationReceiver">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean id="foulWordFilter" class="edu.psu.citeseerx.myciteseer.web.utils.FoulWordFilter">
+    <property name="foulWordList" value="${foul.word.list}"/>
+  </bean>
+
+  <bean id="myCiteSeer" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces" value="edu.psu.citeseerx.myciteseer.domain.logic.MyCiteSeerFacade"/>
+    <property name="target"><ref bean="myCiteSeerTarget"/></property>
+    <property name="interceptorNames">
+      <list>
+        <idref local="transactionInterceptor"/>
+      </list>
+    </property>
+  </bean>  
+  
+  <!-- =================== TRANSACTION CONFIGURATION ==================== -->
+
+  <bean id="mcsTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="mcsDataSource"/>
+  </bean>
+  
+  <bean id="transactionInterceptor" class="org.springframework.transaction.interceptor.TransactionInterceptor">
+    <property name="transactionManager" ref="mcsTxManager" />
+    <property name="transactionAttributes">
+      <props>
+        <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+        <prop key="is*">PROPAGATION_REQUIRED,readOnly</prop>
+        <prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+        <prop key="*">PROPAGATION_REQUIRED</prop>
+      </props>
+    </property>
+  </bean>
+  
+</beans>

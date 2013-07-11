@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="/WEB-INF/csx.config.properties"/>
+  </bean>
+  
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/myciteseer/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+  
+  <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="mappings">
+      <props>
+        <prop key="/peoplesearch">peopleSearchController</prop>
+        <prop key="/MCSAdvancedSearch">peopleAdvSearchController</prop>
+      </props>
+    </property>
+  </bean>
+  
+  <bean id="peopleSearchController" class="edu.psu.citeseerx.myciteseer.web.search.PeopleSearchController">
+    <!-- property name="solrSelectPeopleUrl" value="${solr.selectPeopleUrl}"/ -->
+  </bean>
+  
+  <bean id="peopleAdvSearchController" class="edu.psu.citeseerx.myciteseer.web.search.PeopleAdvancedSearchFormController">
+    <property name="successView" value="MCSAdvancedSearch"/>
+  </bean>
+</beans>

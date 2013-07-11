@@ -1,0 +1,130 @@
+#!/usr/bin/env python
+
+import config
+
+import datetime
+import os
+import sys
+import math
+
+import crawler.submit
+import time #JWU(04272011)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = config.django_settings_module
+
+from django.db import connection
+from citeseerx_crawl.main_crawl.models import Document, ParentUrl
+
+def select_urls():
+    schedule_time = datetime.datetime.now()
+        
+    # count doc # of each parent. cause will rank upon #docs (JWU)
+    parent_ndocs = {}
+    cursor = connection.cursor()
+    print "query from database ..."
+    #dbquery = "SELECT count(*) AS ndocs,parent_id FROM main_crawl_document WHERE parent_id is NOT NULL GROUP BY parent_id"
+    #print dbquery
+    #cursor.execute(dbquery)
+    #print "query finished"
+    print ""
+
+    #rows = cursor.fetchall()
+    
+    #for row in rows:
+    #    ndocs = int(row[0])
+    #    pid = row[1]
+    #    parent_ndocs[pid] = ndocs
+
+    # changes made on April, 2011 (JWU)
+    #dbquery = "SELECT p.last_crawl_date,w.rank,w.url FROM main_crawl_whitelist1 w JOIN main_crawl_parenturl p ON w.url = p.url WHERE p.is_live = 1 ORDER BY rank"
+    dbquery = "SELECT p.last_crawl_date,w.rank,w.url FROM main_crawl_whitelist2 w JOIN main_crawl_parenturl p ON w.url = p.url ORDER BY w.rank"
+    print dbquery
+    cursor.execute(dbquery) # (JWU,04272011)
+    print "query finished"
+    print ""
+
+    rows = cursor.fetchall()                                #(JWU,04272011)   
+    parents_schedule = []                                   #(JWU,04272011)
+    time_format = "%Y-%m-%d %H:%M:%S"                       #(JWU,04272011)
+    print "retrieving urls ..."
+    print "urls to be retrived: ",len(rows)
+    for row in rows:                                 #(JWU,04272011)
+        timestring = row[0]                                 #(JWU,04272011)
+        #last_crawl_date = datetime.datetime.fromtimestamp(time.mktime(time.strptime(timestring, time_format)))    #(JWU,04272011)
+        t_delta = datetime.datetime.now() - timestring #(JWU,04272011)
+        rank = float(row[1])                                #(JWU,04272011)
+        url = row[2]                                        #(JWU,04272011)
+        parents_schedule.append((t_delta.days,rank,url))    #(JWU,04272011)               
+    print ""
+    # get time delta
+    # parents_schedule = [] # COMMENT OUT (JWU,04272011)
+    
+   #parent_urls = ParentUrl.objects.filter(is_live__exact=True) #COMMENT OUT
+   #for p in parent_urls:                                       #COMMENT OUT
+   #    t_delta = datetime.datetime.now() - p.last_crawl_date   #COMMENT OUT
+   #    if p.id in parent_ndocs:                                #COMMENT OUT
+   #        ndocs = parent_ndocs[p.id]                          #COMMENT OUT
+   #    else:                                                   #COMMENT OUT
+   #        ndocs = 0                                           #COMMENT OUT
+   #                                                            #COMMENT OUT
+   #    if ndocs < 2:                                           #COMMENT OUT
+   #        ndocs = 2 # make sure log(ndocs) > 0.ordered by #docs(JWU) #COMMENT OUT
+   #    #COMMENT OUT
+   #    parents_schedule.append((t_delta.days, math.log(ndocs), p.url))                #COMMENT OUT
+    
+    # sort
+    # parents_schedule.sort(cmp=compare_func) # COMMENT OUT (JWU,04272011)
+    
+    schedule_file_name = datetime.datetime.now().strftime('%Y.%m.%d_%H')
+    schedule_file_path = os.path.join(config.schdule_dir, schedule_file_name)
+    if not os.path.exists(config.schdule_dir):
+        os.makedirs(config.schdule_dir)
+    
+    f = open(schedule_file_path, 'w')
+    
+    urls = []
+    print "writting scheduled urls into file ..."
+    print "urls to be written: ",config.ndocs_to_schedule
+    for x in parents_schedule[0:]:#COMMENT OUT, originally was 9000
+        urls.append(x[2])
+        f.write(str(x[0]) + '\t' + str(x[1]) + '\t' + x[2] + '\n')
+        
+        # update last_crawl_date of scheduled parents
+        p = ParentUrl.objects.get(url=x[2])
+        p.last_crawl_date = schedule_time
+        p.save() 
+    
+    f.close()                
+    print "writing urls to file finished"    
+    return urls
+    
+def compare_func(x, y):
+    if y[0]*y[1] > x[0]*x[1]:
+        return 1
+    elif y[0]*y[1] < x[0]*x[1]:
+        return -1
+    else:
+        return 0    
+
+def submit(urls):
+    # obtain current date to yyyymmdd format
+    batch = int(datetime.datetime.now().strftime('%Y%m%d'))
+    s = crawler.submit.Submitter(
+        config.amq_host,
+        61613,
+        config.amq_queue
+        )
+    s.connect_mq()
+
+    for u in urls:
+        s.submit(u, batch)
+
+    s.disconnect_mq()
+
+if __name__ == '__main__':
+    print 'scheduling...'
+    urls = select_urls()
+    print 'submitting...'
+    print urls.__class__
+    submit(urls)
+    print 'done'

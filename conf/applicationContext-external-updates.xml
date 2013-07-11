@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Application context definition for updates to the citeseerx external
+  - metadata storage
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+       
+  <!-- =================== GENERAL DEFS ==================== -->
+  
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="classpath:csx.config.properties"/>
+  </bean>
+  
+  <!-- =================== UPDATER OBJECT DEFS ==================== -->
+  <bean id="dblpUpdateManager" class="edu.psu.citeseerx.updates.external.metadata.DBLPMetadataUpdater">
+    <property name="DBLPDataFile" value="${dblp.data.file}"/>
+    <property name="DBLPDTDFile" value="${dblp.dtd.file}"/>
+    <property name="CSXEMETADATA" ref="csxemetadata"/>
+  </bean>
+  
+  <bean id="citeulikeUpdateManager" class="edu.psu.citeseerx.updates.external.metadata.CiteulikeMetadataUpdater">
+    <property name="linkOutFile" value="${citeulike.data.file}"/>
+    <property name="CSXEMETADATA" ref="csxemetadata"/>
+  </bean>
+  
+  <bean id="acmUpdateManager" class="edu.psu.citeseerx.updates.external.metadata.ACMMetadataUpdater">
+    <property name="ACMDataFile" value="${acm.data.file}"/>
+    <property name="CSXEMETADATA" ref="csxemetadata"/>
+  </bean>
+</beans>

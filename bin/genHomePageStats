@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Generates home page statistics.
+#
+# A path may be specified to use as the output directory
+# for the generated stats data.  Otherwise, a default
+# of "stats" will be used or a custom default specified
+# in configuration.
+#
+# Juan Pablo Fernandez Ramirez
+#
+
+LOADER="edu.psu.citeseerx.loaders.HomePageStatisticsGeneratorLoader"
+BOOT_FILE="updates.txt"
+
+source common

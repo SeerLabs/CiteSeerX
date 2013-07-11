@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<ul>
+	<li>
+		<a href="/history/">Document History Statistics</a> 
+	</li>
+	<li>
+		<a href="/sub/stat/">User Submission Statistics (Last 30 Days)</a>
+	</li>
+</ul>
+
+<hr>
+<p>Country Ranking</p>
+<ol>
+	<li><a href="country_ndocs_rank/">Country Ranking by Number of Documents</a></li>
+</ol>
+
+<p>Institution Level Domain Ranking</p>
+<ol>
+  <li><a href="domain_ndocs_rank/">Domain Ranking by Number of Documents</a> &nbsp;&nbsp;&nbsp;&nbsp; [<a href="/static/stat/domain_ndocs_rank.htm">Cached Version</a>]</li>
+  <li><a href="domain_ncites_rank/">Domain Ranking by Number of Citations</a> &nbsp;&nbsp;&nbsp;&nbsp; [<a href="/static/stat/domain_ncites_rank.htm">Cached Version</a>]</li>
+  <li><a href="domain_cpd_rank/">Domain Ranking by Citation Number Per Document</a> &nbsp;&nbsp;&nbsp;&nbsp; [<a href="/static/stat/domain_cpd_rank.htm">Cached Version</a>]</li>
+</ol>
+<p>Top (Country) Level Domain Ranking</p>
+<ol>
+  <li><a href="tld_ndocs_rank/">Top Level Domain Ranking by Number of Documents</a> &nbsp;&nbsp;&nbsp;&nbsp; [<a href="/static/stat/tld_ndocs_rank.htm">Cached Version</a>]</li>
+  <li><a href="tld_ncites_rank/">Top Level Domain Ranking by Number of Citations</a> &nbsp;&nbsp;&nbsp;&nbsp; [<a href="/static/stat/tld_ncites_rank.htm">Cached Version</a>]</li>
+  <li><a href="tld_cpd_rank/">Top Level Domain Ranking by Citation Number Per Document</a> &nbsp;&nbsp;&nbsp;&nbsp; [<a href="/static/stat/tld_cpd_rank.htm">Cached Version</a>]</li>
+</ol>
+
+{% endblock %}

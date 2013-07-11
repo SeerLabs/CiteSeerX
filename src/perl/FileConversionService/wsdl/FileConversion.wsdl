@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+  targetNamespace="http://citeseerx.org/fileConversion/wsdl"
+  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://citeseerx.org/fileConversion/wsdl"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <wsdl:message name="extractTextRequest">
+    <wsdl:part name="filePath" type="xsd:string" />
+    <wsdl:part name="repositoryID" type="xsd:string" />
+  </wsdl:message>
+
+  <wsdl:message name="extractTextResponse">
+    <wsdl:part name="filePath" type="xsd:string" />
+    <wsdl:part name="conversionTrace" type="xsd:string" />
+  </wsdl:message>
+
+  <wsdl:message name="FileConversionFault">
+    <wsdl:part name="message" type="xsd:string" />
+  </wsdl:message>
+
+  <wsdl:portType name="FileConversionPT">
+    <wsdl:operation name="extractText">
+      <wsdl:input message="tns:extractTextRequest" />
+      <wsdl:output message="tns:extractTextResponse" />
+      <wsdl:fault name="FileConversionFault"
+                  message="tns:FileConversionFault" />
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="SOAPBinding" type="tns:FileConversionPT">
+    <soap:binding style="rpc"
+                  transport="http://schemas.xmlsoap.org/soap/http" />
+      <wsdl:operation name="extractText">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input>
+          <soap:body use="encoded"
+                     namespace="urn:FileConverter"
+                     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </wsdl:input>
+        <wsdl:output>
+          <soap:body use="encoded" namespace="urn:FileConverter"
+                     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </wsdl:output>
+      </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="FileConversionService">
+    <wsdl:port name="FileConversionPT" binding="tns:SOAPBinding">
+      <soap:address location="http://127.0.0.1:10888/" />
+    </wsdl:port>
+  </wsdl:service>
+
+  <plnk:partnerLinkType name="conversionPartnerLT">
+    <plnk:role name="Converter" portType="tns:FileConversionPT" />
+  </plnk:partnerLinkType>
+
+</wsdl:definitions>

@@ -1,0 +1,8 @@
+applicationContext-mcs-jdbc.xml
+applicationContext-csx-jdbc.xml
+applicationContext-csx-ext-metadata-jdbc.xml
+applicationContext-citegraph-jdbc.xml
+applicationContext-mail.xml
+applicationContext-csxstats-jdbc.xml
+applicationContext-updates.xml
+applicationContext-mcs-updates.xml

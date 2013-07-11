@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+  targetNamespace="http://citeseerx.org/algorithms/svm-header-parse/wsdl"
+  xmlns:ens="http://citeseerx.org/algorithms/svm-header-parse/xsd/error-messages"
+  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://citeseerx.org/algorithms/svm-header-parse/wsdl"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <wsdl:message name="parseHeaderRequest">
+    <wsdl:part name="filePath" type="xsd:string" />
+    <wsdl:part name="repositoryID" type="xsd:string" />
+  </wsdl:message>
+
+  <wsdl:message name="parseHeaderResponse">
+    <wsdl:part name="headerInfo" type="xsd:string" />
+  </wsdl:message>
+
+  <wsdl:message name="SVMHeaderParseFault">
+    <wsdl:part name="message" type="xsd:string" />
+  </wsdl:message>
+
+  <wsdl:portType name="SVMHeaderParsePT">
+    <wsdl:operation name="parseHeader">
+      <wsdl:input message="tns:parseHeaderRequest" />
+      <wsdl:output message="tns:parseHeaderResponse" />
+      <wsdl:fault name="SVMHeaderParseFault"
+                  message="tns:SVMHeaderParseFault" />
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="SOAPBinding" type="tns:SVMHeaderParsePT">
+    <soap:binding style="rpc"
+                  transport="http://schemas.xmlsoap.org/soap/http" />
+      <wsdl:operation name="parseHeader">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input>
+          <soap:body use="encoded"
+                     namespace="urn:Parser"
+                     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </wsdl:input>
+        <wsdl:output>
+          <soap:body use="encoded" namespace="urn:Parser"
+                     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </wsdl:output>
+      </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="SVMHeaderParseService">
+    <wsdl:port name="SVMHeaderParsePT" binding="tns:SOAPBinding">
+      <soap:address location="http://130.203.152.158:40000/" />
+    </wsdl:port>
+  </wsdl:service>
+
+  <plnk:partnerLinkType name="parsePartnerLT">
+    <plnk:role name="Parser" portType="tns:SVMHeaderParsePT" />
+  </plnk:partnerLinkType>
+
+</wsdl:definitions>

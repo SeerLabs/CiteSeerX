@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:tr="http://citeseerx.psu.edu/taskregistry"
+  targetNamespace="http://citeseerx.psu.edu/serviceregistration"
+  xmlns="http://citeseerx.psu.edu/serviceregistration"
+  elementFormDefault="qualified">
+  
+  <xs:import namespace="http://citeseerx.psu.edu/taskregistry"
+    schemaLocation="taskregistry.xsd" />
+    
+  <xs:element name="ServiceRegistration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ServerConfiguration" type="ServerConfigType"
+                    minOccurs="1" maxOccurs="1" />
+        <xs:element ref="tr:TaskRegistry" minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:complexType name="ServerConfigType">
+    <xs:sequence>
+      <xs:element name="ReturnAddress" type="xs:string"
+                  minOccurs="1" maxOccurs="1" />
+      <xs:element name="ServerPort" type="xs:integer"
+                  minOccurs="1" maxOccurs="1" />
+      <xs:element name="ServerType" type="ObjectServerType"
+                  minOccurs="1" maxOccurs="1" />
+      <xs:element name="Compressed" type="xs:boolean"
+                  minOccurs="1" maxOccurs="1" />
+      <xs:element name="CompressedBlockSize" type="xs:integer"
+                  minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="ObjectServerType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BYTE_STREAM" />
+      <xs:enumeration value="XSTREAM" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+</xs:schema>

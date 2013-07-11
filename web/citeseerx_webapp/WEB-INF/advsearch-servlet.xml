@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/csx/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+  
+  <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="mappings">
+      <props>
+        <prop key="/advanced_search">advSearchController</prop>
+      </props>
+    </property>
+  </bean>
+  
+  <bean id="advSearchValidator" class="edu.psu.citeseerx.web.domain.logic.AdvancedSearchValidator"/>
+  
+  <bean id="advSearchController" class="edu.psu.citeseerx.web.AdvancedSearchFormController">
+    <property name="validator" ref="advSearchValidator"/>
+    <property name="successView" value="advanced_search"/>
+  </bean>
+    
+</beans>

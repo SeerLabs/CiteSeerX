@@ -1,0 +1,9 @@
+22 fax
+17 tel
+12 phone
+3 tel usa
+3 usa
+1 tel int
+1 int
+1 telephone
+1 voice

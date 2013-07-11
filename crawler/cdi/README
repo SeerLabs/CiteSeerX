@@ -1,0 +1,127 @@
+new features in cde-5:
+(1) use a GUI interface to control the parameters and exporter 
+    operations.
+(2) add a crawler scheduler: generate a list of urls for crawl
+    designed for CiteSeerX crawler
+
+differences between parenturl.revised.csv.dat and parenturl.revised.v2.csv.dat
+the first one only considers the TOTAL number of crawled documents while the 
+second one considers the TOTAL number of ingested documents. In other words,
+the second file addresses the USEFUL documents for each parent url and sorted
+by the number of documents. 
+
+But this does not consider duplications,i.e., files could be duplicated. 
+To identify duplication, we use the SHA1 value as an indicator. We allow
+the same paper to be crawled from different webpage, but we do not count the 
+same paper to be crawled from the same webpage. 
+
+For example, if we find the following papers:
+paper            sha1       parenturl
+web-crawling.pdf 1111111111 http://www.cmu.edu/faculty/jwu.html
+web-crawling.pdf 1111111111 http://www.cmu.edu/faculty/jwu.html
+web-crawling.pdf 1111111111 http://www.harvard.edu/faculty/jwu.html
+
+We will account 1 paper from each url. 
+
+When crawling this whitelist, we may need to consider the effect of
+robots.txt. Because we do not want to go to a website that disallows
+us from crawling. For example, the top ranked parent url is
+
+Another effect we want to consider is the robot
+http://the-tech.mit.edu/V111/N39/
+Their robots.txt file actually does not allow us to crawl their site:
+
+User-agent: citeseerxbot
+Disallow: /
+
+So I guess although there are a lot of documents from this site, 
+most of them were crawled long time ago (before they updated their
+robots exclusion policy). 
+
+But at this time, we still keep these websites as the second version
+of the whitelist. 
+
+A summary of the second version of whitelist:
+* containing 239,878 parenturls
+* ranked by the number of ingested documents, so it represent the 
+  order of most resourceful (in the past) parent urls we have ever
+  visited
+* tested to be alive
+* tested not in our blacklist
+* at least one useful document retrieved 
+
+future improvement of this whitelist
+* time issue is not considered
+  although some urls contains a large number of documents, they 
+  could be downloaded a long time ago, so it does not reflect
+  the current (contemporary) resource status of the web.
+* some site may updated their robots.txt which disallows us
+  to crawl and these website should be removed form this list 
+  in the future
+* discovering more parent urls from the existing parent urls.
+  (1) replace values in the url 
+      for example: 
+      http://ptolemy.eecs.berkeley.edu/publications/papers/94/decimator_design/
+      we may consider to replace "94" with other number (95 for example).
+  (2) go to url patterns
+      for example: 
+      just go to:
+      http://ptolemy.eecs.berkeley.edu/publications/papers/
+  (3) relax some crawling restrictions
+      e.g., maximum url length: previously 255, increase it to 384
+      papers in directscience.com may have URLs longer than 255 characters
+      so that we cannot crawl. 
+* the next version of whitelist will also include a foreign key column
+  which provides the id in the parent url table, which is used in the
+  crawl scheduler.   
+
+* Installation 
+  (+) You must create database manually first to your SQL server. 
+      An example is 
+      mysql> CREATE DATABASE `crawl_database` DEFAULT CHARACTER SET utf8;
+      Note that the CHARACTER SET should be set to utf8 so as to be consistent
+      with the character set in the table definitions.  
+
+  (+) You must make sure that you have full permission to the repository 
+      directory. 
+
+  (+) The PDf file is written first and then the .met file. the text file is the
+      last file to be written into the repository. 
+
+* New Features on CDE-V5 (JWu, 2012-06-28)
+  (*) Add a log parser to support FTP downloads from PUBMED: 
+      ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/
+  (*) Deprecated the cde.conf file and start using the runconfig.py.
+      Only two configuration files: runconfig.py and setting.py, the latter
+      of which is for django. 
+  (*) Add a configuration checker 
+  (*) Add a timer to calculate the total running time
+  (*) Replace the old counters with a new counter object, which allows
+      the user to add counters without editing the counter class 
+      source code. This counter class also has a function which can print
+      all counters in a table format.  
+  (*) Add a infoprint.py module which can print error/warning/information
+      in a user-friendly format. This module will print in color depending 
+      on the message type. 
+  (*) Deprecated the models.py so that all database operations are 
+      implemented by the cursor object. 
+  (*) Deprecated the checkdb() function in output.py module. 
+      Add a crawldb.py module which can create tables if the do not exist,
+      and check if a record exists in a database table by multiple 
+      keys (ID or md5). 
+  (*) Generate a mapping file if only export files. 
+  (*) Add functionalities to handle gzipped files, automatically looking 
+      for pdf files recursively after unzipping them. 
+  (*) Minor changes to the coding and output formats. 
+
+* New Features in CDI (renamed after CDE), change exporter to importer.
+  version 6. 
+  (*) log files sometimes need to be broken down to small pieces. 
+      although in principle, you can name the log file with name give, 
+      the naming convension I was using is 
+      If the original log file is crawl.log, the new log file is
+      crawl[start line]-[end line].log
+      [start line] or [end llne] have the same formats.
+      For example, [start line] = 1 or 1k1 or 1m1, means the file 
+      contains from the first line, the 1001st line and the 1000001 line.
+      The same for the [end line].

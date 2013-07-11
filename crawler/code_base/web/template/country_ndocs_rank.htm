@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% block title %}Country Ranking by Number of Documents{% endblock %}
+
+{% block extra-head %}
+<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+<script type="text/javascript"> 
+	google.load('visualization', '1', {'packages':['geomap']});
+	
+	google.setOnLoadCallback(drawChart);
+	
+	function drawChart() {		
+		var query = new google.visualization.Query('/ndocsdata/');
+		
+		var data = new google.visualization.DataTable();
+      
+	  	data.addRows({{ country_count }});
+		
+      	data.addColumn('string', 'Country');
+      	data.addColumn('number', 'Log(Number of Documents)');
+	  
+	{% for x in country_list %}		
+      	data.setValue({{ forloop.counter0 }}, 0, '{{ x.country }}');
+	  	data.setValue({{ forloop.counter0 }}, 1, {{ x.log_ndocs }});
+	{% endfor %}
+		  
+		var options = {};
+      	options['region'] = 'world';
+      	options['dataMode'] = 'regions';
+	  	options['width'] = 650;	
+	  
+      	var chart = new google.visualization.GeoMap(document.getElementById('country_ndocs_div'));
+      	chart.draw(data, options);
+				
+		google.visualization.events.addListener(
+			chart,
+			'regionClick',
+			function(e) { 
+				window.location.replace("/country_ndocs_rank/?cc=" + e['region']);
+			}
+		); 
+		
+	{% if detail_country %}		
+		
+		var data = new google.visualization.DataTable();
+		
+		data.addRows({{ domain_count }});
+		
+      	data.addColumn('number', 'LATITUDE', 'Latitude');
+		data.addColumn('number', 'LONGITUDE', 'Longitude');
+		data.addColumn('number', 'Number of Documents', 'Value'); // Won't use this column, but still must define it.
+		data.addColumn('string', 'HOVER', 'HoverText');
+		
+	{% for x in domain_list %}		
+      	data.setValue({{ forloop.counter0 }}, 0, {{ x.latitude }});
+	  	data.setValue({{ forloop.counter0 }}, 1, {{ x.longitude }});
+		data.setValue({{ forloop.counter0 }}, 2, {{ x.ndocs }});
+		data.setValue({{ forloop.counter0 }}, 3, '{{ x.domain }}');
+	{% endfor %}		
+		
+		var options = {};
+      	options['region'] = '{{ detail_country }}';
+      	options['colors'] = [0xFF8747, 0xFFB581, 0xc06000]; //orange colors
+      	options['dataMode'] = 'markers';
+	  	options['width'] = 650;
+				
+      	var chart = new google.visualization.GeoMap(document.getElementById('domain_in_country'));
+      	chart.draw(data, options);		
+	{% endif %}
+	
+	}	
+		
+</script> 
+{% endblock %}
+
+{% block content %}
+
+<h3 class="alt">Country Ranking by Number of Documents</h3>
+<br />
+
+<div class="span-6 colborder">
+
+<table width="189" border="1">
+  <tr>
+    <td width="60" nowrap="nowrap" bgcolor="#CCCCCC">Country</td>
+    <td width="120" nowrap="nowrap" bgcolor="#CCCCCC"># of Documents </td>
+  </tr>
+  {% for x in country_list %}
+  <tr>
+    <td><a href="/country_ndocs_rank/?cc={{ x.country }}">{{ x.country }}</a></td>
+    <td>{{ x.ndocs }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+</div>
+
+<div class="span-17 last">
+	<h6>Showing {{ country_count }} Countries</h6>
+	<div id="country_ndocs_div"></div> 
+
+	{% if detail_country %}
+	
+		<hr class="space"/>
+		<h6> Showing distribution of top {{ domain_count }} domains in <span style="color:#FF0000">{{ detail_country }}</span> <br />
+		(Total: {{ total_domain_count }} domains)
+		</h6>
+		<div id="domain_in_country"></div> 
+	{% endif %}
+
+</div>
+
+{% endblock %}

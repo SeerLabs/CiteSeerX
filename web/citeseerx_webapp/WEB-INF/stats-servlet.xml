@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/csx/stats/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+  
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+  
+  <bean name="/articles" class="edu.psu.citeseerx.web.DocumentStatController">
+    <property name="statDir" value="/WEB-INF/stats"/>
+    <property name="pageSize" value="100"/>
+    <property name="maxResults" value="10000"/>
+  </bean>
+  
+  <bean name="/citations" class="edu.psu.citeseerx.web.DocumentStatController">
+    <property name="statDir" value="/WEB-INF/stats"/>
+    <property name="pageSize" value="100"/>
+    <property name="maxResults" value="10000"/>
+    <property name="defaultType" value="citations"/>
+  </bean>
+
+  <bean name="/authors" class="edu.psu.citeseerx.web.AuthorStatController">
+    <property name="statDir" value="/WEB-INF/stats"/>
+    <property name="pageSize" value="200"/>
+    <property name="maxResults" value="10000"/>
+  </bean>
+
+  <bean name="/venues" class="edu.psu.citeseerx.web.VenueStatController">
+    <property name="statDir" value="/WEB-INF/stats"/>
+  </bean>
+  
+</beans>

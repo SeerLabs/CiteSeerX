@@ -1,0 +1,9 @@
+# all cron jobs
+# NOTE: YOU CANNOT GET THIS CRON FILE WORKING BY JUST EDITING THIS FILE
+# YOU NEED TO RUN "crontab -e" TO EDIT THE CRONTAB FILE 
+SHELL=/bin/bash
+PATH=/usr/local/bin
+MAILTO="jxw394@ist.psu.edu"
+#@weekly /usr/local/bin/python2.6 csxbot_code_base/bin/schedule.py 1>/tmp/cron.stdout.csxbot 2>/tmp/cron.stderr.csxbot
+# every two days: 0 0 */2 * *
+0 0 */2 * * /usr/local/bin/python2.6 csxbot_code_base/bin/schedule.py 1>/tmp/cron.stdout.csxbot 2>/tmp/cron.stderr.csxbot

@@ -1,0 +1,146 @@
+<project name="CiteSeerX" default="dist" basedir=".">
+
+  <description>
+    CiteSeerX build script - IGC.
+  </description>
+
+  <path id="project.class.path">
+	<!-- <pathelement path="${classpath}" /> -->
+  	<pathelement path="${java.class.path}" />
+    <fileset dir="lib">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+
+  <property name="src" location="src" />
+  <property name="build" location="build" />
+  <property name="dist" location="dist" />
+  <property name="test" location="test" />
+  <property name="servdist" location="${dist}/services" />
+  <property name="docs" location="doc"/>
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="makedist">
+    <tstamp/>
+    <mkdir dir="${dist}"/>
+  </target>
+
+  <target name="compile" depends="init"
+      description="compile all java source files">
+    <javac srcdir="${src}/java" destdir="${build}"
+           debug="on" debuglevel="lines,vars,source">
+      <classpath refid="project.class.path" />
+    </javac>
+  </target>
+
+  <target name="buildtests" depends="init" description="compile all java test files">
+  	<javac srcdir="${test}/java" destdir="${build}" debug="on" debuglevel="lines,vars,source">
+  	  <classpath refid="project.class.path" />
+  	</javac>
+  </target>
+  
+  <target name="tests" depends="compile,buildtests" description="run tests">
+  	<junit printsummary="on" fork="false" haltonfailure="false" showoutput="true">
+  		<classpath refid="project.class.path" />
+  		<formatter type="brief" usefile="false" />
+  		<batchtest>
+  		  <fileset dir="${build}">
+  		  	<include name="**/*DAOTests.class" />
+  		  </fileset>
+  		</batchtest>
+  	</junit>
+  </target>
+ 
+  <target name="perl" depends="makedist"
+      description="copy perl utilities into working dist versions">
+    <mkdir dir="${servdist}"/>
+    <copy todir="${servdist}/ParsCit">
+      <fileset dir="src/perl/ParsCit"/>
+    </copy>
+    <copy todir="${servdist}/ParsCit/lib/CSXUtil">
+      <fileset dir="src/perl/CSXUtil"/>
+    </copy>
+    <copy todir="${servdist}/HeaderParseService">
+      <fileset dir="src/perl/HeaderParseService"/>
+    </copy>
+    <copy todir="${servdist}/HeaderParseService/lib/CSXUtil">
+      <fileset dir="src/perl/CSXUtil"/>
+    </copy>
+    <copy todir="${servdist}/FileConversionService">
+      <fileset dir="src/perl/FileConversionService"/>
+    </copy>
+    <copy todir="${servdist}/FileConversionService/lib/CSXUtil">
+      <fileset dir="src/perl/CSXUtil"/>
+    </copy>
+    <copy todir="${servdist}/DocFilter">
+      <fileset dir="src/perl/DocFilter"/>
+    </copy>
+    <copy todir="${servdist}/DocFilter/lib/CSXUtil">
+      <fileset dir="src/perl/CSXUtil"/>
+    </copy>
+  </target>
+
+  <target name="dist" depends="compile,perl"
+      description="generate the distribution">
+    <mkdir dir="${dist}/lib"/>
+    <mkdir dir="${dist}/webapp"/>
+  	<mkdir dir="${dist}/oai-webapp"/>
+    <jar jarfile="${dist}/lib/citeseerx.jar"
+      basedir="${build}"/>
+    <copy file="${dist}/lib/citeseerx.jar"
+      tofile="web/citeseerx_webapp/WEB-INF/lib/citeseerx.jar"/>
+    <copy file="conf/csx.config.properties"
+      tofile="web/citeseerx_webapp/WEB-INF/csx.config.properties"/>
+  	<copy file="web/citeseerx_webapp/WEB-INF/messages.properties"
+  	  tofile="web/citeseerx_webapp/WEB-INF/classes/messages.properties"/>
+  	<copy file="web/citeseerx_webapp/WEB-INF/labels.properties"
+  	  tofile="web/citeseerx_webapp/WEB-INF/classes/labels.properties"/>
+  	<copy file="${dist}/lib/citeseerx.jar"
+  	      tofile="web/citeseerx_oaiwebapp/WEB-INF/lib/citeseerx.jar"/>
+  	<copy file="web/citeseerx_oaiwebapp/WEB-INF/views.properties"
+  	  tofile="web/citeseerx_oaiwebapp/WEB-INF/classes/views.properties"/>
+    <jar jarfile="${dist}/webapp/citeseerx.war"
+      basedir="web/citeseerx_webapp"/>
+  	<jar jarfile="${dist}/oai-webapp/citeseerx-oai.war"
+  	      basedir="web/citeseerx_oaiwebapp"/>
+  </target>
+
+  <target name="doiserver" depends="compile"
+      description="build the DOIServer Axis service">
+    <copy todir="${build}/META-INF">
+      <fileset dir="web/doiserver/META-INF"/>
+    </copy>
+    <mkdir dir="${dist}/services/DOIServer"/>
+    <jar jarfile="${dist}/services/DOIServer/DOIServer.aar"
+      basedir="${build}"/>
+    <delete dir="${build}/META-INF"/>
+  </target>
+
+  <target name="heritrix" depends="dist"
+      description="Build and copy citeseerx jar into Heritrix distro">
+    <copy file="${dist}/lib/citeseerx.jar"
+      tofile="heritrix/lib/citeseerx.jar"/>
+  </target>
+
+  <target name="javadoc" description="build javadoc">
+    <javadoc packagenames="edu.psu.citeseerx.*"
+      sourcepath="${src}/java" destdir="${docs}/javadoc"
+      version="true" author="true" includenosourcepackages="true"
+      windowtitle="CiteSeerX API">
+      <classpath refid="project.class.path" />
+    </javadoc>
+  </target>
+
+  <target name="clean" description="clean up">
+    <delete dir="${build}" />
+    <delete dir="${dist}" />
+    <delete dir="${docs}/javadoc"/>
+    <delete file="web/citeseerx_webapp/WEB-INF/lib/citeseerx.jar"/>
+  	<delete file="web/citeseerx_oaiwebapp/WEB-INF/lib/citeseerx.jar"/>
+  </target>
+
+</project>

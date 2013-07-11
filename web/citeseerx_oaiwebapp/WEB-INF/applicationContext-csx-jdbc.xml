@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Application context definition for CiteSeerX using JDBC.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+  <!-- =================== GENERAL DEFS ==================== -->
+  
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="/WEB-INF/csx-oai.config.properties"/>
+  </bean>
+  
+  <bean id="csxDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.csx.driverClassName}"/>
+    <property name="url" value="${jdbc.csx.url}"/>
+    <property name="username" value="${jdbc.csx.username}"/>
+    <property name="password" value="${jdbc.csx.password}"/>
+  </bean>
+  
+  <bean id="repositoryMap" class="edu.psu.citeseerx.dao2.RepositoryMap">
+    <property name="repositoryMap">
+      <map>
+        <entry key="rep1" value="/data/repositories/rep1"/>
+      </map>
+    </property>
+  </bean>
+        
+
+
+  <!-- =================== BUSINESS OBJECT DEFS ==================== -->
+  
+  <bean id="ackDAO" class="edu.psu.citeseerx.dao2.AckDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="adminDAO" class="edu.psu.citeseerx.dao2.AdminDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="authorDAO" class="edu.psu.citeseerx.dao2.AuthorDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="citationDAO" class="edu.psu.citeseerx.dao2.CitationDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="citeChartDAO" class="edu.psu.citeseerx.dao2.CiteChartDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="docDAO" class="edu.psu.citeseerx.dao2.DocumentDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="fileDAO" class="edu.psu.citeseerx.dao2.FileDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="fileSysDAO" class="edu.psu.citeseerx.dao2.FileSysDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+    <property name="repositoryMap" ref="repositoryMap"/>
+  </bean>
+
+  <bean id="hubDAO" class="edu.psu.citeseerx.dao2.HubDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="keywordDAO" class="edu.psu.citeseerx.dao2.KeywordDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="legacyIDDAO" class="edu.psu.citeseerx.dao2.LegacyIDDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="tagDAO" class="edu.psu.citeseerx.dao2.TagDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="versionDAO" class="edu.psu.citeseerx.dao2.VersionDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+  
+  <bean id="externalLinkDAO" class="edu.psu.citeseerx.dao2.ExternalLinkDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+  
+  <bean id="tableDAO" class="edu.psu.citeseerx.dao2.TableDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+
+  <bean id="uniqueAuthDAO" class="edu.psu.citeseerx.dao2.UniqueAuthorDAOImpl" lazy-init="true">
+  	<property name="dataSource" ref="csxDataSource"/>
+  </bean>  
+
+  <bean id="citeseerx" class="edu.psu.citeseerx.dao2.logic.CSXDAOImpl">
+	<property name="ackDAO" ref="ackDAO"/>
+	<property name="adminDAO" ref="adminDAO"/>
+	<property name="authDAO" ref="authorDAO"/>
+	<property name="citeDAO" ref="citationDAO"/>
+	<property name="citeChartDAO" ref="citeChartDAO"/>
+	<property name="docDAO" ref="docDAO"/>
+	<property name="fileDAO" ref="fileDAO"/>
+	<property name="fileSysDAO" ref="fileSysDAO"/>
+	<property name="hubDAO" ref="hubDAO"/>
+	<property name="keywordDAO" ref="keywordDAO"/>
+	<property name="legacyIDDAO" ref="legacyIDDAO"/>
+	<property name="tagDAO" ref="tagDAO"/>
+	<property name="versionDAO" ref="versionDAO"/>
+	<property name="externalLinkDAO" ref="externalLinkDAO"/>
+	<property name="tableDAO" ref="tableDAO"/>
+	<property name="uniqueAuthDAO" ref="uniqueAuthDAO"/>
+  </bean>
+
+
+  <!-- =================== TRANSACTION CONFIGURATION ==================== -->
+  
+  <tx:advice id="csxTxAdvice" transaction-manager="csxTxManager">
+    <tx:attributes>
+      <tx:method name="get*" read-only="true"/>
+      <tx:method name="is*" read-only="true"/>
+      <tx:method name="load*" read-only="true"/>
+      <tx:method name="*"/>
+    </tx:attributes>
+  </tx:advice>
+  
+  <aop:config>
+    <aop:pointcut id="csxOperation" expression="execution(* edu.psu.citeseerx.dao2.logic.CSXDAO.*(..))"/>
+    <aop:advisor advice-ref="csxTxAdvice" pointcut-ref="csxOperation"/>
+  </aop:config>
+  
+  <bean id="csxTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="csxDataSource"/>
+  </bean>
+  
+  <bean id="citeGraphDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.citegraph.driverClassName}"/>
+    <property name="url" value="${jdbc.citegraph.url}"/>
+    <property name="username" value="${jdbc.citegraph.username}"/>
+    <property name="password" value="${jdbc.citegraph.password}"/>
+  </bean>
+
+</beans>

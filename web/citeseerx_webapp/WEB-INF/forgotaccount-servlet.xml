@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/myciteseer/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+  
+  <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="mappings">
+      <props>
+        <prop key="/forgotaccount">forgottenAccountController</prop>
+      </props>
+    </property>
+  </bean>
+  
+  <bean id="forgottenAccountController" class="edu.psu.citeseerx.myciteseer.web.ForgottenAccountController">
+    <property name="mailManager" ref="mailManager"/>
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="saltSource" ref="saltSource"/>
+    <property name="passwordEncoder" ref="passwordEncoder"/>
+  </bean>
+  
+</beans>

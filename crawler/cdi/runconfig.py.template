@@ -1,0 +1,69 @@
+# Django setting module 
+django_settings_module = 'settings'
+#---------#
+# logfile #
+#---------#
+# arxiv dataset
+logfile = 'arxiv.txt'
+# pubmet dataset
+#logfile = 'randomfile-100-pubmed.txt'
+# submission dataset
+# process log directory: where cde log files are saved
+cdelogdir = 'log/'
+# blacklist file
+blacklistfile = 'black_list.dat'
+#------------------#
+# crawler log parer#
+#------------------#
+# log parser for med pub data downloaded by FTP in May,2012
+#logparser = 'logparsers.PMC'
+logparser = 'logparsers.ARXIV'
+# logparser can write the parsing results into a summary file
+logsummaryfile = cdelogdir+'logsummary_arxiv.log'
+# running summary, basically re-print the counter table when running finishes
+runsummaryfile = cdelogdir+'runsummary_arxiv.log'
+
+#----------------------------------------------------
+# inputdir: directory where documents are downloaded
+#----------------------------------------------------
+# Heritrix crawl to submission URLs
+#inputdir = '/export/csxcrawl/heritrix-3.1.0/mirror/'
+#
+# Arxiv papers
+inputdir = '/export/csxcrawl/arxiv/pdf/'
+# 
+# PubMed papers
+#inputdir = '/export/csxcrawl/pmc/'
+# directory where documents are exported (add the "/")
+outputdir = '/export/csxcrawl/repository/'
+#outputdir = 'rep/'
+# directory of text files extracted by PDFBox or ps2ascii
+tempdir = 'temp/'
+# crawler name, e.g., Heritrix, SYZ, lftp,ftp
+crawler = 'ftp'
+# saver name, e.g, mirror, warc, arc, lftp
+saver = 'ftp'
+# accepted document types. The doc type filter is always applied
+allow_doc_type = ['application/pdf','application/postscript']
+# application/vnd.ms-powerpoint
+# toggle: document content filter. False = do not apply this filter
+toggle_doc_content_filter = False
+# toggle: save into db, False = do not save to db
+toggle_save_to_db = True
+# toggle: save document separately naming independent of db
+toggle_save_doc_separate = False
+# PDFBox jar file full path
+pdfboxpath = '/path/to/pdfbox.version.jar'
+# ps2ascii command path 
+ps2asciipath = '/usr/bin/ps2ascii'
+# table name for the document
+dbt_document = 'document_table'
+# table name for the parenturls
+dbt_parenturl = 'parenturl_table'
+# default batch number for the in submission_id column of document_table
+# -1 for scheduled crawl, other negative numbers for special inputs
+# e.g., -2 for ftp download from PMC, see crawler manual for details
+# e.g., -3 for ftp download from Arxiv, see crawler manual for details
+batch = -3
+# maximum length of the URL (including)
+urlmaxlen = 255

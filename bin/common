@@ -1,0 +1,57 @@
+#
+# CSX Utility Harness
+#
+#
+# IGC
+#
+
+DEFAULT_JAVA_HOME="/usr/java/jdk1.6.0_03_x64"
+
+if [ ! $JAVA_HOME ]; then
+
+    # Allow JAVA_HOME default - should be set by user.
+    JAVA_HOME=$DEFAULT_JAVA_HOME
+
+fi
+
+if [ ! $CSX_HOME ]; then
+
+    # If the CSX_HOME variable is not set, let's assume
+    # this script is being called from the bin directory
+    # of the utility distribution.
+
+    PWD=`pwd`
+    export CSX_HOME=`echo $PWD | sed 's/^\(.*\)\/.*/\1/'`
+
+fi
+
+export CSX_LIB="$CSX_HOME/lib"
+export CSX_BOOT="$CSX_HOME/bootstrap/$BOOT_FILE"
+export CSX_CONF="$CSX_HOME/conf"
+export CSX_DIST="$CSX_HOME/dist"
+export JAVA_OPTS="-Xms1g -Xmx1g"
+# Set the Java classpath
+
+CSX_CLASSPATH="$CSX_CONF";
+for file in `ls $CSX_DIST/lib`; do
+    CSX_CLASSPATH="$CSX_CLASSPATH:$CSX_DIST/lib/$file"
+done
+for file in `ls $CSX_LIB`; do
+    ext=${file##*.}
+    if [ "jar" = "$ext" ]; then
+        CSX_CLASSPATH="$CSX_CLASSPATH:$CSX_LIB/$file"
+    fi
+done
+
+export CSX_CLASSPATH="$CSX_CLASSPATH:$CLASSPATH"
+
+echo $CSX_CONF
+
+if [ -z "$JAVA_OPTS" ]; then
+    export JAVA_OPTS=""
+fi
+
+$JAVA_HOME/bin/java -cp $CSX_CLASSPATH \
+    $JAVA_OPTS \
+    -Dcsx.conf=$CSX_CONF -Dcsx.boot=$CSX_BOOT \
+    $LOADER $@

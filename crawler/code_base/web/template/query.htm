@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Query Document{% endblock %}
+
+{% block content %}
+
+Please enter the URL prefix to match crawled documents
+<br />
+
+<form id="form1" name="form1" method="post" action="/query/">
+ 
+  <table width="442" border="0">
+    <tr>
+      <td>Url Prefix:</td>
+      <td><input name="url_prefix" type="text" size="50" value="{{ url_prefix }}"/></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input type="submit" name="Submit" value="Search" /></td>
+    </tr>
+  </table>
+</form>
+
+<span class="style1">{{ msg }}</span><br />
+ {% if show_results %}
+
+Found {{doc_count}} documents. Showing top 100... <br />
+<br />
+<table width="1000" border="0" cellspacing="1" bgcolor="#666666">
+  <tr>
+    <td width="600" nowrap="nowrap" bgcolor="#CCCCCC">Url</td>
+    <td width="150" nowrap="nowrap" bgcolor="#CCCCCC">Discover Date</td>
+    <td width="150" nowrap="nowrap" bgcolor="#CCCCCC">Update Date</td>
+    <td width="100" nowrap="nowrap" bgcolor="#CCCCCC">State</td>
+  </tr>
+  {% for x in docs %}
+  <tr>
+    <td bgcolor="#FFFFFF">{{ x.url }}</td>
+    <td bgcolor="#FFFFFF">{{ x.discover_date }}</td>
+    <td bgcolor="#FFFFFF">{{ x.update_date }}</td>
+    <td bgcolor="#FFFFFF">{{ x.state}}</td>
+  </tr>
+  {% endfor %}
+</table>
+<br />
+
+{% endif %}
+
+{% endblock %}

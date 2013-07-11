@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="/WEB-INF/csx.config.properties"/>
+  </bean>
+  
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/csx/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+
+<!--  
+  <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <property name="mappings">
+      <props>
+        <prop key="/authmerge">authmergeController</prop>
+      </props>
+    </property>
+  </bean>
+  <bean id="authmergeController" class="edu.psu.citeseerx.web.AuthMergeController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="solrAuthorSelectUrl" value="${solr.selectAuthorUrl}"/>
+    <property name="formView" value="authMerge"/>
+    <property name="successView" value="successAuthMerge"/>
+  </bean>
+-->
+
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+
+  <bean name="/authmerge" class="edu.psu.citeseerx.web.AuthMergeController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="solrAuthorSelectUrl" value="${solr.selectAuthorUrl}"/>
+    <property name="formView" value="authMerge"/>
+    <property name="successView" value="successAuthMerge"/>
+  </bean>  
+
+</beans>

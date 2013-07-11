@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+  targetNamespace="http://citeseerx.org/algorithms/docfilter/wsdl"
+  xmlns:ens="http://citeseerx.org/algorithms/docfilter/xsd/error-messages"
+  xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://citeseerx.org/algorithms/docfilter/wsdl"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <wsdl:message name="filterRequest">
+    <wsdl:part name="fileID" type="xsd:string" />
+    <wsdl:part name="repositoryID" type="xsd:string" />
+  </wsdl:message>
+
+  <wsdl:message name="filterResponse">
+    <wsdl:part name="status" type="xsd:integer" />
+    <wsdl:part name="msg" type="xsd:string" />
+  </wsdl:message>
+
+  <wsdl:message name="DocFilterFault">
+    <wsdl:part name="message" type="xsd:string" />
+  </wsdl:message>
+
+  <wsdl:portType name="DocFilterPT">
+    <wsdl:operation name="filter">
+      <wsdl:input message="tns:filterRequest" />
+      <wsdl:output message="tns:filterResponse" />
+      <wsdl:fault name="DocFilterFault"
+                  message="tns:DocFilterFault" />
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="SOAPBinding" type="tns:DocFilterPT">
+    <soap:binding style="rpc"
+                  transport="http://schemas.xmlsoap.org/soap/http" />
+      <wsdl:operation name="filter">
+        <soap:operation soapAction="" style="rpc" />
+        <wsdl:input>
+          <soap:body use="encoded"
+                     namespace="urn:Filter"
+                     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </wsdl:input>
+        <wsdl:output>
+          <soap:body use="encoded" namespace="urn:Filter"
+                     encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+        </wsdl:output>
+      </wsdl:operation>
+  </wsdl:binding>
+
+  <wsdl:service name="DocFilterService">
+    <wsdl:port name="DocFilterPT" binding="tns:SOAPBinding">
+      <soap:address location="http://127.0.0.1:10666/" />
+    </wsdl:port>
+  </wsdl:service>
+
+  <plnk:partnerLinkType name="filterPartnerLT">
+    <plnk:role name="Filterer" portType="tns:DocFilterPT" />
+  </plnk:partnerLinkType>
+
+</wsdl:definitions>

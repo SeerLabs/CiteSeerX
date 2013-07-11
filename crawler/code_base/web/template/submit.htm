@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Document{% endblock %}
+
+{% block extra-head %}
+<script type="text/javascript" src="/static/js/jquery.validate.pack.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $("#submit_form").validate();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+
+{% if msg %} 
+<div class="success">
+{{ msg }}
+
+{% if parent %} <br />
+This URL is already in our crawling database and has been crawled before. [ <a href="/tracking/parent/{{parent.id}}">Documents from this URL</a> ] {% endif %}
+{% if old_sub %} <br />
+This URL has already been submitted before. [ <a href="/tracking/sub/{{old_sub.id}}">Documents from this URL</a> ] {% endif %}
+{% if new_sub %} <br />
+Please track the status of this submission here: [ <a href="/tracking/sub/{{new_sub.id}}">Submission Tracking</a> ] {% endif %}
+</div>
+{% endif %}
+
+{% if err %}
+<div class="error">{{ err }} </div>
+{% endif %}
+
+<h3 class="alt">Submit Documents for Crawling</h3>
+
+<form id="submit_form" name="submit_form" method="post" action="/submit/">
+ 
+  <table width="678" border="0">
+    <tr>
+      <td width="7%">Url:</td>
+      <td width="93%"><input name="url" type="text" size="80" class="text required url"/></td>
+    </tr>
+
+    <tr>
+      <td>Email:</td>
+      <td><input name="email" type="text" class="text required email" size="80" /></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><input type="submit" name="Submit" value="Submit" /></td>
+    </tr>
+  </table>
+
+
+</form>
+<br />
+
+{% endblock %}

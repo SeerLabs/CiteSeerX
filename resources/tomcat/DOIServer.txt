@@ -1,0 +1,19 @@
+# This files shows customization people need to do to TOMCAT's server.xml in 
+# order to configure the DOIServer.
+
+# Add the following lines within the <Host> block, editing the bracketed 
+# strings to the appropriate values you specified during database installation
+        <Context path="/axis2" docBase="axis2" debug="5"
+                 reloadable="true" crossContext="true">
+          <Resource name="jdbc/DOIDB"
+                    auth="Container"
+                    type="javax.sql.DataSource"
+                    maxActive="10"
+                    maxIdle="30"
+                    maxWait="10000"
+                    username="[CSX USER]"
+                    password="[CSX PASS]"
+                    driverClassName="com.mysql.jdbc.Driver"
+                    url="jdbc:mysql://[HOST]:3306/csxdoi?autoReconnect=true"
+          />
+        </Context>

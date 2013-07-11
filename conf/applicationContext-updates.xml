@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+
+<beans>
+
+  <!-- =================== GENERAL DEFS ==================== -->
+  
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="classpath:csx.config.properties"/>
+  </bean>
+
+
+  <!-- =================== UPDATER OBJECT DEFS ==================== -->
+
+  <bean id="versionManager" class="edu.psu.citeseerx.updates.VersionManager">
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+
+  <bean id="monitorEventHandler" class="edu.psu.citeseerx.myciteseer.web.subscriptions.MonitorEventHandler">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="mailManager" ref="mailManager"/>
+    <property name="csxUrl" value="${csx.url}"/>
+  </bean>
+  
+  <bean id="dblpExtLinkUpdater" class="edu.psu.citeseerx.updates.external.links.DBLPExternalLinkUpdater">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="CSXEMETADATA" ref="csxemetadata"/>
+    <property name="label" value="${dblp.label}"/>
+  </bean>
+  
+  <bean id="acmExtLinkUpdater" class="edu.psu.citeseerx.updates.external.links.ACMExternalLinkUpdater">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="CSXEMETADATA" ref="csxemetadata"/>
+    <property name="label" value="${acm.label}"/>
+  </bean>
+  
+  <bean id="citeulikeExtLinkUpdater" class="edu.psu.citeseerx.updates.external.links.CiteULikeExternalLinkUpdater">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="CSXEMETADATA" ref="csxemetadata"/>
+    <property name="label" value="${citeulike.label}"/>
+  </bean>
+  
+  <bean id="chartDataBuilder" class="edu.psu.citeseerx.misc.charts.ChartDataBuilderImpl">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+  </bean>
+
+  <bean id="updateManager" class="edu.psu.citeseerx.updates.UpdateManager">
+    <property name="versionManager" ref="versionManager"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citationClusterer" ref="citationClusterer"/>
+    <property name="listeners">
+      <list>
+        <ref local="monitorEventHandler"/>
+        <ref local="dblpExtLinkUpdater"/>
+        <ref local="acmExtLinkUpdater"/>
+        <ref local="citeulikeExtLinkUpdater"/>
+        <ref local="chartDataBuilder"/>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="indexUpdateManager" class="edu.psu.citeseerx.updates.IndexUpdateManager">
+    <property name="solrURL" value="${solr.updateUrl}"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+  </bean>
+
+  <bean id="tableIndexUpdater" class="edu.psu.citeseerx.updates.TableIndexUpdater">
+   <property name="solrURL" value="${solr.updateTableUrl}"/>
+   <property name="CSXDAO" ref="citeseerx"/>
+   </bean>
+
+  <bean id="inferenceUpdater" class="edu.psu.citeseerx.updates.InferenceUpdater">
+    <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="updateManager" ref="updateManager"/>
+  </bean>
+
+  <bean id="statisticsGenerator" class="edu.psu.citeseerx.updates.StatisticsGenerator">
+    <property name="citationStatisticsDAO" ref="citationStats"/>
+    <property name="numArticles" value="10000"/>
+    <property name="numAuthors" value="10000"/>
+    <property name="startingYear" value="1990"/>
+    <property name="outputDir" value="stats"/>
+  </bean>
+
+  <bean id="chartBuilder" class="edu.psu.citeseerx.misc.charts.CiteChartBuilderCD">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="repositoryMap" ref="repositoryMap"/>
+  </bean>
+  
+  <bean id="homePageStatisticsGenerator" class="edu.psu.citeseerx.updates.HomePageStatisticsGenerator">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="outputDir" value="stats"/>
+  </bean>
+
+  <bean id="authorFixer" class="edu.psu.citeseerx.corrections.CorrectAuthors">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="updateManager" ref="updateManager"/>
+    <property name="modelFile" value="${name.model}"/>
+    <property name="similarityFactor" value="0.8"></property>
+  </bean>
+
+  <!-- =================== IMPORTER OBJECT DEFS ==================== -->
+
+  <bean id="citationClusterer" class="edu.psu.citeseerx.citematch.keybased.KeyMatcher">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+  </bean>
+
+  <bean id="fileIngester" class="edu.psu.citeseerx.ingestion.FileSystemIngester">
+    <property name="repositoryMap" ref="repositoryMap"/>
+    <property name="repositoryID" value="rep1"/>
+  </bean>
+
+  <bean id="tableIngester" class="edu.psu.citeseerx.ingestion.TableIngester">
+    <property name="repositoryMap" ref="repositoryMap"/>
+    <property name="repositoryID" value="rep1"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+   </bean>
+
+
+  <bean id="doiClient" class="edu.psu.citeseerx.ingestion.ws.DOIClient">
+    <property name="endpointAddress" value="${doi.endpointAddress}"/>
+    <property name="namespace" value="${doi.namespace}"/>
+  </bean>
+
+  <bean id="documentEntryPoint" class="edu.psu.citeseerx.ingestion.DocumentEntryPoint">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="citationClusterer" ref="citationClusterer"/>
+    <property name="fileIngester" ref="fileIngester"/>
+    <property name="DOIClient" ref="doiClient"/>
+    <property name="inferenceUpdater" ref="inferenceUpdater"/>
+  </bean>
+
+  <bean id="batchIngester" class="edu.psu.citeseerx.ingestion.BatchIngester">
+    <property name="documentEntryPoint" ref="documentEntryPoint"/>
+  </bean>
+
+  <!-- =================== FIXER OBJECT DEFS ==================== -->
+  <bean id="legacyMetadataFixer" class="edu.psu.citeseerx.fixers.LegacyMetadataFixer">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="updateManager" ref="updateManager"/>
+  </bean>
+</beans>

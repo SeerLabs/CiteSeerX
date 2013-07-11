@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  - CiteSeerX web application
+  - Author: Isaac Councill
+  - Author: Juan Pablo Fernandez Ramirez
+  - Version: $$Rev: 1275M $$ $$Date: 2010-08-05 18:48:29 -0400 (Thu, 05 Aug 2010) $$
+  -->
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+
+  <display-name>CiteSeerX</display-name>
+  <description>Personal Portal for Next Generation CiteSeer Research Repository</description>
+  <distributable/>
+  
+  <!-- 
+    - Location of XML files that defines the root application context applied
+    - by ContextLoaderListener.
+    -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      /WEB-INF/applicationContext-mcs-jdbc.xml
+      /WEB-INF/applicationContext-csx-jdbc.xml
+      /WEB-INF/applicationContext-csx-ext-metadata-jdbc.xml
+      /WEB-INF/applicationContext-csx-scheduling.xml
+      /WEB-INF/applicationContext-graph-jdbc.xml
+      /WEB-INF/applicationContext-spring-security.xml
+      /WEB-INF/applicationContext-jms.xml
+      /WEB-INF/applicationContext-mail.xml
+      /WEB-INF/applicationContext-updates.xml
+      /WEB-INF/applicationContext-mcs-authorization.xml
+    </param-value>
+  </context-param>
+  
+  <!-- 
+    - Nothing below here needs to be modified
+    -->
+  
+  <!--
+    - Key of system property that specifies the root directory
+    - of this web app.
+    -->
+  <context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>citeseerx.root</param-value>
+  </context-param>
+  
+  <!--
+    - Location of log4j config file.
+    -->
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>/WEB-INF/log4j.properties</param-value>
+  </context-param>
+  
+  <!-- 
+    - Listeners configuration section
+    -->
+    
+  <!--
+    - Configures log4j for this web app.
+    -->
+  <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
+  
+  <!-- 
+    - Loads the root application context at startup.
+    - The application context is available via
+    - WebApplicationContextUtils.getWebApplicationContext(servletContext).
+    -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!--
+    - The HttpSessionEventPublisher will publish
+    - HttpSessionCreatedEvent and HttpSessionDestroyedEvent
+    - to the WebApplicationContext
+    -->
+  <listener>
+    <listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>
+  </listener>
+  
+  <!-- 
+    - Servlets and Servlet mappings definition section.
+    - Each servlet will dispatch request to registered handlers.
+    -->
+  
+  <!-- 
+    - Handles the home page.
+    - see home-servlet.xml
+    -->  
+  <servlet>
+  	<servlet-name>home</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>home</servlet-name>
+    <url-pattern>/index</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides Personal content services.
+    - see myciteseer-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>myciteseer</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>myciteseer</servlet-name>
+    <url-pattern>/myciteseer/action/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>myciteseer</servlet-name>
+    <url-pattern>/myciteseer/login/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides account utility services.
+    - see mcsutils-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>mcsutils</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>mcsutils</servlet-name>
+    <url-pattern>/mcsutils/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides document utility services.
+    - see citeseerx-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>citeseerx</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>citeseerx</servlet-name>
+    <url-pattern>/action/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides user correction services.
+    - see correct-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>correct</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>correct</servlet-name>
+    <url-pattern>/correct</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides document search services.
+    - see search-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>search</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>search</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>search</servlet-name>
+    <url-pattern>/new</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides map services between citeseer and citeseerx documents.
+    - see legacymapper-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>legacymapper</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>legacymapper</servlet-name>
+    <url-pattern>/legacymapper</url-pattern>
+  </servlet-mapping>
+  
+    <!-- 
+    - Provides advanced document search services.
+    - see advsearch-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>advsearch</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>advsearch</servlet-name>
+    <url-pattern>/advanced_search</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides services to recover account/passwords.
+    - see forgotaccount-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>forgotaccount</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>forgotaccount</servlet-name>
+    <url-pattern>/forgotaccount</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides services to show document statistics.
+    - see stats-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>stats</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>stats</servlet-name>
+    <url-pattern>/stats/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides the system's privacy policy.
+    - see privacy-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>privacy</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>privacy</servlet-name>
+    <url-pattern>/privacy</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides feedback capabilities to the system.
+    - see feedback-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>feedback</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>feedback</servlet-name>
+    <url-pattern>/feedback</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides 
+    - see healthcheck-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>healthcheck</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>healthcheck</servlet-name>
+    <url-pattern>/healthcheck</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides the system's help funtionality.
+    - see help-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>help</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>help</servlet-name>
+    <url-pattern>/help/*</url-pattern>
+  </servlet-mapping>
+  
+    <!-- 
+    - Provides about information.
+    - see about-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>about</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>about</servlet-name>
+    <url-pattern>/about/*</url-pattern>
+  </servlet-mapping>
+ 
+  <!-- 
+	Simple submissions 
+  -->
+
+  <servlet>
+    <servlet-name>submit</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet> 
+
+  <servlet-mapping>
+    <servlet-name>submit</servlet-name>
+    <url-pattern>/submit/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- 
+    - Provides metacart funtionality.
+    - see metacart-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>metacart</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>metacart</servlet-name>
+    <url-pattern>/metacart</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides document related functionality.
+    - see viewdoc-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>viewdoc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>viewdoc</servlet-name>
+    <url-pattern>/viewdoc/*</url-pattern>
+  </servlet-mapping>
+
+
+  <!--
+    - Provides author related functionality.
+    - see viewauth-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>viewauth</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>viewauth</servlet-name>
+    <url-pattern>/viewauth/*</url-pattern>
+  </servlet-mapping>
+
+  <!--
+    - Provides author merging functionality.
+    - see authmerge-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>authmerge</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>authmerge</servlet-name>
+    <url-pattern>/authmerge</url-pattern>
+  </servlet-mapping>
+
+  <!-- 
+    - Provides document citation functionality.
+    - see showciting-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>showciting</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>showciting</servlet-name>
+    <url-pattern>/showciting</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides.
+    - see
+    -->
+  <servlet>
+    <servlet-name>citechart.png</servlet-name>
+    <servlet-class>edu.psu.citeseerx.web.CiteChartServlet</servlet-class>
+    <init-param>
+      <param-name>chartRepository</param-name>
+      <param-value>/repositories/rep1</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>citechart.png</servlet-name>
+    <url-pattern>/citecharts/chart.png</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides people search services.
+    - see peoplesearch-servlet.xml
+    -->
+  <servlet>
+    <servlet-name>peoplesearch</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>peoplesearch</servlet-name>
+    <url-pattern>/myciteseer/search/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides captcha services.
+    - see
+    -->
+  <servlet>
+    <servlet-name>Captcha</servlet-name>
+    <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+    <init-param>
+      <param-name>kaptcha.border</param-name>
+      <param-value>no</param-value>
+    </init-param>
+    <init-param>
+      <param-name>kaptcha.border.color</param-name>
+      <param-value>white</param-value>
+    </init-param>
+    <init-param>
+      <param-name>kaptcha.textproducer.char.string</param-name>
+      <param-value>2,3,4,6,7,8,a,b,c,d,e,f,g,h,k,r,s,t,x,y</param-value>
+    </init-param>
+    <init-param>
+      <param-name>kaptcha.textproducer.char.length</param-name>
+      <param-value>6</param-value>
+    </init-param>
+    <init-param>
+      <param-name>kaptcha.textproducer.font.color</param-name>
+      <param-value>255,168,38</param-value>
+    </init-param>
+    <!--values can be either red,yellow,blue,cya etc or r,g,b,alpha value-->
+    <init-param>
+      <param-name>kaptcha.background.clear.to</param-name>
+      <param-value>6,53,139</param-value>
+    </init-param>
+    <init-param>
+      <param-name>kaptcha.background.clear.from</param-name>
+      <param-value>25,134,214</param-value>
+    </init-param>
+    <init-param>
+      <param-name>kaptcha.noise.color</param-name>
+      <param-value>white</param-value>
+    </init-param>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>Captcha</servlet-name>
+    <url-pattern>/captcha.jpg</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Provides dwr services.
+    - see dwr.xml
+    -->
+  <servlet>
+    <servlet-name>dwr-invoker</servlet-name>
+    <servlet-class>uk.ltd.getahead.dwr.DWRServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>dwr-invoker</servlet-name>
+    <url-pattern>/dwr/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 
+    - Filter and filter mapping definitions.
+    -->
+    
+  <filter>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>springSecurityFilterChain</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>DisabledAccountFilter</filter-name>
+    <filter-class>edu.psu.citeseerx.myciteseer.web.filters.DisabledAccountFilter</filter-class>
+    <init-param>
+      <param-name>redirectURL</param-name>
+      <param-value>/messages/account_disabled.html</param-value>
+    </init-param>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>DisabledAccountFilter</filter-name>
+    <url-pattern>/myciteseer/action/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>IncompleteAccountFilter</filter-name>
+    <filter-class>edu.psu.citeseerx.myciteseer.web.filters.IncompleteAccountFilter</filter-class>
+    <init-param>
+      <param-name>redirectURL</param-name>
+      <param-value>/myciteseer/action/editAccount</param-value>
+    </init-param>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>IncompleteAccountFilter</filter-name>
+    <url-pattern>/myciteseer/action/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>NewAccountsDisabledFilter</filter-name>
+    <filter-class>edu.psu.citeseerx.myciteseer.web.filters.NewAccountsDisabledFilter</filter-class>
+    <init-param>
+      <param-name>redirectURL</param-name>
+      <param-value>/messages/new_accounts_disabled.html</param-value>
+    </init-param>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>NewAccountsDisabledFilter</filter-name>
+    <url-pattern>/mcsutils/newAccount</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>Charset Filter</filter-name>
+    <filter-class>edu.psu.citeseerx.webutils.CharsetFilter</filter-class>
+    <init-param>
+      <param-name>requestEncoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>Charset Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>HeaderFilter</filter-name>
+    <filter-class>edu.psu.citeseerx.webutils.HeaderFilter</filter-class>
+    <init-param>
+      <param-name>cache-control</param-name>
+      <param-value>max-age=2592000</param-value>
+    </init-param>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>HeaderFilter</filter-name>
+    <url-pattern>*.css</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+    <filter-name>HeaderFilter</filter-name>
+    <url-pattern>*.js</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+    <filter-name>HeaderFilter</filter-name>
+    <url-pattern>/images/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+    <filter-name>HeaderFilter</filter-name>
+    <url-pattern>/icons/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+    <filter-name>HeaderFilter</filter-name>
+    <url-pattern>/messages/*</url-pattern>
+  </filter-mapping>
+  
+  <filter-mapping>
+    <filter-name>HeaderFilter</filter-name>
+    <url-pattern>*.ico</url-pattern>
+  </filter-mapping>
+  
+  <filter>
+    <filter-name>Download Limit Filter</filter-name>
+    <filter-class>edu.psu.citeseerx.webutils.SimpleDownloadLimitFilter</filter-class>
+    <init-param>
+      <param-name>redirectUrl</param-name>
+      <param-value>/messages/downloadsexceeded.html</param-value>
+    </init-param>
+    <init-param>
+      <param-name>limit</param-name>
+      <param-value>1000</param-value>
+    </init-param>
+    <init-param>
+      <param-name>allowedUserAgents</param-name>
+      <param-value>googlebot,slurp,msnbot,teoma</param-value>
+    </init-param>
+    <init-param>
+      <!-- Time between consecutive hits from the same ip to the same
+           URL. All hits which currentTime-lastHitTime <= time are
+           rejected and logged in -->
+      <param-name>timeLimit</param-name>
+      <param-value>3000</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ipLogFile</param-name>
+      <param-value>/WEB-INF/ipLog.txt</param-value>
+    </init-param>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>Download Limit Filter</filter-name>
+    <url-pattern>/viewdoc/download</url-pattern>
+  </filter-mapping>
+  
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+  
+  <welcome-file-list>
+    <!-- Redirects to /index for distpacher handling -->
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+  <error-page>
+    <exception-type>java.lang.Exception</exception-type>
+    <location>/WEB-INF/jsp/UncaughtException.jsp</location>
+  </error-page>
+</web-app>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process xmlns="http://schemas.active-endpoints.com/pdd/2006/08/pdd.xsd" xmlns:bpelns="http://citeseerx.org/IngestionProcess" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing" location="bpel/CiteSeerXIngestion/IngestionProcess.bpel" name="bpelns:IngestionProcess">
+   <partnerLinks>
+      <partnerLink name="conversionPartnerLT">
+         <partnerRole endpointReference="static">
+            <wsa:EndpointReference xmlns:s="http://citeseerx.org/fileConversion/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing">
+  <wsa:Address>http://127.0.0.1:10888/</wsa:Address>
+  <wsa:ServiceName PortName="FileConversionPT">s:FileConversionService</wsa:ServiceName>
+</wsa:EndpointReference>
+         </partnerRole>
+      </partnerLink>
+      <partnerLink name="filterPartnerLT">
+         <partnerRole endpointReference="static">
+            <wsa:EndpointReference xmlns:s="http://citeseerx.org/algorithms/docfilter/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing">
+  <wsa:Address>http://127.0.0.1:10666/</wsa:Address>
+  <wsa:ServiceName PortName="DocFilterPT">s:DocFilterService</wsa:ServiceName>
+</wsa:EndpointReference>
+         </partnerRole>
+      </partnerLink>
+      <partnerLink name="ingestionPartnerLT">
+         <myRole allowedRoles="" binding="RPC" service="IngestionService"/>
+      </partnerLink>
+      <partnerLink name="parsePartnerLT">
+         <partnerRole endpointReference="static">
+            <wsa:EndpointReference xmlns:s="http://citeseerx.org/algorithms/svm-header-parse/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing">
+  <wsa:Address>http://127.0.0.1:40000/</wsa:Address>
+  <wsa:ServiceName PortName="SVMHeaderParsePT">s:SVMHeaderParseService</wsa:ServiceName>
+</wsa:EndpointReference>
+         </partnerRole>
+      </partnerLink>
+      <partnerLink name="parsePartnerLT1">
+         <partnerRole endpointReference="static">
+            <wsa:EndpointReference xmlns:s="http://citeseerx.org/algorithms/parscit/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2003/03/addressing">
+  <wsa:Address>http://127.0.0.1:10555/</wsa:Address>
+  <wsa:ServiceName PortName="ParsCitPT">s:ParsCitService</wsa:ServiceName>
+</wsa:EndpointReference>
+         </partnerRole>
+      </partnerLink>
+   </partnerLinks>
+   <wsdlReferences>
+      <wsdl location="wsdl/DocFilter.wsdl" namespace="http://citeseerx.org/algorithms/docfilter/wsdl"/>
+      <wsdl location="wsdl/IngestionService.wsdl" namespace="http://citeseerx.org/ingestion/wsdl"/>
+      <wsdl location="wsdl/SVMHeaderParse.wsdl" namespace="http://citeseerx.org/algorithms/svm-header-parse/wsdl"/>
+      <wsdl location="wsdl/ParsCit.wsdl" namespace="http://citeseerx.org/algorithms/parscit/wsdl"/>
+      <wsdl location="wsdl/FileConversion.wsdl" namespace="http://citeseerx.org/fileConversion/wsdl"/>
+   </wsdlReferences>
+</process>

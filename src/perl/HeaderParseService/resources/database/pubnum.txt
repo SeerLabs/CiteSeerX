@@ -1,0 +1,45 @@
+54 report
+51 technical
+50 technical report
+29 tr
+6 csrp
+5 cs tr
+4 memo
+4 report csrp
+4 dimac technical
+4 dimac
+3 research
+3 perceptual
+3 section
+3 laboratory
+3 isi
+3 section technical
+3 compute
+2 report csi
+2 isi rr
+2 csi
+2 memorandum
+2 paper
+1 reportnumbox technical
+1 project
+1 program technical
+1 report pcs
+1 csd tr
+1 technical note
+1 program
+1 serial
+1 project report
+1 advanced computer
+1 advanced
+1 note
+1 src
+1 research report
+1 university
+1 science technical
+1 mathematics
+1 reportnumbox
+1 report crg
+1 report cuc
+1 research paper
+1 crpc
+1 coin technical

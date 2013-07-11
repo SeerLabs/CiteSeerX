@@ -1,0 +1,84 @@
+Agents and Intelligent Systems,5,24,29
+Auditory I/O and Sound in the UI,4,9,13
+Augmented Reality and Tangible UI,5,17,22
+Computer-Mediated Communication,16,52,68
+Context-Aware Computing,5,26,31
+Computer Supported Cooperative Work (CSCW),21,61,82
+Database access / Information Retrieval,3,22,25
+Development Tools / Toolkits / Programming Environments,4,16,20
+Emotion and Affective User Interface,5,20,25
+End-user Programming,3,7,10
+Handheld Devices and Mobile Computing,17,62,79
+Information Architecture,1,11,12
+Input and Interaction Technologies,29,73,102
+Pen and Tactile Input,8,17,25
+Speech I/O,5,4,9
+Social Computing and Social Navigation,7,33,40
+Ubiquitous Computing / Smart Environments,14,42,56
+Video Content / Communications,1,8,9
+Virtual Community / Community Computing,4,18,22
+Visualization,15,31,46
+World Wide Web and Hypermedia,8,27,35
+Children,3,22,25
+Elderly,3,21,24
+E-Learning and Education,2,31,33
+E-Commerce,3,7,10
+Entertainment,4,19,23
+Health Care,4,13,17
+Home,10,51,61
+Office and Workplace,17,72,89
+Universal (or Disability)  Access,5,15,20
+Social and Legal issues,3,12,15
+Analysis Methods (e.g. Task/Interaction Modeling),6,25,31
+"Design Methods (Design Rationale, Claims Analysis, Scenarios, Storyboards)",2,25,27
+"Empirical Methods, Quantitative",23,59,82
+"Empirical Methods, Qualitative",15,37,52
+Ethnography,10,30,40
+Industrial Design,0,6,6
+Interaction Design,16,64,80
+Participatory Design / Cooperative Design,2,17,19
+Prototyping,6,35,41
+Software architecture and engineering,1,13,14
+User and Cognitive models,5,28,33
+Usability Testing and Evaluation,19,69,88
+Visual Design,2,17,19
+Animation,0,7,7
+Benefit Analysis,1,4,5
+Business Strategy,0,1,1
+Design Planning,0,5,5
+Dialog Analysis,0,4,4
+Experience Strategy,0,3,3
+Internationalization / Localization,0,7,7
+Marketing / Market Research,0,1,1
+Multi-channel Applications,0,2,2
+Multidisciplinary Design / Interdisciplinary Design,3,13,16
+Organizational Culture / Organizational Planning,1,6,7
+Performance Metrics,5,10,15
+Process Improvement,3,8,11
+Software Engineering Methods - Mathematical / Proof-Based,0,5,5
+User Studies,32,95,127
+User-Centered Design / Human-Centered Design,16,74,90
+Video Analysis,2,0,2
+Branding,0,0,0
+Concept Design,1,16,17
+Content Strategy / Content Creation,0,1,1
+Marketing / Market Research,0,1,1
+Product Design,1,12,13
+Product Management,0,1,1
+Service Design,0,6,6
+Visual System Design / Visual Design,3,15,18
+Usability Research,9,51,60
+User Experience Design / Experience Design,5,33,38
+User Interface Design,27,97,124
+Robots,1,1,2
+Transport,0,5,5
+Semi-autonomous systems,1,3,4
+3D Interaction,4,13,17
+Augmented Reality,2,4,6
+Multimedia UIs,3,23,26
+Pen-based UIs,3,16,19
+Perceptual & Vision-based UIs,6,25,31
+Tactile & Haptic UIs,2,6,8
+Tangible UIs,3,17,20
+Virtual Reality,3,11,14
+Multi-model interfaces,9,31,40

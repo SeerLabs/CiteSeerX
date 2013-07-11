@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="/WEB-INF/csx.config.properties"/>
+  </bean>
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/myciteseer/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+  
+  <bean name="/accountHome" class="edu.psu.citeseerx.myciteseer.web.AccountHomeController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="newsUrl" value="${csx.blog.rss}"/>
+  </bean>
+  
+  <bean name="/editAccount" class="edu.psu.citeseerx.myciteseer.web.AccountFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="validator" ref="accountValidator"/>
+    <property name="successView" value="index"/>
+    <property name="saltSource" ref="saltSource"/>
+    <property name="passwordEncoder" ref="passwordEncoder"/>
+  </bean>
+  
+  <bean name="/changePassword" class="edu.psu.citeseerx.myciteseer.web.ChangePasswordController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="successView" value="index"/>
+    <property name="saltSource" ref="saltSource"/>
+    <property name="passwordEncoder" ref="passwordEncoder"/>
+    <!--property name="messageCodesResolver" ref="messageSource"/-->
+  </bean>
+  
+  <bean name="/requestAppid" class="edu.psu.citeseerx.myciteseer.web.AppidGenerationController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="view" value="appGeneration"/>
+  </bean>
+  
+  <bean name="/viewUserProfile" class="edu.psu.citeseerx.myciteseer.web.ViewUserController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+
+  <bean id="submissionValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.UrlSubmissionValidator">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="messageSource" ref="messageSource"/>
+  </bean>
+
+  <bean name="/submitUrl" class="edu.psu.citeseerx.myciteseer.web.UrlSubmissionFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="submissionSender" ref="messageProducer"/>
+    <property name="validator" ref="submissionValidator"/>
+    <property name="successView" value="submitSuccess"/>
+  </bean>
+
+  <bean name="/viewSubmissions" class="edu.psu.citeseerx.myciteseer.web.ViewSubmissionsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+
+  <bean name="/viewSubmissionDetails" class="edu.psu.citeseerx.myciteseer.web.ViewSubmissionDetailsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+
+  <bean name="/myNetwork" class="edu.psu.citeseerx.myciteseer.web.MyNetController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+
+  <bean id="sendMsgValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.SendMsgValidator"/>
+  
+  <bean name="/sendMessage" class="edu.psu.citeseerx.myciteseer.web.SendMsgFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="validator" ref="sendMsgValidator"/>
+    <property name="successView" value="mynet"/>
+  </bean>
+
+  <bean id="addFriendValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.AddFriendValidator">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/addFriend" class="edu.psu.citeseerx.myciteseer.web.AddFriendFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="validator" ref="addFriendValidator"/>
+    <property name="successView" value="mynet"/>
+  </bean>
+  
+  <bean id="collectionValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.CollectionValidator">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="messageSource" ref="messageSource"/>
+  </bean>
+  
+  <bean name="/addCollection" class="edu.psu.citeseerx.myciteseer.web.collections.CollectionFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="validator" ref="collectionValidator"/>
+    <property name="successView" value="viewCollections"/>
+  </bean>
+  
+  <bean name="/editCollection" class="edu.psu.citeseerx.myciteseer.web.collections.CollectionFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="validator" ref="collectionValidator"/>
+    <property name="successView" value="viewCollections"/>
+  </bean>
+
+  <bean name="/admin/showStatistics" class="edu.psu.citeseerx.myciteseer.web.admin.ShowStatisticsController">
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>  
+  
+  <bean name="/deleteCollection" class="edu.psu.citeseerx.myciteseer.web.collections.DeleteCollectionController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/viewCollections" class="edu.psu.citeseerx.myciteseer.web.collections.ViewCollectionsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/viewCollectionDetails" class="edu.psu.citeseerx.myciteseer.web.collections.ViewCollectionDetailsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+
+  <bean id="paperCollectionValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.PaperCollectionValidator">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="messageSource" ref="messageSource"/>
+  </bean>
+
+  <bean name="/addPaperCollection" class="edu.psu.citeseerx.myciteseer.web.collections.PaperCollectionFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="validator" ref="paperCollectionValidator"/> 
+    <property name="successView" value="viewCollectionDetails"/>
+  </bean>
+  
+  <bean name="/deletePaperCollection" class="edu.psu.citeseerx.myciteseer.web.collections.DeletePaperCollectionController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean id="collectionNoteValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.CollectionNoteValidator">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="messageSource" ref="messageSource"/>
+  </bean>
+  
+  <bean name="/addCollectionNote" class="edu.psu.citeseerx.myciteseer.web.collections.CollectionNoteFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="validator" ref="collectionNoteValidator"/> 
+    <property name="successView" value="viewCollectionDetails"/>
+  </bean>
+  
+  <bean name="/editCollectionNote" class="edu.psu.citeseerx.myciteseer.web.collections.CollectionNoteFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="validator" ref="collectionNoteValidator"/> 
+    <property name="successView" value="viewCollectionDetails"/>
+  </bean>
+  
+  <bean name="/deleteCollectionNote" class="edu.psu.citeseerx.myciteseer.web.collections.DeleteCollectionNoteController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean id="paperNoteValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.PaperNoteValidator">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="messageSource" ref="messageSource"/>
+  </bean>
+  
+  <bean name="/addPaperNote" class="edu.psu.citeseerx.myciteseer.web.collections.PaperNoteFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="validator" ref="paperNoteValidator"/> 
+    <property name="successView" value="viewCollectionDetails"/>
+  </bean>
+  
+  <bean name="/editPaperNote" class="edu.psu.citeseerx.myciteseer.web.collections.PaperNoteFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="validator" ref="paperNoteValidator"/> 
+    <property name="successView" value="viewCollectionDetails"/>
+  </bean>
+  
+  <bean name="/deletePaperNote" class="edu.psu.citeseerx.myciteseer.web.collections.DeletePaperNoteController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/monitorCollection" class="edu.psu.citeseerx.myciteseer.web.collections.MonitorCollectionController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/addCollectionMetaCart" class="edu.psu.citeseerx.myciteseer.web.collections.CollectionMetadataCartController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="metadataCartDWR" ref="metadataCartDWR"/>
+  </bean>
+  
+  <bean name="/viewTags" class="edu.psu.citeseerx.myciteseer.web.tags.ViewTagsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/viewTaggedDocs" class="edu.psu.citeseerx.myciteseer.web.tags.ViewTaggedDocsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+  
+  <bean name="/editTags" class="edu.psu.citeseerx.myciteseer.web.tags.EditTagsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="foulWordFilter" ref="foulWordFilter"/>
+  </bean>
+  
+  <bean name="/admin/editBanner" class="edu.psu.citeseerx.myciteseer.web.admin.EditBannerFormController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="successView" value="editBanner"/>
+  </bean>
+
+  <bean name="/admin/editUser" class="edu.psu.citeseerx.myciteseer.web.admin.EditUserController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/admin/editDocument" class="edu.psu.citeseerx.myciteseer.web.admin.EditDocumentController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="updateManager" ref="updateManager"/>
+  </bean>
+  
+  <bean name="/admin/invite" class="edu.psu.citeseerx.myciteseer.web.admin.InvitationController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="mailManager" ref="mailManager"/>
+  </bean>
+  
+  <bean name="/admin/editConfiguration" class="edu.psu.citeseerx.myciteseer.web.admin.EditConfigurationController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean id="externalLinkValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.ExternalLinkValidator">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="messageSource" ref="messageSource"/>
+  </bean>
+  
+  <bean name="/admin/editExternalLinks" class="edu.psu.citeseerx.myciteseer.web.admin.EditExternalLinksFormController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="validator" ref="externalLinkValidator"/>
+    <property name="successView" value="editExternalLinks"/>
+  </bean>
+  
+  <bean name="/admin/deleteExternalLinks" class="edu.psu.citeseerx.myciteseer.web.admin.DeleteExternalLinkController">
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+  
+  <bean name="/admin/handleScheduler" class="edu.psu.citeseerx.myciteseer.web.admin.SchedulerController">
+    <property name="scheduler" ref="csxScheduler"/>
+  </bean>
+  
+  <bean name="/viewMonitors" class="edu.psu.citeseerx.myciteseer.web.subscriptions.ViewMonitorsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+  
+  <bean name="/editMonitors" class="edu.psu.citeseerx.myciteseer.web.subscriptions.EditMonitorsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+  
+  <bean name="/viewFeeds" class="edu.psu.citeseerx.myciteseer.web.subscriptions.ViewFeedsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/addFeed" class="edu.psu.citeseerx.myciteseer.web.subscriptions.AddFeedFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean id="groupValidator" class="edu.psu.citeseerx.myciteseer.domain.logic.GroupValidator">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="messageSource" ref="messageSource"/>
+  </bean>
+  
+  <bean name="/addGroup" class="edu.psu.citeseerx.myciteseer.web.groups.GroupFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"></property>
+    <property name="validator" ref="groupValidator"/>
+    <property name="successView" value="viewGroups"/>
+  </bean>
+  
+  <bean name="/editGroup" class="edu.psu.citeseerx.myciteseer.web.groups.GroupFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="validator" ref="groupValidator"/>
+    <property name="successView" value="viewGroups"/>
+  </bean>
+  
+  <bean name="/viewGroups" class="edu.psu.citeseerx.myciteseer.web.groups.ViewGroupsController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/deleteGroup" class="edu.psu.citeseerx.myciteseer.web.groups.DeleteGroupController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/addGroupMembers" class="edu.psu.citeseerx.myciteseer.web.groups.GroupMemberFormController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+    <property name="solrSelectPeopleUrl" value="${solr.selectPeopleUrl}"/>
+    <property name="successView" value="viewGroupMembers"/>
+  </bean>
+  
+  <bean name="/viewGroupMembers" class="edu.psu.citeseerx.myciteseer.web.groups.ViewGroupMembersController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/leaveGroup" class="edu.psu.citeseerx.myciteseer.web.groups.LeaveGroupController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/removeMember" class="edu.psu.citeseerx.myciteseer.web.groups.RemoveMemberController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+  
+  <bean name="/validateMember" class="edu.psu.citeseerx.myciteseer.web.groups.ValidateUserGroupController">
+    <property name="myCiteSeer" ref="myCiteSeer"/>
+  </bean>
+
+  <bean name="/myciteseer/login" class="edu.psu.citeseerx.myciteseer.web.LoginController"/>
+  
+  <!--bean id="mcsController" class="edu.psu.citeseerx.myciteseer.MCSController"/-->
+
+</beans>

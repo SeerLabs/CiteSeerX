@@ -1,0 +1,9 @@
+# This files shows customization people need to do to TOMCAT's server.xml in 
+# order to configure the solr Container.
+
+# Add the attribute URIEncoding to the HTTP connector. The connector will looks
+# like:
+    <Connector port="8080" protocol="HTTP/1.1" 
+               URIEncoding="UTF-8"
+               connectionTimeout="20000" 
+               redirectPort="8443" />

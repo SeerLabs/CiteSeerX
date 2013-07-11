@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<!--
+ / XML Schema for workflow scripts in CiteSeerX core modules.
+ /
+ / Isaac Councill
+ / 10/5/06
+ /-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://citeseerx.psu.edu/script"
+  xmlns="http://citeseerx.psu.edu/script"
+  elementFormDefault="qualified">
+
+  <!--
+   / A document following this schema may contain a single script
+   / as the root element.  A script defines a workflow of task
+   / elements, piping outputs from early tasks to the inputs of
+   / later tasks.
+   /-->
+  <xs:element name="Script">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Translator" type="FullyQualifiedObjectName"
+                    minOccurs="0" maxOccurs="1" />
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+          <xs:element name="Sequence" type="TaskList" />
+          <xs:element name="Parallel" type="TaskList" />
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string"
+                    use="required" />
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+   / A list of tasks.
+   /-->
+  <xs:complexType name="TaskList">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="Task" type="Task" />
+      <xs:element name="Sequence" type="TaskList" />
+      <xs:element name="Parallel" type="TaskList" />
+    </xs:choice>
+  </xs:complexType>
+
+  <!--
+   / Basic task definition.
+   /-->
+  <xs:complexType name="Task">
+    <xs:sequence>
+      <xs:element name="input" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string"
+                        use="required" />
+          <xs:attribute name="source" type="xs:string"
+                        use="required" />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="output" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="name" type="xs:string"
+                        use="required" />
+          <xs:attribute name="persist" type="xs:boolean"
+                        use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:integer"
+                  use="required" />
+    <xs:attribute name="name" type="FullyQualifiedObjectName"
+                  use="required" />
+  </xs:complexType>
+
+  <!--
+   / Restriction that matches a fully qualified Java object name.
+   /-->
+  <xs:simpleType name="FullyQualifiedObjectName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(\w+\.)*\w+" />
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

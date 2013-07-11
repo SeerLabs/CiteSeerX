@@ -1,0 +1,131 @@
+/* Error Messsages */
+.error {
+  color: #964A57;
+  background-color: #F4D9DA;
+  border: 1px solid #D5BBBC;  
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 8px;
+  margin: 8px 0px;
+}
+
+
+/* Tag Cloud */
+
+#tagcloud {
+  display: block;
+  margin: 8px;
+}
+
+#tagcloud li {
+  float: left;
+  padding: 10px;
+  list-style: none;
+}
+
+#tagcloud .tag1 { font-size:14px;}
+#tagcloud .tag2 { font-size:16px;}
+#tagcloud .tag3 { font-size:18px;}
+#tagcloud .tag4 { font-size:20px;}
+#tagcloud .tag5 { font-size:22px;}
+#tagcloud .tag6 { font-size:24px;}
+
+
+.errorMsg {
+  color: red;
+}
+
+.button {
+  border: none 0px;
+  background: #EEE;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.button:hover {
+  background: #DDD;
+}
+
+
+/* Adv Search */
+#submit-advsearch {
+	margin-left: 16px;
+}
+
+
+/* Forms */
+
+input.textField,
+textarea.textField {
+  border: 1px solid #ccc;
+  padding: 4px;
+  display: inline;
+}
+
+.formField {
+  display: block;
+  clear:left;
+  position: relative;
+  padding: 6px 1px;
+}
+
+.formField .title {
+  width: 100px;
+  float: left;
+  text-align: right;
+  padding: 4px 12px 0px 0px;
+}
+
+.fieldSet {
+  border: 1px solid #ccc;
+  padding: 8px;
+  margin: 12px;
+}
+
+button.link {
+  border: none 0px;
+  background: transparent;
+  font-size: 12px;
+  padding: 0px;
+  margin: 8px 0px;
+  }
+
+form .button {
+	margin-left: 120px;
+}
+
+
+/* Tables */
+th {
+  font-weight: bold;
+  font-size: 1.2em;
+  border-bottom: 1px solid #ccc;
+  padding: 4px;
+  margin: 3px;
+}
+
+td {
+  padding: 8px 4px;
+  }
+
+table {
+  width: auto;
+}
+
+table tr {
+  min-height: 20px;
+}
+
+table .ops ul {
+  vertical-align: middle;
+  margin: 0 !important;
+  padding: 0;
+}
+
+.ops li{
+  vertical-align: middle;
+  display: inline;
+  padding: 0px 10px 0px 0px;
+  line-height: 13px;
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  - Application context definition for CiteSeerX using JDBC.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+       
+  <!-- =================== GENERAL DEFS ==================== -->
+  
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="classpath:csx.config.properties"/>
+  </bean>
+  
+  <bean id="csxEMetadataDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.csxemetadata.driverClassName}"/>
+    <property name="url" value="${jdbc.csxemetadata.url}"/>
+    <property name="username" value="${jdbc.csxemetadata.username}"/>
+    <property name="password" value="${jdbc.csxemetadata.password}"/>
+  </bean>
+  
+  <!-- =================== BUSINESS OBJECT DEFS ==================== -->
+  
+  <bean id="extMetadataDAO" class="edu.psu.citeseerx.dao2.ExternalMetadataDAOImpl" lazy-init="true">
+    <property name="dataSource" ref="csxEMetadataDataSource"/>
+  </bean>
+  
+  <bean id="csxemetadata" class="edu.psu.citeseerx.dao2.logic.CSXExternalMetadataImpl">
+    <property name="extMetadataDAO" ref="extMetadataDAO"/>
+  </bean>
+  
+  <!-- =================== TRANSACTION CONFIGURATION ==================== -->
+  
+  <tx:advice id="csxEMTxAdvice" transaction-manager="csxEMTxManager">
+    <tx:attributes>
+      <tx:method name="get*" read-only="true"/>
+      <tx:method name="is*" read-only="true"/>
+      <tx:method name="load*" read-only="true"/>
+      <tx:method name="*"/>
+    </tx:attributes>
+  </tx:advice>
+  
+  <aop:config>
+    <aop:pointcut id="csxEMOperation" expression="execution(* edu.psu.citeseerx.dao2.logic.CSXExternalMetadataFacade.*(..))"/>
+    <aop:advisor advice-ref="csxEMTxAdvice" pointcut-ref="csxEMOperation"/>
+  </aop:config>
+  
+  <bean id="csxEMTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="csxEMetadataDataSource"/>
+  </bean>
+</beans>

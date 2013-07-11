@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  - CiteSeerX OAI-PMH web application
+  - Author: Juan Pablo Fernandez Ramirez
+  - Version: $Rev: 1192 $ $Date: 2010-01-13 16:01:21 -0500 (Wed, 13 Jan 2010) $
+  -->
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+         
+  <!-- 
+    - Location of XML files that defines the root application context applied
+    - by ContextLoaderListener.
+    -->
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+      /WEB-INF/applicationContext-csx-jdbc.xml
+      /WEB-INF/applicationContext-graph-jdbc.xml
+      /WEB-INF/applicationContext-csx-oai-pmh.xml
+    </param-value>
+  </context-param>
+  
+  <!-- 
+    - Nothing below here needs to be modified
+    -->
+  
+  <!--
+    - Key of system property that specifies the root directory
+    - of this web app.
+    -->
+  <context-param>
+    <param-name>webAppRootKey</param-name>
+    <param-value>citeseerx-oai.root</param-value>
+  </context-param>
+  
+  <!--
+    - Location of log4j config file.
+    -->
+  <context-param>
+    <param-name>log4jConfigLocation</param-name>
+    <param-value>/WEB-INF/log4j.properties</param-value>
+  </context-param>
+  
+  <!-- 
+    - Listeners configuration section
+    -->
+    
+  <!--
+    - Configures log4j for this web app.
+    -->
+  <listener>
+    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+  </listener>
+  
+  <!-- 
+    - Loads the root application context at startup.
+    - The application context is available via
+    - WebApplicationContextUtils.getWebApplicationContext(servletContext).
+    -->
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- 
+    - Servlets and Servlet mappings definition section.
+    - Each servlet will dispatch request to registered handlers.
+    -->
+  
+  <!-- 
+    - Provides the OAI-PMH interface.
+    - see oai-pmh-servlet.xml
+    -->  
+  
+  <servlet>
+    <servlet-name>oai-pmh</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>oai-pmh</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+  
+  <filter>
+    <filter-name>Charset Filter</filter-name>
+    <filter-class>edu.psu.citeseerx.webutils.CharsetFilter</filter-class>
+    <init-param>
+      <param-name>requestEncoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  
+  <filter-mapping>
+    <filter-name>Charset Filter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-app>

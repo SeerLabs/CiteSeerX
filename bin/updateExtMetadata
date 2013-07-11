@@ -1,0 +1,11 @@
+#!/bin/bash
+# Loads metadata from external sources to custom storage.
+#
+# Juan Pablo Fernandez Ramirez
+#
+LOADER="edu.psu.citeseerx.loaders.ExternalMetadataLoader"
+BOOT_FILE="external-updates.txt"
+
+export JAVA_OPTS=" -Xmn100M -Xms700M -Xmx2000M"
+
+source common

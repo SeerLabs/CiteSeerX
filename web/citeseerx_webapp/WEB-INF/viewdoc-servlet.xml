@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="/WEB-INF/csx.config.properties"/>
+  </bean>
+  
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/csx/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+  
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+  
+  <bean name="/summary" class="edu.psu.citeseerx.web.ViewDocController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="repositoryMap" ref="repositoryMap"/>
+  </bean>
+  
+  <bean name="/similar" class="edu.psu.citeseerx.web.SimilarityController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="solrSelectUrl" value="${solr.selectUrl}"/>
+  </bean>
+  
+  <bean name="/download" class="edu.psu.citeseerx.web.FileDownloadController">
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+  
+  <bean name="/redirect" class="edu.psu.citeseerx.web.RedirectExternalLinkController">
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+  
+  <bean name="/versions" class="edu.psu.citeseerx.web.VersionController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+  </bean>
+  
+  <bean name="/bookmark" class="edu.psu.citeseerx.web.BookmarkController">
+    <property name="summaryPage" value="${csx.viewDocUrl}"/>
+  </bean>
+
+  <bean name="/viewPdfPage" class="edu.psu.citeseerx.web.ViewPDFPageController">
+    <property name="CSXDAO" ref="citeseerx"/>
+  </bean>
+  
+  <bean name="/slocation" class="edu.psu.citeseerx.web.SameLocationController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+  </bean>
+
+</beans>

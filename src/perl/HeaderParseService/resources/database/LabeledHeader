@@ -1,0 +1,18 @@
+1: <title> Stochastic Interaction and Linear Logic</title>
+2: <author> Patrick D. Lincoln John C. Mitchell Andre Scedrov </author>
+3: <abstract> Abstract
+4: We present stochastic interactive semantics for propositional linear
+5: Logic without modalities. The framework is based on interactive 
+6: protocols considered in computational complexity theory, in which
+		........
+17:new tool in automated deduction. </abstract>
+18:<note> A revised version appears in : "Advances in Linear Logic", ed. by J.-Y. Girard et
+19:al., London Mathematical Society Lecture Notes Series, Volume 222, Cambridge University 
+20:Press, 1995, pp. 147-166. </note>
+21:<email> lincoln@csl.sri.com </email><affiliation> SRI International Computer Science Laboratory, </affiliation> <address> Menlo Park
+22:CA 94025 USA. </address> <note> Work supported under NSF Grant CCR-9224858. </note>
+23:<email> jcm@cs.stanford.edu </email><web> http://theory.stanford.edu/people/jcm/home.html</web> <affiliation> Department of Computer Science, Stanford University, </affiliation> <address Stanford, CA 94305. </address> <note>Supported in part
+24:by an NSF PYI Award, matching funds from Digital Equipment Corporation, the Powell Foundation, and Xerox Corporation; and the Wallace F. and Lucille M. Davis Faculty
+25:Scholarship. </note>
+26:<email> andre@cis.upenn.edu </email><web>http://www.cis.upenn.edu/~andre</web><affiliation> Department of Mathematics, University of Pennsylvania, </affiliation><address> Philadelphia, PA, 19104-6395. </address><note> Partially supported by
+27:NSF Grants CCR-91-02753 and CCR-94-00907 and by ONR Grant N00014-92-J-1916. Sce-drov is an American Mathematical Society Centennial Research Fellow. </note>

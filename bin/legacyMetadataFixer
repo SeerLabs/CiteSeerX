@@ -1,0 +1,9 @@
+#!/bin/bash
+
+LOADER="edu.psu.citeseerx.loaders.FixMetaDataLoader"
+BOOT_FILE="updates.txt"
+
+export JAVA_OPTS=" -Xmn100M -Xms700M -Xmx2000M"
+
+source common
+

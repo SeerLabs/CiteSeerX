@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="location" value="/WEB-INF/header.properties"/>
+  </bean>
+
+  <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <property name="viewClass">
+      <value>org.springframework.web.servlet.view.JstlView</value>
+    </property>
+    <property name="prefix">
+      <value>/WEB-INF/jsp/csx/help/</value>
+    </property>
+    <property name="suffix">
+      <value>.jsp</value>
+    </property>
+  </bean>
+  
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+  
+  <bean name="/search" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.help.search.title}"/>
+    <property name="description" value="${app.help.search.description}"/>
+    <property name="keywords" value="${app.help.search.keywords}"/>
+    <property name="viewName" value="search"/>
+  </bean>
+  
+  <bean name="/site" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.help.site.title}"/>
+    <property name="description" value="${app.help.site.description}"/>
+    <property name="keywords" value="${app.help.site.keywords}"/>
+    <property name="viewName" value="site"/>
+  </bean>
+  
+  <bean name="/myciteseer" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.help.p-portal.title}"/>
+    <property name="description" value="${app.help.p-portal.description}"/>
+    <property name="keywords" value="${app.help.p-portal.keywords}"/>
+    <property name="viewName" value="myciteseer"/>
+  </bean>
+  
+  <bean name="/submit" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.help.submission.title}"/>
+    <property name="description" value="${app.help.submission.description}"/>
+    <property name="keywords" value="${app.help.submission.keywords}"/>
+    <property name="viewName" value="submit"/>
+  </bean>
+  
+  <bean name="/api" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.help.api.title}"/>
+    <property name="description" value="${app.help.api.description}"/>
+    <property name="keywords" value="${app.help.api.keywords}"/>
+    <property name="viewName" value="api"/>
+  </bean>
+  
+  <bean name="/glossary" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.help.glossary.title}"/>
+    <property name="description" value="${app.help.glossary.description}"/>
+    <property name="keywords" value="${app.help.glossary.keywords}"/>
+    <property name="viewName" value="glossary"/>
+  </bean>
+
+  <bean name="/faq" class="edu.psu.citeseerx.web.SemiStaticPageController">
+    <property name="title" value="${app.help.faq.title}"/>
+    <property name="description" value="${app.help.faq.description}"/>
+    <property name="keywords" value="${app.help.faq.keywords}"/>
+    <property name="viewName" value="faq"/>
+  </bean>
+</beans>
