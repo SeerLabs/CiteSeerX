@@ -31,7 +31,7 @@ import java.util.Map;
  * Process a request to download a file, sending the file to the user. If for 
  * some reason the file is not found and Internal error is generated.
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 81 $ $Date: 2011-01-14 17:37:35 -0500 (Fri, 14 Jan 2011) $
  */
 public class FileDownloadController implements Controller {
     
@@ -52,6 +52,7 @@ public class FileDownloadController implements Controller {
         String type = request.getParameter("type");
         String urlIndex = request.getParameter("i");
 
+
         Map<String, Object> model = new HashMap<String, Object>();
         if (doi == null || type == null) {
             String errorTitle = "Document Not Found";
@@ -71,6 +72,13 @@ public class FileDownloadController implements Controller {
                 e.printStackTrace();
             }
             
+	    if (doc.isDMCA() == true) {
+        	String dmcaTitle = "DMCA Notice";
+                model.put("doi", doi);
+                model.put("pagetitle", dmcaTitle);
+                return new ModelAndView("dmcaPage", model);
+
+	    }
             if (doc == null || doc.isPublic() == false) {
                 String errorTitle = "Document Not Found";
                 model.put("doi", doi);
@@ -102,8 +110,8 @@ public class FileDownloadController implements Controller {
                 response.reset();
                 if (type.equalsIgnoreCase("pdf")) {
                     response.setContentType("application/pdf");
-                    response.setHeader("Content-Disposition",
-                            "attachment; filename=\""+doi+".pdf\"");
+  //                  response.setHeader("Content-Disposition",
+  //                          "attachment; filename=\""+doi+".pdf\"");
                 }else if(type.equalsIgnoreCase("ps")) {
                     response.setContentType("application/ps");
                     response.setHeader("Content-Disposition",
