@@ -41,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -263,6 +264,9 @@ public class ViewDocController implements Controller {
 		// Obtain the hubUrls that points to this document.
 		List<Hub> hubUrls = csxdao.getHubs(doi);
 
+		//List<String> keyphrases = Arrays.asList("foo", "bar", "baz", "qux");
+		List<String> keyphrases = csxdao.getKeyphrase(doi);
+
 		model.put("pagetype", "summary");
 		model.put("pagetitle", title);
 		model.put("pagedescription", "Document Details (Isaac Councill, " +
@@ -288,6 +292,7 @@ public class ViewDocController implements Controller {
 		model.put("hubUrls", hubUrls);
 		model.put("pdfRedirectUrl", pdfRedirectURL);
 		model.put("pdfRedirectLabel", pdfRedirectLabel);
+		model.put("keyphrases", keyphrases);
 
 		String banner = csxdao.getBanner();
 		if (banner != null && banner.length() > 0) {
