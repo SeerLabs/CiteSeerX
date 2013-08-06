@@ -4,7 +4,7 @@ import nltk
 import sys
 
 from collections import defaultdict
-from mysql_util import init_db, close_db
+import mysql_util
 
 #from nltk.corpus import stopwords
 
@@ -86,7 +86,14 @@ def save_to_tbl(db, cursor, pid, term_ctr):
       db.rollback()
 
 def main(argv):
-  db, cursor = init_db()
+  db, cursor = mysql_util.init_db()
+  if not mysql_util.does_table_exist(db, cursor, 'paper_keywords_noun'):
+    cursor.execute('CREATE TABLE paper_keywords_noun ('
+        'id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, '
+        'paper_id varchar(100), '
+        'ngram varchar(255), '
+        'count int(11))')
+
   sys.stdout.write("Generating paper_keyphrase\n")
   cursor.execute("""SELECT id, title, abstract FROM papers""")
   rows = cursor.fetchall()
@@ -105,7 +112,7 @@ def main(argv):
     save_to_tbl(db, cursor, pid, term_ctr)
   print ''
 
-  close_db(db, cursor)
+  mysql_util.close_db(db, cursor)
 
 if __name__ == "__main__":
   main(sys.argv)
