@@ -10,7 +10,7 @@ gflags.DEFINE_string('drop_keyword', '', '')
 
 def usage(cmd):
   print 'Usage:', cmd, \
-      '--drop_keyword="a keyword to be dropped'
+      '--drop_keyword="the term to be dropped"'
 
 def check_args(argv):
   try:
