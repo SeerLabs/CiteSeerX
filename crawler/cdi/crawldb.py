@@ -50,6 +50,26 @@ class CrawlDB(object):
         finally:
             self.update_doc_lock.release()                                       
 	return recordExist
+
+    # query id from crawler database given a certain condition
+    # Note that in the "dbquery", id must be included in the query
+    def queryDocID(self,dbquery):
+	docids = []
+	try:
+	    self.update_doc_lock.acquire()
+	    cursor = connection.cursor()
+	    cursor.execute(dbquery)
+	    rows = cursorutils.dictfetchall(cursor)
+	    if not rows:
+		return docids
+	finally:
+	    self.update_doc_lock.release()
+
+	for row in rows:
+	    docids.append(row['id'])
+
+	return docids
+
     # you must have the permission to create tables 
     # create tables if they do not exist, table names can be arbitrary
     # (set in runconfig.py, but columns are 
@@ -81,6 +101,7 @@ class CrawlDB(object):
   		KEY `rev_host_state` (`rev_host`,`state`)\
 		) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;'
 	try:
+ 	    print "create document table ..."
 	    cursor.execute(dbquery)
 	    print 'database tables created successfully: main_crawl_document'
 	except _mysql_exceptions.Warning:
@@ -103,6 +124,7 @@ class CrawlDB(object):
 	        ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;"
 
 	try: 
+            print "create table parenturl ..."
 	    cursor.execute(dbquery)
 	except _mysql_exceptions.Warning:
 	    print "table '"+runconfig.dbt_parenturl+"' already exists"

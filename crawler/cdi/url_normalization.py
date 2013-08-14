@@ -32,6 +32,7 @@ def looks_like_dir(url):
             is_dir = False
         else:
             # last segment contains no ".", it MAYBE a dir
+	    # This causes some problems. Further actions are needed to correct this. (Jian Wu, 2013-4-19)
             is_dir = True
     
     return is_dir

@@ -37,7 +37,8 @@ class printInfo(object):
     # print status
     def printStatus(self,description,status):
     	# set status colors
-	if status.upper() == 'YES' or status.upper() == 'OK' or\
+	if status.upper() == 'YES' or status.upper() == 'OK' or \
+            status.upper() == 'PASS' or status.upper() == 'DONE' or \
 	    status.upper() == 'SUCCESS' or status.upper() == 'TRUE':
 	    status = self.colors['OKGREEN']+status.upper()+self.colors['ENDC']
 

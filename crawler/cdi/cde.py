@@ -1,13 +1,13 @@
 #!/usr/local/bin/python2.6
 # Crawl Document Exporter 
-# Python code to export the crawling results (currently only from Heritrix 
-# mirror writer) to the crawl database
-#
+# Python code to export the crawling documents from the crawl repository out
+# 
 # locate the input file and read the entire log file
-# input: full path of log file
-# output: a single record of log file
-#         this program must be run as a sudo account, otherwise, 
-#         the PDFBox command cannot be executed.
+# input: a MySQL database query
+# output: a directory which contains the queried documents in hierachical order
+#	(or just in a batch)
+# e.g., 002/123/234/002.123.234.pdf
+#
 import os # define invironment variable
 import sys 
 import resource # define resource variable "r"
@@ -34,51 +34,34 @@ import textextract
 import crawldb
 import printinfo
 import shutil
+from exception import BadResourceError
 # check configurations, including the following items
-# (*) permission to write into the repository folder
+# (*) permission to write into the output folder
 #     This is checked by creating and delete a folder called "9999" 
 #     inside the repository folder.
 # 
 def checkConfig():
     infoprtr = printinfo.printInfo()
 
-    # input directory exists
-    if not os.path.exists(runconfig.inputdir):
- 	infoprtr.printStatus('inputdir exists','no')
+    # crawl repository exists
+    if not os.path.exists(runconfig.crawlrepo):
+ 	infoprtr.printStatus('crawlrepo exists','no')
 	return False
     else:
-	infoprtr.printStatus('inputdir exists','yes')
+	infoprtr.printStatus('crawlrepo exists','yes')
     
-    # check if repository folder exists
-    if not os.path.exists(runconfig.outputdir):
-	infoprtr.printStatus('outputdir exists','no')
-	return False
-    else:
- 	infoprtr.printStatus('outputdir exists','yes')
-
-    # permission to write into the repository folder 
-    if os.path.exists(runconfig.outputdir+'9999'):
-	shutil.rmtree(runconfig.outputdir+'9999')
+    # permission to write into the output folder 
+    testdir = os.path.join(runconfig.cde["outputdir"],'9999')
+    if os.path.exists(testdir):
+	shutil.rmtree(testdir)
     try:
-	os.makedirs(runconfig.outputdir+'9999')
-	shutil.rmtree(runconfig.outputdir+'9999')
+	os.makedirs(testdir)
+	shutil.rmtree(testdir)
     except OSError,e:
 	print e
 	infoprtr.printStatus('Write permission to outputdir','no')
 	return False
     
-    # check if the log parser is available
-    try: 
-  	g = create_instance(runconfig.logparser,runconfig.logfile)
-    except KeyError,e:
-	print e
-	infoprtr.printStatus('Log parser avaiable','no')
-	return False
-
-    # check if the log directory exists
-    if not os.path.exists(runconfig.cdelogdir):
-    	os.makedirs(runconfig.cdelogdir)
-
     # if it passes all configuration checks
     return True
 
@@ -97,289 +80,51 @@ def startup():
   else:
     infoprinter.printStatus('Configuration check','ok')
 
-  # create document writer
-  writer = output.CiteSeerWriter([runconfig.outputdir,runconfig.crawler])
+  # create exporter
+  exporter = output.CiteSeerExporter([runconfig.cde["outputdir"],runconfig.crawlrepo])
 
-  # create document type filter
-  mimetypefilter = Mime_Type_Filter(runconfig.allow_doc_type)
-
-  # create document content filter
-  doccontentfilter = filter_doc.Doc_Content_Filter(runconfig.tempdir)
-
-  # create text extractor 
-  textextractor = textextract.Text_Extractor()
-
-  # create document logger (for this middleware)
-  doclogger = Doc_Logger(os.getenv('HOSTNAME'),mimetypefilter)
+  # create crawldb
+  cdb = crawldb.CrawlDB()
 
   # create general log configers and config logs
   logconfiger = Log_Configer()
   logconfiger.config_loggers()
 
-  # parse log file
-  g = create_instance(runconfig.logparser,runconfig.logfile)
-  g.extract_info(logsummaryfile=runconfig.logsummaryfile)
+  # process DB query, raise error if ids is empty
+  dbquery = runconfig.cde["dbquery"]
+  ids = cdb.queryDocID(dbquery)
+  infoprinter.printPara('#docid',str(len(ids)))
+  if not ids:
+      infoprinter.printStatus('DB query','fail')
+      os.exit()
 
   # number counter
   counters = counter.Counter()
   counters.newCounter('all')
-  counters.setCounter('all',g.nline['parsed'])
-  counters.newCounter('saved_New') 
-  counters.newCounter('saved_Duplicate')
-  counters.newCounter('filtered')
-  counters.newCounter('filtered_MimetypeFilter')
-  counters.newCounter('filtered_DocContentFilter')
-  counters.newCounter('failed')
-  counters.newCounter('failed_TextExtract')
-  counters.newCounter('failed_FileNotFound')    # if inputs are pdf/ps
-  counters.newCounter('failed_PDFFileNotFound') # if inputs are gzipped
+  counters.setCounter('all',len(ids))
+  counters.newCounter('copied') 
 
-  # create output directory if it does not exist
-  if not os.path.exists(runconfig.outputdir):
-      os.makedirs(runconfig.outputdir)
-
-  # create temp directory if it does not exist
-  if not os.path.exists(runconfig.tempdir):
-      os.makedirs(runconfig.tempdir)
-
-  # a mapping file is automatically generated if only export files 
-  # (no db input) 
-  if runconfig.toggle_save_doc_separate:
-    open(runconfig.tempdir+'mapping.csv','w')
-
-  # if required to visit database, make sure that database and tables 
-  # are created
-  if runconfig.toggle_save_to_db:
-    cdb = crawldb.CrawlDB()
-    # print database names
-    infoprinter.printPara('Database name',cdb.dbname)
-    # create document and parent table if they do not exist
-    cdb.createTables()
-
-  # save the current path 
-  savedPath = os.getcwd()
-
-  # loop over each information tuple extracted from crawler log file 
-  for i in range(0,counters.all):
-    print ''
-    sys.stdout.write("\r")
-    sys.stdout.write("%9d/%-9d  " % (i+1,counters.all))
-    sys.stdout.write("\n")
-    infoprinter.printPara('URL',g.url[i])
-
-    code = None
-    
-    # get resource variable "r"
-    r = resource.Resource(code,g.parent_url[i],g.url[i],\
-        g.is_seed[i],g.hop[i],runconfig.batch,g.anchor_text[i])
-
-    # url length cannot be longer th
-    r.crawl_date = g.crawl_date[i]
-    r.content_type = g.content_type[i]
-    infoprinter.printPara('mime-type',r.content_type)
-
-    # where crawled documents are saved
-    # retrieve the local hard copy of document
-    # If files are downloaded using "lftp", input file path should be 
-    # constructed by appending the relative file path to "conf.inputdir"
-    if runconfig.crawler == 'lftp':
-        infile = runconfig.inputdir+g.rel_path[i]   
-    elif runconfig.crawler == 'heritrix' and runconfig.saver == 'mirror':
-        infile = runconfig.inputdir+r.host+r.path   
-    else: 
-        infile = runconfig.inputdir+g.rel_path[i]
-
-    # apply doctype_filter, which checks document type
-    mimetypefilter_ok = mimetypefilter.check(r)
-    if not mimetypefilter_ok: 
-      msg = doclogger.generator('DocumentTypeNotAccepted',infile,r)
-      logging.getLogger('document').info(msg)
-      counters.addCounter('filtered_MimetypeFilter')
-      infoprinter.printStatus('Accepted document type','no')
-      continue
-    else:
-      infoprinter.printStatus('Accepted document type','yes')
-
-    r.ext = mimetypefilter.ext
-
-    # check if document is already in db
-    # if it returns True, log it and skip processing this one
-    # if it returns False, continue
-    if runconfig.toggle_save_to_db:
-        recordExist = cdb.checkRecord(runconfig.dbt_document,md5=r.md5)
-	if not recordExist:
-	    infoprinter.printStatus('New document','yes')
-       	else:
-    	    msg = doclogger.generator('saved_Duplicate',infile,r)
-    	    logging.getLogger('document').info(msg)
-	    counters.addCounter('saved_Duplicate')
-       	    infoprinter.printStatus('New document','no')
-    	    continue
-   
-    # check existence of input file, if the name part of "infile" 
-    # contains wild card characters e.g., %, 
-    # try to recover it to normal 
-    # "infile" is the original full file path from crawl log (may contain escape characters and may by in zipped format) 
-    # "inpdf" contains original file names saved in disk (no escape characters, and in acceptable file format, e.g., PDF/postscript)
-    inpdf = infile # e.g., filepath/file.pdf 
-    if '%' in inpdf: 
-      inpdf = urllib.unquote(inpdf) #unquote escapes, e.g., %7 -> ~
-
-    # if document file still cannot be found, write into log and skip it
-    try: f = open(inpdf)
-    except IOError:
-      msg = doclogger.generator('FileNotFound',infile,r)
-      logging.getLogger('document').info(msg)
-      counters.addCounter('failed_FileNotFound')
-      infoprinter.printStatus('Document file found','no')
-      continue
-    else: 
-      f.close()
-      infoprinter.printStatus('Document file found','yes')
-      infoprinter.printPara('Document file path',inpdf)
-    
-    # If input file is in zipped format, assuming it is a .tar.gz file
-    # we do the following things
-    # * copy the .tar.gz file to a temp directory 
-    # * decompress it using tar -xvzf 
-    # * find the .pdf file inside the unzipped 
-    # * do whatever we want ...
-    # * remove everything in the temp directory 
-    cmd_file = 'file -i "'+infile+'"'
-    cmdoutput = commands.getoutput(cmd_file)
-    t = cmdoutput.split(' ')
-    infilemimetype = t[-1]
-    if infilemimetype == 'application/x-gzip':
-      cmd_rm = 'rm -rf '+runconfig.tempdir+'*'
-      cmdoutput = commands.getoutput(cmd_rm)
-
-      cmd_cp = 'cp "'+infile+'" '+runconfig.tempdir
-      cmdoutput = commands.getoutput(cmd_cp)
-
-      # sometimes, for some (unknown) reasons, the "-C" option
-      # does not work well for "tar" command, so we cd to the
-      # temp directory, extract files from the .tar.gz and return
-      # to the main directory
-      #
-      # obtain the file name from the full path: infilename
-      infilename = os.path.split(infile)[1]
-      os.chdir(runconfig.tempdir)
-      cmd_tar = 'tar -xvzf "'+infilename+'"'
-      cmdoutput = commands.getoutput(cmd_tar)
-      os.chdir(savedPath)
-  
-      # only look for pdf files
-      for root,dirs,files in os.walk(runconfig.tempdir):
-        inpdffound = False
-        for f in files:
-	  if f.endswith('pdf'):
-	    inpdf = root+'/'+f
-            inpdffound = True
-            break
-        if inpdffound == True:
-          break
-      if not inpdffound: 
-        msg = doclogger.generator('PDFFileNotFound',infile,r)
-        logging.getLogger('document').info(msg)
-        counters.addCounter('failed_PDFFileNotFound')
-        infoprinter.printStatus('PDF Document file found','no')
-        continue
-    
-    # document file is found
-    # check if need to use doc_content_filter
-    if runconfig.toggle_doc_content_filter:
-      
-      # extract text from documents 
-      filefmt = mimetypefilter.doctype
-
-      infoprinter.printPara('Mime type',filefmt)
-      # acceptable formats: e.g., "application/pdf","application/postscript" 
-      textextractmsg = textextractor.extract(inpdf,filefmt) 
-
-      # classify document if text is extracted successfully
-      if 'Success' in textextractmsg:
-          infoprinter.printStatus('Extract text','success')
-          # not a paper, log it and proceed it to the next
-          if doccontentfilter.Decider(textextractor.outtxtfile,inpdf) == -1:
-	      counters.addCounter('filtered_DocContentFilter')
-              msg = doclogger.generator('NotAcademic',infile,r)
-              logging.getLogger('document').info(msg)
-	      infoprinter.printStatus('Accepted document content','no')
-              continue
-	  else:
-	      infoprinter.printStatus('Accepted document content','yes')
-      else: # text extraction fails, report error and write it into log file
-          infoprinter.printStatus('Extract text','fail')
-	  counters.addCounter('failed_TextExtract')
-          msg = doclogger.generator(textextractmsg,infile,r)
-          logging.getLogger('document').info(msg)
-          continue
-
-    # write document information into database
-    # database settings can be found at settings.py
-    # read file content and calculate the SHA1 value
-    # read PDF document information
-    f = open(inpdf,'r')
-    data = f.read()
-    f.close()
-
-    # If required to save crawled documents separately,
-    # do not save to db, only save document to outputdir
-    # Files are named using numbers starting from 1
-    # A mapping file is automatically generated
-    filenamebody = id_to_fname(i+1,r.ext)
-    outdoc = runconfig.outputdir+filenamebody
-    if runconfig.toggle_save_doc_separate:
-      mappingline = outdoc+','+infile # may not be inpdf
-      ff = open(outdoc,'w')
-      ff.write(data)
-      ff.close
-      try:
-	f = open(outdoc)
-        msg = doclogger.generator('saved_New',infile,r)
-        logging.getLogger('document').info(msg)
-        infoprinter.printStatus('Document saved','yes')
-        # number of saved documents 
-        counters.addCounter('saved_New')
-      except IOError,e:
-        infoprinter.printStatus('Document saved','no')
-        raise SystemExit(e)
-
-    # if require to save to db,calculate SHA1
-    if runconfig.toggle_save_to_db:
-      r.content_sha1 = hashlib.sha1(data).hexdigest() 
-  
-      # read text file converted from pdf
-      try:
-        # save to db, save doc and metadata
-        writer.save(r,data) 
-      except IOError,e:
-        msg = doclogger.generator('IOErrorSave',infile,r)
-        logging.getLogger('document').info(msg)
-      except OSError,e:
-        msg = doclogger.generator('OSErrorSave',infile,r)
-        logging.getLogger('document').info(msg)
-      else: # nothing wrong with saving to db
-            # and the text is extracted
-        if runconfig.toggle_doc_content_filter:
-          ft = open(textextractor.outtxt,'r')
-          txtdata = ft.read()
-          ft.close()
-          writer.savetxt(txtdata) # save text file to the same folder 
+  # export each queried document
+  if runconfig.cde["toggle_export"]:
+      i = 0
+      for id in ids:
+	  i = i + 1
+	  print "%9d/%-9d : %9d" % (i,counters.all,id)
+          if exporter.doc_export(id): 
+	  	counters.addCounter('copied')
+      	  else:
+	  	infoprinter.printStatus(str(id),'fail')
 
     # log successful
     # check repository to see if output PDF files are there
-    msg = doclogger.generator('saved_New',infile,r)
-    logging.getLogger('document').info(msg)
-    infoprinter.printStatus('Document saved','yes')
+    #msg = doclogger.generator('saved_New',infile,r)
+    #logging.getLogger('document').info(msg)
+    #infoprinter.printStatus('Document saved','yes')
     # number of documents which are written into db
-    counters.addCounter('saved_New')
+    #counters.addCounter('saved_New')
         
-  # print counters in a new line
-  counters.setCounter('filtered',counters.filtered_MimetypeFilter+counters.filtered_DocContentFilter)
-  counters.setCounter('failed',counters.failed_TextExtract+counters.failed_FileNotFound+counters.failed_PDFFileNotFound)
   counters.printCounter()
-  counters.printCountertoFile(runconfig.runsummaryfile)
+  counters.printCountertoFile(runconfig.cde["summaryfile"])
 
   # record end time to calculate processing time
   # because strftime() will truncate the time string when converting to the
