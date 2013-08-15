@@ -1,6 +1,6 @@
 #!/usr/bin/python
-# generate the log file of microsoft academy crawl performed by
-# Madian Khabsa. The original download does not come with a 
+# generate the log file of microsoft academy crawl 
+# The original download does not come with a 
 # log file. For each downloaded pdf file, there is an associated
 # '.txt' file, which only gives the document URL
 # This script is designed to concatenate these '.txt' files into
@@ -14,9 +14,9 @@ import counter
 def startup(verbal=False):
     # initial setups
     # "crawldir" contains all crawled documents including ".pdf" and ".txt" files
-    crawldir = '/data02/academic-links-crawl/CrawlerOutput20130220115525/data/crawler-out'
+    crawldir = '/msa/crawl/directory/crawler-out'
     # "outputlogpath" is the output file path
-    outputlogpath = "/data02/academic-links-crawl/CrawlerOutput20130220115525/crawl.log"
+    outputlogpath = "/msa/crawl/directory/crawl.log"
 
     # open output file
     fout = open(outputlogpath,'w')   
