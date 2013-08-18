@@ -19,7 +19,66 @@ from django.utils.encoding import DjangoUnicodeDecodeError
 #from citeseerx_crawl.main_crawl.models import Document, ParentUrl
 #from models import Document, ParentUrl
 import cursorutils
+import commands
 #from my_crawl.slide_crawl.models import Document, ParentUrl, Slide
+
+class CiteSeerExporter(object):
+    def __init__(self,params):
+	self.output_dir = params[0]	# directory to export document files and metadata
+	self.crawlrepo = params[1]	# crawler repository
+	
+    # export one document with a docid
+    # return True if document and metadata file are successfully copied
+    # return False otherwise
+    def doc_export(self,docid):
+        # create output file folder if not exist 
+        exportfile_path = self.id_to_path(docid,self.output_dir)
+        exportdir_path = os.path.dirname(exportfile_path)
+
+	# if the document is already copied, do nothing
+	if os.path.exists(exportfile_path):
+	    return True
+
+        try:
+            if not os.path.exists(exportdir_path):
+                os.makedirs(exportdir_path)
+        except:
+            print 'error when making directory: '+dir_path
+
+	# find the crawled document
+	repofile_path = self.id_to_path(docid,self.crawlrepo)
+	repodir_path = os.path.dirname(repofile_path)
+	if not os.path.exists(repofile_path):
+            print 'File (id=%9d) not found in crawlrepo.' % (docid)
+	    return False
+		
+        # copy pdf and metadata files from repository to export directory
+	cmd_cp = 'cp '+repodir_path+'/* '+exportdir_path
+	cmdoutput = commands.getoutput(cmd_cp)
+
+        # check file availability
+	# in one case, the copy was not successful because some 
+	# defect in the original repository. The file was not saved to the 
+  	# right folder. Example. 002/211/1135/001.211.135.pdf.met
+	# in this case, just ignore these cases
+	if not os.path.exists(exportfile_path):
+	    print 'File (id=%9d) failed to save.' % (docid)
+            return False
+
+	return True
+
+    # map a docid to document absolute path with a basedir
+    def id_to_path(self, id, basedir):
+        p1 = id / 1000000
+        p2 = (id % 1000000) / 1000
+        p3 = id % 1000
+        s1 = str(p1).zfill(3)
+        s2 = str(p2).zfill(3)
+        s3 = str(p3).zfill(3)
+        p = "%s/%s/%s/%s.%s.%s.pdf" % (s1, s2, s3, s1, s2, s3)
+        return os.path.join(basedir, p)
+
+
 
 class CiteSeerWriter(object):
     def __init__(self, params):
@@ -46,7 +105,6 @@ class CiteSeerWriter(object):
 		self.docid = row['id']
         finally:
             self.update_doc_lock.release()                                                                                                      
-
     def save(self, r, data):
         # save parent first (even fail to save doc)
         if r.parent_url != None:              
@@ -85,7 +143,7 @@ class CiteSeerWriter(object):
 	# if the resource URL is a seed, rpid is None
 	# other wise, it is the id in the parent url table. 
         self.save_doc(r, data, pid)
-    
+
 #   @transaction.commit_on_success    
     def save_doc(self, r, data, pid):
         # save db first to get the id
@@ -138,7 +196,7 @@ class CiteSeerWriter(object):
 		    if r.crawl_date > row['update_date']: 
 			row['update_date'] = r.crawl_date
 
-		# if pid is None, no need to update parent id in document table
+		# update parent id in document table 
 		if pid != None:
 		    if row['parent_id'] == None:
 			row['parent_id'] = pid
@@ -166,11 +224,16 @@ class CiteSeerWriter(object):
 	        self.docid = row['id']
         finally:
             self.update_doc_lock.release()                                                                                                      
-        # if need to update document file
+        # if need to overwrite document file
+ 	if runconfig.overwrite_file:
+	    file_updated = False
+
         if not file_updated:    
             try:
+		# generate document path
+                file_path = self.id_to_path(self.docid,self.output_dir,r.ext)
+
                 # create file folder if not exist 
-                file_path = self.id_to_path(self.docid)
                 dir_path = os.path.dirname(file_path) 
 		try: 
                     if not os.path.exists(dir_path):
@@ -199,6 +262,22 @@ class CiteSeerWriter(object):
       	    raise IOError,'File (id=%d) failed to save: %s' % (self.docid,str(e))
 	finally:
 	    fc.close()
+     
+    # save metadata file only
+    # "r" contains URL information
+    # "inpdf" is the path of PDF document
+    def save_met(self,r,inpdf):
+	# generate metadata path
+	file_path = inpdf+'.met'
+
+        # save metadata file
+        f = open(file_path, 'w')
+        f.write(self.get_metadata_xml(r))
+        f.close()
+
+	# check file availability
+	if not os.path.exists(file_path):
+      	    raise IOError,'File (id=%d) failed to save: %s' % (file_path,str(e))
     
     def savetxt(self,txtdata): 
         # copy text file into same directory as doc and metadata files
@@ -221,15 +300,15 @@ class CiteSeerWriter(object):
         
         return xml                
     
-    def id_to_path(self, id):
+    def id_to_path(self, id, basedir,ext):
         p1 = id / 1000000
         p2 = (id % 1000000) / 1000
         p3 = id % 1000
         s1 = str(p1).zfill(3) 
         s2 = str(p2).zfill(3)
         s3 = str(p3).zfill(3)
-        p = "%s/%s/%s/%s.%s.%s.pdf" % (s1, s2, s3, s1, s2, s3)
-        return os.path.join(self.output_dir, p)
+        p = "%s/%s/%s/%s.%s.%s.%s" % (s1, s2, s3, s1, s2, s3, 'pdf')
+        return os.path.join(basedir, p)
         
 def is_better_parent(doc_url, old_par_url, new_par_url):
     if new_par_url == None:
