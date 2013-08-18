@@ -3,6 +3,7 @@ import time
 import os
 import counter
 import runconfig
+import sys
 class Heritrix(object):
 
   def __init__(self,logfile):
@@ -19,17 +20,23 @@ class Heritrix(object):
     self.counters.newCounter('Accepted')
     self.counters.newCounter('Accepted_isSeed')
 
-  def extract_info(self,logsummaryfile=None):
+  def extract_info(self,logsummaryfile=None,skip=0,nloglines=0):
     # open log file
     print 'loading file: '+self.logfile+' ...'
     try:
       lines = file(self.logfile).readlines()
-      self.nline['total'] = len(lines) 
-      self.counters.all = self.nline['total']
-      print 'total lines: ',self.nline['total']
     except IOError: 
       print ">>> File not found: ",self.logfile
       return 0
+
+    # if nloglines >0, e.g., 100, use the first 100 lines, 
+    # otherwise, use all lines
+    if nloglines >0:
+	lines = lines[skip:nloglines]
+
+    self.nline['total'] = len(lines) 
+    self.counters.all = self.nline['total']
+    print 'total lines read: ',self.nline['total']
     print ''
 
     # loop over each line and extract information
@@ -61,15 +68,33 @@ class Heritrix(object):
       # a URL can be stamped with "skip_longURL", but it could also 
       # be identified to have a bad "dpath" then the countername is changed to
       # "skip_discoveryPath[]" and the "skip_longURL" information is lost. 
-      fetchstatecode = int(s[1])
-      dpath = s[4]
+      try:
+        fetchstatecode = int(s[1])
+      except ValueError,e:
+	countername = "skip_badstatecode"
+        if self.counters.isanewCounter(countername):
+	    self.counters.newCounter(countername)
+	self.counters.addCounter(countername)
+	self.nline['skipped'] = self.nline['skipped'] + 1
+	continue
+	
+      try:
+        dpath = s[4]
+      except IndexError,e:
+ 	countername = "skip_baddepth"
+	if self.counters.isanewCounter(countername):
+	    self.counters.newCounter(countername)
+ 	self.counters.addCounter(countername)
+	self.nline['skipped'] = self.nline['skipped'] + 1
+	continue
+
       url = s[3]
       urlsplit = url.split('/')
 
       countername = None
-      if len(url) > runconfig.urlmaxlen:
+      if len(url) >= runconfig.urlmaxlen:
 	countername = 'skip_longURL'
-      if len(s[5]) > runconfig.urlmaxlen:
+      if len(s[5]) >= runconfig.urlmaxlen:
  	countername = 'skip_longParentURL'
       if dpath == 'P':
 	countername = 'skip_discoveryPath['+dpath+']'
@@ -119,7 +144,16 @@ class Heritrix(object):
       # crawl_date
       datestr = s[0] 
       datestrs = datestr.split(".")# remove second decimals
-      datetup = datetime.datetime(*(time.strptime(datestrs[0],"%Y-%m-%dT%H:%M:%S")[0:6])) # convert from string to datetime.datetime format
+      try:
+      	datetup = datetime.datetime(*(time.strptime(datestrs[0],"%Y-%m-%dT%H:%M:%S")[0:6])) # convert from string to datetime.datetime format
+      except ValueError,e:
+	countername = "skip_baddateformat"
+        if self.counters.isanewCounter(countername):
+	    self.counters.newCounter(countername)
+	self.counters.addCounter(countername)
+	self.nline['skipped'] = self.nline['skipped'] + 1
+	continue
+	    
       self.crawl_date.append(datetup)
 
       # content_type 
@@ -148,14 +182,14 @@ class PMC(object):
     self.rel_path = []
     self.nline = {'total':0,'skipped':0,'parsed':0}
 
-  def extract_info(self,logsummaryfile=None):
+  def extract_info(self,logsummaryfile=None,skip=0):
     # open log file
     # use "ftp.ncbi.nlm.nih.gov/pub/pmc/file_list.csv" as log file
     print 'loading file: '+self.logfile+' ...'
     try:
       lines = file(self.logfile).readlines()
       # skip the header
-      lines = lines[0:]
+      lines = lines[skip:]
       self.nline['total'] = len(lines) 
     except IOError: 
       print ">>> File not found: ",self.logfile
@@ -304,6 +338,7 @@ class ARXIV(object):
       self.anchor_text.append('')
 
       # crawl_date is set to be the "last modified time" of this file, 
+      
       (f_mode, f_ino, f_dev, f_nlink, f_uid, f_gid, f_size, f_atime, f_mtime, f_ctime) = os.stat(full_path)
       f_mtime = time.ctime(f_mtime)
       
@@ -317,4 +352,193 @@ class ARXIV(object):
 
       # number of parsed documents
       self.nline['parsed'] = self.nline['parsed'] + 1
+
+# This class deals with PDF input to CDILITE, for consistency, the input argument is still 
+# called "logfile", but it is not an actual log file but just a list of
+# one-column text which are document paths ("doclist" in runconfig). 
+# Beccause CDILITE is initially designed for testing text extraction module without
+# installing the crawler db and rep, the parameters we can obtain from the "logfile" are
+# only file names. The URL, parent URLs and other parameters are retained but can be 
+# assigned with arbitury values, because we still need to write the .met file to the input 
+# repository.  
+class CDILITE(object):
+    
+    def __init__(self,logfile):
+        self.logfile = logfile
+	# These parameters are assigned with arbituary values
+        self.url = []
+        self.parent_url = []
+        self.is_seed = []
+        self.hop = []
+        self.crawl_date = []
+        self.content_type = []
+        self.anchor_text = []
+	# this is the path of PDF document
+        self.rel_path = []
+        self.nline = {'total':0,'skipped':0,'parsed':0}
+	
+    # This method does the actual job. 
+    # The input is just the name of the log summary file, which gives
+    # count numbers 
+    def extract_info(self,logsummaryfile=None):
+
+    	# open log file
+    	print 'loading file: '+self.logfile+' ...'
+    	try:
+      	    lines = file(self.logfile).readlines()
+      	    self.nline['total'] = len(lines)
+    	except IOError:
+      	    print ">>> File not found: ",self.logfile
+      	    return 0
+    	print ''
+
+    	# loop over each line and extract information
+    	print 'extracting information from file: '+self.logfile+' ...'
+    	for line in lines:
+      	    line = line.strip('\n')
+      	    # split each row 
+      	    s = line.split(' ')
+
+	    # "s" should have up to three components. 
+	    # if len(s)=3, it should be filename, URL, parentURL, hop = 1
+	    # if len(s)=2, it should be filename, URL, hop = 0
+	    # if len(s)=1, it should be filename, hop = 0
+	    hop = 0
+	    if len(s) == 3: hop = 1
+      	    self.hop.append(hop)
+
+      	    # relative path (rel_path) is the path relative to the 
+      	    # "inputdir" variable in "runconfig.py"
+      	    # e.g., rel_path = '/astro-ph/0602/0602464v1.pdf'
+      	    rel_path = s[0]
+      	    self.rel_path.append(rel_path)
+      	    full_path = os.path.join(runconfig.cdilite['docdir'],rel_path)
+
+            # URL is arbituary if it is not provided
+            if len(s) == 1:
+		url = 'http://unknown.source.com/my.pdf'
+        	parent_url = 'http://unknown.source.com/'
+      	    elif len(s) == 2:
+        	url = s[1]
+        	parent_url = 'http://unknown.source.com/'
+	    elif len(s) == 3:
+		url = s[1]
+		parent_url = s[2]
+
+      	    self.url.append(url)
+      	    self.parent_url.append(parent_url)
+
+      	    # no URL in this log is seed
+            is_seed = 0
+      	    self.is_seed.append(is_seed)
+                                                                      
+      	    # no anchor_text    
+            self.anchor_text.append('')  
+
+      	    # crawl_date is set to be the "last modified time" of this file, 
+      	    (f_mode, f_ino, f_dev, f_nlink, f_uid, f_gid, f_size, f_atime, f_mtime, f_ctime) = os.stat(full_path)
+      	    f_mtime = time.ctime(f_mtime)
+            datetup = datetime.datetime(*(time.strptime(f_mtime,"%a %b %d %H:%M:%S %Y")[0:6])) # convert from string to datetime.datetime format    
+      	    self.crawl_date.append(datetup)
+                
+      	    # content_type is always application/pdf
+      	    content_type = 'application/pdf'
+      	    self.content_type.append(content_type)
+                
+      	    # number of parsed documents
+      	    self.nline['parsed'] = self.nline['parsed'] + 1
+
+# parse microsoft academic crawling log (performed by Madian Khabsa)
+# The original crawling does not output any log file. For each downloaded pdf
+# file, there is an associated '.txt' file, which only gives the document URL
+# Jian Wu wrote a Python script to concatenate these '.txt' files into a single
+# file with three columns
+# file-name				URL
+# 2013-02-20-18-48-58_12.pdf		http://jvi.asm.org/content/76/23/11920.full.pdf
+# the following parser will parse this file.
+# PS: there are two URLs in the .txt file, the one after 'URL:' is just the one 
+# the crawler attempted to fetch. The one after 'Fetched:' is the real URL 
+# after redirection. Though most of time, they are the same, they could be 
+# different
+class MSA(object):
+
+    def __init__(self,logfile):
+        self.logfile = logfile
+	# These parameters are assigned with arbituary values
+        self.url = []
+        self.parent_url = []
+        self.is_seed = []
+        self.hop = []
+        self.crawl_date = []
+        self.content_type = []
+        self.anchor_text = []
+	# this is the path of PDF document
+        self.rel_path = []
+        self.nline = {'total':0,'skipped':0,'parsed':0}
+
+    # This method does the actual text extraction job. 
+    # The input is just the name of the log summary file, which gives
+    # count numbers 
+    def extract_info(self,logsummaryfile=None,skip=0,nloglines=0):
+
+    	# open log file
+    	print 'loading file: '+self.logfile+' ...'
+    	try:
+      	    lines = file(self.logfile).readlines()
+      	    self.nline['total'] = len(lines)
+    	except IOError:
+      	    print ">>> File not found: ",self.logfile
+      	    return 0
+    	print ''
+
+    	# loop over each line and extract information
+    	print 'extracting information from file: '+self.logfile+' ...'
+    	for line in lines:
+      	    line = line.strip('\n')
+      	    # split each row 
+      	    s = line.split(' ')
+
+	    # "s" should have three components. There is NO parentURL 
+	    # filename, crawldate, URL, hop = 0
+	    hop = 0
+
+      	    # relative path (rel_path) is the path relative to the 
+      	    # "inputdir" variable in "runconfig.py"
+      	    # e.g., rel_path = '2013-02-28-06-35-42_171.pdf'
+      	    rel_path = s[0]
+      	    full_path = os.path.join(runconfig.inputdir,rel_path)
+
+            # URL is arbituary if it is not provided
+	    url = s[1]
+	    parent_url = None
+
+            if len(url) > runconfig.urlmaxlen:
+	   	print 'URL too long: ',len(url)
+		continue
+
+      	    self.rel_path.append(rel_path)
+      	    self.hop.append(hop)
+      	    self.url.append(url)
+      	    self.parent_url.append(parent_url)
+
+      	    # no URL in this log is seed
+            is_seed = 0
+      	    self.is_seed.append(is_seed)
+                                                                      
+      	    # no anchor_text    
+            self.anchor_text.append('')  
+
+	    # crawl_date is obtained from the file name
+	    # e.g., 2013-02-22-05-34-44_200.pdf
+ 	    # is resolved to 2013-02-22-5:34:44
+	    datetimestr = rel_path.split('_')[0]
+            datetup = datetime.datetime(*(time.strptime(datetimestr,"%Y-%m-%d-%H-%M-%S")[0:6])) # convert from string to datetime.datetime format
+      	    self.crawl_date.append(datetup)
+                
+      	    # content_type is always application/pdf
+      	    content_type = 'application/pdf'
+      	    self.content_type.append(content_type)
+                
+      	    # number of parsed documents
+      	    self.nline['parsed'] = self.nline['parsed'] + 1
 
