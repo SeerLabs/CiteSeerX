@@ -8,6 +8,7 @@
 # Sensitive configuration files that should never be committed
 conf/applicationContext-mail.xml
 conf/csx.config.properties
+conf/csx.config.properties-staging
 crawler/cdi/black_list.dat
 crawler/cdi/runconfig.py
 crawler/cdi/settings.py
