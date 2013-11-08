@@ -374,10 +374,13 @@ public class CsxCanname {
 		deleteCid.executeUpdate();
 	}
 
-	public static void updateAllCannames(Connection conn) throws SQLException {		
+	public static void updateAllCannames(Connection conn) throws SQLException {
+		// TODO: the original author seemed to hard-code min_cid and max_cid,
+		// the parameters to control the cannames table updating range.
+		// Change the code such that min_cid and max_cid can be specified by 
+		// flags
 		int min_cid =  300001;
 		int max_cid =  309352; //90000;
-	  //int max_cid =  309352;
 		for (int cid = min_cid; cid <= max_cid; cid++) {
 			CsxCanname cname = new CsxCanname(cid);
 			try {
@@ -497,12 +500,11 @@ public class CsxCanname {
 
 	public static void main(String[] args) throws Exception {
 		String cmd = args[0];
-
 		String connectionURL ="jdbc:mysql://localhost:3306/citeseerx";
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
 		Connection conn = 
 		    DriverManager.getConnection(connectionURL,"csx-devel","csx-devel");
-
+		System.out.println(cmd);
 		if (cmd.equals("update")) {
 			if (args.length != 2) {
 				System.out.println("Usage: java " +
