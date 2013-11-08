@@ -248,6 +248,8 @@ public class CsxDisambiguation {
 			}
 			String cmd = line.getOptionValue("cmd");
 			String infile = line.getOptionValue("infile");
+			String indir = line.getOptionValue("indir");
+			String outdir = line.getOptionValue("outdir");
 			if (cmd.equals("init_dirs")) {
 				// 1) init directories
 				initDirectories("data/csauthors/blocks");
@@ -261,7 +263,14 @@ public class CsxDisambiguation {
 				// 3) disambiguate (required 1. & 2.)
 				//disambiguateDirectory(factory, args[0], args[1]);
 				//disambiguateFile(factory, args[0]);
-				disambiguateFile(factory, infile);
+				if (infile != null) {
+					disambiguateFile(factory, infile);
+				} else if (indir != null && outdir != null) {
+					disambiguateDirectory(factory, indir, outdir);
+				} else {
+					usage(options);
+					System.exit(0);
+				}
 			}
 			/*else if (cmd.equals("match_author")) {
 				String input_file = "";
