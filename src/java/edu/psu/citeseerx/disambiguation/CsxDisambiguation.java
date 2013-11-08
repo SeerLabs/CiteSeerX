@@ -225,8 +225,8 @@ public class CsxDisambiguation {
 			System.out.println("\nERROR: Please specify one command");	
 			return false;
 		}
-
-		if (!(line.hasOption("infile") ^ line.hasOption("indir"))) {
+		String cmd = line.getOptionValue("cmd");
+		if (cmd.equals("dbscan") && !(line.hasOption("infile") ^ line.hasOption("indir"))) {
 			System.out.println("\nERROR: Please specify either -infile or -indir, but not both");
 			return false;
 		}
