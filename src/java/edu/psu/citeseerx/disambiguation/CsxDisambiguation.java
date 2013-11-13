@@ -56,8 +56,9 @@ public class CsxDisambiguation {
 		for (char a = 'A'; a <= 'Z'; a++) {
 			for (char b = 'A'; b <= 'Z'; b++) {
 				File dir = new File(dirpath + "/" + a + b);
-				if (!dir.exists())
-					dir.mkdir();
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
 			}
 		}
 	}
@@ -224,8 +225,8 @@ public class CsxDisambiguation {
 			System.out.println("\nERROR: Please specify one command");	
 			return false;
 		}
-
-		if (!(line.hasOption("infile") ^ line.hasOption("indir"))) {
+		String cmd = line.getOptionValue("cmd");
+		if (cmd.equals("dbscan") && !(line.hasOption("infile") ^ line.hasOption("indir"))) {
 			System.out.println("\nERROR: Please specify either -infile or -indir, but not both");
 			return false;
 		}
@@ -246,10 +247,13 @@ public class CsxDisambiguation {
 				System.exit(0);
 			}
 			String cmd = line.getOptionValue("cmd");
+			String infile = line.getOptionValue("infile");
+			String indir = line.getOptionValue("indir");
+			String outdir = line.getOptionValue("outdir");
 			if (cmd.equals("init_dirs")) {
 				// 1) init directories
-				//initDirectories("data/csauthors/blocks");
-				//initDirectories("data/csauthors/output");				
+				initDirectories("data/csauthors/blocks");
+				initDirectories("data/csauthors/output");				
 			}
 			else if (cmd.equals("init_blocks")) {
 				// 2) create blocks
@@ -258,7 +262,15 @@ public class CsxDisambiguation {
 			else if (cmd.equals("dbscan")) {
 				// 3) disambiguate (required 1. & 2.)
 				//disambiguateDirectory(factory, args[0], args[1]);
-				disambiguateFile(factory, args[0]);
+				//disambiguateFile(factory, args[0]);
+				if (infile != null) {
+					disambiguateFile(factory, infile);
+				} else if (indir != null && outdir != null) {
+					disambiguateDirectory(factory, indir, outdir);
+				} else {
+					usage(options);
+					System.exit(0);
+				}
 			}
 			/*else if (cmd.equals("match_author")) {
 				String input_file = "";
