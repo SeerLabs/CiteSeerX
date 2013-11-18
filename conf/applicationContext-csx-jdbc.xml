@@ -27,6 +27,19 @@
       </map>
     </property>
   </bean>
+  
+  <bean id="restEndpoint" class="edu.psu.citeseerx.domain.RepositoryEndPoint">
+      <property name="url" value="csxrepository01.ist.psu.edu"/>
+      <property name="schema" value="http"/>;
+      <property name="path" value = "/document"/>;
+      <property name="GET"><value type="java.lang.Boolean">false</value></property>
+  </bean>
+  
+  <bean id="restREPO" class="edu.psu.citeseerx.repository.RESTRepository">
+      <property name="repositoryEndPoint" ref="restEndpoint"/>
+  </bean>
+  
+
         
 
 
