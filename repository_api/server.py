@@ -10,7 +10,7 @@ import errno
 # TODO: Move to config
 
 repositorypath = '/Users/Doug/Desktop/repository'
-api_key = " "
+api_key = "c1t3s33r"
 
 urls = ('/', 'index',
         '/document', 'document')
