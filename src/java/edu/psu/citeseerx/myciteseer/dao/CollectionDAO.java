@@ -28,7 +28,7 @@ import edu.psu.citeseerx.myciteseer.domain.PaperNote;
  * share their collections. The functionality will be the same but some methods
  * signatures would change.
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public interface CollectionDAO {
 	/**

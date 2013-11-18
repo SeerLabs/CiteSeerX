@@ -21,6 +21,7 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -45,9 +46,11 @@ import edu.psu.citeseerx.domain.Author;
 import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.domain.DocumentFileInfo;
 import edu.psu.citeseerx.domain.DomainTransformer;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.Keyword;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
+import edu.psu.citeseerx.repository.DocumentUnavailableException;
 import edu.psu.citeseerx.utility.SafeText;
 
 /**
@@ -66,7 +69,7 @@ import edu.psu.citeseerx.utility.SafeText;
  * the csx_citegraph deletions table.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class IndexUpdateManager {
 
@@ -93,6 +96,7 @@ public class IndexUpdateManager {
     
     
     private CSXDAO csxdao;
+    private RepositoryService repositoryService;
     
     public void setCSXDAO(CSXDAO csxdao) {
         this.csxdao = csxdao;
@@ -101,7 +105,15 @@ public class IndexUpdateManager {
     
     private CiteClusterDAO citedao;
     
-    public void setCiteClusterDAO(CiteClusterDAO citedao) {
+    public RepositoryService getRepositoryService() {
+		return repositoryService;
+	}
+
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
+	}
+
+	public void setCiteClusterDAO(CiteClusterDAO citedao) {
         this.citedao = citedao;
     } //- setCiteClusterDAO
     
@@ -630,6 +642,9 @@ public class IndexUpdateManager {
     }  //- joinStringArray
     
     
+    
+    
+    
     /**
      * Fetches the full text of a document from the filesystem repository.
      * @param doc
@@ -642,43 +657,29 @@ public class IndexUpdateManager {
         if (doi == null) {
             return null;
         }
-        FileInputStream ins = null;
-        BufferedReader reader = null;
+       
         try {
-            ins = csxdao.getFileInputStream(doi,
-                    doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY),
-            "body");
-        } catch (IOException e) { }
-        if (ins == null) {
-            ins = csxdao.getFileInputStream(doi,
-                    doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY),
-            "txt"); 
-        }
-        try {
-            reader = new BufferedReader(new InputStreamReader(ins, "UTF-8"));
-            char[] buffer = new char[maxTextLength];
-            int nread = reader.read(buffer, 0, buffer.length-1);
-            if (nread == buffer.length) {
-                for (int j=buffer.length-1; j>=0; j--) {
-                    if (buffer[j] == ' ') {
-                        break;
-                    } else {
-                        buffer[j] = ' ';
-                    }
-                }
-            }
-            String text = new String(buffer);
+        	HashMap<String,String> parameters = new HashMap<String,String>();
+        	parameters.put(Document.DOI_KEY, doi);
+        	parameters.put(RepositoryService.FILETYPE,RepositoryService.BODYFILE);
+        	String fileContent = new String();
+        	try {
+        		fileContent = repositoryService.getDocumentContent(parameters);
+        	}
+        	catch(DocumentUnavailableException e) {
+        		parameters.put(RepositoryService.FILETYPE, RepositoryService.TEXTFILE);
+        		try {
+        			fileContent = repositoryService.getDocumentContent(parameters);
+        		} catch(DocumentUnavailableException f) {}
+        	}
+        	
+            String text = fileContent.substring(0,maxTextLength);
             text = SafeText.cleanXML(text);
-
             return text;
             
         } catch (IOException e) {
             throw(e);
-        } finally {
-            try { reader.close(); } catch (Exception e) { }
-	    try { ins.close(); } catch(Exception e) { }
         }
-            
     }  //- getText
     
     

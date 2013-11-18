@@ -49,3 +49,4 @@ src/perl/FileConversionService/lib/FileConverter/Config.pm
 *.vrb
 *.xdy
 *.tdo
+*.svn

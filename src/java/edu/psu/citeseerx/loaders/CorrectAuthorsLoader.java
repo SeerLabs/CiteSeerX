@@ -22,7 +22,7 @@ import edu.psu.citeseerx.corrections.CorrectAuthors;
 /**
  * Loads the CorrectAuthors bean and runs it base on command line options
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class CorrectAuthorsLoader {
 

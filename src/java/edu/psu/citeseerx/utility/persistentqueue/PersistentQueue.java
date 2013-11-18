@@ -32,7 +32,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * state in a DataSource backend.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class PersistentQueue<E extends PersistentJob>
 implements BlockingQueue<E> {

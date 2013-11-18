@@ -26,7 +26,7 @@ import java.util.List;
  * Used to send different types of messages to the registered user e-mail 
  * address. This class builds the message accord to the type and send it.  
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class MailManager {
 

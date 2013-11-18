@@ -41,7 +41,7 @@ import java.util.*;
  * a valid submission otherwise shows the error view.
  * @author Isaac Council
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class ViewMonitorsController implements Controller {
 	

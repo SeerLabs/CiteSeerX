@@ -21,7 +21,7 @@ import edu.psu.citeseerx.web.domain.AdvancedSearch;
  * Provides validation utilities to validate user input in the advance search
  * form
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  *
  */
 public class AdvancedSearchValidator implements Validator {

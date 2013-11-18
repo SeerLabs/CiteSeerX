@@ -20,7 +20,7 @@ import org.json.JSONException;
  * Generic specification for citation clustering implementations.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public interface CitationClusterer {
 

@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Utility class providing several redirect methods
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class RedirectUtils {
 
@@ -99,8 +99,9 @@ public class RedirectUtils {
         StringBuilder builder = new StringBuilder();
         builder.append(request.getScheme());
         builder.append("://");
-        builder.append(request.getLocalName());
-        int port = request.getLocalPort();
+   
+        builder.append(request.getServerName());
+        int port = request.getServerPort();
         if (port != 80 && port != 443) {
             builder.append(":");
             builder.append(port);

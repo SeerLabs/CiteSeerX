@@ -23,7 +23,7 @@ import edu.psu.citeseerx.domain.DBLP;
 /**
  * Provides transparent access to DBLP records persistence storage 
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public interface ExternalMetadataDAO {
     /**

@@ -23,7 +23,7 @@ import javax.xml.rpc.ServiceFactory;
  * made into a generic API if anyone wanted to do so, so I've left it.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  * @deprecated
  */
 public class SVMTest {

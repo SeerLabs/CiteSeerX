@@ -34,6 +34,7 @@ import edu.psu.citeseerx.domain.DocumentFileInfo;
 import edu.psu.citeseerx.domain.DomainTransformer;
 import edu.psu.citeseerx.domain.ExternalLink;
 import edu.psu.citeseerx.domain.Hub;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.domain.UniqueAuthor;
 import edu.psu.citeseerx.webutils.RedirectUtils;
@@ -41,13 +42,22 @@ import edu.psu.citeseerx.webutils.RedirectUtils;
 /**
  * Provides model objects to documents from same location view
  * @author JuanPablo Fernandez Ramirez
- * @version $Rev $ $Date$
+ * @version $Rev $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class SameLocationController implements Controller {
     
     private CSXDAO csxdao;
+    private RepositoryService repositoryService;
     
-    public void setCSXDAO (CSXDAO csxdao) {
+    public RepositoryService getRepositoryService() {
+		return repositoryService;
+	}
+
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
+	}
+
+	public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
     
@@ -229,7 +239,11 @@ public class SameLocationController implements Controller {
         model.put("ncites", doc.getNcites());
         model.put("selfCites", doc.getSelfCites());
         model.put("elinks", eLinks);
-        model.put("fileTypes", csxdao.getFileTypes(doi, rep));
+        HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
+        fileTypesQuery.put(Document.DOI_KEY, doi);
+        fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
+        model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
+        
         model.put("hubUrls", hubUrls);
         model.put("hurl", hUrl);
         model.put("hits", hits);

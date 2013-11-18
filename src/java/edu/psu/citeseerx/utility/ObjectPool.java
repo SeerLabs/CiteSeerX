@@ -19,7 +19,7 @@ import java.util.Hashtable;
  * Generic Object pool implementation.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class ObjectPool<T> {
 

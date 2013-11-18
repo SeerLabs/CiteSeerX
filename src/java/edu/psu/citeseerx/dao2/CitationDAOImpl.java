@@ -34,7 +34,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 /**
  * CitationDAO Implementation using MySQL as a persistent storage
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class CitationDAOImpl extends JdbcDaoSupport implements CitationDAO {
 

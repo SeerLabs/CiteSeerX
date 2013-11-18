@@ -23,7 +23,7 @@ import java.io.Serializable;
  * Command object to manipulate/obtain user input to be used by
  * UrlSubmissionFormController
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class UrlSubmissionForm implements Serializable {
     

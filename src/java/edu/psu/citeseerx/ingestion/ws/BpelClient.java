@@ -31,7 +31,7 @@ import edu.psu.citeseerx.ingestion.datamappers.ParscitMapper;
  * API class for connecting to a BPEL server to run an ingestion job.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class BpelClient {
 

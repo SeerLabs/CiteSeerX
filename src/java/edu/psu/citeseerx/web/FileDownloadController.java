@@ -15,6 +15,8 @@ package edu.psu.citeseerx.web;
 import edu.psu.citeseerx.dao2.logic.CSXDAO;
 import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.domain.DocumentFileInfo;
+import edu.psu.citeseerx.domain.RepositoryService;
+import edu.psu.citeseerx.repository.DocumentUnavailableException;
 import edu.psu.citeseerx.webutils.RedirectUtils;
 
 import org.springframework.web.servlet.mvc.Controller;
@@ -31,13 +33,29 @@ import java.util.Map;
  * Process a request to download a file, sending the file to the user. If for 
  * some reason the file is not found and Internal error is generated.
  * @author Isaac Councill
- * @version $Rev: 81 $ $Date: 2011-01-14 17:37:35 -0500 (Fri, 14 Jan 2011) $
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class FileDownloadController implements Controller {
     
     private CSXDAO csxdao;
     
-    public void setCSXDAO (CSXDAO csxdao) {
+    
+    /*
+     * RepositoryService instance
+     */
+    private RepositoryService repositoryService;
+    
+    
+    
+    public RepositoryService getRepositoryService() {
+		return repositoryService;
+	}
+
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
+	}
+
+	public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
     
@@ -51,7 +69,6 @@ public class FileDownloadController implements Controller {
         String rep = request.getParameter("rep");
         String type = request.getParameter("type");
         String urlIndex = request.getParameter("i");
-
 
         Map<String, Object> model = new HashMap<String, Object>();
         if (doi == null || type == null) {
@@ -72,13 +89,6 @@ public class FileDownloadController implements Controller {
                 e.printStackTrace();
             }
             
-	    if (doc.isDMCA() == true) {
-        	String dmcaTitle = "DMCA Notice";
-                model.put("doi", doi);
-                model.put("pagetitle", dmcaTitle);
-                return new ModelAndView("dmcaPage", model);
-
-	    }
             if (doc == null || doc.isPublic() == false) {
                 String errorTitle = "Document Not Found";
                 model.put("doi", doi);
@@ -110,8 +120,8 @@ public class FileDownloadController implements Controller {
                 response.reset();
                 if (type.equalsIgnoreCase("pdf")) {
                     response.setContentType("application/pdf");
-  //                  response.setHeader("Content-Disposition",
-  //                          "attachment; filename=\""+doi+".pdf\"");
+                    response.setHeader("Content-Disposition",
+                            "attachment; filename=\""+doi+".pdf\"");
                 }else if(type.equalsIgnoreCase("ps")) {
                     response.setContentType("application/ps");
                     response.setHeader("Content-Disposition",
@@ -123,18 +133,30 @@ public class FileDownloadController implements Controller {
                     model.put("pagetitle", errorTitle);
                     return new ModelAndView("baddoi", model);
                 }
+   
+                HashMap<String,String> p = new HashMap<String,String>();
+                p.put(Document.DOI_KEY, doi);
+                p.put(RepositoryService.REPOSITORYID, rep);
+                p.put(RepositoryService.FILETYPE, type);
+                try {
+                	InputStream in = repositoryService.getDocument(p);
+                
+                	input = new BufferedInputStream(in);
+                
+ //               FileInputStream in = csxdao.getFileInputStream(doi, rep, type);
+ //               input = new BufferedInputStream(in);
             
-                FileInputStream in = csxdao.getFileInputStream(doi, rep, type);
-                input = new BufferedInputStream(in);
-            
-                int contentLength = input.available();
+                	int contentLength = input.available();
                 response.setContentLength(contentLength);
             
-                output = new BufferedOutputStream(response.getOutputStream());
-                while(contentLength-- > 0) {
-                    output.write(input.read());
+                	output = new BufferedOutputStream(response.getOutputStream());
+                	while(contentLength-- > 0) {
+                		output.write(input.read());
+                	}
+                	output.flush();
+                } catch(DocumentUnavailableException e) {
+                	return null;
                 }
-                output.flush();
             }
         } catch (IOException e) {
             e.printStackTrace();

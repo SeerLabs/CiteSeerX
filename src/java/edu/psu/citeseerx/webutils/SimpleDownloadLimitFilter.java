@@ -21,7 +21,7 @@ import javax.servlet.http.*;
 /**
  * Filter to prevent massive downloads from the same ip address. 
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class SimpleDownloadLimitFilter implements Filter {
     

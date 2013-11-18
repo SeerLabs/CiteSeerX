@@ -36,7 +36,7 @@ import edu.psu.citeseerx.utility.SafeText;
  * Utilities for updating a Solr index to be consistent with the information
  * in the database.
  * @author Sumit Bathia
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class AlgorithmIndexUpdater {
     

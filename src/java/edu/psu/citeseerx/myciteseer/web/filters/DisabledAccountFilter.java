@@ -31,7 +31,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
  * If the user has its account disabled, he/she gets redirected to the
  * account disabled page
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class DisabledAccountFilter implements Filter {
 

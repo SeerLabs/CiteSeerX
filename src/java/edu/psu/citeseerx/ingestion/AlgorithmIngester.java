@@ -17,12 +17,12 @@ import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.util.List;
 
-import edu.psu.citeseerx.dao2.RepositoryMap;
 import edu.psu.citeseerx.dao2.logic.CSXDAO;
 
 import edu.psu.citeseerx.domain.Algorithm;
 import edu.psu.citeseerx.domain.AlgorithmSet;
 import edu.psu.citeseerx.domain.CheckSum;
+import edu.psu.citeseerx.repository.RepositoryMap;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 import edu.psu.citeseerx.utility.FileUtils;
 import edu.psu.citeseerx.utility.XMLFileNameFilter;
@@ -32,7 +32,7 @@ import edu.psu.citeseerx.utility.XMLFileNameFilter;
  *
  * @author Sumit Bathia
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class AlgorithmIngester {
     

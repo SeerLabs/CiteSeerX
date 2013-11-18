@@ -27,7 +27,7 @@ import edu.psu.citeseerx.domain.ExternalLink;
  * Abstract implementation of ExternalLinkUpdater implementing all the common 
  * methods to each ExternalLinkUpdater
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public abstract class AbstractExternalLinkUpdater 
 implements ExternalLinkUpdater {

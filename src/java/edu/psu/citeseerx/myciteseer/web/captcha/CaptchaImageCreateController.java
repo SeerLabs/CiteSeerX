@@ -30,7 +30,7 @@ import com.octo.captcha.service.image.ImageCaptchaService;
  * Controller which generates the captcha images and send it to the user
  * @see org.springframework.web.servlet.mvc.Controller
  * @author Isaac Council
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class CaptchaImageCreateController
 implements Controller, InitializingBean{

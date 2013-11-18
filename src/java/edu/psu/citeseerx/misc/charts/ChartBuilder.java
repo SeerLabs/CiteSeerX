@@ -12,13 +12,13 @@
  */
 package edu.psu.citeseerx.misc.charts;
 
-import edu.psu.citeseerx.dao2.UnknownRepositoryException;
+import edu.psu.citeseerx.repository.UnknownRepositoryException;
 
 /**
  * Generic interface for building citation histograms.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public interface ChartBuilder {
 

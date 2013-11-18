@@ -13,14 +13,14 @@
 package edu.psu.citeseerx.ingestion;
 
 import java.io.IOException;
-import edu.psu.citeseerx.dao2.UnknownRepositoryException;
 import edu.psu.citeseerx.domain.Document;
+import edu.psu.citeseerx.repository.UnknownRepositoryException;
 
 /**
  * Generic interface for utilities that import files from some location.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public interface FileIngester {
 

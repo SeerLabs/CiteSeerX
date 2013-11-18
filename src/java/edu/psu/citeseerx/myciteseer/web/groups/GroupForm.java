@@ -21,7 +21,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
  * Command object to manipulate/obtain user input to be used by
  * GroupFormController
  * @author Juan Pablo Fernandez Ramirez
- * @version $$Rev$$ $$Date$$
+ * @version $$Rev: 191 $$ $$Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $$
  */
 public class GroupForm implements Serializable {
 	/**

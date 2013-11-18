@@ -30,7 +30,7 @@ import java.util.List;
  * and Authors.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class StatisticsGenerator {
 
@@ -250,7 +250,7 @@ public class StatisticsGenerator {
  * Comparator for sorting authors by number of citations in decending order.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 class DescendingComparator implements Comparator<AuthorContainer> {
     public final int compare(AuthorContainer ac1, AuthorContainer ac2) {
@@ -263,7 +263,7 @@ class DescendingComparator implements Comparator<AuthorContainer> {
  * Generic container for author stat data.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 class AuthorContainer implements Comparable<AuthorContainer> {
     

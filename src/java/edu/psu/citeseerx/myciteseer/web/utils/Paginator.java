@@ -25,7 +25,7 @@ import edu.emory.mathcs.backport.java.util.Collections;
  * collection items will be ordered as stated on 
  * <b>org.apache.commons.collections.comparators.ComparatorChain</b>
  * If not the collection will be ordered using the items compareTo method. 
- * @version $rev$ $Date$ 
+ * @version $rev$ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $ 
  */
 public class Paginator {
 	public static final int DEFAULT_PAGE_SIZE = 20;

@@ -25,14 +25,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.psu.citeseerx.dao2.RepositoryMap;
+import edu.psu.citeseerx.repository.RepositoryMap;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 import edu.psu.citeseerx.webutils.RedirectUtils;
 
 /**
  * Servlet providing the chart for a document.
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class CiteChartServlet extends HttpServlet {
 

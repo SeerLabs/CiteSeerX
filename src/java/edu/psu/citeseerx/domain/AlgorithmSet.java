@@ -27,7 +27,7 @@ import org.jdom.output.XMLOutputter;
  * Algorithm metadata
  * @author Sumit Bathia
  * @author Juan Pablo Fernandez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class AlgorithmSet implements XMLSerializable {
 

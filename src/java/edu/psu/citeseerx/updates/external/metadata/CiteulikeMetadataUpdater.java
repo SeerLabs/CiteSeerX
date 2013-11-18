@@ -31,7 +31,7 @@ import edu.psu.citeseerx.domain.CiteULike;
  * storage. This data is used by other components in different ways. For example,
  * to obtain information to generate links from summary pages.
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class CiteulikeMetadataUpdater {
     

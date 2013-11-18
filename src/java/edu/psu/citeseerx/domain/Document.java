@@ -45,7 +45,7 @@ import edu.psu.citeseerx.utility.SafeText;
  * </ul>
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 211 $ $Date: 2012-05-22 15:04:32 -0400 (Tue, 22 May 2012) $
  */
 public class Document extends SourceableDataObject
 implements Clusterable, XMLSerializable, XMLTagAttrConstants, Versionable {

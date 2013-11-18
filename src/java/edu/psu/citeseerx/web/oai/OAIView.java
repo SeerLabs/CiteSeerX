@@ -29,7 +29,7 @@ import org.w3c.dom.Document;
  * OAI-PMH XMl View 
  * @author Pradeep Teregowda
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class OAIView extends AbstractXsltView {
 

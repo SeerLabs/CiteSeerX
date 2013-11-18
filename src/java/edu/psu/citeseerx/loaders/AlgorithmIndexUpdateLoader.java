@@ -20,7 +20,7 @@ import edu.psu.citeseerx.updates.AlgorithmIndexUpdater;
 
 /**
  * @author Sumit Bathia
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class AlgorithmIndexUpdateLoader {
     public static void main(String[] args) throws IOException {

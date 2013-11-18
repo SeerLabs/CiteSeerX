@@ -34,7 +34,7 @@ import edu.psu.citeseerx.oai.OAIUtils;
  * Base class for all the OAI-PMH verbs implemented in the repository
  * @author Pradeep Teregowda
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public abstract class AbstractVerb implements Verb {
 	
@@ -196,15 +196,8 @@ public abstract class AbstractVerb implements Verb {
 				String argValue = request.getParameter(reqArg);
 				if (argValue == null || argValue.trim().length() == 0) {
 					valid = false;
-					OAIError e;
-					if (reqArg.equals("verb")){ //missing verb should throw a badVerb error, otherwise badArgument
-						e = new OAIError(reqArg + " is required", 
-							OAIError.BAD_VERB_ERROR);
-					}else{
-						e = new OAIError(reqArg + " is required", 
-							OAIError.BAD_ARGUMENT_ERROR);
-					}
-					addError(e);
+					addError(new OAIError(reqArg + " is required", 
+							OAIError.BAD_ARGUMENT_ERROR));
 				}
 			}
 		}

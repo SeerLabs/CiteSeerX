@@ -26,7 +26,7 @@ import java.util.StringTokenizer;
  * different formats.
  * @author Isaac Councill 
  * @author Juan Pablo Fernandez Ramirez
- * Version: $$Rev$$ $$Date$$
+ * Version: $$Rev: 191 $$ $$Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $$
  */
 public class BiblioTransformer {
 

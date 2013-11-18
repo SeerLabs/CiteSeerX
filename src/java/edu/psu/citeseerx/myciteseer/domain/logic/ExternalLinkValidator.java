@@ -28,7 +28,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.MCSConstants;
  * External link types creation/editing form validation utility.
  *
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class ExternalLinkValidator implements Validator {
 

@@ -10,9 +10,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.psu.citeseerx.dao2;
+package edu.psu.citeseerx.repository;
 
 import java.util.Map;
+
 
 public class RepositoryMap {
 
@@ -40,6 +41,8 @@ public class RepositoryMap {
         }
         return repPath;
     }  //- getRepositoryPath
+    
+    
     
     
 }  //- class RepositoryMap

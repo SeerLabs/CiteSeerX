@@ -16,6 +16,8 @@ import edu.psu.citeseerx.dbcp.*;
 import edu.psu.citeseerx.ingestion.ws.BpelClient;
 import edu.psu.citeseerx.messaging.*;
 import edu.psu.citeseerx.messaging.messages.*;
+import edu.psu.citeseerx.repository.RepositoryMap;
+import edu.psu.citeseerx.repository.UnknownRepositoryException;
 import edu.psu.citeseerx.dao2.logic.*;
 import edu.psu.citeseerx.dao2.*;
 
@@ -36,7 +38,7 @@ import java.util.concurrent.*;
  * incorporation into the CiteSeerX repository.
  * 
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  * 
  */
 public class IngestionManager {

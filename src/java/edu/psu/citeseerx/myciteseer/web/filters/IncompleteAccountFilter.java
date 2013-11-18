@@ -30,7 +30,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
  * Filter to redirect users with incomplete account registration to complete
  * their registration process before being able to login into the system.  
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class IncompleteAccountFilter implements Filter {
 

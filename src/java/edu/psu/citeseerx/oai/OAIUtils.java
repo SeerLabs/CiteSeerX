@@ -33,7 +33,7 @@ import edu.psu.citeseerx.utility.SafeText;
 /**
  * Utility class to build OAI-PMH response document for .
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class OAIUtils {
     
@@ -74,7 +74,7 @@ public class OAIUtils {
     public static String buildDatestamp(Date date, String granularity) {
         String stamp = null;
         if ("YYYY-MM-DDThh:mm:ssZ".equals(granularity)) {
-            stamp = DateUtils.formatRFC3339(date);
+            stamp = DateUtils.formatDateTimeISO8601UTC(date);
         }else if ("YYYY-MM-DD".equals(granularity)) {
             stamp = DateUtils.formatDateISO8601UTC(date);
         }
@@ -106,7 +106,7 @@ public class OAIUtils {
      * @return The created element
      */
     public static Element addResponseDate(Element toAddTo, Date respDate) {
-        String theDate = DateUtils.formatRFC3339(respDate);
+        String theDate = DateUtils.formatDateTimeISO8601UTC(respDate);
         return addElement(toAddTo, "responseDate", theDate, null, 
                 getOAIPMHNamespace());
     } //- addResponseDate

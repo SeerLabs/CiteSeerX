@@ -22,7 +22,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
 /**
  * Controls how to show user information 
  * @author Juan Pablo Fernandez Ramirez
- * @version $$Revision$$ $$Date$$
+ * @version $$Revision: 191 $$ $$Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $$
  */
 public class ViewUserController implements Controller {
 

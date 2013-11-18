@@ -30,7 +30,7 @@ import edu.psu.citeseerx.updates.*;
  * has not been maintained, so may no longer work.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  * @deprecated
  */
 public class LegacyIngester {

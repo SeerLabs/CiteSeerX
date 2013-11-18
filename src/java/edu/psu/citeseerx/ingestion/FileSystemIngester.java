@@ -12,8 +12,8 @@
  */
 package edu.psu.citeseerx.ingestion;
 
-import edu.psu.citeseerx.dao2.RepositoryMap;
-import edu.psu.citeseerx.dao2.UnknownRepositoryException;
+import edu.psu.citeseerx.repository.RepositoryMap;
+import edu.psu.citeseerx.repository.UnknownRepositoryException;
 import edu.psu.citeseerx.utility.*;
 import edu.psu.citeseerx.domain.*;
 import java.io.*; 
@@ -23,7 +23,7 @@ import java.io.*;
  * file storage area.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class FileSystemIngester implements FileIngester {
 

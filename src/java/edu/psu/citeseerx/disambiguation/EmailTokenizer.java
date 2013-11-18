@@ -29,7 +29,7 @@ import com.wcohen.ss.tokens.BasicToken;
  * alphanumerics, optionally including single punctuation characters.
  *
  * @author Puck Treeratpituk
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class EmailTokenizer implements Tokenizer {
     public static final EmailTokenizer DEFAULT_TOKENIZER = 

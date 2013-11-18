@@ -35,7 +35,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
  * Processes request for password edition rendering the success view in
  * case of a valid submission or resubmits the form view in case of errors
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class ChangePasswordController extends SimpleFormController {
     

@@ -24,7 +24,7 @@ import org.springframework.security.ui.webapp.AuthenticationProcessingFilter;
  * Filter to validate a captcha response
  * @see org.springframework.web.servlet.mvc.Controller
  * @author Isaac Council
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class CaptchaAuthenticationProcessingFilter
 extends AuthenticationProcessingFilter {

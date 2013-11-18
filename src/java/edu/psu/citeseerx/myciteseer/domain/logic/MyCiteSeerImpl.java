@@ -51,7 +51,7 @@ import java.sql.SQLException;
  * implement a new version of all the DAO interfaces.   
  * @author Isaac Councill
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class MyCiteSeerImpl implements MyCiteSeerFacade {
 

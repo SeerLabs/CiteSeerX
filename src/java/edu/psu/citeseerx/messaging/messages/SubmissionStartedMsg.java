@@ -9,7 +9,7 @@ import edu.psu.citeseerx.messaging.JMSSender;
  * Wrapper for messages to indicate that a submission has started
  * 
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  *
  */
 public class SubmissionStartedMsg extends SubmissionNotification {

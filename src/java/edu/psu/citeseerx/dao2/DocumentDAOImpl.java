@@ -34,7 +34,7 @@ import edu.psu.citeseerx.domain.*;
 /**
  * DocumentDAO Implementation using MySQL as a persistent storage
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
 
@@ -740,8 +740,8 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
 
     /* start, end, prev, count */
     private static final String DEF_GET_SET_DOIS_QUERY =
-        "select id, versionTime from papers where Date(versionTime) >= ? and " +
-        "Date(versionTime) <= ? and id > ? and public = 1 order by id asc limit ?";
+        "select id, versionTime from papers where versionTime > ? and " +
+        "versionTime <= ? and id > ? and public = 1 order by id asc limit ?";
     
     private class GetSetDOIs extends MappingSqlQuery {
         
@@ -774,8 +774,8 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
 
     /* start, end, prev */
     private static final String DEF_GET_SET_DOI_COUNT_QUERY =
-        "select count(id) from papers where Date(versionTime) >= ? and " +
-        "Date(versionTime) <= ? and id > ? and public = 1";
+        "select count(id) from papers where versionTime > ? and " +
+        "versionTime <= ? and id > ? and public = 1";
 
     private class GetSetDOICount extends MappingSqlQuery {
 

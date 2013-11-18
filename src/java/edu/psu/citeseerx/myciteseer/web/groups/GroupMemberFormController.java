@@ -42,7 +42,7 @@ import edu.psu.citeseerx.myciteseer.web.search.SolrSelectUtils.SolrException;
  * Form controller for group members management.
  * @see org.springframework.web.servlet.mvc.SimpleFormController
  * @author Juan Pablo Fernandez Ramirez
- * @version $$Rev$$ $$Date$$
+ * @version $$Rev: 191 $$ $$Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $$
  */
 public class GroupMemberFormController extends SimpleFormController {
 	

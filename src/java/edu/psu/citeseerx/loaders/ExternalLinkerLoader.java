@@ -26,7 +26,7 @@ import edu.psu.citeseerx.updates.external.links.DBLPExternalLinkUpdater;
  * doesn't have it.
  * Currently, it handles DBLP and CiteULike
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class ExternalLinkerLoader {
 

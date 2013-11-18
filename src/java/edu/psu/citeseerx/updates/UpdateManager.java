@@ -30,7 +30,7 @@ import edu.psu.citeseerx.utility.CSXConstants;
  * Class that need to be notified of changes should be registered here.
  *
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class UpdateManager {
 

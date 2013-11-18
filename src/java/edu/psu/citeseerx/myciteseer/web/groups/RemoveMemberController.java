@@ -20,7 +20,7 @@ import edu.psu.citeseerx.myciteseer.domain.logic.MyCiteSeerFacade;
 /**
  * Removes an user from a group
  * @author Juan Pablo Fernandez Ramirez
- * @version $$Revision$$ $$Date$$
+ * @version $$Revision: 191 $$ $$Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $$
  */
 public class RemoveMemberController implements Controller {
 

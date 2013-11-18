@@ -14,7 +14,8 @@ package edu.psu.citeseerx.dao2.logic;
 
 import org.springframework.dao.DataAccessException;
 
-import com.lowagie.text.pdf.PdfReader;
+
+
 
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -54,10 +55,12 @@ import edu.psu.citeseerx.domain.Hub;
 import edu.psu.citeseerx.domain.Keyword;
 import edu.psu.citeseerx.domain.LinkType;
 import edu.psu.citeseerx.domain.PDFRedirect;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.Table;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.domain.UniqueAuthor;
+import edu.psu.citeseerx.repository.DocumentUnavailableException;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 
 
@@ -65,7 +68,7 @@ import edu.psu.citeseerx.utility.FileNamingUtils;
  * Provides a single point access to all Document related persistent storage
  * operations
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
  */
 public class CSXDAOImpl implements CSXDAO {
 
@@ -83,12 +86,14 @@ public class CSXDAOImpl implements CSXDAO {
     private LegacyIDDAO legacyIDDAO;
     private TagDAO tagDAO;
     private UniqueAuthorDAO uauthDAO;
-	private UniqueAuthorVersionDAO uauthVersionDAO;
+    private UniqueAuthorVersionDAO uauthVersionDAO;
     private VersionDAO versionDAO;
     private ExternalLinkDAO externalLinkDAO;
     private TableDAO tableDAO;
     private AlgorithmDAO algorithmDAO;
     private RedirectPDFDAO redirectPDFDAO;
+    private RepositoryService repositoryService;
+
     
     public void setAckDAO(AckDAO ackDAO) {
         this.ackDAO = ackDAO;
@@ -160,7 +165,7 @@ public class CSXDAOImpl implements CSXDAO {
     
     public void setGeneralStatistics(GeneralStatistics generalStatistics) {
     	this.generalStatistics = generalStatistics;
-    }
+    } // - setGeneralStatisticsDAO
     
     public void setAlgorithmDAO(AlgorithmDAO algorithmDAO) {
         this.algorithmDAO = algorithmDAO;
@@ -168,7 +173,8 @@ public class CSXDAOImpl implements CSXDAO {
     
     public void setRedirectPDFDAO(RedirectPDFDAO redirectPDFDAO) {
         this.redirectPDFDAO = redirectPDFDAO;
-    }
+    } // - setRedirectPDFDAO
+
     
     ///////////////////////////////////////////////////////
     //  CSX Operations                               
@@ -219,7 +225,7 @@ public class CSXDAOImpl implements CSXDAO {
             tagDAO.addTag(doi, tag.getTag());
         }
 
-        fileSysDAO.writeXML(doc);
+        repositoryService.writeXML(doc);
 
     }  //- importDocument
 
@@ -312,7 +318,9 @@ public class CSXDAOImpl implements CSXDAO {
         Document doc = docDAO.getDocument(doi, false);
         String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
         String relPath = FileNamingUtils.buildXMLPath(doi);
-        return fileSysDAO.getDocFromXML(repID, relPath);
+        try {
+        	return repositoryService.getDocFromXML(repID, relPath);
+        } catch(DocumentUnavailableException e) { return null;}
 
     }  //- getDocumentFromXML
 
@@ -977,7 +985,8 @@ public class CSXDAOImpl implements CSXDAO {
     throws DataAccessException, IOException {
         
         versionDAO.insertVersion(doc);
-        fileSysDAO.writeVersion(doc);
+        repositoryService.writeVersion(doc);
+
         return true;
         
     }  //- createNewVersion
@@ -1052,6 +1061,9 @@ public class CSXDAOImpl implements CSXDAO {
     } //- createNewVersion
 
 
+
+
+
     ///////////////////////////////////////////////////////
     //  FileSys DAO                               
     ///////////////////////////////////////////////////////
@@ -1076,70 +1088,6 @@ public class CSXDAOImpl implements CSXDAO {
         return fileSysDAO.getDocVersion(doi, name);
     }  //- getDocVersion
     
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileInputStream(java.lang.String, java.lang.String, java.lang.String)
-     */
-    @Override
-    public FileInputStream getFileInputStream(String doi, String repID,
-            String type) throws IOException {
-        return fileSysDAO.getFileInputStream(doi, repID, type);
-    } //- getFileInputStream
-    
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getPdfReader(java.lang.String, java.lang.String)
-     */
-    public PdfReader getPdfReader(String doi, String repID)
-            throws IOException {
-        return fileSysDAO.getPdfReader(doi, repID);
-    } //- getPdfReader
-
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#writeXML(edu.psu.citeseerx.domain.Document)
-     */
-    @Override
-    public void writeXML(Document doc) throws IOException {
-        fileSysDAO.writeXML(doc);
-    } //- writeXML
-    
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#writeVersion(edu.psu.citeseerx.domain.Document)
-     */
-    @Override
-    public void writeVersion(Document doc) throws IOException {
-        fileSysDAO.writeVersion(doc);
-    } //- writeVersion
-    
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getDocFromXML(java.lang.String, java.lang.String)
-     */
-    @Override
-    public Document getDocFromXML(String repID, String relPath)
-    throws IOException {
-        return fileSysDAO.getDocFromXML(repID, relPath);
-    } //- getDocFromXML
-    
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileTypes(java.lang.String, java.lang.String)
-     */
-    @Override
-    public List<String> getFileTypes(String doi, String repID)
-    throws IOException {
-        return fileSysDAO.getFileTypes(doi, repID);
-    } //- getFileTypes
-
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getRepositoryID(java.lang.String)
-     */
-    @Override
-    public String getRepositoryID(String doi) {
-        return fileSysDAO.getRepositoryID(doi);
-    } //- getRepositoryID
     
     ///////////////////////////////////////////////////////
     //  Hub DAO                               
@@ -1820,5 +1768,12 @@ public class CSXDAOImpl implements CSXDAO {
 			throws DataAccessException {
 		 redirectPDFDAO.updatePDFRedirectTemplate(label, urltemplate);
 	}
+
+	@Override
+	public String getRepositoryID(String doi) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
     
 }  //- class CSXDAOImpl
