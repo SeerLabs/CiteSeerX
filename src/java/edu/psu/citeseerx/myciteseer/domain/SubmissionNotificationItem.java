@@ -22,7 +22,7 @@ import java.io.Serializable;
 /**
  * Data transfer object with SubmissionNotificationItem information.
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class SubmissionNotificationItem implements Serializable,
 	Comparable<SubmissionNotificationItem> {

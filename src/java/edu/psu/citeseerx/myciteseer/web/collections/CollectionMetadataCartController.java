@@ -27,7 +27,7 @@ import edu.psu.citeseerx.web.MetadataCartDWR;
 /**
  * Adds collection content to metadata cart
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class CollectionMetadataCartController implements Controller {
 

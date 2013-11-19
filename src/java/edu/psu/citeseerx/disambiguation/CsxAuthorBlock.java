@@ -39,7 +39,7 @@ import edu.psu.citeseerx.disambiguation.DisambiguationService;
  * to be used by DBSCAN (or any other clustering methods)
  * 
  * @author Puck Treeratpituk
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class CsxAuthorBlock extends BlockingDatabase {
     

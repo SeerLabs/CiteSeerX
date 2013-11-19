@@ -26,7 +26,7 @@ import edu.psu.citeseerx.domain.CheckSum;
  * Maps file information from the fileInfo segment of document XML.
  *
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class FileInfoMapper {
 

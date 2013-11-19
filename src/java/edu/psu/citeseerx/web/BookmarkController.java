@@ -28,7 +28,7 @@ import edu.psu.citeseerx.webutils.RedirectUtils;
 /**
  * Controller used to redirect user to desired bookmark place.
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class BookmarkController implements Controller {
 

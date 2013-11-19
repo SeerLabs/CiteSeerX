@@ -25,7 +25,7 @@ import edu.psu.citeseerx.domain.Document;
  * External Link Updater for ACM. Tries to match corpus documents to the
  * corresponding ACM ones
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class ACMExternalLinkUpdater extends AbstractExternalLinkUpdater {
 protected final Log logger = LogFactory.getLog(getClass());

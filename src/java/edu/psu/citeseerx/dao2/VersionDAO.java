@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Provides transparent access to Version persistence storage 
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public interface VersionDAO {
 

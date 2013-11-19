@@ -47,7 +47,7 @@ import java.util.Set;
 /**
  * Handle citations views
  * @author Isaac Councill 
- * Version: $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * Version: $Rev$ $Date$
  */
 public class ShowCitingController implements Controller {
 

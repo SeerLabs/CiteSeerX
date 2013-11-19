@@ -31,7 +31,7 @@ import javax.sql.DataSource;
  * ConfigurationDao implementation using MYSQL as a persistent storage.
  * @author Isaac Councill
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class ConfigurationDAOImpl extends JdbcDaoSupport 
 implements ConfigurationDAO {

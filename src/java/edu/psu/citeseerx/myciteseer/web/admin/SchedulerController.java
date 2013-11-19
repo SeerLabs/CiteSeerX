@@ -27,7 +27,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
 /**
  * Simple controller to start/stop the scheduler.
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class SchedulerController implements Controller {
 

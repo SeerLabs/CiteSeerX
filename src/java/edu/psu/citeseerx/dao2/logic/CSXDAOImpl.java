@@ -94,6 +94,13 @@ public class CSXDAOImpl implements CSXDAO {
     private RedirectPDFDAO redirectPDFDAO;
     private RepositoryService repositoryService;
 
+    public RepositoryService getRepositoryService() {
+	return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+	this.repositoryService = repositoryService;
+    }
     
     public void setAckDAO(AckDAO ackDAO) {
         this.ackDAO = ackDAO;

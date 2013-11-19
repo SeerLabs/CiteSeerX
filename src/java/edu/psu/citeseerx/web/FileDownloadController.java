@@ -146,12 +146,13 @@ public class FileDownloadController implements Controller {
  //               FileInputStream in = csxdao.getFileInputStream(doi, rep, type);
  //               input = new BufferedInputStream(in);
             
-                	int contentLength = input.available();
-                response.setContentLength(contentLength);
+
             
-                	output = new BufferedOutputStream(response.getOutputStream());
-                	while(contentLength-- > 0) {
-                		output.write(input.read());
+                    output = new BufferedOutputStream(response.getOutputStream());
+                    byte[] buffer = new byte[8192];
+                    int got = 0;
+                    while((got = input.read(buffer)) != -1) {
+                		output.write(buffer, 0, got);
                 	}
                 	output.flush();
                 } catch(DocumentUnavailableException e) {

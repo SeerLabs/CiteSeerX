@@ -35,7 +35,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.RandomStringGenerator;
  * Processes request for account validation rendering and adequate view in case
  * of success or failure  
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class ForgottenAccountController implements Controller {
 

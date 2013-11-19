@@ -26,7 +26,7 @@ import edu.psu.citeseerx.utility.StringUtil;
  * Citation
  * 
  * @author Puck Treeratpituk
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class Citation {
 	

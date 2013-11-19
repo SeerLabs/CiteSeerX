@@ -26,7 +26,7 @@ import edu.psu.citeseerx.oai.OAIUtils;
  * Handles the Identify OAI-PMH verb returning information about the repository 
  * @author Pradeep Teregowda
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class Identify extends AbstractVerb {
 

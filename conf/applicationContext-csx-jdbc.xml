@@ -20,22 +20,14 @@
     <property name="password" value="${jdbc.csx.password}"/>
   </bean>
   
-  <bean id="repositoryMap" class="edu.psu.citeseerx.dao2.RepositoryMap">
-    <property name="repositoryMap">
-      <map>
-        <entry key="rep1" value="${repository.path}"/>
-      </map>
-    </property>
-  </bean>
-  
   <bean id="restEndpoint" class="edu.psu.citeseerx.domain.RepositoryEndPoint">
-      <property name="url" value="csxrepository01.ist.psu.edu"/>
-      <property name="schema" value="http"/>;
-      <property name="path" value = "/document"/>;
-      <property name="GET"><value type="java.lang.Boolean">false</value></property>
+      <property name="url" value="csxrepository01.ist.psu.edu:8080"/>
+      <property name="schema" value="http"/>
+      <property name="path" value = "/document"/>
+      <property name="GET" value="true"/>
   </bean>
   
-  <bean id="restREPO" class="edu.psu.citeseerx.repository.RESTRepository">
+  <bean id="RESTrepo" class="edu.psu.citeseerx.repository.RESTRepository">
       <property name="repositoryEndPoint" ref="restEndpoint"/>
   </bean>
   
@@ -75,7 +67,6 @@
 
   <bean id="fileSysDAO" class="edu.psu.citeseerx.dao2.FileSysDAOImpl" lazy-init="true">
     <property name="dataSource" ref="csxDataSource"/>
-    <property name="repositoryMap" ref="repositoryMap"/>
   </bean>
 
   <bean id="hubDAO" class="edu.psu.citeseerx.dao2.HubDAOImpl" lazy-init="true">

@@ -27,7 +27,7 @@ import java.util.*;
 /**
  * Controller used to send objects to document statistics view
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class DocumentStatController implements Controller {
     

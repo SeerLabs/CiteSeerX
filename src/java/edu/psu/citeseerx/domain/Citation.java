@@ -46,7 +46,7 @@ import edu.psu.citeseerx.utility.SafeText;
  * </ul>
  * 
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class Citation extends MappedDataObject
 implements Clusterable, XMLSerializable, XMLTagAttrConstants {

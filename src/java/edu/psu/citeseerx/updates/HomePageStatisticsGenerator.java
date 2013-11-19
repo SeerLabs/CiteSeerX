@@ -27,7 +27,7 @@ import edu.psu.citeseerx.dao2.logic.CSXDAO;
 /**
  * Utilities for generating statistics that are shown in the home page
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class HomePageStatisticsGenerator {
 	

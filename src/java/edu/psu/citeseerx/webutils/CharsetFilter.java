@@ -19,7 +19,7 @@ import javax.servlet.*;
  * Filter to set request/response the encoding type to the one configured
  * If no encoding type is configured it defaults to UTF-8
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class CharsetFilter implements Filter {
 

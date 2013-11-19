@@ -18,7 +18,7 @@ import java.util.Comparator;
 /**
  * Data transfer object with a group member information.
  * @author Juan Pablo Fernandez Ramirez
- * @version $$Rev: 191 $$ $$Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $$
+ * @version $$Rev$$ $$Date$$
  */
 public class GroupMember implements Comparable<GroupMember>, Serializable {
 	/**

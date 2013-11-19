@@ -30,7 +30,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
  * Processes request for external links deletions. Renders the success view 
  * in case of a valid submission or the error view otherwise 
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class DeleteExternalLinkController implements Controller {
 

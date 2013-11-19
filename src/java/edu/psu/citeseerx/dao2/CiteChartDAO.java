@@ -17,7 +17,7 @@ import org.springframework.dao.DataAccessException;
 /**
  * Provides transparent access to Citations Chart persistence storage 
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public interface CiteChartDAO {
 

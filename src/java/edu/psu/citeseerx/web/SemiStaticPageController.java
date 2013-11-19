@@ -27,7 +27,7 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
  * and keywords tags in the header of each page. The controller will pass all this
  * information to the header view (Same for all those pages). 
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class SemiStaticPageController extends ParameterizableViewController {
 

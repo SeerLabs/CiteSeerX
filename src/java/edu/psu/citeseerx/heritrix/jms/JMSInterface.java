@@ -75,7 +75,7 @@ import edu.psu.citeseerx.utility.ConfigurationManager;
  * messaging channels will be started and new submissions are possible.</p> 
  * 
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  *
  */
 public class JMSInterface extends HttpServlet implements MessageListener {
@@ -283,7 +283,7 @@ public class JMSInterface extends HttpServlet implements MessageListener {
      * of the job submission.
      * 
      * @author Isaac Councill
-     * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+     * @version $Rev$ $Date$
      */
     class JobFinishedListener implements CrawlStatusListener {
 

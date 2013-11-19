@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  * This filter is based on the one presented at:
  *   http://www.onjava.com/pub/a/onjava/2004/03/03/filters.html
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class HeaderFilter implements Filter {
 

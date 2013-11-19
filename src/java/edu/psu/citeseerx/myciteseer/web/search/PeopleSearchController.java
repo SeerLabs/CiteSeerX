@@ -37,7 +37,7 @@ import edu.psu.citeseerx.myciteseer.web.search.SolrSelectUtils.SolrException;
  * Handles requests which involves searches about people in MyCiteSeerX application
  * @author Juan Pablo Fernandez Ramirez
  * Based on code initially written by ....
- * @version $$Rev: 191 $$ $$Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $$
+ * @version $$Rev$$ $$Date$$
  */
 public class PeopleSearchController implements Controller {
 

@@ -12,8 +12,7 @@
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
 
   <!-- =================== GENERAL DEFS ==================== -->
-  
-  
+    
   <bean id="csxDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
     <property name="driverClassName" value="${jdbc.csx.driverClassName}"/>
     <property name="url" value="${jdbc.csx.url}"/>
@@ -21,13 +20,19 @@
     <property name="password" value="${jdbc.csx.password}"/>
   </bean>
   
-  <bean id="repositoryMap" class="edu.psu.citeseerx.dao2.RepositoryMap">
-    <property name="repositoryMap">
-      <map>
-        <entry key="rep1" value="${repository.path}"/>
-      </map>
-    </property>
+  <bean id="restEndpoint" class="edu.psu.citeseerx.domain.RepositoryEndPoint">
+      <property name="url" value="csxrepository01.ist.psu.edu:8080"/>
+      <property name="schema" value="http"/>
+      <property name="path" value = "/document"/>
+      <property name="GET" value="true"/>
+      <property name="POST" value="true"/>
   </bean>
+  
+  <bean id="RESTrepo" class="edu.psu.citeseerx.repository.RESTRepository">
+      <property name="repositoryEndPoint" ref="restEndpoint"/>
+  </bean>
+  
+
         
 
 
@@ -63,7 +68,6 @@
 
   <bean id="fileSysDAO" class="edu.psu.citeseerx.dao2.FileSysDAOImpl" lazy-init="true">
     <property name="dataSource" ref="csxDataSource"/>
-    <property name="repositoryMap" ref="repositoryMap"/>
   </bean>
 
   <bean id="hubDAO" class="edu.psu.citeseerx.dao2.HubDAOImpl" lazy-init="true">
@@ -99,22 +103,17 @@
   </bean>  
 
   <bean id="uniqueAuthVersionDAO" class="edu.psu.citeseerx.dao2.UniqueAuthorVersionDAOImpl" lazy-init="true">
-    <property name="dataSource" ref="csxDataSource"/>
-    <property name="uniqueAuthDAO" ref="uniqueAuthDAO"/>
+  	<property name="dataSource" ref="csxDataSource"/>
+	<property name="uniqueAuthDAO" ref="uniqueAuthDAO"/>
   </bean>  
 
   <bean id="algorithmDAO" class="edu.psu.citeseerx.dao2.AlgorithmDAOImpl" lazy-init="true">
     <property name="dataSource" ref="csxDataSource"/>
   </bean>
-
+	
   <bean id="generalStatistics" class="edu.psu.citeseerx.dao2.GeneralStatisticsImpl" lazy-init="true">
     <property name="dataSource" ref="csxDataSource"/>
   </bean>
-
-  <bean id="redirectPDFDAO" class="edu.psu.citeseerx.dao2.RedirectPDFDAOImpl" lazy-init="true">
-    <property name="dataSource" ref="csxDataSource"/>
-  </bean>
-
 
   <bean id="citeseerx" class="edu.psu.citeseerx.dao2.logic.CSXDAOImpl">
 	<property name="ackDAO" ref="ackDAO"/>
@@ -136,7 +135,7 @@
 	<property name="uniqueAuthVersionDAO" ref="uniqueAuthVersionDAO"/>
 	<property name="algorithmDAO" ref="algorithmDAO"/>
 	<property name="generalStatistics" ref="generalStatistics"/>
-	<property name="redirectPDFDAO" ref="redirectPDFDAO"/>
+	<property name="repositoryService" ref="RESTrepo"/>
   </bean>
 
 

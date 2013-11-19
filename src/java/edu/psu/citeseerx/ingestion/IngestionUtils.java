@@ -28,7 +28,7 @@ import edu.psu.citeseerx.ingestion.datamappers.MappingException;
  * Container class for standard ingestion utilities.
  *
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class IngestionUtils {
 

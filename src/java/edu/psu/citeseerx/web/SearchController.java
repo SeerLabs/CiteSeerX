@@ -55,7 +55,7 @@ import java.util.Map;
  * links (ATOM, and RSS) 
  * @author Isaac Councill 
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 214 $ $Date: 2012-05-29 16:48:33 -0400 (Tue, 29 May 2012) $
+ * @version $Rev$ $Date$
  */
 public class SearchController implements Controller {
     

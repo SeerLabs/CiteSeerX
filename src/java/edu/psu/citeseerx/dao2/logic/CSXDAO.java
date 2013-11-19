@@ -18,7 +18,7 @@ import edu.psu.citeseerx.dao2.*;
  * Provides a single point access to all Document related persistent storage
  * operations
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public interface CSXDAO extends CSXOperations, AckDAO, AdminDAO, AuthorDAO,
 CitationDAO, CiteChartDAO, DocumentDAO, FileDAO, FileSysDAO, HubDAO,

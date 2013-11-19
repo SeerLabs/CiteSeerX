@@ -15,7 +15,7 @@ package edu.psu.citeseerx.domain;
 /**
  * Data object transporting Venue statistics
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class VenueStat implements Comparable<VenueStat> {
 

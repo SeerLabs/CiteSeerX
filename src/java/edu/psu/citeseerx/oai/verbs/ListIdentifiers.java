@@ -29,7 +29,7 @@ import edu.psu.citeseerx.utility.DateUtils;
  * Handles the ListIdentifiers OAI-PMH verb returning headers instead of records 
  * @author Pradeep Teregowda
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class ListIdentifiers extends AbstractList {
 

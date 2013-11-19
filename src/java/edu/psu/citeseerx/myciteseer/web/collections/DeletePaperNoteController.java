@@ -16,7 +16,7 @@ package edu.psu.citeseerx.myciteseer.web.collections;
  * Processes request for paper notes deletions. Renders the success view 
  * in case of a valid submission or the error view otherwise 
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

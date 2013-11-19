@@ -32,7 +32,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
  * Processes request to show a user submissions rendering an adequate view in 
  * case of success or failure  
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class ViewSubmissionsController implements Controller {
 

@@ -30,7 +30,7 @@ import edu.psu.citeseerx.webutils.RedirectUtils;
  * Controller used to map citeseer documents to CiteSeerX documents, and 
  * redirect to the document view  or a mapping error view
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class LegacyMappingController implements Controller {
     

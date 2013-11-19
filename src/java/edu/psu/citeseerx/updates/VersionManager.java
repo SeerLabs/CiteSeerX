@@ -23,7 +23,7 @@ import edu.psu.citeseerx.dao2.logic.CSXDAO;
  * database and filesystem versioning info up-to-date.
  *
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class VersionManager {
 

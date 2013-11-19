@@ -22,7 +22,7 @@ import edu.psu.citeseerx.domain.Algorithm;
 /**
  * Provides transparent access to Algorithms from persistent storage
  * @author jSumit Bhatia
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public interface AlgorithmDAO {
     
