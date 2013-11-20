@@ -37,7 +37,6 @@ public interface FileSysDAO {
      * @return A CiteSeerX document from a XML file.
      * @throws IOException
      */
-
     public Document getDocVersion(String doi, int version) throws IOException;
 
     /**
