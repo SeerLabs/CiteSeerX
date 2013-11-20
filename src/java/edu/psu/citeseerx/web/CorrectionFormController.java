@@ -45,52 +45,52 @@ import edu.psu.citeseerx.web.domain.DocumentContainer;
 /**
  * Controller used to handle user corrections to papers
  * @author Isaac Councill
- * @version $$Rev: 206 $$ $$Date: 2012-04-01 00:31:49 -0400 (Sun, 01 Apr 2012) $$
+ * @version $Rev$ $Date$
  */
 public class CorrectionFormController extends SimpleFormController {
 
     private CSXDAO csxdao;
     private RepositoryService repositoryService;
-    
+
     public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
-    
+
 
     private CiteClusterDAO citedao;
-    
+
     public void setCiteClusterDAO(CiteClusterDAO citedao) {
         this.citedao = citedao;
     } //- setCiteClusterDAO
-    
-    
+
+
     private MyCiteSeerFacade myciteseer;
-    
+
     public void setMyCiteSeer(MyCiteSeerFacade myciteseer) {
         this.myciteseer = myciteseer;
     } //- setMyCiteSeer
-    
-    
+
+
     private UpdateManager updateManager;
-    
+
     public void setUpdateManager(UpdateManager updateManager) {
         this.updateManager = updateManager;
     } //- setUpdateManager
-    
-    
+
+
     private FoulWordFilter foulWordFilter;
-    
+
     public void setFoulWordFilter(FoulWordFilter foulWordFilter) {
         this.foulWordFilter = foulWordFilter;
     } //-setFoulWordFilter
-    
-    
+
+
     public CorrectionFormController() {
         setValidateOnBinding(false);
         setCommandName("correction");
         setFormView("correct");
     } //CorrectionFormController
-    
+
     /* (non-Javadoc)
      * @see org.springframework.web.servlet.mvc.AbstractFormController#formBackingObject(javax.servlet.http.HttpServletRequest)
      */
@@ -99,7 +99,7 @@ public class CorrectionFormController extends SimpleFormController {
 
         String doi = request.getParameter("doi");
         String cid = request.getParameter("cid");
-        
+
         if (doi == null && cid != null) {
             try {
                 Long cluster = Long.parseLong(cid);
@@ -123,19 +123,19 @@ public class CorrectionFormController extends SimpleFormController {
             }
         }
         return dc;
-        
+
     }  //- formBackingObject
 
-    
+
     /* (non-Javadoc)
      * @see org.springframework.web.servlet.mvc.BaseCommandController#onBindAndValidate(javax.servlet.http.HttpServletRequest, java.lang.Object, org.springframework.validation.BindException)
      */
     protected void onBindAndValidate(HttpServletRequest request,
             Object command, BindException errors) throws Exception {
-        
+
         String foul;
         DocumentContainer dc = (DocumentContainer)command;
-        
+
         if (dc.getPaperID() == null) {
             errors.reject("INVALID_DOI", "No DOI specified");
         } else {
@@ -151,7 +151,7 @@ public class CorrectionFormController extends SimpleFormController {
                     "Flagged as innappropriate content.");
             foul = null;
         }
-        
+
         List<AuthorContainer> authors = dc.getAuthors();
         if (!dc.hasAuthors()) {
             errors.reject("AUTHOR_REQUIRED", "At least one author is required");
@@ -188,25 +188,25 @@ public class CorrectionFormController extends SimpleFormController {
             errors.rejectValue("abs", "FOUL_WORD",
                     "Flagged as innappropriate content.");
             foul = null;
-        }        
+        }
         if ((foul = foulWordFilter.findFoulWord(dc.getVenue()))
                 != null) {
             errors.rejectValue("venue", "FOUL_WORD",
                     "Flagged as innappropriate content.");
             foul = null;
-        }        
+        }
         if ((foul = foulWordFilter.findFoulWord(dc.getPublisher()))
                 != null) {
             errors.rejectValue("publisher", "FOUL_WORD",
                     "Flagged as innappropriate content.");
             foul = null;
-        }        
+        }
         if ((foul = foulWordFilter.findFoulWord(dc.getPubAddr()))
                 != null) {
             errors.rejectValue("pubAddr", "FOUL_WORD",
                     "Flagged as innappropriate content.");
             foul = null;
-        }        
+        }
         if ((foul = foulWordFilter.findFoulWord(dc.getTech()))
                 != null) {
             errors.rejectValue("tech", "FOUL_WORD",
@@ -231,19 +231,19 @@ public class CorrectionFormController extends SimpleFormController {
         } catch (NumberFormatException e) {
             errors.rejectValue("num", "INT_REQUIRED", "Integer required.");
         }
-        
+
     }  //- onBindAndValidate
-    
-    
+
+
     /* (non-Javadoc)
      * @see org.springframework.web.servlet.mvc.SimpleFormController#referenceData(javax.servlet.http.HttpServletRequest)
      */
-    protected Map<String, Object> referenceData(HttpServletRequest request) 
+    protected Map<String, Object> referenceData(HttpServletRequest request)
     throws Exception {
-        
+
         String doi = null;
         String cid = request.getParameter("cid");
-        
+
         if (cid != null) {
             try {
                 Long cluster = Long.parseLong(cid);
@@ -251,11 +251,11 @@ public class CorrectionFormController extends SimpleFormController {
                 doi = dois.get(0);
             } catch (Exception e) { };
         }
-        
+
         if (doi == null) {
             doi = request.getParameter("doi");
         }
-        
+
         if (doi == null) {
             return new HashMap<String, Object>();
         }
@@ -266,9 +266,9 @@ public class CorrectionFormController extends SimpleFormController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         Map<String, Object> model = new HashMap<String, Object>();
-        
+
         if (doc == null || !doc.isPublic()) {
             // The view has been changed on formBackingObject
             model.put("doi", doi);
@@ -276,7 +276,7 @@ public class CorrectionFormController extends SimpleFormController {
             model.put("errMsg", "Invalid DOI specified");
             return model;
         }
-        
+
         MCSConfiguration config = myciteseer.getConfiguration();
         model.put("correctionsEnabled",
                 new Boolean(config.getCorrectionsEnabled()));
@@ -284,16 +284,16 @@ public class CorrectionFormController extends SimpleFormController {
 
         List<UniqueAuthor> uauthors = new ArrayList<UniqueAuthor>();
         String authors = "";
-        
+
         int c = 1;
         for (Author a : doc.getAuthors()) {
             String authorName = a.getDatum(Author.NAME_KEY);
             authors += authorName + ", ";
-            
+
             // convert to unique authors
             UniqueAuthor uauth = new UniqueAuthor();
             uauth.setCanname(authorName);
-            if (a.getClusterID() > 0) {                        
+            if (a.getClusterID() > 0) {
                 uauth.setAid("");
             }
             uauthors.add(uauth);
@@ -314,9 +314,9 @@ public class CorrectionFormController extends SimpleFormController {
         DocumentFileInfo finfo = doc.getFileInfo();
         String rep = finfo.getDatum(DocumentFileInfo.REP_ID_KEY);
         List<String> urls = getClusterURLs(doc.getClusterID());
-        
+
         List<ExternalLink> eLinks = csxdao.getExternalLinks(doi);
-        
+
         // Obtain the hubUrls that points to this document.
         List<Hub> hubUrls = csxdao.getHubs(doi);
 
@@ -324,7 +324,7 @@ public class CorrectionFormController extends SimpleFormController {
         model.put("pagedescription", "Document Details (Isaac Councill, " +
         		"Lee Giles): " + abs);
         model.put("pagekeywords", authors);
-        model.put("title", title);            
+        model.put("title", title);
         model.put("authors", authors);
         model.put("uauthors", uauthors);
         model.put("abstract", abs);
@@ -341,12 +341,12 @@ public class CorrectionFormController extends SimpleFormController {
         model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
         model.put("elinks", eLinks);
         model.put("hubUrls", hubUrls);
-        
+
         return model;
-        
+
     }  //- referenceData
-    
-    
+
+
     public RepositoryService getRepositoryService() {
 		return repositoryService;
 	}
@@ -363,7 +363,7 @@ public class CorrectionFormController extends SimpleFormController {
     protected ModelAndView onSubmit(HttpServletRequest request,
             HttpServletResponse response, Object command,
             BindException errors) throws Exception {
-        
+
         MCSConfiguration config = myciteseer.getConfiguration();
         if (!config.getCorrectionsEnabled()) {
             return super.onSubmit(request, response, command, errors);
@@ -373,17 +373,17 @@ public class CorrectionFormController extends SimpleFormController {
         if (errors.hasErrors()) {
             return showForm(request, response, errors);
         }
-        
+
         DocumentContainer container = (DocumentContainer)command;
         Document doc = csxdao.getDocumentFromDB(
                 container.getPaperID(),
                 false,  // don't get citation contexts
                 true);  // retrieve provenance info
-                
+
         if (doc == null) {
             // TODO add error page
             System.out.println("NO DOC!!!");
-            return super.onSubmit(request, response, command, errors);            
+            return super.onSubmit(request, response, command, errors);
         }
 
         String userid = MCSUtils.getLoginAccount().getUsername();
@@ -392,18 +392,18 @@ public class CorrectionFormController extends SimpleFormController {
             System.out.println("NO USERID!!!");
             return super.onSubmit(request, response, command, errors);
         }
-        
+
         container.toDocument(doc, "user correction");
-        
+
         updateManager.doCorrection(doc, userid);
 
         ModelAndView mav = onSubmit(command, errors);
         Map<String, Object> refData = referenceData(request, command, errors);
         mav.getModel().putAll(refData);
         return mav;
-        
+
     }  //- onSubmit
-        
+
     private List<String> getClusterURLs(Long clusterID) {
         List<String> dois = citedao.getPaperIDs(clusterID);
         List<String> urls = new ArrayList<String>();

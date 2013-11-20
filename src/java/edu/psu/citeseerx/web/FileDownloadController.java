@@ -33,7 +33,7 @@ import java.util.Map;
  * Process a request to download a file, sending the file to the user. If for
  * some reason the file is not found and Internal error is generated.
  * @author Isaac Councill
- * @version $Rev$ $Date$
+ * @version $Rev: 81 $ $Date: 2011-01-14 17:37:35 -0500 (Fri, 14 Jan 2011)
  */
 public class FileDownloadController implements Controller {
 
