@@ -34,22 +34,22 @@ import edu.psu.citeseerx.oai.OAIUtils;
  * Base class for all the OAI-PMH verbs implemented in the repository
  * @author Pradeep Teregowda
  * @author Juan Pablo Fernandez Ramirez
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public abstract class AbstractVerb implements Verb {
-	
+
 	protected final static String OAI_SCHEMA = "oai";
 	protected final static String DOI_SAMPLE = "10.1.1.1.1867";
-	
+
 	protected final static String METADATA_OAI_DC = "oai_dc";
-	
+
 	protected static final String[] metadataFormats = {METADATA_OAI_DC};
-	
+
 	// Defines expected parameters and if they are required or not.
 	protected static final String[] expectedArguments = {};
-	
+
 	private String baseURL;
-	
+
 	/**
 	 * @return the OAI-PMH base URL for the repository
 	 */
@@ -65,7 +65,7 @@ public abstract class AbstractVerb implements Verb {
 	} //- setBaseURL
 
 	private String granularity;
-	
+
 	/**
 	 * Sets the granularity supported by the repository
 	 * @param granularity
@@ -73,16 +73,16 @@ public abstract class AbstractVerb implements Verb {
 	public void setGranularity(String granularity) {
 		this.granularity = granularity;
 	} //- setGranularity
-	
+
 	/**
 	 * @return the granularity supported by this repository
 	 */
 	public String getGranularity() {
 		return granularity;
 	} //- getGranularity
-	
+
 	private String delimiter;
-	
+
 	/**
 	 * Sets the delimiter used in the identifier for this repository
 	 * @param delimiter
@@ -90,16 +90,16 @@ public abstract class AbstractVerb implements Verb {
 	public void setDelimiter(String delimiter) {
 		this.delimiter = delimiter;
 	} //- delimiter
-	
+
 	/**
 	 * @return the delimiter used by this repository
 	 */
 	public String getDelimiter() {
 		return delimiter;
 	} //- getDelimiter
-	
+
 	private String repositoryIdentifier;
-	
+
 	/**
 	 * Sets the PMH-OAI repository identifier
 	 * @param repositoryIdentifier
@@ -107,33 +107,33 @@ public abstract class AbstractVerb implements Verb {
 	public void setRepositoryIdentifier(String repositoryIdentifier) {
 		this.repositoryIdentifier = repositoryIdentifier;
 	} //- setRepositoryIdentifier
-	
+
 	/**
 	 * @return this repository identifier.
 	 */
 	public String getRepositoryIdentifier() {
 		return repositoryIdentifier;
 	} //- getRepositoryIdentifier
-	
+
 	private String earliestDatestamp;
-	
+
 	/**
 	 * Sets the earliest date stamp for the repository
 	 * @param earliestDatestamp
 	 */
 	public void setEarliestDatestamp(String earliestDatestamp) {
-		this.earliestDatestamp = earliestDatestamp; 
+		this.earliestDatestamp = earliestDatestamp;
 	} //- setEarliestDatestamp
-	
+
 	/**
 	 * @return the earliest date stamp for the repository
 	 */
 	public String getEarliestDatestamp() {
 		return earliestDatestamp;
 	} //- getEarliestDatestamp
-	
+
 	private List<OAIError> errors = new ArrayList<OAIError>();
-	
+
 	/**
 	 * Add an error to the error list
 	 * @param error
@@ -141,25 +141,25 @@ public abstract class AbstractVerb implements Verb {
 	protected void addError(OAIError error) {
 		errors.add(error);
 	} //- addError
-	
+
 	/**
-	 * @return the error list. 
+	 * @return the error list.
 	 */
 	protected List<OAIError> getErrors() {
 		return errors;
 	} //- getError
-	
+
 	/**
-	 * Informs if errors have occurred 
+	 * Informs if errors have occurred
 	 * @return true if errors have occurred
 	 */
 	protected boolean hasErrors() {
 		return errors.size() > 0;
 	} //- hasErrors
-	
+
 	private List<String> requiredArguments = new ArrayList<String>();
 	private List<String> validArguments = new ArrayList<String>();
-	
+
 	/**
 	 * Stores the expected parameters for the verb indicating if the parameter is required or not
 	 * @param parameter	Name of a valid parameter for this verb
@@ -171,7 +171,7 @@ public abstract class AbstractVerb implements Verb {
 		}
 		validArguments.add(parameter);
 	} //- addArgument
-	
+
 	/**
 	 * Validates the parameters send to the verb.
 	 * @param request	Object containing the arguments for the verb
@@ -179,7 +179,7 @@ public abstract class AbstractVerb implements Verb {
 	 */
 	protected boolean checkArguments(HttpServletRequest request) throws OAIVerbException {
 		boolean valid = true;
-		
+
 		// check for resumptionToken exclusivity
 		String resumptionToken = request.getParameter("resumptionToken");
 		if (resumptionToken != null && resumptionToken.trim().length() > 0) {
@@ -196,27 +196,27 @@ public abstract class AbstractVerb implements Verb {
 				String argValue = request.getParameter(reqArg);
 				if (argValue == null || argValue.trim().length() == 0) {
 					valid = false;
-					addError(new OAIError(reqArg + " is required", 
+					addError(new OAIError(reqArg + " is required",
 							OAIError.BAD_ARGUMENT_ERROR));
 				}
 			}
 		}
-		
+
 		// Check illegal parameters and / or multi values
 		Enumeration<String> paramNames = request.getParameterNames();
 		while (paramNames.hasMoreElements()) {
 			String paramName = paramNames.nextElement();
 			if (!validArguments.contains(paramName)) {
 				valid = false;
-				addError(new OAIError(paramName + " is an Illegal argument", 
+				addError(new OAIError(paramName + " is an Illegal argument",
 						OAIError.BAD_ARGUMENT_ERROR));
 			}
-			
+
 			// Check if the parameter has been set more than once.
 			if (request.getParameterValues(paramName).length > 1) {
 				valid = false;
-				addError(new OAIError("multiple values are not allowed for " + 
-						"the " + paramName + " argument", 
+				addError(new OAIError("multiple values are not allowed for " +
+						"the " + paramName + " argument",
 						OAIError.BAD_ARGUMENT_ERROR));
 			}
 		}
@@ -226,7 +226,7 @@ public abstract class AbstractVerb implements Verb {
 		}
 		return valid;
 	} //- areValidArguments
-	
+
 	/**
 	 * @param request
 	 * @return A map parameterName, parameterValue with the OAI parameters
@@ -234,7 +234,7 @@ public abstract class AbstractVerb implements Verb {
 	 */
 	protected Map<String, String> getRequestElements(
 	        HttpServletRequest request) {
-	    
+
 	    Map<String, String> elements = new HashMap<String, String>();
 	    Enumeration<String> params = request.getParameterNames();
         while (params.hasMoreElements()) {
@@ -248,9 +248,9 @@ public abstract class AbstractVerb implements Verb {
         }
 	    return elements;
 	} //- getRequestElements
-	
+
 	/**
-	 * Creates the @see <a href="">OAI-PMH error</a> element with data provided 
+	 * Creates the @see <a href="">OAI-PMH error</a> element with data provided
 	 * by the OAIException. The errors created are attached to the given root
 	 * element.
 	 * @param e Data to be used when creating the error element.
@@ -265,15 +265,15 @@ public abstract class AbstractVerb implements Verb {
 
 	/**
 	 * Generates the XML declaration, the root, responseDate and request element
-	 * for the OAI-PMH response. This elements are attached to the given root 
+	 * for the OAI-PMH response. This elements are attached to the given root
 	 * element
 	 * @param request request object containing the arguments for the verb.
-	 * @param includeAttributes Indicates if attributes needs to be included 
+	 * @param includeAttributes Indicates if attributes needs to be included
 	 * when generating the request element within the response
 	 */
-	protected void generateHeader(HttpServletRequest request, 
+	protected void generateHeader(HttpServletRequest request,
             boolean includeAttributes, Element root) {
-	    
+
 	    Map<String, String> attributes = null;
 	    if (includeAttributes) {
 	        attributes = getRequestElements(request);
@@ -281,50 +281,50 @@ public abstract class AbstractVerb implements Verb {
 	    OAIUtils.addResponseDate(root, new Date(System.currentTimeMillis()));
 	    OAIUtils.addRequest(root, getBaseURL(), attributes);
 	} //- generateHeader
-	
+
 	/**
 	 * Determines if the given identifier have the structure of this repository
-	 * identifiers. If the identifier doesn't comply with the structure an 
-	 * error is created and stored in the errors list. 
+	 * identifiers. If the identifier doesn't comply with the structure an
+	 * error is created and stored in the errors list.
 	 * @param identifier Identifier encoded in UTF-8
 	 * @return True is the identifier has this repository identifiers structure
-	 * false otherwise. 
+	 * false otherwise.
 	 */
 	protected boolean isValidIdentifier(String identifier) {
-		
+
 		boolean valid = true;
-		String doiRegExpr = 
+		String doiRegExpr =
 			"^[0-9]{1,}\\.[0-9]{1,}\\.[0-9]{1,}\\.[0-9]{1,}\\.[0-9]{1,4}$";
-		
+
 		// If the identifier argument is present. Check it's well formed.
 		try {
 			new URI(identifier);
 			String[] tokens = identifier.split(getDelimiter());
-			
+
 			Pattern pattern = Pattern.compile(doiRegExpr);
 			Matcher matcher = pattern.matcher(tokens[2]);
 			if (!matcher.find() || (tokens[0].compareTo(OAI_SCHEMA) != 0) ||
 					(tokens[1].compareTo(getRepositoryIdentifier()) != 0)) {
 				valid = false;
 				addError(new OAIError(identifier + " has an invalid structure " +
-						"for this repository identifiers", 
+						"for this repository identifiers",
 						OAIError.ID_DOES_NOT_EXISTS_ERROR));
 			}
 		}catch (Exception e) {
 			valid = false;
-			addError(new OAIError(identifier + " is not a valid URI", 
+			addError(new OAIError(identifier + " is not a valid URI",
 					OAIError.ID_DOES_NOT_EXISTS_ERROR));
 		}
 		return valid;
 	} //- isValidIdentifier
-	
+
 	/* (non-Javadoc)
 	 * @see edu.psu.citeseerx.oai.verbs.Verb#processRequest(javax.servlet.http.HttpServletRequest)
 	 */
 	public Document processRequest(HttpServletRequest request) {
-		
+
 		Element root = OAIUtils.createElementRoot();
-		
+
 		try {
 			// Checking we have all the arguments we need.
 			checkArguments(request);
@@ -334,7 +334,7 @@ public abstract class AbstractVerb implements Verb {
 
 		    root = OAIUtils.createElementRoot();
 		    /*
-             * The request element must not include attributes when errors 
+             * The request element must not include attributes when errors
              * happens.
              */
 		    generateHeader(request, false, root);
@@ -345,24 +345,24 @@ public abstract class AbstractVerb implements Verb {
 		}
 		return OAIUtils.createDocument(root);
 	} //- processRequest
-	
+
 	/**
 	 * Processes the request and produces the XML answer.
-	 * This method is intended to be implemented by specialized classes which 
-	 * know how to process each verb 
+	 * This method is intended to be implemented by specialized classes which
+	 * know how to process each verb
 	 * @param request
-	 * @return The XML, contained in a JDOM document, response or null if an 
+	 * @return The XML, contained in a JDOM document, response or null if an
 	 * error occurs
 	 * @throws OAIVerbException
 	 */
-	protected abstract Element doProcess(HttpServletRequest request, 
+	protected abstract Element doProcess(HttpServletRequest request,
 	        Element root) throws OAIVerbException;
-	
+
 	/*
 	 * Counts how many parameters were sent
 	 */
 	private int countParameters(HttpServletRequest request) {
-		
+
 		int i = 0;
 		Enumeration<String> params = request.getParameterNames();
 		for (i = 0; params.hasMoreElements(); i++ ) {

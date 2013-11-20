@@ -51,12 +51,12 @@ import java.util.Map;
 /**
  * Provides model objects to document summary view.
  * @author Isaac Councill
- * Version: $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class ViewDocController implements Controller {
 
 	private CSXDAO csxdao;
-	
+
 	private RepositoryService repositoryService;
 
 	public RepositoryService getRepositoryService() {
@@ -175,7 +175,7 @@ public class ViewDocController implements Controller {
 			return new ModelAndView("baddoi", model);
 		}
 		else if(doc.getState() == DocumentProperties.IS_PDFREDIRECT) {
-			// 
+			//
 			PDFRedirect pdfredirect = csxdao.getPDFRedirect(doi);
 			pdfRedirectURL = this.generateRedirectURL(pdfredirect);
 			pdfRedirectLabel = pdfredirect.getLabel();
@@ -192,7 +192,7 @@ public class ViewDocController implements Controller {
 		}
 
 
-		
+
 		if (bxml) {
 			response.getWriter().print(
 					"<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -200,7 +200,7 @@ public class ViewDocController implements Controller {
 			if (bsysData && account != null && account.isAdmin()) {
 				response.getWriter().print(doc.toXML(true));
 			} else {
-				response.getWriter().print(doc.toXML(false));                
+				response.getWriter().print(doc.toXML(false));
 			}
 			return null;
 			//return new ModelAndView("xml", model);
@@ -217,7 +217,7 @@ public class ViewDocController implements Controller {
 			// convert to unique authors
 			UniqueAuthor uauth = new UniqueAuthor();
 			uauth.setCanname(authorName);
-			if (a.getClusterID() > 0) {                        
+			if (a.getClusterID() > 0) {
 				uauth.setAid("");
 			}
 			uauthors.add(uauth);
@@ -262,7 +262,7 @@ public class ViewDocController implements Controller {
 		model.put("bibtex", bibtex);
 
 		String coins =
-				BiblioTransformer.toCOinS(DomainTransformer.toThinDoc(doc), 
+				BiblioTransformer.toCOinS(DomainTransformer.toThinDoc(doc),
 						request.getRequestURL().toString());
 		model.put("coins", coins);
 
@@ -281,7 +281,7 @@ public class ViewDocController implements Controller {
 		model.put("pagedescription", "Document Details (Isaac Councill, " +
 				"Lee Giles, Pradeep Teregowda): " + abs);
 		model.put("pagekeywords", authors);
-		model.put("title", title);            
+		model.put("title", title);
 		model.put("authors", authors);
 		model.put("uauthors", uauthors);
 		model.put("abstract", abs);
@@ -300,7 +300,7 @@ public class ViewDocController implements Controller {
         fileTypesQuery.put(Document.DOI_KEY, doi);
         fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
         model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
-		
+
 		model.put("chartdata", chartData);
 		model.put("hubUrls", hubUrls);
 		model.put("pdfRedirectUrl", pdfRedirectURL);
@@ -334,11 +334,11 @@ public class ViewDocController implements Controller {
 	} //- getClusterURLs
 
 	private String generateRedirectURL(PDFRedirect pdfredirect) {
-		
-		return GeneratePDFRedirectURL.generateURLFromTemplate(pdfredirect.getUrlTemplate(), 
+
+		return GeneratePDFRedirectURL.generateURLFromTemplate(pdfredirect.getUrlTemplate(),
 				pdfredirect.getExternaldoi());
 	}
-	
+
 }  //- ViewDocController
 
 

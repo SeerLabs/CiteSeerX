@@ -30,23 +30,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Process a request to download a file, sending the file to the user. If for 
+ * Process a request to download a file, sending the file to the user. If for
  * some reason the file is not found and Internal error is generated.
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class FileDownloadController implements Controller {
-    
+
     private CSXDAO csxdao;
-    
-    
+
+
     /*
      * RepositoryService instance
      */
     private RepositoryService repositoryService;
-    
-    
-    
+
+
+
     public RepositoryService getRepositoryService() {
 		return repositoryService;
 	}
@@ -58,13 +58,13 @@ public class FileDownloadController implements Controller {
 	public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
-    
+
     /* (non-Javadoc)
      * @see org.springframework.web.servlet.mvc.Controller#handleRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        
+
         String doi = request.getParameter("doi");
         String rep = request.getParameter("rep");
         String type = request.getParameter("type");
@@ -77,10 +77,10 @@ public class FileDownloadController implements Controller {
             model.put("pagetitle", errorTitle);
             return new ModelAndView("baddoi", model);
         }
-        
+
         BufferedInputStream input = null;
         BufferedOutputStream output = null;
-        
+
         try {
             Document doc = null;
             try {
@@ -88,14 +88,14 @@ public class FileDownloadController implements Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
+
             if (doc == null || doc.isPublic() == false) {
                 String errorTitle = "Document Not Found";
                 model.put("doi", doi);
                 model.put("pagetitle", errorTitle);
                 return new ModelAndView("baddoi", model);
             }
-            
+
             if (type.equalsIgnoreCase("url")) {
 
                 DocumentFileInfo finfo = doc.getFileInfo();
@@ -116,7 +116,7 @@ public class FileDownloadController implements Controller {
                 RedirectUtils.externalRedirect(response, url);
 
             }else{
-		
+
                 response.reset();
                 if (type.equalsIgnoreCase("pdf")) {
                     response.setContentType("application/pdf");
@@ -133,21 +133,21 @@ public class FileDownloadController implements Controller {
                     model.put("pagetitle", errorTitle);
                     return new ModelAndView("baddoi", model);
                 }
-   
+
                 HashMap<String,String> p = new HashMap<String,String>();
                 p.put(Document.DOI_KEY, doi);
                 p.put(RepositoryService.REPOSITORYID, rep);
                 p.put(RepositoryService.FILETYPE, type);
                 try {
                 	InputStream in = repositoryService.getDocument(p);
-                
+
                 	input = new BufferedInputStream(in);
-                
+
  //               FileInputStream in = csxdao.getFileInputStream(doi, rep, type);
  //               input = new BufferedInputStream(in);
-            
 
-            
+
+
                     output = new BufferedOutputStream(response.getOutputStream());
                     byte[] buffer = new byte[8192];
                     int got = 0;
@@ -161,7 +161,7 @@ public class FileDownloadController implements Controller {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            RedirectUtils.sendRedirect(request, response, 
+            RedirectUtils.sendRedirect(request, response,
                     "/viewdoc/summary?doi="+doi);
             return null;
         } finally {
@@ -169,7 +169,7 @@ public class FileDownloadController implements Controller {
             try { output.close(); } catch (Exception exc) {}
         }
         return null;
-        
+
     }  //- handleRequest
 
 }  //- class FileDownloadController

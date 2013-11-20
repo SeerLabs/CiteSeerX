@@ -25,7 +25,7 @@ import java.util.List;
  * File access methods.
  *
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public interface FileSysDAO {
 
@@ -37,7 +37,7 @@ public interface FileSysDAO {
      * @return A CiteSeerX document from a XML file.
      * @throws IOException
      */
-	
+
     public Document getDocVersion(String doi, int version) throws IOException;
 
     /**
@@ -45,17 +45,17 @@ public interface FileSysDAO {
      * the named version does not exist, a null value will be returned.
      * @param doi
      * @param name
-     * @return A specific version of the document based on the version name or 
+     * @return A specific version of the document based on the version name or
      * null if that version name does not exist.
      * @throws DataAccessException
      * @throws IOException
      */
     public Document getDocVersion(String doi, String name) throws IOException;
-    
+
     /**
      * @param doi
      * @return the ID of the repository on which a given document is stored.
      */
     public String getRepositoryID(String doi);
-    
+
 } //- interface FileSysDAO

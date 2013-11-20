@@ -15,31 +15,31 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * 
- * @author 
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ *
+ * @author
+ * @version $Rev$ $Date$
  *
  */
 public class TableIngester {
 	private CSXDAO csxdao;
 	private RepositoryMap repositoryMap;
 	protected String repositoryID;
-	
+
     private final static String sep = System.getProperty("file.separator");
-	
+
 	public void setRepositoryMap(RepositoryMap repositoryMap) {
         this.repositoryMap = repositoryMap;
     }
-    
-   
+
+
     public void setRepositoryID(String repositoryID) {
         this.repositoryID = repositoryID;
     }
-	
+
     public void setCSXDAO(CSXDAO csxdao) {
         this.csxdao = csxdao;
     }
-    
+
     private FilenameFilter filter = new FilenameFilter() {
     	public boolean accept(File dir, String filepath) {
     		if(filepath.endsWith(".tbl")) {
@@ -48,17 +48,17 @@ public class TableIngester {
     		return false;
     	}
     };
-    
-    
+
+
     public int importTable(Table tobj, String doi)
     throws Exception {
         	tobj.setPaperIDForTable(doi);
         	csxdao.insertTable(tobj);
         	return 0;
     }
-    
+
     public int importTableSet(String fileName) {
-    	
+
     	TableSet set = new TableSet();
     	try {
     		File tblFile = new File(fileName);
@@ -75,7 +75,7 @@ public class TableIngester {
     						importTable(indiv, doi);
     				}
     		}
-        	
+
         	String dir = FileNamingUtils.getDirectoryFromDOI(doi);
         	String fullDestDir =
                 repositoryMap.getRepositoryPath(repositoryID) + sep + dir;
@@ -83,7 +83,7 @@ public class TableIngester {
         	File destFile = new File(dest);
             FileUtils.copy(tblFile, destFile);
         	// Move the table file into the repository
-        	
+
         	return 0;
     	}
     	catch(Exception e) {
@@ -92,8 +92,8 @@ public class TableIngester {
     		return -1;
     	}
     }
-    
-    
+
+
     protected CheckSum findDocument(String sha1)
     throws SQLException {
     	// SHA1 key returned
@@ -105,14 +105,14 @@ public class TableIngester {
         	return chksumDoc.get(0);
         }
     }
-    
+
     public void ingestDirectories(String[] args) {
         if (args.length <= 0) {
             System.out.println("Please specify one or more directories from " +
                     "which to ingest content");
             System.exit(0);
         }
-                
+
         for (String dir : args) {
            File file = new File(dir);
            if (!file.isDirectory()) {
@@ -131,6 +131,6 @@ public class TableIngester {
                    }
                }
         }
-        
+
        }
 }

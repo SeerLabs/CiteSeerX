@@ -20,7 +20,7 @@ import edu.psu.citeseerx.repository.UnknownRepositoryException;
  * Generic interface for utilities that import files from some location.
  *
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public interface FileIngester {
 
@@ -39,5 +39,5 @@ public interface FileIngester {
      */
     public void importFileData(Document doc, String fileBase)
     throws IOException, UnknownRepositoryException;
-    
+
 } //- interface FileIngester

@@ -40,40 +40,40 @@ import edu.psu.citeseerx.utility.FileNamingUtils;
 import edu.psu.citeseerx.utility.FileUtils;
 
 /**
- * Spring-based JDBC and filesystem implementation of FileSysDAO. 
+ * Spring-based JDBC and filesystem implementation of FileSysDAO.
  *
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
 
-    
-    
+
+
     private GetVersionByNum getVersionByNum;
     private GetVersionByName getVersionByName;
     private GetRepID getRepID;
-    
+
     /* (non-Javadoc)
      * @see org.springframework.dao.support.DaoSupport#initDao()
      */
     protected void initDao() throws ApplicationContextException {
         initMappingSqlQueries();
     } //- initDao
-    
-    
+
+
     protected void initMappingSqlQueries() throws ApplicationContextException {
         getVersionByNum = new GetVersionByNum(getDataSource());
         getVersionByName = new GetVersionByName(getDataSource());
         getRepID = new GetRepID(getDataSource());
     } //- initMappingSqlQueries
-    
-    
+
+
     private static final String DEF_GET_VERSION_BY_NUM_QUERY =
         "select name, repositoryID, path, deprecated, spam from "+
         "paperVersions where paperid=? and version=?";
-        
+
     private class GetVersionByNum extends MappingSqlQuery {
-        
+
         public GetVersionByNum(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_GET_VERSION_BY_NUM_QUERY);
@@ -81,7 +81,7 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
             declareParameter(new SqlParameter(Types.INTEGER));
             compile();
         } //- GetVersionByNum.GetVersionByNum
-        
+
         public Document mapRow(ResultSet rs, int rowNum) throws SQLException {
             Document doc = new Document();
             doc.setVersionName(rs.getString(1));
@@ -91,7 +91,7 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
             doc.setVersionSpam(rs.getBoolean(5));
             return doc;
         } //- GetVersionByNum.mapRow
-        
+
         public Document run(String doi, int version) {
             Object[] params = new Object[] { doi, new Integer(version) };
             List<Document> list = execute(params);
@@ -103,21 +103,21 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
         } //- GetVersionByNum.run
     } //- class GetVersionByNum
 
-    
+
     private static final String DEF_GET_VERSION_BY_NAME_QUERY =
         "select version, repositoryID, path, deprecated, spam from "+
         "paperVersions where paperid=? and name=?";
-    
+
     private class GetVersionByName extends MappingSqlQuery {
-        
+
         public GetVersionByName(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_GET_VERSION_BY_NAME_QUERY);
             declareParameter(new SqlParameter(Types.VARCHAR));
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
-        } //- GetVersionByName.GetVersionByName 
-        
+        } //- GetVersionByName.GetVersionByName
+
         public Document mapRow(ResultSet rs, int rowNum) throws SQLException {
             Document doc = new Document();
             doc.setVersionName(rs.getString(1));
@@ -127,7 +127,7 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
             doc.setVersionSpam(rs.getBoolean(5));
             return doc;
         } //- GetVersionByName.mapRow
-        
+
         public Document run(String doi, String name) {
             Object[] params = new Object[] { doi, name };
             List<Document> list = execute(params);
@@ -138,24 +138,24 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
             }
         } //- GetVersionByName.run
     } //- class GetVersionByName
-    
-    
+
+
     private static final String DEF_GET_REPID_QUERY =
         "select repositoryID from papers where id=?";
-    
+
     private class GetRepID extends MappingSqlQuery {
-        
+
         public GetRepID(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_GET_REPID_QUERY);
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- GetRepID.GetRepID
-        
+
         public String mapRow(ResultSet rs, int rowNum) throws SQLException {
             return rs.getString(1);
         } //- GetRepID.mapRow
-        
+
         public String run(String doi) {
             List<String> list = execute(doi);
             if (list.isEmpty()) {
@@ -165,7 +165,7 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
             }
         } //- GetRepID.run
     } //- class GetRepID
-      
+
     /*
      * (non-javadoc)
      * @see edu.psu.citeseerx.dao2.FileSysDAO#getRepositoryID(java.lang.String)
@@ -185,6 +185,6 @@ public class FileSysDAOImpl extends JdbcDaoSupport implements FileSysDAO {
 	public Document getDocVersion(String doi, String name) throws IOException {
 		return getVersionByName.run(doi,name);
 	}
-    
-   
+
+
 }  //- class FileSysDAOImpl

@@ -35,16 +35,16 @@ import edu.psu.citeseerx.utility.CSXConstants;
 /**
  * Provides model objects to version view
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class VersionController implements Controller {
 
 
 	private CSXDAO csxdao;
-    
+
 	private RepositoryService repositoryService;
-	
-	
+
+
     public RepositoryService getRepositoryService() {
 		return repositoryService;
 	}
@@ -58,27 +58,27 @@ public class VersionController implements Controller {
 	public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
-    
-    
+
+
     private CiteClusterDAO citedao;
-    
+
     public void setCiteClusterDAO(CiteClusterDAO citedao) {
         this.citedao = citedao;
     } //- setCiteClusterDAO
 
-    
+
     /* (non-Javadoc)
      * @see org.springframework.web.servlet.mvc.Controller#handleRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException, SQLException {
-        
+
         String doi = null;
         String cid = request.getParameter("cid");
         String errorTitle = "Document Not Found";
         Map<String, Object> model = new HashMap<String, Object>();
-         
+
         if (cid != null) {
         	Long cluster;
         	try {
@@ -88,17 +88,17 @@ public class VersionController implements Controller {
         		model.put("pagetitle", errorTitle);
         		return new ModelAndView("viewDocError", model);
 			}
-            
+
             List<String> dois = citedao.getPaperIDs(cluster);
             doi = dois.get(0);
             RedirectUtils.sendDocumentCIDRedirect(request, response, doi);
             return null;
         }
-        
+
         if (doi == null) {
             doi = request.getParameter("doi");
         }
-        
+
         if (doi == null) {
         	model.put("pagetitle", errorTitle);
     		return new ModelAndView("viewDocError", model);
@@ -117,31 +117,31 @@ public class VersionController implements Controller {
         } catch (Exception e) {}
 
         Document doc = null;
-        
+
         try {
             doc = csxdao.getDocumentFromDB(doi, false, true);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         if (doc == null || doc.isPublic() == false) {
         	model.put("doi", doi);
         	model.put("pagetitle", errorTitle);
             return new ModelAndView("baddoi", model);
         }
-        
+
         int currentVersion = doc.getVersion();
-        int version = currentVersion; 
+        int version = currentVersion;
         String versionStr = request.getParameter("version");
         if (versionStr != null) {
             try {
                 version = Integer.parseInt(versionStr);
             } catch (Exception e) { }
         }
-        
+
         Document versionDoc = doc;
         Boolean error = false;
-        String errMsg = null; 
+        String errMsg = null;
         if (version != currentVersion) {
             try {
                 versionDoc = csxdao.getDocVersion(doi, version);
@@ -154,7 +154,7 @@ public class VersionController implements Controller {
                 errMsg="Version info is currently unavailable.";
             }
         }
-        
+
         if (bxml) {
             response.getWriter().print(
                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
@@ -162,24 +162,24 @@ public class VersionController implements Controller {
             if (bsysData && account != null && account.isAdmin()) {
                 response.getWriter().print(versionDoc.toXML(true));
             } else {
-                response.getWriter().print(versionDoc.toXML(false));                
+                response.getWriter().print(versionDoc.toXML(false));
             }
             return null;
             //return new ModelAndView("xml", model);
         }
-        
+
         ArrayList<UniqueAuthor> uauthors = new ArrayList<UniqueAuthor>();
         String authors = "";
-        
+
         int c = 1;
         for (Author a : doc.getAuthors()) {
             String authorName = a.getDatum(Author.NAME_KEY);
             authors += authorName + ", ";
-            
+
             // convert to unique authors
             UniqueAuthor uauth = new UniqueAuthor();
             uauth.setCanname(authorName);
-            if (a.getClusterID() > 0) {                        
+            if (a.getClusterID() > 0) {
                 uauth.setAid("");
             }
             uauthors.add(uauth);
@@ -202,7 +202,7 @@ public class VersionController implements Controller {
                 doc.getVersionName().equals(CSXConstants.USER_VERSION)) {
             userid = csxdao.getCorrector(doi, version);
         }
-        
+
         DocumentFileInfo finfo = doc.getFileInfo();
         String rep = finfo.getDatum(DocumentFileInfo.REP_ID_KEY);
         List<String> urls = getClusterURLs(doc.getClusterID());
@@ -210,10 +210,10 @@ public class VersionController implements Controller {
         Long clusterID = doc.getClusterID();
 
         List<ExternalLink> eLinks = csxdao.getExternalLinks(doi);
-        
+
         // Obtain the hubUrls that points to this document.
         List<Hub> hubUrls = csxdao.getHubs(doi);
-        
+
         model.put("error", error);
         model.put("errMsg", errMsg);
         model.put("pagetype", "versions");
@@ -221,7 +221,7 @@ public class VersionController implements Controller {
         model.put("pagekeywords", authors);
         model.put("pagedescription", "Document Details (Isaac Councill, " +
         		"Lee Giles): " + abs);
-        model.put("title", title);            
+        model.put("title", title);
         model.put("authors", authors);
         model.put("uauthors", uauthors);
         model.put("abstract", abs);
@@ -232,7 +232,7 @@ public class VersionController implements Controller {
         model.put("clusterid", clusterID);
         model.put("rep", rep);
         model.put("ncites", doc.getNcites());
-        model.put("selfCites", doc.getSelfCites()); 
+        model.put("selfCites", doc.getSelfCites());
         model.put("elinks", eLinks);
         model.put("hubUrls", hubUrls);
         HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
@@ -250,14 +250,14 @@ public class VersionController implements Controller {
         if (banner != null && banner.length() > 0) {
             model.put("banner", banner);
         }
-        
+
         return new ModelAndView("versions", model);
     }
-    
-    
-    private static void addVersionData(Document doc, 
+
+
+    private static void addVersionData(Document doc,
             Map<String, Object> model) {
-        
+
         String title = doc.getDatum(Document.TITLE_KEY);
         String abs = doc.getDatum(Document.ABSTRACT_KEY);
         String year = doc.getDatum(Document.YEAR_KEY);
@@ -281,7 +281,7 @@ public class VersionController implements Controller {
         List<Citation> citations = doc.getCitations();
         String citesv = Integer.toString(citations.size()) + " found";
         String cites_src = doc.getSource(Document.CITES_KEY);
-        
+
         ArrayList<AuthorVersion> authors = new ArrayList<AuthorVersion>();
         for (Author auth : doc.getAuthors()) {
             AuthorVersion authv = new AuthorVersion();
@@ -293,7 +293,7 @@ public class VersionController implements Controller {
             authv.setAffilSrc(auth.getSource(Author.AFFIL_KEY));
             authors.add(authv);
         }
-        
+
         if (title != null) {
             model.put("titlev", title);
             model.put("title_src", title_src);
@@ -333,9 +333,9 @@ public class VersionController implements Controller {
         model.put("citesv", citesv);
         model.put("cites_src", cites_src);
         model.put("authv", authors);
-        
+
     }  //- addVersionData
-    
+
     private List<String> getClusterURLs(Long clusterID) {
         List<String> dois = citedao.getPaperIDs(clusterID);
         List<String> urls = new ArrayList<String>();

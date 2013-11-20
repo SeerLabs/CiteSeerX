@@ -51,14 +51,14 @@ import java.util.Set;
 /**
  * Provides model objects to document similarity view.
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public class SimilarityController implements Controller {
 
     private CSXDAO csxdao;
-    
+
     private RepositoryService repositoryService;
-    
+
     public RepositoryService getRepositoryService() {
 		return repositoryService;
 	}
@@ -72,18 +72,18 @@ public class SimilarityController implements Controller {
 	public void setCSXDAO(CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
-    
-    
+
+
     private CiteClusterDAO citedao;
-    
+
     public void setCiteClusterDAO(CiteClusterDAO citedao) {
         this.citedao = citedao;
     } //- setCiteClusterDAO
-     
-    
+
+
     private String solrSelectUrl;
-    
-    public void setSolrSelectUrl(String solrSelectUrl) 
+
+    public void setSolrSelectUrl(String solrSelectUrl)
     throws MalformedURLException
 	{
 	try {
@@ -93,15 +93,15 @@ public class SimilarityController implements Controller {
             throw new MalformedURLException(e.getMessage());
         }
     } //- setSolrSelectUrl
-    
-    
+
+
     private int maxQueryTerms = 20;
-    
+
     public void setMaxQueryTerms(int maxQueryTerms) {
         this.maxQueryTerms = maxQueryTerms;
     } //- setMaxQueryTerms
-    
-    
+
+
     private static final String SIM_AB  = "ab";
     private static final String SIM_CC = "cc";
     private static final String SIM_SC = "sc";
@@ -120,13 +120,13 @@ public class SimilarityController implements Controller {
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException,
             JSONException, SQLException, URISyntaxException {
-        
+
         String doi = null;
         String errorTitle = "Document Not Found";
         String cid = request.getParameter("cid");
         Long cluster;
         Map<String, Object> model = new HashMap<String, Object>();
-        
+
         if (cid != null) {
         	try {
         		cluster = Long.parseLong(cid);
@@ -140,17 +140,17 @@ public class SimilarityController implements Controller {
             RedirectUtils.sendDocumentCIDRedirect(request, response, doi);
             return null;
         }
-        
+
         if (doi == null) {
             doi = request.getParameter("doi");
         }
-        
+
         if (doi == null) {
         	model.put("pagetitle", errorTitle);
     		return new ModelAndView("viewDocError", model);
         }
-        
-        
+
+
         String xml = request.getParameter("xml");
         boolean bxml = false;
         try {
@@ -177,7 +177,7 @@ public class SimilarityController implements Controller {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         if (doc == null || doc.isPublic() == false) {
         	model.put("doi", doi);
         	model.put("pagetitle", errorTitle);
@@ -186,16 +186,16 @@ public class SimilarityController implements Controller {
 
         List<UniqueAuthor> uauthors = new ArrayList<UniqueAuthor>();
         String authors = "";
-        
+
         int c = 1;
         for (Author a : doc.getAuthors()) {
             String authorName = a.getDatum(Author.NAME_KEY);
             authors += authorName + ", ";
-            
+
             // convert to unique authors
             UniqueAuthor uauth = new UniqueAuthor();
             uauth.setCanname(authorName);
-            if (a.getClusterID() > 0) {                        
+            if (a.getClusterID() > 0) {
                 uauth.setAid("");
             }
             uauthors.add(uauth);
@@ -207,7 +207,7 @@ public class SimilarityController implements Controller {
             // There is always a final comma.
             authors = authors.substring(0, authors.lastIndexOf(","));
         }
-        
+
         String title = doc.getDatum(Document.TITLE_KEY);
         String abs =  doc.getDatum(Document.ABSTRACT_KEY);
         String venue = doc.getDatum(Document.VENUE_KEY);
@@ -218,18 +218,18 @@ public class SimilarityController implements Controller {
         List<String> urls = getClusterURLs(doc.getClusterID());
 
         Long clusterID = doc.getClusterID();
-        
+
         List<ExternalLink> eLinks = csxdao.getExternalLinks(doi);
-        
+
         // Obtain the hubUrls that points to this document.
         List<Hub> hubUrls = csxdao.getHubs(doi);
-        
+
         model.put("pagetype", "similar");
         model.put("pagetitle", "Similarity Options: "+title);
         model.put("pagekeywords", authors);
         model.put("pagedescription", "Document Details (Isaac Councill, " +
         		"Lee Giles): " + abs);
-        model.put("title", title); 
+        model.put("title", title);
         model.put("authors", authors);
         model.put("uauthors", uauthors);
         model.put("abstract", abs);
@@ -246,14 +246,14 @@ public class SimilarityController implements Controller {
         fileTypesQuery.put(Document.DOI_KEY, doi);
         fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
         model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
-        
+
         model.put("hubUrls", hubUrls);
 
         String banner = csxdao.getBanner();
         if (banner != null && banner.length() > 0) {
             model.put("banner", banner);
         }
-        
+
         String type = request.getParameter("type");
         if (type == null || !simTypes.contains(type)) {
             return new ModelAndView("docSimilarity", model);
@@ -285,24 +285,24 @@ public class SimilarityController implements Controller {
         return new ModelAndView("viewDoc", model);
 
     }  //- handleRequest
-    
-    
+
+
     private List<ThinDoc> doABQuery(Long clusterid) throws SQLException,
     SolrException, JSONException, IOException, URISyntaxException {
 
         List<Long> cited = citedao.getCitedClusters(clusterid, maxQueryTerms);
         if (cited.isEmpty()) return new ArrayList<ThinDoc>();
-       
+
 	URI uri = null;
 
             uri = new URI(
                     /*
-                     *  Need to modify the configuration file for this 
+                     *  Need to modify the configuration file for this
                      *  (no need for http: but it needs the //).
-                     *  We use the 3 parameter constructor since 
+                     *  We use the 3 parameter constructor since
                      *  solrSelectUrl already contains: the host, port and
                      *  path. We just need to append the query and pass no
-                     *  fragment 
+                     *  fragment
                      */
             "http", solrSelectUrl, null);
 
@@ -317,7 +317,7 @@ public class SimilarityController implements Controller {
             }
         }
         urlBuffer.append(")");
-        
+
         JSONObject output =
             SolrSelectUtils.doJSONQuery(urlBuffer.toString());
 
@@ -327,28 +327,28 @@ public class SimilarityController implements Controller {
 
         List<ThinDoc> hits =
             SolrSelectUtils.buildHitListJSON(output, clusterid);
-        
+
         return hits;
-        
+
     }  //- doABQuery
 
-    
+
     private List<ThinDoc> doCCQuery(Long clusterid) throws SQLException,
     SolrException, JSONException, IOException, URISyntaxException {
 
         List<Long> citing = citedao.getCitingClusters(clusterid, maxQueryTerms);
         if (citing.isEmpty()) return new ArrayList<ThinDoc>();
-      
+
 	URI uri = null;
 
             uri = new URI(
                     /*
-                     *  Need to modify the configuration file for this 
+                     *  Need to modify the configuration file for this
                      *  (no need for http: but it needs the //).
-                     *  We use the 3 parameter constructor since 
+                     *  We use the 3 parameter constructor since
                      *  solrSelectUrl already contains: the host, port and
                      *  path. We just need to append the query and pass no
-                     *  fragment 
+                     *  fragment
                      */
             "http", solrSelectUrl, null);
 
@@ -374,11 +374,11 @@ public class SimilarityController implements Controller {
 
         List<ThinDoc> hits =
             SolrSelectUtils.buildHitListJSON(output, clusterid);
-        
+
         return hits;
 
     }  //- doCCQuery
-    
+
     private List<String> getClusterURLs(Long clusterID) {
         List<String> dois = citedao.getPaperIDs(clusterID);
         List<String> urls = new ArrayList<String>();
@@ -399,21 +399,21 @@ public class SimilarityController implements Controller {
      * @return Returns all the papers within the given cluster.
      */
     private List<ThinDoc> doSCQuery(Long clusterID) {
-        
+
         List<ThinDoc> papers = new ArrayList<ThinDoc>();
-        
+
         List<String> dois = citedao.getPaperIDs(clusterID);
         if (dois.isEmpty()) {return papers;}
-        
+
         for (String doi : dois) {
             Document doc = csxdao.getDocumentFromDB(doi);
             if (null != doc && doc.isPublic()) {
                 papers.add(DomainTransformer.toThinDoc(doc));
             }
         }
-        
+
         return papers;
-        
+
     } //- doSCQuery
-    
+
 }  //- class SimilarityController

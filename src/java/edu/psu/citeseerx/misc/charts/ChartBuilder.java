@@ -18,16 +18,16 @@ import edu.psu.citeseerx.repository.UnknownRepositoryException;
  * Generic interface for building citation histograms.
  *
  * @author Isaac Councill
- * @version $Rev: 191 $ $Date: 2012-02-08 14:32:39 -0500 (Wed, 08 Feb 2012) $
+ * @version $Rev$ $Date$
  */
 public interface ChartBuilder {
 
     /**
      * Builds histograms for all documents in the collection.  Only documents
-     * whose citation counts have changed since the last update (or 
+     * whose citation counts have changed since the last update (or
      * documents that are new) will be processed.
      * @throws UnknownRepositoryException
      */
     public void buildAll() throws UnknownRepositoryException;
-    
+
 } //- interface ChartBuilder
