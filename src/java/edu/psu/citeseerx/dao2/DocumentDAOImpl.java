@@ -53,7 +53,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
     private GetSetDOICount getSetDOICount;
     private GetCrawledDOIs getCrawledDOIs;
     private GetLatestDocuments getLatestDocuments;
-
+    
     /* (non-Javadoc)
      * @see org.springframework.dao.support.DaoSupport#initDao()
      */
