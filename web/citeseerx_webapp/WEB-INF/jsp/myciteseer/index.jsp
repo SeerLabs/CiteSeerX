@@ -9,7 +9,7 @@
   <div id="newsFeed">
     <c:forEach var="item" items="${ newsItems }">
       <div class="newsItem">
-       <h4><a href="<c:url value="${ item.link }"/>"><em class="title"><c:out value="${ item.title }"escapeXml="false"/></em></a> [<c:out value="${ item.date }"/>]</h4>
+       <h4><a href="<c:url value="${ item.link }"/>"><em class="title"><c:out value="${ item.title }" escapeXml="false"/></em></a> [<c:out value="${ item.date }"/>]</h4>
        <c:if test="${ !empty item.description }"><p><c:out value="${ item.description }" escapeXml="false"/></p></c:if>
       </div>
     </c:forEach>
