@@ -5,7 +5,7 @@
 import web
 import os
 import errno
-
+import os.path
 #if re.compile('^\d{1,4}.\d{1,4}.\d{1,4}.\d{1,4}.\d{1,4}$').match(doi):
 # TODO: Move to config
 
@@ -50,11 +50,10 @@ class document:
         filetype = web.input().get('type')
         filetype = 'pdf'
         query = web.input().get('q')
-	if (query == 'filetypes'):
-            return "pdf"
-	print web.input()
+
+        print web.input()
         # If not all the keys are specified return 404
-        if None in (repid, doi, filetype):
+        if None in (repid, doi):
             return web.webapi.NotFound()
 
         #if key != api_key:
@@ -67,9 +66,20 @@ class document:
         for x in doi.split('.'):
             filename = os.path.join(filename, x)
 
+        if (query == 'filetypes'):
+
+            files = os.listdir(filename)
+            types = set()
+            for f in files:
+                extension = os.path.splitext(f)[1]
+                types.add(extension.replace('.', ''))
+            return "["+",".join(types)+"]"
+            return "pdf"
+
         filename = os.path.join(filename, filealias)
         if os.path.isfile(filename):
             try:
+		print filename
                 getFile = file(filename, 'r')
                 web.webapi.header('Content-Disposition', 'attachment; filename=%s' % filealias)
                 web.webapi.header('Content-Type', 'application/%s' % filetype)
