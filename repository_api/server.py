@@ -1,7 +1,5 @@
-
-#!/usr/bin/python
 # Reposity API interface
-
+# Douglas Jordan
 import web
 import os
 import errno
@@ -12,11 +10,9 @@ import os.path
 repositorypath = '/data/repository/'
 api_key = "c1t3s33r"
 
-urls = ('/', 'index',
-        '/document', 'document')
+urls = ('/*', 'index', '/document', 'document')
 
 # http://stackoverflow.com/questions/600268/mkdir-p-functionality-in-python
-
 
 def mkdir_p(path):
     try:
@@ -81,7 +77,7 @@ class document:
             try:
 		print filename
                 getFile = file(filename, 'r')
-                web.webapi.header('Content-Disposition', 'attachment; filename=%s' % filealias)
+                web.webapi.header('Content-Disposition', 'inline; filename=%s' % filealias)
                 web.webapi.header('Content-Type', 'application/%s' % filetype)
 		web.webapi.header('Content-length', os.stat(filename).st_size)
 
@@ -95,7 +91,7 @@ class document:
             return web.webapi.NotFound('File Not Found')
 
     def POST(self):
-#['doi', 'type', 'version', 'file', 'repid']
+	#['doi', 'type', 'version', 'file', 'repid']
         doi = web.input().get('doi')
         repid = web.input().get('repid')
         File = web.input().get('file')
@@ -138,6 +134,4 @@ class document:
                     print "File write error %s" % e.msg
                     return web.webapi.NotAcceptable()
 
-if __name__ == "__main__":
-    app = web.application(urls, globals())
-    app.run()
+application = web.application(urls, globals()).wsgifunc()
