@@ -5,7 +5,7 @@
   xsi:schemaLocation="
   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
   http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.2.xsd">
-
+  
   <sec:http access-denied-page="/myciteseer/accessDenied.jsp" session-fixation-protection="none">
     <sec:intercept-url pattern="/myciteseer/login*" access="IS_AUTHENTICATED_ANONYMOUSLY" requires-channel="https"/>
     <sec:intercept-url pattern="/capcha.jsp" requires-channel="https"/>
@@ -50,75 +50,75 @@
     <sec:intercept-url pattern="/sitemap*.xml" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <sec:intercept-url pattern="/sitemap_index.xml" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <sec:intercept-url pattern="/**" access="IS_AUTHENTICATED_REMEMBERED" requires-channel="http"/>
-
-
+    
+    
     <!-- Port Mappers -->
     <sec:port-mappings>
       <sec:port-mapping http="80" https="443"/>
       <sec:port-mapping http="8080" https="8443"/>
     </sec:port-mappings>
-
+    
     <!-- Login Page -->
-    <sec:form-login
-      always-use-default-target="false"
+    <sec:form-login 
+      always-use-default-target="false" 
       authentication-failure-url="/myciteseer/login?login_error=1"
       default-target-url="/myciteseer/action/accountHome"
       login-page="/myciteseer/login"
       login-processing-url="/j_spring_security_check"/>
-
+    
     <!-- Anonymous filter -->
-    <sec:anonymous
+    <sec:anonymous 
       granted-authority="ROLE_ANONYMOUS"
       key="changeThis"
       username="anonymousUser"/>
-
-    <!-- Remember Me Service/filter -->
-    <sec:remember-me
+    
+    <!-- Remember Me Service/filter -->  
+    <sec:remember-me 
       user-service-ref="myCiteSeer"
       key="changeThis"/>
-
+      
     <!-- Log out filter -->
-    <sec:logout
+    <sec:logout 
       invalidate-session="true"
       logout-success-url="/index.jsp"
       logout-url="/j_spring_security_logout"/>
 
   </sec:http>
 
-  <!--
+  <!-- 
     - Authentication Manager Alias to be referenced by other beans
-    -->
+    -->  
   <sec:authentication-manager alias="authenticationManager"/>
-
-  <!--
+  
+  <!-- 
     - Authentication Providers.
     -->
-
+    
   <!-- A daoAuthenticationProvider is created by default -->
   <sec:authentication-provider user-service-ref="myCiteSeer">
     <sec:password-encoder ref="passwordEncoder">
       <sec:salt-source user-property="username"/>
     </sec:password-encoder>
   </sec:authentication-provider>
-
-  <!--
+  
+  <!-- 
     - Password encoder and SaltSource beans
     - This beans can be declared within the authentication-provider
     - but we reference then in custom beans for this reason they are
     - declared here and referenced by the namespace.
-    - TODO: find out if it is possible to declare these beans within the
-    -       authentication manager and reference them in custom beans.
+    - TODO: find out if it is possible to declare these beans within the 
+    -       authentication manager and reference them in custom beans. 
     -->
   <bean id="passwordEncoder" class="org.springframework.security.providers.encoding.ShaPasswordEncoder">
     <constructor-arg value="256"/>
     <property name="encodeHashAsBase64" value="true"/>
   </bean>
-
+  
   <bean id="saltSource" class="org.springframework.security.providers.dao.salt.ReflectionSaltSource">
     <property name="userPropertyToUse" value="getUsername"/>
   </bean>
-
-  <!--
+  
+  <!-- 
     - Automatically receives AuthenticationEvent messages.
     - This bean is optional; it isn't used by any other bean as it only listens and logs
     -->
