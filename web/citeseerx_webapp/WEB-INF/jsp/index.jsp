@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="<c:url value='/js/jquery.idTabs.min.js'/>"></script>
 	<script type="text/javascript" src="<c:url value='/js/topnav.js'/>"></script>
 	<script type="text/javascript" src="<c:url value='/js/citeseerx.js'/>"></script>
+	<script type="text/javascript" src="<c:url value='/js/ga.js'/>"></script>
 </head>
 
 <body class="front">
