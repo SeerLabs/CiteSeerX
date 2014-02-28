@@ -44,6 +44,7 @@
 	<script type="text/javascript" src="<c:url value='/js/citeseerx.js'/>"></script>
 	<script type="text/javascript" src="<c:url value='/js/correctionutils.js'/>"></script>
 	<script type="text/javascript" src="<c:url value='/js/checkboxes.js'/>"></script>
+	<script type="text/javascript" src="<c:url value='/js/ga.js'/>"></script>
 	<%-- Data for charts if available --%>
 	<c:if test="${! empty chartdata }">
     <script type="text/javascript" src="<c:url value='/js/protovis-r3.2.js'/>"></script>
