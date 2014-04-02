@@ -25,7 +25,7 @@ import javax.servlet.http.*;
  */
 public class SimpleDownloadLimitFilter implements Filter {
     
-    private int limit = 1000;
+    private int limit = 2000;
     private String redirectUrl = "";
 
     // 30 Seconds.
