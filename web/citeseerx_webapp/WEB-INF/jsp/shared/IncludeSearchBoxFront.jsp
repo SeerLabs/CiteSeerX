@@ -43,7 +43,7 @@
         <input type="hidden" name="t" value="table" />
       </form>
     </div>
-    
+    <%-->
     <div id="search_algorithms">
       <form method="get" action="<c:url value='/search'/>" enctype="application/x-www-form-urlencoded">
         <label>Tables:</label>
@@ -53,5 +53,6 @@
         <input type="hidden" name="t" value="algorithm" />
       </form>
     </div>
+    --%>
   </div>
 </div>
