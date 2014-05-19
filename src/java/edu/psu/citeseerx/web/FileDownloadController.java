@@ -26,6 +26,11 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Process a request to download a file, sending the file to the user. If for 
@@ -41,16 +46,41 @@ public class FileDownloadController implements Controller {
         this.csxdao = csxdao;
     } //- setCSXDAO
     
+    // if URI domain name contains any of them, redirect download link to summary page. possible false positives
+    public static final Set<String> redirectDomainSet = new HashSet<String>(Arrays.asList("google","bing","yahoo"));
+
+    public boolean checkURIReferer(String referer, Set<String> redirectDomainSet) throws URISyntaxException {
+        URI uri = new URI(referer);
+        String domain = uri.getHost();
+        // loop over hash set to see if an element is contained in the domain
+        for (String rds : redirectDomainSet) {
+            if (domain.contains(rds)) {
+                return true;
+            }
+        }
+        return false;
+    }
     /* (non-Javadoc)
      * @see org.springframework.web.servlet.mvc.Controller#handleRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ModelAndView handleRequest(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+            HttpServletResponse response) throws ServletException, IOException, URISyntaxException {
         
         String doi = request.getParameter("doi");
         String rep = request.getParameter("rep");
         String type = request.getParameter("type");
         String urlIndex = request.getParameter("i");
+        String referer = request.getHeader("referer");
+       
+        // if the referer comes from google/yahoo/bing, redirect to summary page
+        if (referer != null) {
+            // parse url and get the domain
+            boolean urlRefererSearchEngine = checkURIReferer(referer,redirectDomainSet);
+            if (urlRefererSearchEngine) {
+                RedirectUtils.sendRedirect(request, response, "/viewdoc/summary?doi="+doi);
+                return null;
+            }
+        }
 
 
         Map<String, Object> model = new HashMap<String, Object>();
