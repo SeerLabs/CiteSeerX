@@ -49,9 +49,9 @@ public class FileDownloadController implements Controller {
     // if URI domain name contains any of them, redirect download link to summary page. possible false positives
     public static final Set<String> redirectDomainSet = new HashSet<String>(Arrays.asList("google","bing","yahoo"));
 
-    public boolean checkURIReferer(String referer, Set<String> redirectDomainSet) throws URISyntaxException {
+    public boolean checkURIReferer(String referer) throws URISyntaxException {
         URI uri = new URI(referer);
-        String domain = uri.getHost();
+        String domain = uri.getHost().toLowerCase();
         // loop over hash set to see if an element is contained in the domain
         for (String rds : redirectDomainSet) {
             if (domain.contains(rds)) {
@@ -75,7 +75,7 @@ public class FileDownloadController implements Controller {
         // if the referer comes from google/yahoo/bing, redirect to summary page
         if (referer != null) {
             // parse url and get the domain
-            boolean urlRefererSearchEngine = checkURIReferer(referer,redirectDomainSet);
+            boolean urlRefererSearchEngine = checkURIReferer(referer);
             if (urlRefererSearchEngine) {
                 RedirectUtils.sendRedirect(request, response, "/viewdoc/summary?doi="+doi);
                 return null;
