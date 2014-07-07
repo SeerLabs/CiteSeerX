@@ -652,6 +652,43 @@
     <url-pattern>/viewdoc/download</url-pattern>
   </filter-mapping>
   
+  <filter>
+    <filter-name>Query Limit Filter</filter-name>
+    <filter-class>edu.psu.citeseerx.webutils.SimpleQueryLimitFilter</filter-class>
+    <init-param>
+      <param-name>redirectUrl</param-name>
+      <param-value>/messages/queryexceeded.html</param-value>
+    </init-param>
+    <init-param>
+      <param-name>limit</param-name>
+      <param-value>3</param-value>
+    </init-param>
+    <init-param>
+      <param-name>allowedUserAgents</param-name>
+      <param-value>googlebot,slurp,msnbot,teoma</param-value>
+    </init-param>
+    <init-param>
+      <param-name>allowedIPs</param-name>
+      <param-value>130.203.154.237</param-value>
+    </init-param>
+    <init-param>
+      <!-- Time between consecutive hits from the same ip to the same
+           URL. All hits which currentTime-lastHitTime <= time are
+           rejected and logged in -->
+      <param-name>timeLimit</param-name>
+      <param-value>3000</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ipLogFile</param-name>
+      <param-value>/WEB-INF/ipQueryLog.txt</param-value>
+    </init-param>
+  </filter>
+
+   <filter-mapping>
+    <filter-name>Query Limit Filter</filter-name>
+    <url-pattern>/search</url-pattern>
+  </filter-mapping>
+  
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
