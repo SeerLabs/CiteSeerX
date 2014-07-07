@@ -661,7 +661,7 @@
     </init-param>
     <init-param>
       <param-name>limit</param-name>
-      <param-value>3</param-value>
+      <param-value>2000</param-value>
     </init-param>
     <init-param>
       <param-name>allowedUserAgents</param-name>
