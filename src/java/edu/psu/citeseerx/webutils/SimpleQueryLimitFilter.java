@@ -1,5 +1,5 @@
 /*
- * Copyright 2007 Penn State University
+ * Copyright 2014 Penn State University
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,9 +19,10 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 /**
- * Filter to prevent massive downloads from the same ip address. 
- * @author Isaac Councill
+ * Filter to prevent massive queries from the same ip address. 
  * @author Jian Wu
+ * @author Isaac Councill
+ * @author Kyle Williams
  * @version $Rev$ $Date$
  */
 public class SimpleQueryLimitFilter implements Filter {
@@ -35,13 +36,13 @@ public class SimpleQueryLimitFilter implements Filter {
     
     // "ipQueryLog.txt" contains queries that exceed the limit. These requests
     // are not full-filled
-    private HashMap<String,Integer> dlCounts = new HashMap<String,Integer>();
+    private HashMap<String,Integer> qlCounts = new HashMap<String,Integer>();
     private String[] allowedUserAgents = new String[0];
     private String[] allowedIPs = new String[0];
     private String ipLogFilter = "ipQueryLog.txt";
     private BufferedWriter ipLogWriter = null;
     
-    private HashMap<String, Long>sameDL = new HashMap<String, Long>();
+    private HashMap<String, Long>sameQL = new HashMap<String, Long>();
  
     /* Read parameters from Servlet configeration file
      * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
@@ -163,10 +164,10 @@ public class SimpleQueryLimitFilter implements Filter {
         String ipaddr = request.getRemoteAddr();
         HttpServletRequest hreq = (HttpServletRequest)request;
         String rQS = hreq.getQueryString();
-        String keySameDL = ipaddr+rQS;
+        String keySameQL = ipaddr+rQS;
 
-        if (sameDL.containsKey(keySameDL)) {
-            Long lastHit = sameDL.get(keySameDL);
+        if (sameQL.containsKey(keySameQL)) {
+            Long lastHit = sameQL.get(keySameQL);
             Long actualTime = System.currentTimeMillis();
             if ((actualTime-lastHit) <= timeLimit) {
                 if (ipLogWriter!=null) {
@@ -189,23 +190,23 @@ public class SimpleQueryLimitFilter implements Filter {
                 }
                 return true;
             }
-            sameDL.put(keySameDL, actualTime);
+            sameQL.put(keySameQL, actualTime);
         }else{
-            sameDL.put(keySameDL, System.currentTimeMillis());
+            sameQL.put(keySameQL, System.currentTimeMillis());
         }
         
-        if (dlCounts.containsKey(ipaddr)) {
-            Integer dlc = dlCounts.get(ipaddr);
+        if (qlCounts.containsKey(ipaddr)) {
+            Integer dlc = qlCounts.get(ipaddr);
             if (dlc >= limit) {
                 return true;
             }
-            dlCounts.put(ipaddr, dlc+1);
+            qlCounts.put(ipaddr, dlc+1);
         } else {
-            dlCounts.put(ipaddr, new Integer(1));
+            qlCounts.put(ipaddr, new Integer(1));
         }
         return false;
         
-    }  //- downloadsExceeded
+    }  //- requestsExceeded
         
     
     private long lastFlushTime = System.currentTimeMillis();
@@ -217,8 +218,8 @@ public class SimpleQueryLimitFilter implements Filter {
     private void updateFlushTime() {
         long currentTime = System.currentTimeMillis();
         if (currentTime-lastFlushTime >= ONE_DAY) {
-            dlCounts.clear();
-            sameDL.clear();
+            qlCounts.clear();
+            sameQL.clear();
             lastFlushTime = currentTime;
         }
         
@@ -268,4 +269,4 @@ public class SimpleQueryLimitFilter implements Filter {
         }
     }
     
-}  //- class SimpleDownloadFilter
+}  //- class SimpleQueryLimitFilter
