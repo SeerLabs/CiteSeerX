@@ -164,6 +164,7 @@ public class SimpleQueryLimitFilter implements Filter {
         String ipaddr = request.getRemoteAddr();
         HttpServletRequest hreq = (HttpServletRequest)request;
         String rQS = hreq.getQueryString();
+        /*
         String keySameQL = ipaddr+rQS;
 
         if (sameQL.containsKey(keySameQL)) {
@@ -194,7 +195,7 @@ public class SimpleQueryLimitFilter implements Filter {
         }else{
             sameQL.put(keySameQL, System.currentTimeMillis());
         }
-        
+        */
         if (qlCounts.containsKey(ipaddr)) {
             Integer dlc = qlCounts.get(ipaddr);
             if (dlc >= limit) {
