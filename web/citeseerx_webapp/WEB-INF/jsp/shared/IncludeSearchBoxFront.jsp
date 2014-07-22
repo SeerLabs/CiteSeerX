@@ -1,5 +1,5 @@
 <div id="search">
-  <h1><img src="<c:url value='/images/csx_logo_front.png'/>" alt="<fmt:message key="app.name"/>" /></h1>
+  <h1><img src="<c:url value='/images/csx_logo_front.png'/>" alt="<fmt:message key="app.name"/>" height="150" width="142"/></h1>
   <div id="search_box">
     <div id="search_docs">
       <form method="get" action="<c:url value='/search'/>" enctype="application/x-www-form-urlencoded">
