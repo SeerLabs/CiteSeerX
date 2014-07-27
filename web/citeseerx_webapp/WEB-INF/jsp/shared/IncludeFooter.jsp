@@ -1,6 +1,7 @@
   <div id="footer">
   	<div id="sponsors">
-  		<a href="http://www.nsf.gov"><img src="<c:url value='/images/nsf_logo.png' />" alt="The National Science Foundation"/></a>
+  	<a href="http://www.nsf.gov"><img src="<c:url value='/images/nsf_logo.png' />" alt="The National Science Foundation"/></a>
+  	<a href="http://lucene.apache.org/solr/"><img src="<c:url value='/images/solrlogo1.png' />" alt="Apache Solr" height="20%" width="20%"/></a>
   	</div>
     <ul class="links">
       <li><a href="http://csxstatic.ist.psu.edu/about" target="_blank">About <fmt:message key='app.name' /></a></li>
