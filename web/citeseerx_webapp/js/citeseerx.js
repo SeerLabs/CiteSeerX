@@ -19,3 +19,12 @@ $(function() {
     $(this).siblings(".pubabstract").slideToggle("slow");
   });
 });
+
+function toggleCitation(citationNo){
+    if (document.getElementById(citationNo).style.display == "none"){
+        document.getElementById(citationNo).style.display = "block";
+    }
+    else{
+        document.getElementById(citationNo).style.display = "none";
+    }
+}

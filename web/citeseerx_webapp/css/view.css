@@ -228,3 +228,10 @@ table#authInfo {
 	vertical-align: bottom;
 }
 
+.citationContextHeader{
+  font-weight: bold;
+}
+
+.citationContext{
+  font-style: italic;
+}
