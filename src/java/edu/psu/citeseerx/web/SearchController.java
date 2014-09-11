@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URL;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -311,18 +312,14 @@ public class SearchController implements Controller {
     throws SolrException, URISyntaxException, JSONException,
     MalformedURLException, IOException {
         JSONObject output = null;
-        URI uri = null;
 
-        uri = new URI(
-                /*
-                 *  Need to modify the configuration file for this
-                 *  (no need for http: but it needs the //).
-                 *  We use the 3 parameter constructor since
-                 *  solrSelectUrl already contains: the host, port and
-                 *  path. We just need to append the query and pass no
-                 *  fragment
-                 */
-            "http", solrSelectUrl + queryString.toString(), null);
+        URL url = new URL(solrSelectUrl + queryString.toString());
+        URI uri = new URI(
+            url.getProtocol(),
+            url.getAuthority(),
+            url.getPath(),
+            url.getQuery(),
+            url.getRef());
         output =
             SolrSelectUtils.doJSONQuery(uri.toURL().toString());
         return output;
