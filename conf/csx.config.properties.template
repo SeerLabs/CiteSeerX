@@ -55,7 +55,7 @@ jdbc.csxemetadata.password=
 ##
 
 solr.selectUrl=http://localhost:8893/solr/select
-solr.updateUrl=http://localhost:8893/solr/update
+solr.updateUrl=http://localhost:8893/solr
 solr.selectPeopleUrl=http://localhost:8080/solrPeople/select
 solr.updatePeopleUrl=http://localhost:8080/solrPeople/update
 solr.selectTableUrl=http://localhost:8893/solr-table/select

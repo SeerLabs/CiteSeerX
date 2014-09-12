@@ -16,7 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -36,8 +34,15 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import com.google.common.base.CharMatcher;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.common.SolrInputDocument;
 
 import edu.psu.citeseerx.dao2.logic.CSXDAO;
 import edu.psu.citeseerx.dao2.logic.CiteClusterDAO;
@@ -48,7 +53,6 @@ import edu.psu.citeseerx.domain.DomainTransformer;
 import edu.psu.citeseerx.domain.Keyword;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
-import edu.psu.citeseerx.utility.SafeText;
 
 /**
  * Utilities for updating a Solr index to be consistent with the csx_citegraph
@@ -72,23 +76,15 @@ public class IndexUpdateManager {
 
     protected final Log logger = LogFactory.getLog(getClass());
     private boolean redoAll;
-
-    int maxTextLength = 28000;
-
-    /**
-     * Sets the maximum number of characters that will be indexed from
-     * document full text.
-     * @param maxTextLength (default 28000)
-     */
-    public void setMaxTextLength(int maxTextLength) {
-        this.maxTextLength = maxTextLength;
-    } //- setMaxTextLength
-
+    private SolrServer solrServer;
+    private long lastIndexedCluster;
+    private final int indexBatchSize = 1000;
 
     private URL solrUpdateUrl;
 
     public void setSolrURL(String solrUpdateUrl) throws MalformedURLException {
         this.solrUpdateUrl = new URL(solrUpdateUrl);
+        this.solrServer = new HttpSolrServer(solrUpdateUrl);
     } //- setSolrURL
 
 
@@ -114,214 +110,127 @@ public class IndexUpdateManager {
      * records (document files within the CiteSeerX corpus).  This re-indexes
      * everything - not indexUpdateTime is recorded.
      * @throws IOException
+     * @throws SolrServerException
      */
-    public void indexInCollection() throws IOException {
+    public void indexInCollection() throws IOException, SolrServerException {
         int counter = 0;
-        int lastCommit = 0;
-        Long lastID = new Long(0);
-
-        List<ThinDoc> docsAdded = new ArrayList<ThinDoc>();
-
-        boolean finished = false;
+        lastIndexedCluster = 0;
 
         while(true) {
-
-            if (finished) {
-                break;
-            }
             List<ThinDoc> docs = new ArrayList<ThinDoc>();
-            docs = citedao.getClustersInCollection(lastID, 1000);
+            docs = citedao.getClustersInCollection(new Long(lastIndexedCluster), indexBatchSize);
             if (docs.isEmpty()) {
                 break;
             }
 
-            // Create root element
-            StringBuffer xmlBuffer = new StringBuffer();
-            xmlBuffer.append("<add>");
-
-            int nBatch = 0;
-
-            for (ThinDoc doc : docs) {
-
-                Long clusterid = doc.getCluster();
-                lastID = clusterid;
-
-                List<Long> cites = new ArrayList<Long>();
-                List<Long> citedby = new ArrayList<Long>();
-                if (clusterid != null) {
-                    cites = citedao.getCitedClusters(clusterid);
-                    citedby = citedao.getCitingClusters(clusterid);
-                }
-
-                List<String> dois = citedao.getPaperIDs(clusterid);
-                Document fullDoc = null;
-                boolean documentFound = false;
-
-                for (String doi : dois) {
-                    fullDoc = csxdao.getDocumentFromDB(doi, false, false);
-                    if (fullDoc.isPublic()) {
-                        documentFound = true;
-                        break;
-                    }
-                }
-                if (fullDoc != null && documentFound) {
-                    // We index the full document
-                    fullDoc.setClusterID(clusterid);
-                    fullDoc.setNcites(doc.getNcites());
-                    buildDocEntry(fullDoc, cites, citedby, xmlBuffer);
-                } else {
-                    /*
-                     * We don't have the full document or it's not public.
-                     * We index the citation
-                     */
-                    buildDocEntry(doc, cites, citedby, xmlBuffer);
-                }
-                docsAdded.add(doc);
-                if (++nBatch>=200) {
-                    xmlBuffer.append("</add>");
-                    sendPost(xmlBuffer.toString());
-                    // Create the new root element
-                    xmlBuffer = new StringBuffer();
-                    xmlBuffer.append("<add>");
-                    nBatch = 0;
-                }
-                counter++;
-            }
-            if (nBatch>0) {
-                xmlBuffer.append("</add>");
-                sendPost(xmlBuffer.toString());
-            }
-
-            sendCommit();
-            docsAdded.clear();
-            lastCommit = counter;
-            logger.info("commit "+lastCommit);
-            System.out.println("commit "+lastCommit);
+            counter += indexClusters(docs);
+            solrServer.commit();
+            System.out.println(counter + " documents added");
         }
-        sendOptimize();
-    }  //- indexInCollection
 
+        solrServer.optimize();
+    }  //- indexInCollection
 
     /**
      * Indexes all cluster records modified since the last update time.
      * @throws SQLException
      * @throws IOException
+     * @throws SolrServerException
      */
-
-
-    public void indexAll() throws SQLException, IOException {
-
+    public void indexAll() throws SQLException, IOException, SolrServerException {
         int counter = 0;
-        int lastCommit = 0;
-        Long lastID = new Long(0);
-        Date lastUpdate = citedao.getLastIndexTime();
         Date currentTime = new Date(System.currentTimeMillis());
+        Date lastUpdate;
 
-        ArrayList<ThinDoc> docsAdded = new ArrayList<ThinDoc>();
+        if(redoAll) {
+            System.out.println("redo all document indexing...");
+            lastUpdate = new Date((long)0);
+        } else {
+            System.out.println("index new documents...");
+            lastUpdate = citedao.getLastIndexTime();
+        }
+
+        lastIndexedCluster = 0;
 
         while(true) {
-
+            System.out.println("lastIndexedCluster=" + lastIndexedCluster);
             List<ThinDoc> docs = new ArrayList<ThinDoc>();
 
-            if(redoAll == true) {
-                lastUpdate = new  Date((long)0);
-            }
-
-            docs = citedao.getClustersSinceTime(lastUpdate, lastID, 1000);
+            docs = citedao.getClustersSinceTime(lastUpdate, new Long(lastIndexedCluster), indexBatchSize);
             if (docs.isEmpty()) {
                 break;
             }
 
-            // Create root element
-            StringBuffer xmlBuffer = new StringBuffer();
-            xmlBuffer.append("<add>");
-
-            int nBatch = 0;
-
-            for (ThinDoc doc : docs) {
-
-                Long clusterid = doc.getCluster();
-                lastID = clusterid;
-
-                List<Long> cites = new ArrayList<Long>();
-                List<Long> citedby = new ArrayList<Long>();
-
-                if (clusterid != null) {
-                    cites = citedao.getCitedClusters(clusterid);
-                    citedby = citedao.getCitingClusters(clusterid);
-                }
-
-                if (doc.getInCollection()) {
-                    List<String> dois = citedao.getPaperIDs(clusterid);
-                    Document fullDoc = null;
-                    boolean documentFound = false;
-                    for (String doi : dois) {
-                        fullDoc = csxdao.getDocumentFromDB(doi, false, false);
-                        if (fullDoc.isPublic()) {
-                            documentFound = true;
-                            break;
-                        }
-                    }
-                    if (fullDoc != null && documentFound) {
-                        // We index the full document
-                        fullDoc.setClusterID(clusterid);
-                        fullDoc.setNcites(doc.getNcites());
-                        buildDocEntry(fullDoc, cites, citedby, xmlBuffer);
-                    } else {
-                        /*
-                         * The full document it's not public.
-                         * We index the citation
-                         */
-                        buildDocEntry(doc, cites, citedby, xmlBuffer);
-                    }
-
-                } else {
-                    // We don't have the full document. Index the citation
-                    buildDocEntry(doc, cites, citedby, xmlBuffer);
-                }
-                docsAdded.add(doc);
-                if (++nBatch>=200) {
-                    xmlBuffer.append("</add>");
-                    try {
-                        sendPost(xmlBuffer.toString());
-                    } catch (IOException e) {
-                        logger.fatal("An error occurred while posting: " +
-                                xmlBuffer.toString() , e);
-                        throw(e);
-                    }
-                    // Create the new root element
-                    xmlBuffer = new StringBuffer();
-                    xmlBuffer.append("<add>");
-                    nBatch = 0;
-                }
-                counter++;
-
-            }
-            if (nBatch>0) {
-                xmlBuffer.append("</add>");
-                try {
-                    sendPost(xmlBuffer.toString());
-                } catch (IOException e) {
-                    logger.fatal("An error occurred while posting: " +
-                            xmlBuffer.toString() , e);
-                    throw(e);
-                }
-            }
-
-            //sendCommit();
-            docsAdded.clear();
-            lastCommit = counter;
-            logger.info("commit "+lastCommit);
-            System.out.println("commit "+lastCommit);
+            counter += indexClusters(docs);
+            solrServer.commit();
+            System.out.println(counter + " documents added");
         }
 
-        processDeletions(citedao.getDeletions(currentTime));
-        citedao.removeDeletions(currentTime);
+        System.out.println("deletion...");
+        processDeletions(currentTime);
+
         citedao.setLastIndexTime(currentTime);
 
-        sendOptimize();
-
+        System.out.println("optimize...");
+        solrServer.optimize();
     }  //- indexAll
+
+    private int indexClusters(List<ThinDoc> docs) throws IOException, SolrServerException {
+        int counter = 0;
+        ArrayList<SolrInputDocument> solrDocs = new ArrayList<SolrInputDocument>();
+
+        for (ThinDoc doc : docs) {
+            SolrInputDocument solrDoc = buildSolrInputDocumentOfCluster(doc);
+            solrDocs.add(solrDoc);
+            counter++;
+            System.out.print('.');
+        }
+
+        System.out.println();
+        solrServer.add(solrDocs);
+
+        return counter;
+    }
+
+    private SolrInputDocument buildSolrInputDocumentOfCluster(ThinDoc doc) throws IOException {
+        List<Long> cites = new ArrayList<Long>();
+        List<Long> citedby = new ArrayList<Long>();
+        Long clusterid = doc.getCluster();
+
+        lastIndexedCluster = clusterid;
+        cites = citedao.getCitedClusters(clusterid);
+        citedby = citedao.getCitingClusters(clusterid);
+
+        if (doc.getInCollection() == false) {
+            // We don't have the full document. Index the citation
+            return buildSolrInputDocument(doc, cites, citedby);
+        }
+
+        Document fullDoc = findFullDocument(clusterid);
+        if (fullDoc == null) {
+            // The full document it's not public. Index the citation
+            return buildSolrInputDocument(doc, cites, citedby);
+        }
+
+        // Index the full document
+        fullDoc.setClusterID(clusterid);
+        fullDoc.setNcites(doc.getNcites());
+        return buildSolrInputDocument(fullDoc, cites, citedby);
+    }
+
+    private Document findFullDocument(Long clusterid) {
+        List<String> dois = citedao.getPaperIDs(clusterid);
+
+        for (String doi : dois) {
+            Document fullDoc = csxdao.getDocumentFromDB(doi, false, false);
+
+            if (fullDoc != null && fullDoc.isPublic()) {
+                return fullDoc;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Builds a record in Solr update syntax corresponding to the
@@ -329,11 +238,10 @@ public class IndexUpdateManager {
      * @param doc
      * @param cites
      * @param citedby
-     * @param buffer
      * @throws IOException
      */
-    private void buildDocEntry(Document doc, List<Long> cites,
-            List<Long> citedby, StringBuffer buffer) throws IOException {
+    private SolrInputDocument buildSolrInputDocument(Document doc, List<Long> cites,
+            List<Long> citedby) throws IOException {
         String id = doc.getClusterID().toString();
         String doi = doc.getDatum(Document.DOI_KEY, Document.ENCODED);
         String title = doc.getDatum(Document.TITLE_KEY, Document.ENCODED);
@@ -349,7 +257,6 @@ public class IndexUpdateManager {
         String text = getText(doc);
         long vtime = (doc.getVersionTime() != null) ?
                 doc.getVersionTime().getTime() : 0;
-
         int ncites = doc.getNcites();
         int scites = doc.getSelfCites();
 
@@ -372,19 +279,14 @@ public class IndexUpdateManager {
                 authorAffils.add(affil);
             }
         }
+
         List<String> authorNorms = buildAuthorNorms(authorNames);
 
         String url = null;
         DocumentFileInfo finfo = doc.getFileInfo();
         if (finfo != null && finfo.getUrls().size() > 0) {
-            try {
-                url = URLEncoder.encode(finfo.getUrls().get(0),"UTF-8");
-            } catch (UnsupportedEncodingException uee){
-                System.out.println("Failed to encode URL");
-                return;
-            }
+            url = finfo.getUrls().get(0);
         }
-
 
         StringBuffer citesBuffer = new StringBuffer();
         for (Iterator<Long> cids = cites.iterator(); cids.hasNext(); ) {
@@ -402,149 +304,108 @@ public class IndexUpdateManager {
             }
         }
 
-        // Open the doc Element
-        buffer.append("<doc>");
+        SolrInputDocument solrDoc = new SolrInputDocument();
 
-        // Add doc's children
-        addField(buffer, "id", id);
+        solrDoc.addField("id", id);
         if (doi != null) {
-            addField(buffer, "doi", doi);
-            addField(buffer, "incol", "1");
-        }else{
-            addField(buffer, "incol", "0");
+            solrDoc.addField("doi", doi);
+            solrDoc.addField("incol", "1");
+        } else {
+            solrDoc.addField("incol", "0");
         }
 
         if (title != null) {
-            addField(buffer, "title", title);
+            solrDoc.addField("title", title);
         }
 
         if (venue != null) {
-            addField(buffer, "venue", venue);
+            solrDoc.addField("venue", venue);
         }
 
         if (ventype != null) {
-            addField(buffer, "ventype", ventype);
+            solrDoc.addField("ventype", ventype);
         }
 
         if (abs != null) {
-            addField(buffer, "abstract", abs);
+            solrDoc.addField("abstract", abs);
         }
 
         if (pages != null) {
-            addField(buffer, "pages", pages);
+            solrDoc.addField("pages", pages);
         }
 
         if (publ != null) {
-            addField(buffer, "publisher", publ);
+            solrDoc.addField("publisher", publ);
         }
 
         if (vol != null) {
-            addField(buffer, "vol", vol);
+            solrDoc.addField("vol", vol);
         }
 
         if (num != null) {
-            addField(buffer, "num", num);
+            solrDoc.addField("num", num);
         }
 
         if (tech != null) {
-            addField(buffer, "tech", tech);
+            solrDoc.addField("tech", tech);
         }
 
         if (url != null) {
-            addField(buffer, "url", url);
+            solrDoc.addField("url", url);
         }
 
-        addField(buffer, "ncites", Integer.toString(ncites));
-        addField(buffer, "scites", Integer.toString(scites));
+        solrDoc.addField("ncites", Integer.toString(ncites));
+        solrDoc.addField("scites", Integer.toString(scites));
 
         try {
             int year_i = Integer.parseInt(year);
-            addField(buffer, "year", Integer.toString(year_i));
+            solrDoc.addField("year", Integer.toString(year_i));
         } catch (Exception e) { }
 
         for (String keyword : keywords) {
-            addField(buffer, "keyword", keyword);
+            solrDoc.addField("keyword", keyword);
         }
 
         for (String name : authorNames) {
-            addField(buffer, "author", name);
+            solrDoc.addField("author", name);
         }
 
         for (String norm : authorNorms) {
-            addField(buffer, "authorNorms", norm);
+            solrDoc.addField("authorNorms", norm);
         }
 
         for (String affil : authorAffils) {
-            addField(buffer, "affil", affil);
+            solrDoc.addField("affil", affil);
         }
 
         for (Tag tag : doc.getTags()) {
-            addField(buffer, "tag", SafeText.encodeHTMLSpecialChars(
-                    tag.getTag()));
+            solrDoc.addField("tag", tag.getTag());
         }
+
         if (text != null) {
-            addField(buffer, "text", text);
+            solrDoc.addField("text", text);
         }
 
-        addField(buffer, "cites", citesBuffer.toString());
-        addField(buffer, "citedby", citedbyBuffer.toString());
-        addField(buffer, "vtime", Long.toString(vtime));
+        solrDoc.addField("cites", citesBuffer.toString());
+        solrDoc.addField("citedby", citedbyBuffer.toString());
+        solrDoc.addField("vtime", Long.toString(vtime));
 
-        // Close the doc Element.
-        buffer.append("</doc>");
-    } //- buildDocEntry
+        return solrDoc;
+    } //- buildSolrInputDocument
 
     /**
      * Translates the supplied ThinDoc to a Document object and passes
-     * control the the Document-based buildDocEntry method.
+     * control the the Document-based buildSolrInputDocument method.
      * @param thinDoc
      * @param cites
      * @param citedby
-     * @param buffer
      * @throws IOException
      */
-    private void buildDocEntry(ThinDoc thinDoc, List<Long> cites,
-            List<Long> citedby, StringBuffer buffer) throws IOException {
-
+    private SolrInputDocument buildSolrInputDocument(ThinDoc thinDoc, List<Long> cites,
+            List<Long> citedby) throws IOException {
         Document doc = DomainTransformer.toDocument(thinDoc);
-        buildDocEntry(doc, cites, citedby, buffer);
-
-    }  //- buildDocEntry
-
-    /**
-     * Adds a new field to the element.
-     * <b>Note:</b> This method assumes value is XML safe so it does not
-     * contain the 5 XML entities (<, >, ", ', and &). Before adding the value,
-     * invalid XML characters are stripped out.
-     * @param buffer
-     * @param fieldName
-     * @param value
-     */
-    private void addField(StringBuffer buffer, String fieldName, String value) {
-        buffer.append("<field name=\"");
-        buffer.append(fieldName);
-        buffer.append("\">");
-        String newvalue = value;
-        // Get rid of XML bad characters. Note: Don't call SafeText.cleanXML
-        // since all the values received are already encoded. SafeText could
-        // produce things like: &amp;amp; since the text already has &amp;
-
-        /*
-            Added Pradeep Teregowda (26 May 2009), this should clean up
-            some of the mess ?
-        */
-        try {
-            byte[] utf8Bytes = value.getBytes("UTF-8");
-            newvalue = new String(utf8Bytes,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        /*
-            Ends addition (new value continues)
-        */
-        buffer.append(SafeText.stripBadChars(newvalue));
-        buffer.append("</field>");
-    } //- addElement
+        return buildSolrInputDocument(doc, cites, citedby);
+    }  //- buildSolrInputDocument
 
     /**
      * Builds a list of author normalizations to create more flexible
@@ -553,7 +414,6 @@ public class IndexUpdateManager {
      * @return
      */
     private static List<String> buildAuthorNorms(List<String> names) {
-
         HashSet<String> norms = new HashSet<String>();
         for (String name : names) {
             name = name.replaceAll("[^\\p{L} ]", "");
@@ -613,7 +473,6 @@ public class IndexUpdateManager {
         return normList;
     }  //- buildAuthorNorms
 
-
     private static String joinStringArray(String[] strings) {
         StringBuffer buffer = new StringBuffer();
         for (int i=0; i<strings.length; i++) {
@@ -626,7 +485,6 @@ public class IndexUpdateManager {
         return buffer.toString();
     }  //- joinStringArray
 
-
     /**
      * Fetches the full text of a document from the filesystem repository.
      * @param doc
@@ -634,132 +492,37 @@ public class IndexUpdateManager {
      * @throws IOException
      */
     private String getText(Document doc) throws IOException {
-
         String doi = doc.getDatum(Document.DOI_KEY);
         if (doi == null) {
             return null;
         }
-        FileInputStream ins = null;
-        BufferedReader reader = null;
+
+        String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
+        FileInputStream ins;
         try {
-            ins = csxdao.getFileInputStream(doi,
-                    doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY),
-            "body");
-        } catch (IOException e) { }
-        if (ins == null) {
-            ins = csxdao.getFileInputStream(doi,
-                    doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY),
-            "txt");
-        }
-        try {
-            reader = new BufferedReader(new InputStreamReader(ins, "UTF-8"));
-            char[] buffer = new char[maxTextLength];
-            int nread = reader.read(buffer, 0, buffer.length-1);
-            if (nread == buffer.length) {
-                for (int j=buffer.length-1; j>=0; j--) {
-                    if (buffer[j] == ' ') {
-                        break;
-                    } else {
-                        buffer[j] = ' ';
-                    }
-                }
+            try {
+                ins = csxdao.getFileInputStream(doi, repID, "body");
+            } catch (IOException e) {
+                ins = csxdao.getFileInputStream(doi, repID, "txt");
             }
-            String text = new String(buffer);
-            text = SafeText.cleanXML(text);
-
-            return text;
-
         } catch (IOException e) {
-            throw(e);
-        } finally {
-            try { reader.close(); } catch (Exception e) { }
-            try { ins.close(); } catch (Exception e) { }
+            return null;
         }
 
+        String text = CharMatcher.JAVA_ISO_CONTROL.replaceFrom(IOUtils.toString(ins, "UTF-8"), " ");
+        try { ins.close(); } catch (IOException e) { }
+        return text;
     }  //- getText
 
-
-    private void sendCommit() throws IOException {
-        sendPost("<commit waitFlush=\"false\" waitSearcher=\"false\"/>");
-    }
-
-    private void sendOptimize() throws IOException {
-        sendPost("<optimize/>");
-    }
-
-    private void sendPost(String str) throws IOException {
-
-        HttpURLConnection conn =
-            (HttpURLConnection)solrUpdateUrl.openConnection();
-        try {
-            conn.setRequestMethod("POST");
-        } catch (ProtocolException e) { /* unlikely... */ }
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
-        conn.setUseCaches(false);
-        conn.setAllowUserInteraction(false);
-        conn.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
-
-        Writer wr = new OutputStreamWriter(conn.getOutputStream());
-
-        try {
-            pipe(new StringReader(str), wr);
-        } catch (IOException e) {
-            throw(e);
-        } finally {
-            try { wr.close(); } catch (Exception e) { }
+    private void processDeletions(Date currentTime) throws IOException, SolrServerException {
+        List<Long> list = citedao.getDeletions(currentTime);
+        for (Long id : list) {
+            solrServer.deleteById(id.toString());
         }
 
-        Reader reader = new InputStreamReader(conn.getInputStream());
-        try {
-            StringWriter output = new StringWriter();
-            pipe(reader,output);
-            checkExpectedResponse(output.toString());
-        } catch (IOException e) {
-            throw(e);
-        } finally {
-            try { reader.close(); } catch (Exception e) { }
-        }
-
-    }  //- sendPost
-
-
-    private static void pipe(Reader reader, Writer writer) throws IOException {
-        char[] buf = new char[1024];
-        int read = 0;
-        while ((read = reader.read(buf)) >= 0) {
-            writer.write(buf, 0, read);
-        }
-        writer.flush();
-
-    }  //- pipe
-
-
-    private static final String expectedResponse =
-        "<int name=\"status\">0</int>";
-
-    private static void checkExpectedResponse(String response)
-    throws IOException {
-        if (response.indexOf(expectedResponse) < 0) {
-            throw new IOException("Unexpected response from solr: "+response);
-        }
-    }
-
-
-    private void processDeletions(List<Long> list) throws IOException {
-        if (list.isEmpty()) {
-            return;
-        }
-        for (Object o : list) {
-            String del = "<delete><id>";
-            del += (Long)o;
-            del += "</id></delete>";
-            sendPost(del);  // Have to send multiple posts due to Solr bug.
-        }
-        sendCommit();
-
+        solrServer.commit();
+        citedao.removeDeletions(currentTime);
     }  //- processDeletions
-
 
     /*
     public static void main(String[] args) throws Exception {
