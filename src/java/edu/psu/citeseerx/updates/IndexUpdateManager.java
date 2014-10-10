@@ -53,6 +53,7 @@ import edu.psu.citeseerx.domain.DomainTransformer;
 import edu.psu.citeseerx.domain.Keyword;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
+import edu.psu.citeseerx.utility.SafeText;
 
 /**
  * Utilities for updating a Solr index to be consistent with the csx_citegraph
@@ -509,7 +510,9 @@ public class IndexUpdateManager {
             return null;
         }
 
-        String text = CharMatcher.JAVA_ISO_CONTROL.replaceFrom(IOUtils.toString(ins, "UTF-8"), " ");
+        String text = IOUtils.toString(ins, "UTF-8");
+        text = SafeText.stripBadChars(text);
+        text = CharMatcher.JAVA_ISO_CONTROL.replaceFrom(text, " ");
         try { ins.close(); } catch (IOException e) { }
         return text;
     }  //- getText
