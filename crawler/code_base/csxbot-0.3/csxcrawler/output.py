@@ -82,14 +82,12 @@ class CiteSeerWriter(object):
                 d = Document(
                     url=r.url.decode('utf8'),
                     md5=r.md5,
-                    rev_host=r.host.decode('utf8')[::-1], #added by jwu,3/20/2012
                     host=r.host.decode('utf8'),
                     content_sha1=r.content_sha1,                    
                     discover_date=r.crawl_date,
                     update_date=r.crawl_date,
                     parent=p,
-                    state=0,
-                    submission_id=r.batch # added by jwu,3/20/2012
+                    state=0
                     )
                 db_entry_updated = True
                 file_updated = True
