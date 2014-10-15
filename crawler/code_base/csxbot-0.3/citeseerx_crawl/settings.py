@@ -9,11 +9,11 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'mysql'         # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'crawl_db' # Or path to database file if using sqlite3.
-DATABASE_USER = 'username'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'password'         # Not used with sqlite3.
-DATABASE_HOST = 'host'             # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_ENGINE = 'mysql'           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+DATABASE_NAME = 'citeseerx_crawl'             # Or path to database file if using sqlite3.
+DATABASE_USER = 'csx'             # Not used with sqlite3.
+DATABASE_PASSWORD = 'csx'         # Not used with sqlite3.
+DATABASE_HOST = 'breckenridge'             # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
 
 # Local time zone for this installation. Choices can be found here:
@@ -79,4 +79,5 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.databrowse', 
     'citeseerx_crawl.main_crawl',
+    'captcha',
 )

@@ -3,7 +3,9 @@ import datetime
 import gviz_api
 
 from django.http import HttpResponse, Http404
+from captcha.fields import CaptchaField
 from django.shortcuts import render_to_response
+from django import forms 
 
 from citeseerx_crawl.main_crawl.models import ParentUrl, Document, Submission
 
@@ -11,66 +13,76 @@ import crawler.submit
 import crawler.url_normalization
 
 import config
+class CaptchaForm(forms.Form):
+    url = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required url'}))
+    email = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required email'}))
+    captcha = CaptchaField()
 
 def handle_submission(request):
     if request.method == 'GET':
-        data = {}
+        form = CaptchaForm()
+        data = {'form': form}
         return render_to_response('submit.htm', data)
     elif request.method == 'POST':
-        url = request.POST['url']
-        email = request.POST['email']
-        
-        msg = 'Thank you for your submission.'
-        
-        # url normalization
-        norm_url = crawler.url_normalization.get_canonical_url(url)
-        
-        if norm_url == '':
-            data = {                    
-                'err': 'Invalid URL.'
+        form = CaptchaForm(request.POST)
+        if form.is_valid():
+            url = form.cleaned_data['url']
+            email = form.cleaned_data['email']
+
+            msg = 'Thank you for your submission.'
+
+            norm_url = crawler.url_normalization.get_canonical_url(url)
+
+            if norm_url =='':
+                data = {
+                   'err': 'Invalid URL.',
+                   'form': form
+                }
+                return render_to_response('submit.htm', data)
+
+            if len(norm_url) > 255:
+                data = {
+                   'err': 'The length of the URL canno exceed 255.',
+                   'form': form
+                }
+                return render_to_response('submit.htm', data)
+
+            # check if already exist
+            p = None
+            old_sub = None
+            new_sub = None
+
+            try:
+                p = ParentUrl.objects.get(url=norm_url)
+            except ParentUrl.DoesNotExist:
+                try:
+                    old_sub = Submission.objects.get(url=norm_url)
+
+                except Submission.DoesNotExist:
+                    # only new urls will be saved to submission database
+                    new_sub = Submission(url=norm_url, email=email)
+                    new_sub.save()
+
+            # submitted url will be recrawled (even it's old)
+            batch = int(datetime.datetime.now().strftime('%Y%m%d'))
+
+            s = crawler.submit.Submitter(config.amq_host, 61613, config.amq_queue)
+            s.connect_mq()
+            s.submit(url, batch)
+            s.disconnect_mq()
+
+            data = {
+                'parent': p,
+                'old_sub': old_sub,
+                'new_sub': new_sub,
+                'msg': msg,
+                'form': form
             }
-            return render_to_response('submit.htm', data)                                
-        
-        if len(norm_url) > 255:
-            data = {                    
-                'err': 'The lengt of the URL cannot exceed 255.'
-            }
+
             return render_to_response('submit.htm', data)
-        
-        # check if already exist
-        p = None
-        old_sub = None
-        new_sub = None
-        
-        try:
-            p = ParentUrl.objects.get(url=norm_url)            
-            batch = 0 # added by jwu 03/20/2012
-        except ParentUrl.DoesNotExist:
-            try: 
-                old_sub = Submission.objects.get(url=norm_url)                            
-                batch = old_sub.id # added by jwu 03/20/2012
-            except Submission.DoesNotExist:
-                # only new urls will be saved to submission database
-                new_sub = Submission(url=norm_url, email=email)
-                new_sub.save()                        
-                batch = new_sub.id # added by jwu 03/20/2012
-        
-        # submitted url will be recrawled (even it's old)
-        #batch = int(datetime.datetime.now().strftime('%Y%m%d')) # commented out by jwu 03/20/2012
-        
-        s = crawler.submit.Submitter(config.amq_host, 61613, config.amq_queue)
-        s.connect_mq()
-        s.submit(url, batch)
-        s.disconnect_mq()
-        
-        data = {                    
-            'parent': p,
-            'old_sub': old_sub,
-            'new_sub': new_sub, 
-            'msg': msg
-        }        
-        
-        return render_to_response('submit.htm', data)
+        else:
+            data = {'form': form}
+            return render_to_response('submit.htm', data)
         
 def tracking_parent(request, pid):
     try:
