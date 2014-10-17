@@ -24,6 +24,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,7 +46,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrServer;
 import org.apache.solr.common.SolrInputDocument;
 
 import edu.psu.citeseerx.dao2.logic.CSXDAO;
@@ -85,7 +90,7 @@ public class IndexUpdateManager {
 
     public void setSolrURL(String solrUpdateUrl) throws MalformedURLException {
         this.solrUpdateUrl = new URL(solrUpdateUrl);
-        this.solrServer = new HttpSolrServer(solrUpdateUrl);
+        this.solrServer = new ConcurrentUpdateSolrServer(solrUpdateUrl, 1000, 16);
     } //- setSolrURL
 
 
@@ -104,6 +109,12 @@ public class IndexUpdateManager {
 
     public void setredoAll(boolean redoAll) {
         this.redoAll = redoAll;
+    }
+
+    private ExecutorService threadPool;
+
+    {
+        threadPool = Executors.newFixedThreadPool(16);
     }
 
     /**
@@ -129,6 +140,7 @@ public class IndexUpdateManager {
             System.out.println(counter + " documents added");
         }
 
+        threadPool.shutdown();
         solrServer.optimize();
     }  //- indexInCollection
 
@@ -172,33 +184,57 @@ public class IndexUpdateManager {
 
         citedao.setLastIndexTime(currentTime);
 
+        threadPool.shutdown();
         System.out.println("optimize...");
         solrServer.optimize();
     }  //- indexAll
 
     private int indexClusters(List<ThinDoc> docs) throws IOException, SolrServerException {
-        int counter = 0;
-        ArrayList<SolrInputDocument> solrDocs = new ArrayList<SolrInputDocument>();
+        ArrayList<Future> futures = new ArrayList<Future>();
 
         for (ThinDoc doc : docs) {
-            SolrInputDocument solrDoc = buildSolrInputDocumentOfCluster(doc);
-            solrDocs.add(solrDoc);
-            counter++;
-            System.out.print('.');
+            Long clusterid = doc.getCluster();
+
+            lastIndexedCluster = clusterid;
+            futures.add(threadPool.submit(new TaskIndexCluster(doc, clusterid)));
+        }
+
+        try {
+            for (Future f : futures) {
+                f.get();
+                System.out.print('.');
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException e) {
+            Thread.currentThread().interrupt();
         }
 
         System.out.println();
-        solrServer.add(solrDocs);
 
-        return counter;
+        return docs.size();
     }
 
-    private SolrInputDocument buildSolrInputDocumentOfCluster(ThinDoc doc) throws IOException {
+    private class TaskIndexCluster implements Callable<Void> {
+        private final ThinDoc doc;
+        Long clusterid;
+
+        public TaskIndexCluster(ThinDoc doc, Long clusterid) {
+            this.doc = doc;
+            this.clusterid = clusterid;
+        }
+
+        public Void call() throws Exception {
+            SolrInputDocument solrDoc = buildSolrInputDocumentOfCluster(doc, clusterid);
+            solrServer.add(solrDoc);
+            return null;
+        }
+    }
+
+    private SolrInputDocument buildSolrInputDocumentOfCluster(ThinDoc doc, Long clusterid) throws IOException {
         List<Long> cites = new ArrayList<Long>();
         List<Long> citedby = new ArrayList<Long>();
-        Long clusterid = doc.getCluster();
 
-        lastIndexedCluster = clusterid;
         cites = citedao.getCitedClusters(clusterid);
         citedby = citedao.getCitingClusters(clusterid);
 
