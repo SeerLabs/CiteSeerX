@@ -66,10 +66,10 @@ def handle_submission(request):
             # submitted url will be recrawled (even it's old)
             batch = int(datetime.datetime.now().strftime('%Y%m%d'))
 
-            s = crawler.submit.Submitter(config.amq_host, 61613, config.amq_queue)
-            s.connect_mq()
-            s.submit(url, batch)
-            s.disconnect_mq()
+            #s = crawler.submit.Submitter(config.amq_host, 61613, config.amq_queue)
+            #s.connect_mq()
+            #s.submit(url, batch)
+            #s.disconnect_mq()
 
             data = {
                 'parent': p,
