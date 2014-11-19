@@ -39,12 +39,12 @@ foreach my $i (<$importDir/*.txt>) {
     $PSfile=~s/\.txt$/\.PS/;
     $psfile=~s/\.txt$/\.ps/;
 
-    print "creating XML for $i\n";
-    print "docID=$docID\n";
-    print "pdffile=$pdffile\n";
-    print "PDFfile=$PDFfile\n";
-    print "PSfile=$PSfile\n";
-    print "psfile=$psfile\n";
+    #print "creating XML for $i\n";
+    #print "docID=$docID\n";
+    #print "pdffile=$pdffile\n";
+    #print "PDFfile=$PDFfile\n";
+    #print "PSfile=$PSfile\n";
+    #print "psfile=$psfile\n";
 
     my $filePath = "";
     if( -e $pdffile) {
