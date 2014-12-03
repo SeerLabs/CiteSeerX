@@ -29,7 +29,7 @@
         <td><a href="<c:out value='${ dblp }' escapeXml="true"/>" title="DBLP Computer Science Bibliography">DBLP</a></td></tr>
       <tr><td><a href="<c:out value='${ Bing }' escapeXml="true"/>" title="Live Search is evolving">Bing</a></td>
         <td><a href="<c:out value='${ CBS }' escapeXml="true"/>" title="Collection of Computer Science Bibliographies">CSB</a></td>
-        <td><a href="<c:out value='${ Academia }' escapeXml="true"/>" title="Academia">Libra</a></td></tr>
+        <td><a href="<c:out value='${ Academia }' escapeXml="true"/>" title="Microsoft Academia Search">Academia</a></td></tr>
     </table>
   </div>
 </div>
