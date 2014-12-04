@@ -56,6 +56,10 @@
   color: #333;
 }
 
+.pubabstract em {
+  font-weight: bold;
+}
+
 .pubtools {
 	position: relative;
 	width: 100%;
