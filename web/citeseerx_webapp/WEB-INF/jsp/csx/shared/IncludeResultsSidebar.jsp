@@ -22,14 +22,14 @@
     <c:url value='http://dblp.uni-trier.de/search' var='dblp'><c:param name='q' value='${ param.q }'/></c:url>
     <c:url value='http://www.bing.com/search' var="Bing"><c:param name="q" value='${ param.q }'/></c:url>
     <c:url value='http://liinwww.ira.uka.de/csbib/index' var="CBS"><c:param name="query" value='${ param.q }'/><c:param name="submit" value='Search'/></c:url>
-    <c:url value='http://academic.research.microsoft.com/Search.aspx' var="Academia"><c:param name="query" value='${ param.q }'/><c:param name="submit" value='Search'/></c:url>
+    <c:url value='http://academic.research.microsoft.com/Search.aspx' var="Academic"><c:param name="query" value='${ param.q }'/><c:param name="submit" value='Search'/></c:url>
     <table border="0" cellspacing="5" cellpadding="5" >
       <tr><td><a href="<c:out value='${ googleScholar }' escapeXml="true"/>" title="Google Scholar search engine">Scholar</a></td>
         <td><a href="<c:out value='${ yahoo }' escapeXml="true"/>" title="Yahoo Web Search">Yahoo!</a></td>
         <td><a href="<c:out value='${ dblp }' escapeXml="true"/>" title="DBLP Computer Science Bibliography">DBLP</a></td></tr>
       <tr><td><a href="<c:out value='${ Bing }' escapeXml="true"/>" title="Live Search is evolving">Bing</a></td>
         <td><a href="<c:out value='${ CBS }' escapeXml="true"/>" title="Collection of Computer Science Bibliographies">CSB</a></td>
-        <td><a href="<c:out value='${ Academia }' escapeXml="true"/>" title="Microsoft Academia Search">Academia</a></td></tr>
+        <td><a href="<c:out value='${ Academic }' escapeXml="true"/>" title="Microsoft Academic Search">Academic</a></td></tr>
     </table>
   </div>
 </div>
