@@ -57,7 +57,7 @@
                 <c:if test="${ hit.inCollection }">
                   <c:if test="${ ! empty hit['abstract'] }">
                   <div class="pubabstract">
-                    <c:out value="${ hit['abstract']}"/>
+                    <c:out value="${ hit['abstract']}" escapeXml="false"/>
                   </div>
                   </c:if>
                 </c:if>

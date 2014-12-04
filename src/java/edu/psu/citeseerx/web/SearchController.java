@@ -292,8 +292,8 @@ public class SearchController implements Controller {
         }
 	
         // Standard addons
-        queryString.append("&hl=true&wt=json");
-        
+        queryString.append("&hl=true&hl.fragsize=0&wt=json");
+
         // Now, we add specific parameters to each type of search
         if (queryType.equals(DOCUMENT_QUERY)) {
             if ((Boolean)queryParameters.get(INCLUDE_CITATIONS) == false) {
