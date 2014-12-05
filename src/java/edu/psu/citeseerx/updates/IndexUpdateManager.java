@@ -283,17 +283,9 @@ public class IndexUpdateManager {
         String doi = doc.getDatum(Document.DOI_KEY, Document.ENCODED);
         String title = doc.getDatum(Document.TITLE_KEY, Document.ENCODED);
         String venue = doc.getDatum(Document.VENUE_KEY, Document.ENCODED);
-        String ventype = doc.getDatum(Document.VEN_TYPE_KEY, Document.ENCODED);
         String year = doc.getDatum(Document.YEAR_KEY, Document.ENCODED);
         String abs = doc.getDatum(Document.ABSTRACT_KEY, Document.ENCODED);
-        String pages = doc.getDatum(Document.PAGES_KEY, Document.ENCODED);
-        String publ = doc.getDatum(Document.PUBLISHER_KEY, Document.ENCODED);
-        String vol = doc.getDatum(Document.VOL_KEY, Document.ENCODED);
-        String num = doc.getDatum(Document.NUM_KEY, Document.ENCODED);
-        String tech = doc.getDatum(Document.TECH_KEY, Document.ENCODED);
         String text = getText(doc);
-        long vtime = (doc.getVersionTime() != null) ?
-                doc.getVersionTime().getTime() : 0;
         int ncites = doc.getNcites();
         int scites = doc.getSelfCites();
 
@@ -305,25 +297,14 @@ public class IndexUpdateManager {
 
         List<Author> authors = doc.getAuthors();
         ArrayList<String> authorNames = new ArrayList<String>();
-        ArrayList<String> authorAffils = new ArrayList<String>();
         for (Author author  : authors) {
             String name = author.getDatum(Author.NAME_KEY, Author.ENCODED);
-            String affil = author.getDatum(Author.AFFIL_KEY, Author.ENCODED);
             if (name != null) {
                 authorNames.add(name);
-            }
-            if (affil != null) {
-                authorAffils.add(affil);
             }
         }
 
         List<String> authorNorms = buildAuthorNorms(authorNames);
-
-        String url = null;
-        DocumentFileInfo finfo = doc.getFileInfo();
-        if (finfo != null && finfo.getUrls().size() > 0) {
-            url = finfo.getUrls().get(0);
-        }
 
         StringBuffer citesBuffer = new StringBuffer();
         for (Iterator<Long> cids = cites.iterator(); cids.hasNext(); ) {
@@ -359,36 +340,8 @@ public class IndexUpdateManager {
             solrDoc.addField("venue", venue);
         }
 
-        if (ventype != null) {
-            solrDoc.addField("ventype", ventype);
-        }
-
         if (abs != null) {
             solrDoc.addField("abstract", abs);
-        }
-
-        if (pages != null) {
-            solrDoc.addField("pages", pages);
-        }
-
-        if (publ != null) {
-            solrDoc.addField("publisher", publ);
-        }
-
-        if (vol != null) {
-            solrDoc.addField("vol", vol);
-        }
-
-        if (num != null) {
-            solrDoc.addField("num", num);
-        }
-
-        if (tech != null) {
-            solrDoc.addField("tech", tech);
-        }
-
-        if (url != null) {
-            solrDoc.addField("url", url);
         }
 
         solrDoc.addField("ncites", Integer.toString(ncites));
@@ -411,21 +364,12 @@ public class IndexUpdateManager {
             solrDoc.addField("authorNorms", norm);
         }
 
-        for (String affil : authorAffils) {
-            solrDoc.addField("affil", affil);
-        }
-
-        for (Tag tag : doc.getTags()) {
-            solrDoc.addField("tag", tag.getTag());
-        }
-
         if (text != null) {
             solrDoc.addField("text", text);
         }
 
         solrDoc.addField("cites", citesBuffer.toString());
         solrDoc.addField("citedby", citedbyBuffer.toString());
-        solrDoc.addField("vtime", Long.toString(vtime));
 
         return solrDoc;
     } //- buildSolrInputDocument

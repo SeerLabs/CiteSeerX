@@ -127,25 +127,15 @@
    <field name="title" type="text" indexed="true" stored="true" termVectors="true" termOffsets="true" termPositions="true"/>
    <field name="author" type="atext" indexed="true" stored="true" multiValued="true" termVectors="true"/>
    <field name="authorNorms" type="atext" indexed="true" stored="false" multiValued="true"/>
-   <field name="affil" type="text" indexed="true" stored="true" multiValued="true" termVectors="true"/>
    <field name="venue" type="text" indexed="true" stored="true"/>
-   <field name="ventype" type="text" indexed="true" stored="true"/>
    <field name="year" type="tint" indexed="true" stored="true" omitNorms="true"/>
    <field name="abstract" type="text" indexed="true" stored="true" termVectors="true" termOffsets="true" termPositions="true"/>
    <field name="keyword" type="text" indexed="true" stored="true" multiValued="true" termVectors="true"/>
-   <field name="tag" type="text" indexed="true" stored="true" multiValued="true" termVectors="true"/>
-   <field name="pages" type="string" indexed="true" stored="true" required="false" omitNorms="true"/>
-   <field name="publisher" type="string" indexed="true" stored="true" required="false"/>
-   <field name="vol" type="tint" indexed="true" stored="true" required="false"/>
-   <field name="num" type="tint" indexed="true" stored="true" required="false"/>
-   <field name="tech" type="string" indexed="true" stored="true" required="false"/>
    <field name="ncites" type="tint" indexed="true" stored="true" omitNorms="true"/>
    <field name="scites" type="tint" indexed="true" stored="true" omitNorms="true"/>
-   <field name="url" type="string" indexed="false" stored="true"/>
    <field name="text" type="text" indexed="true" stored="false" termVectors="true" termOffsets="true" termPositions="true" />
    <field name="cites" type="tokens" indexed="true" stored="false" omitNorms="true"/>
    <field name="citedby" type="tokens" indexed="true" stored="false" omitNorms="true"/>
-   <field name="vtime" type="tlong" indexed="true" stored="true" omitNorms="true"/>
    <field name="timestamp" type="date" indexed="true" stored="true" default="NOW" multiValued="false"/>
 
    <!--
