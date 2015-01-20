@@ -47,7 +47,7 @@ public class FileDownloadController implements Controller {
     } //- setCSXDAO
     
     // if URI domain name contains any of them, redirect download link to summary page. possible false positives
-    public static final Set<String> redirectDomainSet = new HashSet<String>(Arrays.asList("google","bing","yahoo"));
+    public static final Set<String> redirectDomainSet = new HashSet<String>(Arrays.asList("bing","yahoo"));
 
     public boolean checkURIReferer(String referer) throws URISyntaxException {
         URI uri = new URI(referer);
