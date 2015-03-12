@@ -33,6 +33,7 @@
         <li><a href="<c:url value='/mcsutils/newAccount'/>">Sign up</a></li>
       <% } %>
         <li><a href="<c:url value='/metacart'/>">MetaCart</a></li>
+        <li><a href="<c:url value='http://www.givenow.psu.edu/CiteseerxFund'/>"><font color="#045FB4">Donate</font></a></li>
     </ul>
   <% } %>
 </div>
