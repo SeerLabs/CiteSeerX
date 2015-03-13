@@ -47,6 +47,8 @@
     <sec:intercept-url pattern="/messages/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <sec:intercept-url pattern="/search_plugins/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <sec:intercept-url pattern="/captcha.jpg" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <sec:intercept-url pattern="/sitemap*.xml" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+    <sec:intercept-url pattern="/sitemap_index.xml" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
     <sec:intercept-url pattern="/**" access="IS_AUTHENTICATED_REMEMBERED" requires-channel="http"/>
     
     
