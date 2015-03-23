@@ -842,14 +842,25 @@
     <!-- default values for query parameters can be specified, these
          will be overridden by parameters in the request
       -->
-     <lst name="defaults">
-       <str name="echoParams">explicit</str>
-       <int name="rows">10</int>
-       <str name="df">text</str>
-       <str name="fl">
-         id,doi,incol,title,author,abstract,year,venue,ventype,pages,publisher,vol,num,tech,ncites,scites,url,vtime
-       </str>
-     </lst>
+    <lst name="defaults">
+      <str name="echoParams">explicit</str>
+      <int name="rows">10</int>
+      <str name="start">0</str>
+      <str name="wt">json</str>
+      <str name="df">text</str>
+      <str name="fl">
+        id,doi,incol,title,author,abstract,year,venue,ventype,ncites,scites,url,vtime
+      </str>
+
+      <str name="defType">edismax</str>
+      <!-- parameters for eDisMax -->
+      <float name="tie">0.1</float>
+      <str name="qf">text^1.0 title^4.0 abstract^2.0</str>
+      <str name="pf">text^1.0 title^4.0 abstract^2.0</str>
+      <str name="bf">map(ncites,500,10000,500)</str>
+      <str name="mm">2&lt;-1 4&lt;75%</str>
+      <int name="ps">0</int>
+    </lst>
     <!-- In addition to defaults, "appends" params can be specified
          to identify values which should be appended to the list of
          multi-val params from the query (or the existing "defaults").
@@ -902,29 +913,6 @@
          <str>nameOfCustomComponent2</str>
        </arr>
       -->
-    </requestHandler>
-
-  <requestHandler name="/dismax" class="solr.SearchHandler">
-    <!-- default values for query parameters -->
-    <lst name="defaults">
-      <str name="echoParams">explicit</str>
-      <int name="rows">10</int>
-      <str name="start">0</str>
-      <str name="wt">json</str>
-      <str name="df">text</str>
-      <str name="fl">
-        id,doi,incol,title,author,abstract,year,venue,ventype,ncites,scites,url,vtime
-      </str>
-
-      <str name="defType">edismax</str>
-      <!-- parameters for eDisMax -->
-      <float name="tie">0.1</float>
-      <str name="qf">text^1.0 title^4.0 abstract^2.0</str>
-      <str name="pf">text^1.0 title^4.0 abstract^2.0</str>
-      <str name="bf">map(ncites,500,10000,500)</str>
-      <str name="mm">2&lt;-1 4&lt;75%</str>
-      <int name="ps">0</int>
-    </lst>
   </requestHandler>
 
   <!-- A request handler that returns indented JSON by default -->
