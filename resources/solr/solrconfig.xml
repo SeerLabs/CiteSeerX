@@ -1239,19 +1239,17 @@
        the "master" or a "slave".  If this instance is a "slave" you will 
        also need to fill in the masterUrl to point to a real machine.
     -->
-    <!--
        <lst name="master">
+         <str name="enable">${enable.master:false}</str>
          <str name="replicateAfter">commit</str>
          <str name="replicateAfter">startup</str>
          <str name="confFiles">schema.xml,stopwords.txt</str>
        </lst>
-    -->
-    <!--
        <lst name="slave">
-         <str name="masterUrl">http://your-master-hostname:8983/solr</str>
-         <str name="pollInterval">00:00:60</str>
+         <str name="enable">${enable.slave:false}</str>
+         <str name="masterUrl">http://csxindex03.ist.psu.edu:8080/solr/citeseerx</str>
+         <str name="pollInterval">01:00:00</str>
        </lst>
-    -->
   </requestHandler>
 
   <!-- Search Components
