@@ -6,7 +6,7 @@
   	</div>
     <ul class="links">
       <li><a href="http://csxstatic.ist.psu.edu/about" target="_blank">About <fmt:message key='app.name' /></a></li>
-      <li><a href="http://csxstatic.ist.psu.edu/submit" target="_blank">Submit Documents</a></li>
+      <li><a href="http://csxcrawlweb01.ist.psu.edu/submit_pub/" target="_blank">Submit Documents</a></li>
       <li><a href="http://csxstatic.ist.psu.edu/privacy" target="_blank">Privacy Policy</a></li>
       <li><a href="http://csxstatic.ist.psu.edu/help" target="_blank">Help</a></li>
       <li><a href="http://csxstatic.ist.psu.edu/about/data" target="_blank">Data</a></li>      
