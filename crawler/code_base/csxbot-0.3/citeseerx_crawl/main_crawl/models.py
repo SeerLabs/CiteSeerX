@@ -34,6 +34,7 @@ class Submission(models.Model):
     url = models.CharField(max_length=255, db_index=True)
     email = models.CharField(max_length=255, db_index=True)
     add_time = models.DateTimeField(auto_now_add=True, db_index=True)
+    submitter_name = models.CharField(max_length=255, db_index=True)
     
     def __unicode__(self):
         return 'sub-' + str(self.id)
