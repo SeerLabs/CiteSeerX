@@ -11,11 +11,17 @@ from citeseerx_crawl.main_crawl.models import ParentUrl, Document, Submission
 
 import crawler.submit
 import crawler.url_normalization
-
+import logging
 import config
 class CaptchaForm(forms.Form):
     url = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required url'}))
     email = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required email'}))
+    captcha = CaptchaField()
+
+class CaptchaForm_pub(forms.Form):
+    url = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required url'}))
+    email = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required email'}))
+    submitter_name = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required submitter name'}))
     captcha = CaptchaField()
 
 def handle_submission(request):
@@ -83,6 +89,78 @@ def handle_submission(request):
         else:
             data = {'form': form}
             return render_to_response('submit.htm', data)
+
+# render publisher submission page
+def handle_submission_pub(request):
+    logging.basicConfig(level=logging.DEBUG,\
+                        format="%(asctime)s %(name)s %(levelname)s %(message)s")
+    logfh = logging.FileHandler("/data/tmp/handle_submission_pub.log",mode="a")
+    logging.getLogger("").addHandler(logfh)
+    logger = logging.getLogger("handle_submission_pub")
+    if request.method == 'GET':
+        logger.debug("reqeust method is GET")
+        form = CaptchaForm_pub()
+        data = {'form': form}
+        return render_to_response('submit_pub.htm', data)
+    elif request.method == 'POST':
+        logger.debug("reqeust method is POST")
+        form = CaptchaForm_pub(request.POST)
+        if form.is_valid():
+            url = form.cleaned_data['url']
+            email = form.cleaned_data['email']
+            submitter_name = form.cleaned_data["submitter_name"]
+
+            msg = 'Thank you for your submission.'
+
+            norm_url = crawler.url_normalization.get_canonical_url(url)
+
+            if norm_url =='':
+                data = {
+                   'err': 'Invalid URL.',
+                   'form': form
+                }
+                return render_to_response('submit_pub.htm', data)
+
+            if len(norm_url) > 255:
+                data = {
+                   'err': 'The length of the URL canno exceed 255.',
+                   'form': form
+                }
+                return render_to_response('submit_pub.htm', data)
+
+            # check if already exist
+            p = None
+            old_sub = None
+            new_sub = None
+
+            try:
+                p = ParentUrl.objects.get(url=norm_url)
+                logger.debug("URL found in submission_pub table")
+            except ParentUrl.DoesNotExist:
+                try:
+                    old_sub = Submission.objects.get(url=norm_url)
+                    
+                except Submission.DoesNotExist:
+                    logger.debug("URL inserted into submission_pub table")
+                    # only new urls will be saved to submission_pub database
+                    new_sub = Submission(url=norm_url, email=email, submitter_name=submitter_name)
+                    new_sub.save()
+
+            # submitted url will be recrawled (even it's old)
+            batch = int(datetime.datetime.now().strftime('%Y%m%d'))
+
+            data = {
+                'parent': p,
+                'old_sub': old_sub,
+                'new_sub': new_sub,
+                'msg': msg,
+                'form': form
+            }
+
+            return render_to_response('submit_pub.htm', data)
+        else:
+            data = {'form': form}
+            return render_to_response('submit_pub.htm', data)
         
 def tracking_parent(request, pid):
     try:

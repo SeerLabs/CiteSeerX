@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     
     # submission
     (r'^submit/','citeseerx_crawl.main_crawl.submission.handle_submission'),        
+    (r'^submit_pub/','citeseerx_crawl.main_crawl.submission.handle_submission_pub'),        
     (r'^captcha/',include('captcha.urls')),        
     (r'^tracking/parent/(?P<pid>\d+)/$','citeseerx_crawl.main_crawl.submission.tracking_parent'),
     (r'^tracking/sub/(?P<sid>\d+)/$','citeseerx_crawl.main_crawl.submission.tracking_sub'),        
