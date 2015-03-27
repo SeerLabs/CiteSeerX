@@ -21,7 +21,7 @@ class CaptchaForm(forms.Form):
 class CaptchaForm_pub(forms.Form):
     url = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required url'}))
     email = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required email'}))
-    publisher_name = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required publisher name'}))
+    submitter_name = forms.CharField(widget=forms.TextInput(attrs={'size': 80, 'class': 'text required submitter name'}))
     captcha = CaptchaField()
 
 def handle_submission(request):
@@ -108,7 +108,7 @@ def handle_submission_pub(request):
         if form.is_valid():
             url = form.cleaned_data['url']
             email = form.cleaned_data['email']
-            publisher_name = form.cleaned_data["publisher_name"]
+            submitter_name = form.cleaned_data["submitter_name"]
 
             msg = 'Thank you for your submission.'
 
@@ -143,7 +143,7 @@ def handle_submission_pub(request):
                 except Submission.DoesNotExist:
                     logger.debug("URL inserted into submission_pub table")
                     # only new urls will be saved to submission_pub database
-                    new_sub = Submission(url=norm_url, email=email, submitter_name=publisher_name)
+                    new_sub = Submission(url=norm_url, email=email, submitter_name=submitter_name)
                     new_sub.save()
 
             # submitted url will be recrawled (even it's old)
