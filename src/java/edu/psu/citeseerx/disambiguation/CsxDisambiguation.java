@@ -43,7 +43,7 @@ import edu.psu.citeseerx.disambiguation.dao.CsxAuthor;
 
 /**
  * CsxDisambiguation
- *
+ * 
  * @author Puck Treeratpituk
  * @version $Rev$ $Date$
  */
@@ -61,23 +61,23 @@ public class CsxDisambiguation {
 			}
 		}
 	}
-	public static void createBlocks(ListableBeanFactory factory)
+	public static void createBlocks(ListableBeanFactory factory) 
 	throws Exception {
 		String dirpath = "data/csauthors/blocks";
 
 		DataSource dataSource = (DataSource) factory.getBean("csxDataSource");
-
+		
 		PreparedStatement st = dataSource.getConnection()
-			.prepareStatement("SELECT * FROM authors",
+			.prepareStatement("SELECT * FROM authors", 
 							  ResultSet.TYPE_FORWARD_ONLY,
 							  ResultSet.CONCUR_READ_ONLY);
 		st.setFetchSize(Integer.MIN_VALUE);
 		ResultSet rs = st.executeQuery();
-
+		
 		initDirectories(dirpath);
 
-		CsxAuthorFilter filter =
-		    (CsxAuthorFilter) factory.getBean("csxAuthorFilter");
+		CsxAuthorFilter filter = 
+		    (CsxAuthorFilter) factory.getBean("csxAuthorFilter"); 
 		//new CsxAuthorFilter("data/csauthors/name_stopwords.txt");
 		BufferedWriter skip    = new BufferedWriter(new FileWriter("skip.txt"));
 
@@ -88,25 +88,25 @@ public class CsxDisambiguation {
 			if ((count % 10000) == 0)
 				System.out.println("#Auth:" + count);
 			String rsname = rs.getString("name");
-			if (!filter.isStopword(rsname) && !filter.isInstitute(rsname) &&
+			if (!filter.isStopword(rsname) && !filter.isInstitute(rsname) && 
 				!filter.isPosition(rsname)) {
-
-				CsxAuthor auth = new CsxAuthor(rs);
+				
+				CsxAuthor auth = new CsxAuthor(rs);			
 				String lname = auth.getLastName();
 				String fname = auth.getFirstName();
-
+				
 				if ((lname != null) && (fname != null)) {
 					if ((lname.charAt(0) >= 'A') && (lname.charAt(0) <= 'Z') &&
 						(fname.charAt(0) >= 'A') && (fname.charAt(0) <= 'Z') &&
 						!((fname.length() == 1) && (lname.length() == 1)) &&
 						!(lname.matches(".*/.*"))) {
-
+						
 						String l_init = lname.substring(0,1).toUpperCase();
 						String f_init = fname.substring(0,1).toUpperCase();
-						String key = l_init + f_init + "/" +
-						    lname.toLowerCase() + "_" + f_init.toLowerCase() +
+						String key = l_init + f_init + "/" + 
+						    lname.toLowerCase() + "_" + f_init.toLowerCase() + 
 						    ".txt";
-
+						
 						List<String> list;
 						if (!blocks.containsKey(key)) {
 							list = new ArrayList<String>();
@@ -138,11 +138,11 @@ public class CsxDisambiguation {
 			}
 		}
 	}
-
+	
 	public static void disambiguate(ListableBeanFactory factory, String infile,
 	        String outfile) throws Exception {
-
-		CsxAuthorBlock block =
+		
+		CsxAuthorBlock block = 
 		    (CsxAuthorBlock) factory.getBean("csxAuthorBlock");
 		block.loadAuthors(infile);
 
@@ -153,13 +153,13 @@ public class CsxDisambiguation {
 		dbscan.printResults(outfile);
 	}
 
-	public static void disambiguateFile(ListableBeanFactory factory,
+	public static void disambiguateFile(ListableBeanFactory factory, 
 	        String infile) throws Exception {
 		//CsxAuthorBlock block = new CsxAuthorBlock(conn, rconn, "jian_huang2.block");
 		//CsxAuthorBlock block = new CsxAuthorBlock(conn, rconn, "data/csauthors/blocks/MP/mitra_p.txt");
 		//CsxAuthorBlock block = new CsxAuthorBlock(conn, rconn, "data/csauthors/blocks/BK/borner_k.txt");
 
-		CsxAuthorBlock block =
+		CsxAuthorBlock block = 
 		    (CsxAuthorBlock) factory.getBean("csxAuthorBlock");
 		block.loadAuthors(infile);
 
@@ -169,18 +169,18 @@ public class CsxDisambiguation {
 		dbscan.run();
 		dbscan.printResults();
 	}
-
-	public static void disambiguateDirectory(ListableBeanFactory factory,
+	
+	public static void disambiguateDirectory(ListableBeanFactory factory, 
 	        String indir, String outdir) throws Exception {
-
+				
 		File dir = new File(indir);
-		String[] files = dir.list();
+		String[] files = dir.list(); 
 		Arrays.sort(files);
 		for (String file : files) {
 			String infile  = indir + "/" + file;
 			String outfile = outdir + "/" + file.replace(".txt",".out");
 			System.out.println("> " + file);
-			disambiguate(factory, infile, outfile);
+			disambiguate(factory, infile, outfile);				
 		}
 	}
 
@@ -195,7 +195,7 @@ public class CsxDisambiguation {
 		Options options = new Options();
 
 		options.addOption("help", false, "print help message");
-
+		
 		Option cmd      = OptionBuilder.withArgName("cmd")
 		    .hasArg()
             .withDescription("init_dirs, init_blocks, dbscan")
@@ -221,10 +221,10 @@ public class CsxDisambiguation {
 
 	public static boolean validOptions(CommandLine line, Options options) {
 		if (!line.hasOption("cmd")) {
-			System.out.println("\nERROR: Please specify one command");
+			System.out.println("\nERROR: Please specify one command");	
 			return false;
 		}
-
+		
 		if (!(line.hasOption("infile") ^ line.hasOption("indir"))) {
 			System.out.println("\nERROR: Please specify either -infile or -indir, but not both");
 			return false;
@@ -233,7 +233,7 @@ public class CsxDisambiguation {
 	}
 
 	public static void main(String[] args) {
-		Date start = new Date();
+		Date start = new Date();			
 		System.out.println("START:" + start);
 		try {
             CommandLineParser cmdparser = new GnuParser();
@@ -249,7 +249,7 @@ public class CsxDisambiguation {
 			if (cmd.equals("init_dirs")) {
 				// 1) init directories
 				//initDirectories("data/csauthors/blocks");
-				//initDirectories("data/csauthors/output");
+				//initDirectories("data/csauthors/output");				
 			}
 			else if (cmd.equals("init_blocks")) {
 				// 2) create blocks
@@ -266,10 +266,10 @@ public class CsxDisambiguation {
 				}*/
 		} catch (Exception ex) {
 			ex.printStackTrace();
-            Date now = new Date();
+            Date now = new Date();			
 			System.out.println("CRASH:" + now);
 		}
-		Date end = new Date();
+		Date end = new Date();			
 		System.out.println("END:" + end);
 		System.out.println("TIME:" + (end.getTime()-start.getTime()));
 	}
