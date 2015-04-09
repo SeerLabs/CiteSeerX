@@ -30,11 +30,12 @@ def ndocs_rank(request, group_by):
     accu_num = 0  
     for x in items:
         i += 1        
-        accu_num += x.ndocs
+        accu_num += x.ndocs # accumulated document number
         
-        x.order = i
-        x.accu_num = accu_num
-        x.accu_per = float(accu_num) / float(total_docs)
+        x.order = i           # small number - higher order
+        x.citespdoc = float(x.ncites) / float(x.ndocs) # number of citations per document 
+        x.accu_num = accu_num # accumulated document number
+        x.accu_per = float(accu_num) / float(total_docs)# accumulated percentage
         
         if group_by == 'domain':
             x.name = x.domain
@@ -46,6 +47,7 @@ def ndocs_rank(request, group_by):
         node.setAttribute('rank', str(i))
         node.setAttribute('ndocs', str(x.ndocs))
         node.setAttribute('ncites', str(x.ncites))
+        node.setAttribute('citespdoc', str(x.citespdoc))#jwu
         node.setAttribute('accu_num', str(x.accu_num))
         node.setAttribute('accu_per', str(x.accu_per))
         

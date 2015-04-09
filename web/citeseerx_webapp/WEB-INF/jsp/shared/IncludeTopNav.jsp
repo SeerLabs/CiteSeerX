@@ -9,13 +9,13 @@
       <li class="active"><a href="#search_docs">Documents</a></li>
       <li><a href="/#search_auth">Authors</a></li>
       <li><a href="/#search_tables">Tables</a></li>
-      <li><a href="/#search_algorithms">Algorithms</a></li>
+      <%-- <li><a href="/#search_algorithms">Algorithms</a></li> --%>
     </c:if>
     <c:if test="${ param.q != null }">
       <li<c:if test="${ param.t == 'doc'    }"> class="active" </c:if>><a class="slink" href="<c:url value='/search'/>?q=<c:out value='${param.q}' />&t=doc&sort=rlv">Documents</a></li>
       <li<c:if test="${ param.t == 'auth'  }"> class="active" </c:if>><a class="slink" href="<c:url value='/search'/>?q=<c:out value='${param.q}' />&t=auth&uauth=1&sort=ndocs">Authors</a></li>
       <li<c:if test="${ param.t == 'table' }"> class="active" </c:if>><a class="slink" href="<c:url value='/search'/>?q=<c:out value='${param.q}' />&t=table&sort=rlv">Tables</a></li>
-      <li<c:if test="${ param.t == 'algorithm' }"> class="active" </c:if>><a class="slink" href="<c:url value='/search'/>?q=<c:out value='${param.q}' />&t=algorithm&sort=rlv">Algorithms</a></li>
+      <%-- <li<c:if test="${ param.t == 'algorithm' }"> class="active" </c:if>><a class="slink" href="<c:url value='/search'/>?q=<c:out value='${param.q}' />&t=algorithm&sort=rlv">Algorithms</a></li> --%>
     </c:if>
   </ul>
   
@@ -33,6 +33,7 @@
         <li><a href="<c:url value='/mcsutils/newAccount'/>">Sign up</a></li>
       <% } %>
         <li><a href="<c:url value='/metacart'/>">MetaCart</a></li>
+        <li><a href="<c:url value='http://www.givenow.psu.edu/CiteseerxFund'/>"><font color="#045FB4">Donate</font></a></li>
     </ul>
   <% } %>
 </div>

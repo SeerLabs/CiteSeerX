@@ -9,7 +9,7 @@
 
 <p>Place your mouse over the orange arrows  to view the details for each CiteSeer feature.</p>
 <ul>
-  <li><strong><a href="http://Citeseer<sup>x</sup>.ist.psu.edu/viewdoc/summary?doi=10.1.1.17.1607">Autonomous Citation Indexing (ACI)</a></strong> - CiteSeer uses ACI to automatically create a citation index that can be used for literature search and evaluation. Compared to traditional citation indices, ACI provides improvements in cost, availability, comprehensiveness, efficiency, and timeliness.</li>
+  <li><strong><a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.17.1607">Autonomous Citation Indexing (ACI)</a></strong> - CiteSeer uses ACI to automatically create a citation index that can be used for literature search and evaluation. Compared to traditional citation indices, ACI provides improvements in cost, availability, comprehensiveness, efficiency, and timeliness.</li>
   <li><strong>Citation Statistics</strong> - CiteSeer computes citation statistics and related documents for all articles cited in the database, not just the indexed articles.</li>
   <li><strong>Reference Linking</strong> - As with many online publishers, CiteSeer allows browsing the database using citation links.  However, CiteSeer performs this automatically.</li>
   <li><strong>Citation context</strong> - CiteSeer can show the context of citations to a given paper, allowing a researcher to quickly and easily see what other researchers have to say about an article of interest.</li>

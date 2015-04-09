@@ -28,6 +28,11 @@ import javax.servlet.http.*;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Process a request to download a file, sending the file to the user. If for

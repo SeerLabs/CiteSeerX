@@ -102,22 +102,21 @@
 
   <fields>
 
-    <field name="aid"         type="string" indexed="true"   stored="true"
+    <field name="id"         type="sint" indexed="true"   stored="true" 
            required="false"   omitNorms="true"/>
-    <field name="canname"     type="atext"  indexed="true"   stored="true"
-           termVectors="true"/>
-    <field name="varname"     type="atext"  indexed="true"   stored="true"
-           multiValued="true" termVectors="true"/>
+    <field name="canname"     type="atext"  indexed="true"   stored="true" termVectors="true"/>
+    <field name="ndocs"       type="sint"   indexed="true"   stored="true" omitNorms="true"/>
+    <field name="ncites"      type="sint"   indexed="true"   stored="true" omitNorms="true"/>
+
     <field name="email"      type="text"   indexed="true"   stored="true"
            multiValued="true" termVectors="false"/>
     <field name="affil"      type="text"   indexed="true"   stored="true"
            multiValued="true" termVectors="true"/>
-    <field name="addr"        type="text"   indexed="true"   stored="true"
+    <field name="address"        type="text"   indexed="true"   stored="true"
            multiValued="true" termVectors="true"/>
-    <field name="ndocs"       type="sint"   indexed="true"   stored="true"
-           omitNorms="true"/>
-    <field name="docid"       type="string" indexed="true"   stored="true"
-           multiValued="true" required="false" omitNorms="true"/>
+
+    <field name="varname"     type="atext"  indexed="true"   stored="true"
+           multiValued="true" termVectors="true"/>
 
     <dynamicField name="*_i"  type="sint"    indexed="true"  stored="true"/>
     <dynamicField name="*_s"  type="string"  indexed="true"  stored="true"/>
@@ -134,7 +133,7 @@
 
   </fields>
 
-  <uniqueKey>aid</uniqueKey>
+  <uniqueKey>id</uniqueKey>
 
   <defaultSearchField>varname</defaultSearchField>
 

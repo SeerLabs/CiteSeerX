@@ -248,8 +248,17 @@ public class ViewDocController implements Controller {
 			}
 			Collections.sort(citations, new CitationComparator());
 		}
+                List<String> citationContexts = new ArrayList<String>();
+                for (ThinDoc citation : citations){
+                    String context = citedao.getContext(clusterID, citation.getCluster());
+                    if (context != null){
+                        citationContexts.add(context);
+                    } else{
+                        citationContexts.add("");
+                    }
+                }
 
-		String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
+                String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
 
 		// Obtain citation chart data.
 		String chartData = csxdao.getCiteChartData(doi);
@@ -295,6 +304,7 @@ public class ViewDocController implements Controller {
 		model.put("selfCites", doc.getSelfCites());
 		model.put("tags", tags);
 		model.put("citations", citations);
+                model.put("citationContexts", citationContexts);
 		model.put("elinks", eLinks);
 		HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
         fileTypesQuery.put(Document.DOI_KEY, doi);
