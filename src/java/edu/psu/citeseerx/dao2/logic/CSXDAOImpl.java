@@ -15,8 +15,6 @@ package edu.psu.citeseerx.dao2.logic;
 import org.springframework.dao.DataAccessException;
 
 
-
-
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.util.Date;
@@ -117,7 +115,7 @@ public class CSXDAOImpl implements CSXDAO {
     public void setUniqueAuthDAO(UniqueAuthorDAO uauthDAO) {
         this.uauthDAO = uauthDAO;
     }
-
+    
     public void setUniqueAuthVersionDAO(UniqueAuthorVersionDAO uauthVersionDAO) {
         this.uauthVersionDAO = uauthVersionDAO;
     }
@@ -157,11 +155,11 @@ public class CSXDAOImpl implements CSXDAO {
     public void setTagDAO(TagDAO tagDAO) {
         this.tagDAO = tagDAO;
     } //- setTagDAO
-
+    
     public void setVersionDAO(VersionDAO versionDAO) {
         this.versionDAO = versionDAO;
     } //- setVersionDAO
-
+    
     public void setExternalLinkDAO(ExternalLinkDAO externalLinkDAO) {
         this.externalLinkDAO = externalLinkDAO;
     } //- setExternalLinkDAO
@@ -169,22 +167,21 @@ public class CSXDAOImpl implements CSXDAO {
     public void setTableDAO(TableDAO tableDAO) {
         this.tableDAO = tableDAO;
     } //- setTableDAO
-
+    
     public void setGeneralStatistics(GeneralStatistics generalStatistics) {
     	this.generalStatistics = generalStatistics;
     } // - setGeneralStatisticsDAO
-
+    
     public void setAlgorithmDAO(AlgorithmDAO algorithmDAO) {
         this.algorithmDAO = algorithmDAO;
     } //- setAlgorithmDAO
-
+    
     public void setRedirectPDFDAO(RedirectPDFDAO redirectPDFDAO) {
         this.redirectPDFDAO = redirectPDFDAO;
     } // - setRedirectPDFDAO
 
-
     ///////////////////////////////////////////////////////
-    //  CSX Operations
+    //  CSX Operations                               
     ///////////////////////////////////////////////////////
 
     /* (non-Javadoc)
@@ -203,9 +200,9 @@ public class CSXDAOImpl implements CSXDAO {
     public void importDocument(Document doc)
     throws DataAccessException, IOException {
         String doi = doc.getDatum(Document.DOI_KEY);
-
+        
         docDAO.insertDocumentSrc(doc);
-
+        
         DocumentFileInfo finfo = doc.getFileInfo();
         for (String url : finfo.getUrls()) {
             hubDAO.insertUrl(doi, url);
@@ -219,7 +216,7 @@ public class CSXDAOImpl implements CSXDAO {
             sum.setDOI(doi);
             fileDAO.insertChecksum(sum);
         }
-
+        
         insertAuthors(doi, doc.getAuthors());
 
         insertCitations(doi, doc.getCitations());
@@ -227,7 +224,7 @@ public class CSXDAOImpl implements CSXDAO {
         insertAcknowledgments(doi, doc.getAcknowledgments());
 
         insertKeywords(doi, doc.getKeywords());
-
+            
         for (Tag tag : doc.getTags()) {
             tagDAO.addTag(doi, tag.getTag());
         }
@@ -245,7 +242,7 @@ public class CSXDAOImpl implements CSXDAO {
     public Document getDocumentFromDB(String doi, boolean getCitations,
             boolean getContexts, boolean getSource, boolean getAcks,
             boolean getKeywords, boolean getTags) throws DataAccessException {
-
+        
         Document doc = docDAO.getDocument(doi, getSource);
 
         if (doc == null) {
@@ -257,7 +254,7 @@ public class CSXDAOImpl implements CSXDAO {
         for (Object o : urls) {
             finfo.addUrl((String)o);
         }
-
+        
         List<Author> authors = authDAO.getDocAuthors(doi, getSource);
         for (Author author : authors) {
                 doc.addAuthor(author);
@@ -271,7 +268,7 @@ public class CSXDAOImpl implements CSXDAO {
             }
         }
         if (getAcks) {
-            List<Acknowledgment> acks =
+            List<Acknowledgment> acks = 
                 ackDAO.getAcknowledgments(doi, getContexts, getSource);
             for (Acknowledgment ack : acks) {
                 doc.addAcknowledgment(ack);
@@ -289,7 +286,7 @@ public class CSXDAOImpl implements CSXDAO {
         }
 
         return doc;
-
+        
     }  //- getDocumentFromDB
 
     /*
@@ -299,7 +296,7 @@ public class CSXDAOImpl implements CSXDAO {
     @Override
     public Document getDocumentFromDB(String doi, boolean getContexts,
             boolean getSource) throws DataAccessException {
-
+        
         return getDocumentFromDB(doi, true, getContexts, getSource,
                 true, true, true);
 
@@ -340,7 +337,7 @@ public class CSXDAOImpl implements CSXDAO {
     throws DataAccessException, IOException {
         updateDocumentData(doc, true, true, true, true);
     } //- updateDocumentData
-
+    
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.logic.CSXOperations#updateDocumentData(edu.psu.citeseerx.domain.Document, boolean, boolean, boolean, boolean)
@@ -350,7 +347,7 @@ public class CSXDAOImpl implements CSXDAO {
             boolean updateCitations,
             boolean updateAcknowledgements, boolean updateKeywords)
     throws DataAccessException, IOException {
-
+        
         String doi = doc.getDatum(Document.DOI_KEY);
 
         docDAO.updateDocument(doc);
@@ -370,18 +367,18 @@ public class CSXDAOImpl implements CSXDAO {
             ackDAO.deleteAcknowledgments(doi);
             insertAcknowledgments(doi, doc.getAcknowledgments());
         }
-
+        
         if (updateKeywords) {
             keywordDAO.deleteKeywords(doi);
             insertKeywords(doi, doc.getKeywords());
         }
 
     }  //- updateDocumentData
-
-
+    
+    
 
     ///////////////////////////////////////////////////////
-    //  Acknowledgment DAO
+    //  Acknowledgment DAO                               
     ///////////////////////////////////////////////////////
 
     /* (non-Javadoc)
