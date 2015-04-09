@@ -74,10 +74,10 @@ import edu.psu.citeseerx.utility.SafeText;
 public class IndexUpdateManager {
 
     protected final Log logger = LogFactory.getLog(getClass());
-    private boolean redoAll;
+    private boolean redoAll;    
 
     int maxTextLength = 28000;
-
+    
     /**
      * Sets the maximum number of characters that will be indexed from
      * document full text.
@@ -86,41 +86,41 @@ public class IndexUpdateManager {
     public void setMaxTextLength(int maxTextLength) {
         this.maxTextLength = maxTextLength;
     } //- setMaxTextLength
-
-
+    
+    
     private URL solrUpdateUrl;
-
+    
     public void setSolrURL(String solrUpdateUrl) throws MalformedURLException {
         this.solrUpdateUrl = new URL(solrUpdateUrl);
     } //- setSolrURL
-
-
+    
+    
     private CSXDAO csxdao;
     private RepositoryService repositoryService;
-
+    
     public void setCSXDAO(CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
-
-
+    
+    
     private CiteClusterDAO citedao;
-
+    
     public RepositoryService getRepositoryService() {
-		return repositoryService;
-	}
-
-	public void setRepositoryService(RepositoryService repositoryService) {
-		this.repositoryService = repositoryService;
-	}
-
-	public void setCiteClusterDAO(CiteClusterDAO citedao) {
-        this.citedao = citedao;
-    } //- setCiteClusterDAO
-
-    public void setredoAll(boolean redoAll) {
-		this.redoAll = redoAll;
+        return repositoryService;
+    }
+ 
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
     }
 
+    public void setCiteClusterDAO(CiteClusterDAO citedao) {
+        this.citedao = citedao;
+    } //- setCiteClusterDAO
+    
+    public void setredoAll(boolean redoAll) {
+		this.redoAll = redoAll;
+    }   
+ 
     /**
      * Updates the index only for records that have corresponding document
      * records (document files within the CiteSeerX corpus).  This re-indexes
@@ -131,13 +131,13 @@ public class IndexUpdateManager {
         int counter = 0;
         int lastCommit = 0;
         Long lastID = new Long(0);
-
+        
         List<ThinDoc> docsAdded = new ArrayList<ThinDoc>();
-
+        
         boolean finished = false;
-
+        
         while(true) {
-
+            
             if (finished) {
                 break;
             }
@@ -152,14 +152,14 @@ public class IndexUpdateManager {
             xmlBuffer.append("<add>");
 
             int nBatch = 0;
-
+            
             for (ThinDoc doc : docs) {
 
                 Long clusterid = doc.getCluster();
                 lastID = clusterid;
-
+                
                 List<Long> cites = new ArrayList<Long>();
-                List<Long> citedby = new ArrayList<Long>();
+                List<Long> citedby = new ArrayList<Long>();                
                 if (clusterid != null) {
                     cites = citedao.getCitedClusters(clusterid);
                     citedby = citedao.getCitingClusters(clusterid);
@@ -168,7 +168,7 @@ public class IndexUpdateManager {
                 List<String> dois = citedao.getPaperIDs(clusterid);
                 Document fullDoc = null;
                 boolean documentFound = false;
-
+                
                 for (String doi : dois) {
                     fullDoc = csxdao.getDocumentFromDB(doi, false, false);
                     if (fullDoc.isPublic()) {
@@ -198,7 +198,7 @@ public class IndexUpdateManager {
                     nBatch = 0;
                 }
                 counter++;
-
+                
             }
             if (nBatch>0) {
                 xmlBuffer.append("</add>");
@@ -212,10 +212,10 @@ public class IndexUpdateManager {
             System.out.println("commit "+lastCommit);
         }
         sendOptimize();
-
+        
     }  //- indexInCollection
-
-
+    
+    
     /**
      * Indexes all cluster records modified since the last update time.
      * @throws SQLException
@@ -224,15 +224,15 @@ public class IndexUpdateManager {
 
 
     public void indexAll() throws SQLException, IOException {
-
+        
         int counter = 0;
         int lastCommit = 0;
         Long lastID = new Long(0);
         Date lastUpdate = citedao.getLastIndexTime();
         Date currentTime = new Date(System.currentTimeMillis());
-
+        
         ArrayList<ThinDoc> docsAdded = new ArrayList<ThinDoc>();
-
+        
         while(true) {
 
             List<ThinDoc> docs = new ArrayList<ThinDoc>();
@@ -240,7 +240,7 @@ public class IndexUpdateManager {
     	    if(redoAll == true) {
     	        lastUpdate = new  Date((long)0);
     	    }
-
+	
             docs = citedao.getClustersSinceTime(lastUpdate, lastID, 1000);
             if (docs.isEmpty()) {
                 break;
@@ -251,12 +251,12 @@ public class IndexUpdateManager {
             xmlBuffer.append("<add>");
 
             int nBatch = 0;
-
+            
             for (ThinDoc doc : docs) {
 
                 Long clusterid = doc.getCluster();
                 lastID = clusterid;
-
+                
                 List<Long> cites = new ArrayList<Long>();
                 List<Long> citedby = new ArrayList<Long>();
 
@@ -288,7 +288,7 @@ public class IndexUpdateManager {
                          */
                         buildDocEntry(doc, cites, citedby, xmlBuffer);
                     }
-
+                    
                 } else {
                     // We don't have the full document. Index the citation
                     buildDocEntry(doc, cites, citedby, xmlBuffer);
@@ -309,7 +309,7 @@ public class IndexUpdateManager {
                     nBatch = 0;
                 }
                 counter++;
-
+                
             }
             if (nBatch>0) {
                 xmlBuffer.append("</add>");
@@ -328,15 +328,15 @@ public class IndexUpdateManager {
             logger.info("commit "+lastCommit);
             System.out.println("commit "+lastCommit);
         }
-
+        
         processDeletions(citedao.getDeletions(currentTime));
         citedao.removeDeletions(currentTime);
         citedao.setLastIndexTime(currentTime);
-
+        
         sendOptimize();
-
+                
     }  //- indexAll
-
+    
     /**
      * Builds a record in Solr update syntax corresponding to the
      * supplied parameters, and adds it to the supplied element
@@ -363,16 +363,16 @@ public class IndexUpdateManager {
         String text = getText(doc);
         long vtime = (doc.getVersionTime() != null) ?
                 doc.getVersionTime().getTime() : 0;
-
+        
         int ncites = doc.getNcites();
         int scites = doc.getSelfCites();
-
+        
         List<Keyword> keys = doc.getKeywords();
         ArrayList<String> keywords = new ArrayList<String>();
         for (Keyword key : keys) {
             keywords.add(key.getDatum(Keyword.KEYWORD_KEY, Keyword.ENCODED));
         }
-
+        
         List<Author> authors = doc.getAuthors();
         ArrayList<String> authorNames = new ArrayList<String>();
         ArrayList<String> authorAffils = new ArrayList<String>();
@@ -387,20 +387,20 @@ public class IndexUpdateManager {
             }
         }
         List<String> authorNorms = buildAuthorNorms(authorNames);
-
+        
         String url = null;
         DocumentFileInfo finfo = doc.getFileInfo();
         if (finfo != null && finfo.getUrls().size() > 0) {
 	    try {
-	    	url = URLEncoder.encode(finfo.getUrls().get(0),"UTF-8");
+	    	url = URLEncoder.encode(finfo.getUrls().get(0),"UTF-8"); 
 	    }
 	    catch (UnsupportedEncodingException uee){
 		System.out.println("Failed to encode URL");
 		return;
 	    }
         }
-
-
+        
+        
         StringBuffer citesBuffer = new StringBuffer();
         for (Iterator<Long> cids = cites.iterator(); cids.hasNext(); ) {
             citesBuffer.append(cids.next());
@@ -408,7 +408,7 @@ public class IndexUpdateManager {
                 citesBuffer.append(" ");
             }
         }
-
+        
         StringBuffer citedbyBuffer = new StringBuffer();
         for (Iterator<Long> cids = citedby.iterator(); cids.hasNext(); ) {
             citedbyBuffer.append(cids.next());
@@ -416,10 +416,10 @@ public class IndexUpdateManager {
                 citedbyBuffer.append(" ");
             }
         }
-
+        
         // Open the doc Element
         buffer.append("<doc>");
-
+        
         // Add doc's children
         addField(buffer, "id", id);
         if (doi != null) {
@@ -428,7 +428,7 @@ public class IndexUpdateManager {
         }else{
             addField(buffer, "incol", "0");
         }
-
+        
         if (title != null) {
             addField(buffer, "title", title);
         }
@@ -444,7 +444,7 @@ public class IndexUpdateManager {
         if (abs != null) {
             addField(buffer, "abstract", abs);
         }
-
+        
         if (pages != null) {
             addField(buffer, "pages", pages);
         }
@@ -471,16 +471,16 @@ public class IndexUpdateManager {
 
         addField(buffer, "ncites", Integer.toString(ncites));
         addField(buffer, "scites", Integer.toString(scites));
-
+        
         try {
             int year_i = Integer.parseInt(year);
             addField(buffer, "year", Integer.toString(year_i));
         } catch (Exception e) { }
-
+        
         for (String keyword : keywords) {
             addField(buffer, "keyword", keyword);
         }
-
+        
         for (String name : authorNames) {
             addField(buffer, "author", name);
         }
@@ -492,7 +492,7 @@ public class IndexUpdateManager {
         for (String affil : authorAffils) {
             addField(buffer, "affil", affil);
         }
-
+        
         for (Tag tag : doc.getTags()) {
             addField(buffer, "tag", SafeText.encodeHTMLSpecialChars(
                     tag.getTag()));
@@ -504,11 +504,11 @@ public class IndexUpdateManager {
         addField(buffer, "cites", citesBuffer.toString());
         addField(buffer, "citedby", citedbyBuffer.toString());
         addField(buffer, "vtime", Long.toString(vtime));
-
+        
         // Close the doc Element.
         buffer.append("</doc>");
     } //- buildDocEntry
-
+    
     /**
      * Translates the supplied ThinDoc to a Document object and passes
      * control the the Document-based buildDocEntry method.
@@ -523,9 +523,9 @@ public class IndexUpdateManager {
 
         Document doc = DomainTransformer.toDocument(thinDoc);
         buildDocEntry(doc, cites, citedby, buffer);
-
+        
     }  //- buildDocEntry
-
+    
     /**
      * Adds a new field to the element.
      * <b>Note:</b> This method assumes value is XML safe so it does not
@@ -539,12 +539,12 @@ public class IndexUpdateManager {
         buffer.append("<field name=\"");
         buffer.append(fieldName);
         buffer.append("\">");
-       	String newvalue = value;
+       	String newvalue = value; 
         // Get rid of XML bad characters. Note: Don't call SafeText.cleanXML
         // since all the values received are already encoded. SafeText could
         // produce things like: &amp;amp; since the text already has &amp;
 
-	/*
+	/* 
 		Added Pradeep Teregowda (26 May 2009), this should clean up
 		some of the mess ?
 	*/
@@ -561,7 +561,7 @@ public class IndexUpdateManager {
         buffer.append(SafeText.stripBadChars(newvalue));
         buffer.append("</field>");
     } //- addElement
-
+    
     /**
      * Builds a list of author normalizations to create more flexible
      * author search.
@@ -581,7 +581,7 @@ public class IndexUpdateManager {
                 counter++;
             }
             norms.add(joinStringArray(tokens));
-
+            
             if (tokens.length > 2) {
 
                 String[] n1 = new String[tokens.length];
@@ -592,7 +592,7 @@ public class IndexUpdateManager {
                         n1[i] = tokens[i];
                     }
                 }
-
+            
                 String[] n2 = new String[tokens.length];
                 for (int i=0; i<tokens.length; i++) {
                     if (i>0 && i<tokens.length-1) {
@@ -605,17 +605,17 @@ public class IndexUpdateManager {
                 norms.add(joinStringArray(n1));
                 norms.add(joinStringArray(n2));
             }
-
+            
             if (tokens.length > 1) {
 
                 String[] n3 = new String[2];
                 n3[0] = tokens[0];
                 n3[1] = tokens[tokens.length-1];
-
+                
                 String[] n4 = new String[2];
                 n4[0] = Character.toString(tokens[0].charAt(0));
                 n4[1] = tokens[tokens.length-1];
-
+                
                 norms.add(joinStringArray(n3));
                 norms.add(joinStringArray(n4));
             }
@@ -625,10 +625,10 @@ public class IndexUpdateManager {
             normList.add(it.next());
         }
         return normList;
-
+        
     }  //- buildAuthorNorms
-
-
+    
+    
     private static String joinStringArray(String[] strings) {
         StringBuffer buffer = new StringBuffer();
         for (int i=0; i<strings.length; i++) {
@@ -638,13 +638,10 @@ public class IndexUpdateManager {
             }
         }
         return buffer.toString();
-
+        
     }  //- joinStringArray
-
-
-
-
-
+    
+    
     /**
      * Fetches the full text of a document from the filesystem repository.
      * @param doc
@@ -652,45 +649,43 @@ public class IndexUpdateManager {
      * @throws IOException
      */
     private String getText(Document doc) throws IOException {
-
+        
         String doi = doc.getDatum(Document.DOI_KEY);
         if (doi == null) {
             return null;
         }
 
         try {
-        	HashMap<String,String> parameters = new HashMap<String,String>();
-        	parameters.put(Document.DOI_KEY, doi);
-        	parameters.put(RepositoryService.FILETYPE,RepositoryService.BODYFILE);
-        	String fileContent = new String();
-        	try {
-        		fileContent = repositoryService.getDocumentContent(parameters);
-        	}
-        	catch(DocumentUnavailableException e) {
-        		parameters.put(RepositoryService.FILETYPE, RepositoryService.TEXTFILE);
-        		try {
-        			fileContent = repositoryService.getDocumentContent(parameters);
-        		} catch(DocumentUnavailableException f) {}
-        	}
-
+            HashMap<String,String> parameters = new HashMap<String,String>();
+            parameters.put(Document.DOI_KEY, doi);
+            parameters.put(RepositoryService.FILETYPE,RepositoryService.BODYFILE);
+            String fileContent = new String();
+            try {
+                fileContent = repositoryService.getDocumentContent(parameters);
+            }
+            catch(DocumentUnavailableException e) {
+                parameters.put(RepositoryService.FILETYPE, RepositoryService.TEXTFILE);
+                try {
+                    fileContent = repositoryService.getDocumentContent(parameters);
+                } catch(DocumentUnavailableException f) {}    
+            }
             String text = fileContent.substring(0,maxTextLength);
             text = SafeText.cleanXML(text);
-            return text;
-
+            return text; 
         } catch (IOException e) {
             throw(e);
-        }
+        }      
     }  //- getText
-
-
+    
+    
     private void sendCommit() throws IOException {
         sendPost("<commit waitFlush=\"false\" waitSearcher=\"false\"/>");
     }
-
+    
     private void sendOptimize() throws IOException {
         sendPost("<optimize/>");
     }
-
+    
     private void sendPost(String str) throws IOException {
 
         HttpURLConnection conn =
@@ -703,9 +698,9 @@ public class IndexUpdateManager {
         conn.setUseCaches(false);
         conn.setAllowUserInteraction(false);
         conn.setRequestProperty("Content-Type", "text/xml; charset=UTF-8");
-
+        
         Writer wr = new OutputStreamWriter(conn.getOutputStream());
-
+        
         try {
             pipe(new StringReader(str), wr);
         } catch (IOException e) {
@@ -713,7 +708,7 @@ public class IndexUpdateManager {
         } finally {
             try { wr.close(); } catch (Exception e) { }
         }
-
+        
         Reader reader = new InputStreamReader(conn.getInputStream());
         try {
             StringWriter output = new StringWriter();
@@ -724,10 +719,10 @@ public class IndexUpdateManager {
         } finally {
             try { reader.close(); } catch (Exception e) { }
         }
-
+        
     }  //- sendPost
-
-
+    
+    
     private static void pipe(Reader reader, Writer writer) throws IOException {
         char[] buf = new char[1024];
         int read = 0;
@@ -735,21 +730,21 @@ public class IndexUpdateManager {
             writer.write(buf, 0, read);
         }
         writer.flush();
-
+        
     }  //- pipe
-
-
+    
+    
     private static final String expectedResponse =
         "<int name=\"status\">0</int>";
-
+    
     private static void checkExpectedResponse(String response)
     throws IOException {
         if (response.indexOf(expectedResponse) < 0) {
             throw new IOException("Unexpected response from solr: "+response);
         }
     }
-
-
+    
+    
     private void processDeletions(List<Long> list) throws IOException {
         if (list.isEmpty()) {
             return;
@@ -761,17 +756,17 @@ public class IndexUpdateManager {
             sendPost(del);  // Have to send multiple posts due to Solr bug.
         }
         sendCommit();
-
+        
     }  //- processDeletions
-
-
+    
+    
     /*
     public static void main(String[] args) throws Exception {
-
+        
         DataSource dataSource = DBCPFactory.createDataSource("citeseerx");
         CSXDAO csxdao = new CSXDAO();
         csxdao.setDataSource(dataSource);
-
+        
         DataSource cgDataSource = DBCPFactory.createDataSource("citegraph");
         CiteClusterDAO citedao = new CiteClusterDAOImpl();
         citedao.setDataSource(cgDataSource);
@@ -786,8 +781,8 @@ public class IndexUpdateManager {
         manager.setCiteClusterDAO(citemaster);
         manager.setCiteMaster(citemaster);
         manager.indexAll();
-
+        
     }
     */
-
+    
 }  //- class IndexUpdateManager
