@@ -16,7 +16,7 @@ import edu.psu.citeseerx.repository.RepositoryMap;
 import edu.psu.citeseerx.repository.UnknownRepositoryException;
 import edu.psu.citeseerx.utility.*;
 import edu.psu.citeseerx.domain.*;
-import java.io.*;
+import java.io.*; 
 
 /**
  * This class is used to copy document files into the main CiteSeerX
@@ -28,28 +28,28 @@ import java.io.*;
 public class FileSystemIngester implements FileIngester {
 
     private RepositoryMap repositoryMap;
-
+    
     public void setRepositoryMap(RepositoryMap repositoryMap) {
         this.repositoryMap = repositoryMap;
     }
-
-
+    
+    
     protected String repositoryID;
-
+    
     public void setRepositoryID(String repositoryID) {
         this.repositoryID = repositoryID;
     }
-
-
+    
+    
     private final static String sep = System.getProperty("file.separator");
-
-
+    
+    
     /* (non-Javadoc)
      * @see edu.psu.citeseerx.ingestion.FileIngester#importFileData(edu.psu.citeseerx.domain.Document, java.lang.String)
      */
     public void importFileData(Document doc, String fileBase)
     throws IOException, UnknownRepositoryException {
-
+        
         System.out.println("Importing document: "+
                 doc.getDatum(Document.DOI_KEY, Document.UNENCODED));
 
@@ -61,7 +61,7 @@ public class FileSystemIngester implements FileIngester {
         String[] extensions = {
                 ".pdf", ".ps", ".doc", ".rtf", ".txt", ".body", ".cite"
         };
-
+        
         for (String ext : extensions) {
             String src = fileBase + ext;
             String dest = fullDestDir + sep + doi + ext;
@@ -80,12 +80,12 @@ public class FileSystemIngester implements FileIngester {
             File destFile = new File(dest);
             FileUtils.copy(srcFile, destFile);
         }
-
+        
         doc.getFileInfo().setDatum(DocumentFileInfo.REP_ID_KEY,
                 repositoryID);
-
+        
         System.out.println("done: "+dir);
-
+            
     }  //- importFileData
-
+    
 }  //- class FileSystemIngester

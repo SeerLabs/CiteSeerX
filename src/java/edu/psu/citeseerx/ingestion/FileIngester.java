@@ -13,8 +13,8 @@
 package edu.psu.citeseerx.ingestion;
 
 import java.io.IOException;
-import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.repository.UnknownRepositoryException;
+import edu.psu.citeseerx.domain.Document;
 
 /**
  * Generic interface for utilities that import files from some location.
@@ -39,5 +39,5 @@ public interface FileIngester {
      */
     public void importFileData(Document doc, String fileBase)
     throws IOException, UnknownRepositoryException;
-
+    
 } //- interface FileIngester

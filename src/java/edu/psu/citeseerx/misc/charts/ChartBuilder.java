@@ -24,10 +24,10 @@ public interface ChartBuilder {
 
     /**
      * Builds histograms for all documents in the collection.  Only documents
-     * whose citation counts have changed since the last update (or
+     * whose citation counts have changed since the last update (or 
      * documents that are new) will be processed.
      * @throws UnknownRepositoryException
      */
     public void buildAll() throws UnknownRepositoryException;
-
+    
 } //- interface ChartBuilder
