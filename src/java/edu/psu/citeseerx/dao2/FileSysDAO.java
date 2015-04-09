@@ -44,7 +44,7 @@ public interface FileSysDAO {
      * the named version does not exist, a null value will be returned.
      * @param doi
      * @param name
-     * @return A specific version of the document based on the version name or
+     * @return A specific version of the document based on the version name or 
      * null if that version name does not exist.
      * @throws DataAccessException
      * @throws IOException
@@ -56,5 +56,5 @@ public interface FileSysDAO {
      * @return the ID of the repository on which a given document is stored.
      */
     public String getRepositoryID(String doi);
-
+    
 } //- interface FileSysDAO
