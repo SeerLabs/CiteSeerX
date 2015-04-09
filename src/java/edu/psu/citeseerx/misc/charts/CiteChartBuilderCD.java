@@ -19,8 +19,6 @@ import ChartDirector.*;
 import edu.psu.citeseerx.dao2.*;
 import edu.psu.citeseerx.dao2.logic.*;
 import edu.psu.citeseerx.domain.*;
-import edu.psu.citeseerx.repository.RepositoryMap;
-import edu.psu.citeseerx.repository.UnknownRepositoryException;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 
 /**
@@ -34,53 +32,53 @@ import edu.psu.citeseerx.utility.FileNamingUtils;
 public class CiteChartBuilderCD implements ChartBuilder {
 
     private static final int MAX_CITING = 5000;
-
+    
     private CSXDAO csxdao;
 
     public void setCSXDAO(CSXDAO csxdao) {
-        this.csxdao = csxdao;
+        this.csxdao = csxdao;        
     }
 
-
+    
     private CiteClusterDAO citedao;
-
+    
     public void setCiteClusterDAO(CiteClusterDAO citedao) {
-        this.citedao = citedao;
+        this.citedao = citedao;        
     }
-
-
+    
+    
     private RepositoryMap repMap;
-
+    
     public void setRepositoryMap(RepositoryMap repMap) {
         this.repMap = repMap;
     }
-
-
+  
+    
     /**
      * Builds a histogram for the supplied document and writes the chart to
      * the document's directory within the repository.
      * @param doc
-     * @return A new histogram based on the provided document
+     * @return A new histogram based on the provided document 
      */
     public XYChart buildChart(Document doc) {
-
+        
         Long clusterid = doc.getClusterID();
         if (clusterid == null) {
             return null;
         }
-
+        
         Integer year = null;
         try {
             year = new Integer(doc.getDatum(Document.YEAR_KEY));
         } catch (Exception e) { }
-
+        
         java.util.List<ThinDoc> citingDocs =
             citedao.getCitingDocuments(clusterid, 0, MAX_CITING);
         DataPoint[] dataset = collectData(citingDocs, year);
         if (dataset == null || dataset.length <= 3) {
             return null;
         }
-
+        
         double[] data = new double[dataset.length];
         int[] years = new int[dataset.length];
         String[] labels = new String[dataset.length];
@@ -90,7 +88,7 @@ public class CiteChartBuilderCD implements ChartBuilder {
             years[i] = dataset[i].year;
             labels[i] = Integer.toString(dataset[i].year);
         }
-
+        
         double[] zeroedData = new double[years[years.length-1]+1];
         for (int i=0; i<years.length; i++) {
             zeroedData[years[i]] = data[i];
@@ -119,29 +117,29 @@ public class CiteChartBuilderCD implements ChartBuilder {
         c.yAxis().setTitle("Citations", "Arial Bold", 10);
         c.yAxis().setMinTickInc(1);
         //c.yAxis().setTickDensity(20);
-        c.xAxis().setLabelStyle("Arial Bold", 8);
+        c.xAxis().setLabelStyle("Arial Bold", 8); 
         c.yAxis().setLabelStyle("Arial Bold", 8);
-        c.xAxis().setWidth(2);
+        c.xAxis().setWidth(2); 
         c.yAxis().setWidth(2);
 
         BarLayer layer = c.addBarLayer2(Chart.Stack);
         layer.addDataSet(data, 0xff6600);
-
+        
         return c;
-
+        
     }
-
+    
     private DataPoint[] collectData(java.util.List<ThinDoc> docs,
             Integer baseYear) {
-
+        
         int maxyear = -1;
         int minyear = 999999;
-
+        
         Calendar now = Calendar.getInstance();
         int currentYear = now.get(Calendar.YEAR);
 
         boolean found = false;
-
+        
         HashMap<Integer,DataPoint> data = new HashMap<Integer,DataPoint>();
         for (ThinDoc doc : docs) {
             try {
@@ -184,9 +182,9 @@ public class CiteChartBuilderCD implements ChartBuilder {
                 datalist[i-minyear] = point;
             }
         }
-
+        
         return datalist;
-
+        
     } //- collectData
 
 
@@ -194,10 +192,10 @@ public class CiteChartBuilderCD implements ChartBuilder {
      * @see edu.psu.citeseerx.misc.charts.ChartBuilder#buildAll()
      */
     public void buildAll() throws UnknownRepositoryException {
-
+        
         String lastDoi = "0.0.0.0.0";
         int amount = 200;
-
+        
         while(true) {
             java.util.List<String> dois = csxdao.getDOIs(lastDoi, amount);
             if (dois.isEmpty()) {
@@ -225,8 +223,8 @@ public class CiteChartBuilderCD implements ChartBuilder {
                 }
             }
         }
-
+        
     }  //- buildAll
-
+        
 }  //- class CiteChartBuilderCD
 
