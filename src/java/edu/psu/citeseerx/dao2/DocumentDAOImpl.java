@@ -60,8 +60,8 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
     protected void initDao() throws ApplicationContextException {
         initMappingSqlQueries();
     } //- initDao
-
-
+    
+    
     protected void initMappingSqlQueries() throws ApplicationContextException {
         getDoc = new GetDoc(getDataSource());
         getDocSrc = new GetDocSrc(getDataSource());
@@ -79,8 +79,8 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         getCrawledDOIs = new GetCrawledDOIs(getDataSource());
         getLatestDocuments = new GetLatestDocuments(getDataSource());
     } //- initMappingSqlQueries
-
-
+    
+    
     /* (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.DocumentDAO#getDocument(java.lang.String, boolean)
      */
@@ -123,7 +123,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
 
     }  //- getDocument
 
-
+    
     /* (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.DocumentDAO#insertDocument(edu.psu.citeseerx.domain.Document)
      */
@@ -132,7 +132,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         insertDoc.run(doc);
     }  //- insertDocument
 
-
+    
     /* (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.DocumentDAO#insertDocumentSrc(edu.psu.citeseerx.domain.Document)
      */
@@ -142,7 +142,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         }
     }  //- insertDocumentSrc
 
-
+    
     /* (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.DocumentDAO#updateDocument(edu.psu.citeseerx.domain.Document)
      */
@@ -172,7 +172,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         setCluster.run(doc, clusterID);
     }  //- setCluster
 
-
+    
     /* (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.DocumentDAO#setDocNcites(edu.psu.citeseerx.domain.Document, int)
      */
@@ -181,7 +181,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         setNcites.run(doc, ncites);
     }  //- setNcites
 
-
+    
     /* (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.DocumentDAO#getNumberOfDocumentRecords()
      */
@@ -189,7 +189,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         return countDocs.run();
     }  //- getNumberOfDocumentRecords
 
-
+    
     public List<String> getDOIs(String start, int amount)
     throws DataAccessException {
         return getDOIs.run(start, amount);
@@ -198,19 +198,19 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
     /* (non-Javadoc)
 	 * @see edu.psu.citeseerx.dao2.DocumentDAO#getSetDOIs(java.util.Date, java.util.Date, java.lang.String, int)
 	 */
-    public List<DOIInfo> getSetDOIs(Date start, Date end, String prev,
+    public List<DOIInfo> getSetDOIs(Date start, Date end, String prev,  
     		int amount) throws DataAccessException {
     	return getSetDOIs.run(start, end , prev,amount);
-    } // - getSetDOIs
-
+    } // - getSetDOIs 
+   
     /* (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.DocumentDAO#getSetDOICount(java.util.Date, java.util.Date, java.lang.String)
      */
-    public Integer getSetDOICount(Date start, Date end, String prev)
+    public Integer getSetDOICount(Date start, Date end, String prev) 
     throws DataAccessException {
     	return getSetDOICount.run(start, end, prev);
     } //- getSetDOICount
-
+    
 	/* (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.DocumentDAO#getCrawledDOIs(java.util.Date, java.util.Date, java.lang.String, int)
      */
@@ -236,14 +236,14 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         "conversionTrace, selfCites, versionTime from papers where id=?";
 
     private class GetDoc extends MappingSqlQuery {
-
+        
         public GetDoc(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_GET_DOC_QUERY);
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- GetDoc.GetDoc
-
+        
         public Document mapRow(ResultSet rs, int rowNum) throws SQLException {
             Document doc = new Document();
             doc.setDatum(Document.DOI_KEY, rs.getString("id"));
@@ -284,10 +284,10 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             finfo.setDatum(DocumentFileInfo.CONV_TRACE_KEY,
                     rs.getString("conversionTrace"));
             doc.setFileInfo(finfo);
-
+            
             return doc;
         } //- GetDoc.mapRow
-
+        
         public Document run(String doi) {
             List<Document> list = execute(doi);
             if (list.isEmpty()) {
@@ -296,24 +296,24 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
                 return (Document)list.get(0);
             }
         } //- GetDoc.run
-
+        
     }  //- class GetDoc
-
-
+    
+    
     private static final String DEF_GET_DOC_SRC_QUERY =
         "select title, abstract, year, venue, venueType, pages, volume, " +
         "number, publisher, pubAddress, tech, citations from " +
         "papers_versionShadow where id=?";
 
     private class GetDocSrc extends MappingSqlQuery {
-
+        
         public GetDocSrc(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_GET_DOC_SRC_QUERY);
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- GetDocSrc.GetDocSrc
-
+        
         public Document mapRow(ResultSet rs, int rowNum) throws SQLException {
             Document doc = new Document();
             doc.setSource(Document.TITLE_KEY, rs.getString("title"));
@@ -333,7 +333,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             doc.setSource(Document.CITES_KEY, rs.getString("citations"));
             return doc;
         }
-
+        
         public Document run(String doi) {
             List<Document> list = execute(doi);
             if (list.isEmpty()) {
@@ -342,20 +342,20 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
                 return (Document)list.get(0);
             }
         } //- GetDocSrc.run
-
+        
     }  //- class GetDocSrc
 
 
     /* id, version, cluster, title, abstract, year, venue, venueType, pages,
      * volume, number, publisher, pubAddress, tech, public,
-     * size, versionName, crawlDate, repositoryID, conversionTrace,
+     * size, versionName, crawlDate, repositoryID, conversionTrace, 
      * selfCites, versionTime */
     private static final String DEF_INSERT_DOC_QUERY =
         "insert into papers values (?, ?, ?, ?, ?, ?, ?, ?, ?," +
         " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, current_timestamp)";
 
     private class InsertDoc extends SqlUpdate {
-
+        
         public InsertDoc(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_INSERT_DOC_QUERY);
@@ -382,12 +382,12 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.INTEGER));
             compile();
         } //- InsertDoc.InsertDoc
-
+        
         public int run(Document doc) {
             Integer year = null;
             try {
                 year = Integer.parseInt(doc.getDatum(Document.YEAR_KEY));
-            } catch (Exception e) { }
+            } catch (Exception e) { }            
             Integer vol = null;
             try {
                 vol = Integer.parseInt(doc.getDatum(Document.VOL_KEY));
@@ -396,7 +396,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             try {
                 num = Integer.parseInt(doc.getDatum(Document.NUM_KEY));
             } catch (Exception e) { }
-
+            
             DocumentFileInfo finfo = doc.getFileInfo();
             java.util.Date crawlDate = null;
             try {
@@ -408,7 +408,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
                 /* that's ok - we'll use current_timestamp */
                 crawlDate = new java.util.Date(System.currentTimeMillis());
             }
-
+            
             Object[] params = new Object[] {
                     doc.getDatum(Document.DOI_KEY),
                     doc.getVersion(),
@@ -420,7 +420,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
                     doc.getDatum(Document.VEN_TYPE_KEY),
                     doc.getDatum(Document.PAGES_KEY),
                     vol, num,
-                    doc.getDatum(Document.PUBLISHER_KEY),
+                    doc.getDatum(Document.PUBLISHER_KEY),  
                     doc.getDatum(Document.PUBADDR_KEY),
                     doc.getDatum(Document.TECH_KEY),
                     doc.getState(),
@@ -433,10 +433,10 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             };
             return update(params);
         } //- InsertDoc.run
-
+        
     }  //- class InsertDoc
-
-
+    
+    
     /* id, title, abstract, year, venue, venueType, pages,
      * volume, number, publisher, pubAddress, tech, cites */
     private static final String DEF_INSERT_DOC_SRC_QUERY =
@@ -444,7 +444,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         "?, ?, ?, ?, ?)";
 
     private class InsertDocSrc extends SqlUpdate {
-
+        
         public InsertDocSrc(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_INSERT_DOC_SRC_QUERY);
@@ -463,7 +463,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- InsertDocSrc.InsertDocSrc
-
+        
         public int run(Document doc) {
             Object[] params = new Object[] {
                     doc.getDatum(Document.DOI_KEY),
@@ -475,14 +475,14 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
                     doc.getSource(Document.PAGES_KEY),
                     doc.getSource(Document.VOL_KEY),
                     doc.getSource(Document.NUM_KEY),
-                    doc.getSource(Document.PUBLISHER_KEY),
+                    doc.getSource(Document.PUBLISHER_KEY),  
                     doc.getSource(Document.PUBADDR_KEY),
                     doc.getSource(Document.TECH_KEY),
                     doc.getSource(Document.CITES_KEY)
             };
             return update(params);
         } //- InsertDocSrc
-
+        
     }  //- class InsertDocSrc
 
 
@@ -494,7 +494,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         "where id=?";
 
     private class UpdateDoc extends SqlUpdate {
-
+        
         public UpdateDoc(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_UPDATE_DOC_QUERY);
@@ -514,16 +514,16 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.VARCHAR));
             declareParameter(new SqlParameter(Types.TIMESTAMP));
             declareParameter(new SqlParameter(Types.VARCHAR));
-            declareParameter(new SqlParameter(Types.VARCHAR));
+            declareParameter(new SqlParameter(Types.VARCHAR));            
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- UpdateDoc.UpdateDoc
-
+        
         public int run(Document doc) {
             Integer year = null;
             try {
                 year = Integer.parseInt(doc.getDatum(Document.YEAR_KEY));
-            } catch (Exception e) { }
+            } catch (Exception e) { }            
             Integer vol = null;
             try {
                 vol = Integer.parseInt(doc.getDatum(Document.VOL_KEY));
@@ -532,7 +532,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             try {
                 num = Integer.parseInt(doc.getDatum(Document.NUM_KEY));
             } catch (Exception e) { }
-
+            
             DocumentFileInfo finfo = doc.getFileInfo();
             java.util.Date crawlDate = null;
             try {
@@ -544,7 +544,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
                 /* that's ok - we'll use current_timestamp */
                 crawlDate = new java.util.Date(System.currentTimeMillis());
             }
-
+            
             Object[] params = new Object[] {
                     doc.getVersion(),
                     doc.getDatum(Document.TITLE_KEY),
@@ -554,7 +554,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
                     doc.getDatum(Document.VEN_TYPE_KEY),
                     doc.getDatum(Document.PAGES_KEY),
                     vol, num,
-                    doc.getDatum(Document.PUBLISHER_KEY),
+                    doc.getDatum(Document.PUBLISHER_KEY),  
                     doc.getDatum(Document.PUBADDR_KEY),
                     doc.getDatum(Document.TECH_KEY),
                     doc.getState(),
@@ -566,17 +566,17 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             };
             return update(params);
         } //- UpdateDoc.run
-
+        
     }  //- class UpdateDoc
-
-
+    
+    
     private static final String DEF_UPDATE_DOC_SRC_QUERY =
         "update papers_versionShadow set title=?, abstract=?, " +
         "year=?, venue=?, venueType=?, pages=?, volume=?, number=?, " +
         "publisher=?, pubAddress=?, tech=?, citations=? where id=?";
 
     private class UpdateDocSrc extends SqlUpdate {
-
+        
         public UpdateDocSrc(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_UPDATE_DOC_SRC_QUERY);
@@ -595,7 +595,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- UpdateDocSrc.UpdateDocSrc
-
+        
         public int run(Document doc) {
             Object[] params = new Object[] {
                     doc.getSource(Document.TITLE_KEY),
@@ -606,7 +606,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
                     doc.getSource(Document.PAGES_KEY),
                     doc.getSource(Document.VOL_KEY),
                     doc.getSource(Document.NUM_KEY),
-                    doc.getSource(Document.PUBLISHER_KEY),
+                    doc.getSource(Document.PUBLISHER_KEY),  
                     doc.getSource(Document.PUBADDR_KEY),
                     doc.getSource(Document.TECH_KEY),
                     doc.getSource(Document.CITES_KEY),
@@ -614,7 +614,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             };
             return update(params);
         } //- UpdateDocSrc.run
-
+        
     }  //- class UpdateDocSrc
 
 
@@ -622,7 +622,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         "update papers set public=? where id=?";
 
     private class SetState extends SqlUpdate {
-
+        
         public SetState(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_SET_PUBLIC_QUERY);
@@ -630,22 +630,22 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- SetPublic.SetPublic
-
+        
         public int run(Document doc, int toState) {
             Object[] params = new Object[] {
                     new Integer(doc.getState()), doc.getDatum(Document.DOI_KEY)
             };
             return update(params);
         } //- SetPublic.run
-
+        
     }  //- class SetPublic
-
-
+    
+    
     private static final String DEF_SET_CLUSTER_QUERY =
         "update papers set cluster=? where id=?";
 
     private class SetCluster extends SqlUpdate {
-
+        
         public SetCluster(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_SET_CLUSTER_QUERY);
@@ -653,22 +653,22 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- SetCluster.SetCluster
-
+        
         public int run(Document doc, Long clusterID) {
             Object[] params = new Object[] {
                     clusterID, doc.getDatum(Document.DOI_KEY)
             };
             return update(params);
         } //- SetCluster.run
-
+        
     }  //- class SetCluster
-
-
+    
+    
     private static final String DEF_SET_CITES_STMT =
         "update papers set ncites=? where id=?";
-
+    
     private class SetNcites extends SqlUpdate {
-
+        
         public SetNcites(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_SET_CITES_STMT);
@@ -676,14 +676,14 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- SetNcites.SetNcites
-
+        
         public int run(Document doc, int ncites) {
             Object[] params = new Object[] {
                     new Integer(ncites), doc.getDatum(Document.DOI_KEY)
             };
             return update(params);
         } //- SetNcites.run
-
+        
     }  //- class SetNCites
 
 
@@ -691,17 +691,17 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         "select count(id) from papers";
 
     private class CountDocs extends MappingSqlQuery {
-
+        
         public CountDocs(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_COUNT_DOCUMENTS_QUERY);
             compile();
         } //- CountDocs.CountDocs
-
+        
         public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
             return rs.getInt(1);
         } //- CountDocs.mapRow
-
+        
         public Integer run() {
             List<Integer> list = execute();
             if (list.isEmpty()) {
@@ -710,15 +710,15 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
                 return (Integer)list.get(0);
             }
         } //- CountDocs.run
-
+        
     }  //- class CountDocs
-
-
+        
+    
     private static final String DEF_GET_DOIS_QUERY =
         "select id from papers where id>? order by id asc limit ?";
-
+    
     private class GetDOIs extends MappingSqlQuery {
-
+        
         public GetDOIs(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_GET_DOIS_QUERY);
@@ -726,25 +726,25 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.INTEGER));
             compile();
         } //- GetDOIs.GetDOIs
-
+        
         public String mapRow(ResultSet rs, int rowNum) throws SQLException {
             return rs.getString(1);
         } //- GetDOIs.mapRow
-
+        
         public List<String> run(String start, int amount) {
             Object[] params = new Object[] { start, new Integer(amount) };
             return execute(params);
         } //- GetDOIs.run
-
+        
     }  //- class GetDOIs
 
     /* start, end, prev, count */
     private static final String DEF_GET_SET_DOIS_QUERY =
         "select id, versionTime from papers where Date(versionTime) > ? and " +
         "Date(versionTime) <= ? and id > ? and public = 1 order by id asc limit ?";
-
+    
     private class GetSetDOIs extends MappingSqlQuery {
-
+        
         public GetSetDOIs(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_GET_SET_DOIS_QUERY);
@@ -754,22 +754,22 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.INTEGER));
             compile();
         } //- GetSetDOIs.GetSetDOIs
-
+        
         public DOIInfo mapRow(ResultSet rs, int rowNum) throws SQLException {
         	DOIInfo doi = new DOIInfo();
-
+        	
             doi.setDoi(rs.getString("id"));
             doi.setModifiedDate(rs.getTimestamp("versionTime"));
             return doi;
         } //- GetSetDOIs.mapRow
-
-        public List<DOIInfo> run(Date start, Date end, String prev,
+        
+        public List<DOIInfo> run(Date start, Date end, String prev, 
         		int amount) {
-            Object[] params = new Object[] { start, end , prev ,
+            Object[] params = new Object[] { start, end , prev ,  
             		new Integer(amount) };
             return execute(params);
         } //- GetSetDOIs.run
-
+        
     }  //- class GetSetDOIs
 
     /* start, end, prev */
@@ -808,13 +808,13 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
 		    }
         } //- GetSetDOICount.run
     }  //- class GetSetDOICount
-
+ 
     private static final String DEF_GET_CRAWLED_DOIS_BETWEEN_QUERY =
         "select id from papers where crawlDate > ? and crawlDate <= ? and " +
         "id > ? order by id asc limit ?";
 
     private class GetCrawledDOIs extends MappingSqlQuery {
-
+        
         public GetCrawledDOIs(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_GET_CRAWLED_DOIS_BETWEEN_QUERY);
@@ -824,26 +824,26 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.INTEGER));
             compile();
         } //- GetSetDOIs.GetSetDOIs
-
+        
         public String mapRow(ResultSet rs, int rowNum) throws SQLException {
             return rs.getString("id");
         } //- GetCrawledDOIs.mapRow
-
-        public List<String> run(Date start, Date end, String lastID,
+        
+        public List<String> run(Date start, Date end, String lastID, 
                 int amount) {
-            Object[] params = new Object[] { start, end , lastID,
+            Object[] params = new Object[] { start, end , lastID,  
                     new Integer(amount) };
             return execute(params);
         } //- GetCrawledDOIs.run
-
+        
     }  //- class GetCrawledDOIs
-
+    
     private static final String DEF_GET_LATEST_DOCUMENTS_QUERY =
         "select id from papers where id < ? order by crawlDate desc, " +
         "id desc limit ?";
-
+    
     private class GetLatestDocuments extends MappingSqlQuery {
-
+        
         public GetLatestDocuments(DataSource dataSource) {
             setDataSource(dataSource);
             setSql(DEF_GET_LATEST_DOCUMENTS_QUERY);
@@ -851,16 +851,16 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             declareParameter(new SqlParameter(Types.INTEGER));
             compile();
         } //- GetSetDOIs.GetSetDOIs
-
+        
         public String mapRow(ResultSet rs, int rowNum) throws SQLException {
             return rs.getString("id");
         } //- GetCrawledDOIs.mapRow
-
+        
         public List<String> run(String lastID, int amount) {
             Object[] params = new Object[] { lastID, new Integer(amount) };
             return execute(params);
         } //- GetLatestDocuments.run
-
+        
     }  //- class GetLatestDocuments
-
+    
 }  //- class DocumentDAOImpl
