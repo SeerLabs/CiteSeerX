@@ -17,43 +17,43 @@ import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.util.List;
 
+import edu.psu.citeseerx.repository.RepositoryMap;
 import edu.psu.citeseerx.dao2.logic.CSXDAO;
 
 import edu.psu.citeseerx.domain.Algorithm;
 import edu.psu.citeseerx.domain.AlgorithmSet;
 import edu.psu.citeseerx.domain.CheckSum;
-import edu.psu.citeseerx.repository.RepositoryMap;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 import edu.psu.citeseerx.utility.FileUtils;
 import edu.psu.citeseerx.utility.XMLFileNameFilter;
 
 /**
- * This class imports Algorithm information extracted from parsed documents
+ * This class imports Algorithm information extracted from parsed documents 
  *
  * @author Sumit Bathia
  * @author Juan Pablo Fernandez Ramirez
  * @version $Rev$ $Date$
  */
 public class AlgorithmIngester {
-
+    
     private CSXDAO csxdao;
-
+    
     /**
      * @return the csxdao
      */
     public CSXDAO getCSXDAO() {
         return csxdao;
     } //- getCsxdao
-
+    
     /**
      * @param csxdao the csxdao to set
      */
     public void setCSXDAO(CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCsxdao
-
+    
     private RepositoryMap repositoryMap;
-
+    
     /**
      * @return the repositoryMap
      */
@@ -67,7 +67,7 @@ public class AlgorithmIngester {
     public void setRepositoryMap(RepositoryMap repositoryMap) {
         this.repositoryMap = repositoryMap;
     } //- setRepositoryMap
-
+    
     protected String repositoryID;
 
     private final static String sep = System.getProperty("file.separator");
@@ -84,9 +84,9 @@ public class AlgorithmIngester {
         csxdao.insertAlgorithm(aobj);
         return 0;
     } //- importAlgorithm
-
+    
     /**
-     * Send to persistent storage a set of algorithms
+     * Send to persistent storage a set of algorithms 
      * @param fileName
      * @return
      */
@@ -101,7 +101,7 @@ public class AlgorithmIngester {
             for (Algorithm indiv: set.getAlgorithms()) {
                     importAlgorithm(indiv, doi);
             }
-
+    
             String dir = FileNamingUtils.getDirectoryFromDOI(doi);
             String fullDestDir =
             repositoryMap.getRepositoryPath(repositoryID) + sep + dir;
@@ -118,7 +118,7 @@ public class AlgorithmIngester {
             return -1;
         }
     } //- importAlgorithmSet
-
+    
     protected CheckSum findDocument(String sha1) throws SQLException {
         // SHA1 key returned
         List<CheckSum> chksumDoc = csxdao.getChecksums(sha1);
@@ -129,9 +129,9 @@ public class AlgorithmIngester {
             return chksumDoc.get(0);
         }
     } //- findDocument
-
+    
     /**
-     * Ingest the content of a folder which contains algorithm information
+     * Ingest the content of a folder which contains algorithm information 
      * @param args
      */
     public void ingestDirectories(String[] args) {
