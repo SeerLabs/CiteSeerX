@@ -35,45 +35,68 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 /**
- * Process a request to download a file, sending the file to the user. If for
+ * Process a request to download a file, sending the file to the user. If for 
  * some reason the file is not found and Internal error is generated.
  * @author Isaac Councill
- * @version $Rev: 81 $ $Date: 2011-01-14 17:37:35 -0500 (Fri, 14 Jan 2011)
+ * @version $Rev: 81 $ $Date: 2011-01-14 17:37:35 -0500 (Fri, 14 Jan 2011) $
  */
 public class FileDownloadController implements Controller {
-
+    
     private CSXDAO csxdao;
-
-
+    
+    public void setCSXDAO (CSXDAO csxdao) {
+        this.csxdao = csxdao;
+    } //- setCSXDAO
+    
     /*
      * RepositoryService instance
      */
     private RepositoryService repositoryService;
 
-
-
     public RepositoryService getRepositoryService() {
-		return repositoryService;
-	}
+        return repositoryService;
+    }
 
-	public void setRepositoryService(RepositoryService repositoryService) {
-		this.repositoryService = repositoryService;
-	}
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
 
-	public void setCSXDAO (CSXDAO csxdao) {
-        this.csxdao = csxdao;
-    } //- setCSXDAO
+    // if URI domain name contains any of them, redirect download link to summary page. possible false positives
+    public static final Set<String> redirectDomainSet = new HashSet<String>();
 
+    public boolean checkURIReferer(String referer) throws URISyntaxException {
+        URI uri = new URI(referer);
+        String domain = uri.getHost().toLowerCase();
+        // loop over hash set to see if an element is contained in the domain
+        for (String rds : redirectDomainSet) {
+            if (domain.contains(rds)) {
+                return true;
+            }
+        }
+        return false;
+    }
     /* (non-Javadoc)
      * @see org.springframework.web.servlet.mvc.Controller#handleRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public ModelAndView handleRequest(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-
+            HttpServletResponse response) throws ServletException, IOException, URISyntaxException {
+        
         String doi = request.getParameter("doi");
         String rep = request.getParameter("rep");
         String type = request.getParameter("type");
         String urlIndex = request.getParameter("i");
+        String referer = request.getHeader("referer");
+       
+        // if the referer comes from google/yahoo/bing, redirect to summary page
+        if (referer != null) {
+            // parse url and get the domain
+            boolean urlRefererSearchEngine = checkURIReferer(referer);
+            if (urlRefererSearchEngine) {
+                RedirectUtils.sendRedirect(request, response, "/viewdoc/summary?doi="+doi);
+                return null;
+            }
+        }
+
 
         Map<String, Object> model = new HashMap<String, Object>();
         if (doi == null || type == null) {
@@ -82,10 +105,10 @@ public class FileDownloadController implements Controller {
             model.put("pagetitle", errorTitle);
             return new ModelAndView("baddoi", model);
         }
-
+        
         BufferedInputStream input = null;
         BufferedOutputStream output = null;
-
+        
         try {
             Document doc = null;
             try {
@@ -93,14 +116,21 @@ public class FileDownloadController implements Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            
+	    if (doc.isDMCA() == true) {
+        	String dmcaTitle = "DMCA Notice";
+                model.put("doi", doi);
+                model.put("pagetitle", dmcaTitle);
+                return new ModelAndView("dmcaPage", model);
 
+	    }
             if (doc == null || doc.isPublic() == false) {
                 String errorTitle = "Document Not Found";
                 model.put("doi", doi);
                 model.put("pagetitle", errorTitle);
                 return new ModelAndView("baddoi", model);
             }
-
+            
             if (type.equalsIgnoreCase("url")) {
 
                 DocumentFileInfo finfo = doc.getFileInfo();
@@ -121,7 +151,7 @@ public class FileDownloadController implements Controller {
                 RedirectUtils.externalRedirect(response, url);
 
             }else{
-
+		
                 response.reset();
                 if (type.equalsIgnoreCase("pdf")) {
                     response.setContentType("application/pdf");
@@ -138,35 +168,33 @@ public class FileDownloadController implements Controller {
                     model.put("pagetitle", errorTitle);
                     return new ModelAndView("baddoi", model);
                 }
-
+                
                 HashMap<String,String> p = new HashMap<String,String>();
                 p.put(Document.DOI_KEY, doi);
                 p.put(RepositoryService.REPOSITORYID, rep);
                 p.put(RepositoryService.FILETYPE, type);
                 try {
-                	InputStream in = repositoryService.getDocument(p);
+                    InputStream in = repositoryService.getDocument(p);
 
-                	input = new BufferedInputStream(in);
-
- //               FileInputStream in = csxdao.getFileInputStream(doi, rep, type);
- //               input = new BufferedInputStream(in);
-
-
-
+                    input = new BufferedInputStream(in);
+                
+                    // FileInputStream in = csxdao.getFileInputStream(doi, rep, type);
+                    // input = new BufferedInputStream(in);
+                
                     output = new BufferedOutputStream(response.getOutputStream());
                     byte[] buffer = new byte[8192];
                     int got = 0;
                     while((got = input.read(buffer)) != -1) {
-                		output.write(buffer, 0, got);
-                	}
-                	output.flush();
+                        output.write(buffer, 0, got);
+                    }
+                    output.flush();
                 } catch(DocumentUnavailableException e) {
-                	return null;
+                    return null;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
-            RedirectUtils.sendRedirect(request, response,
+            RedirectUtils.sendRedirect(request, response, 
                     "/viewdoc/summary?doi="+doi);
             return null;
         } finally {
@@ -174,7 +202,7 @@ public class FileDownloadController implements Controller {
             try { output.close(); } catch (Exception exc) {}
         }
         return null;
-
+        
     }  //- handleRequest
 
 }  //- class FileDownloadController
