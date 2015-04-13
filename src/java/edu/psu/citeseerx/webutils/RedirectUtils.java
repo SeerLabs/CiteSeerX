@@ -32,14 +32,14 @@ public class RedirectUtils {
                 "j_username="+username+"&j_password="+password+
                 "&j_captcha_response="+captcha);
     } //- redirectAcegiLogin
-
+        
     public static void redirectAcegiLogout(HttpServletRequest request,
             HttpServletResponse response)
             throws IOException {
         String context = request.getContextPath();
         response.sendRedirect(context+"/j_acegi_logout");
     } //- redirectAcegiLogout
-
+    
     /**
      * Redirects to the given path
      * @param request
@@ -52,9 +52,9 @@ public class RedirectUtils {
         String context = request.getContextPath();
         response.sendRedirect(context+path);
     } //- sendRedirect
-
+    
     /**
-     * Issue a redirect stating that the resource have been moved permanently
+     * Issue a redirect stating that the resource have been moved permanently 
      * @param request
      * @param response
      * @param path
@@ -66,7 +66,7 @@ public class RedirectUtils {
         response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
         response.addHeader("Location", context+path);
     } //- sendPermanentRedirect
-
+    
     /**
      * Redirects the resource to the URL using DOI.
      * @param request
@@ -77,7 +77,7 @@ public class RedirectUtils {
             HttpServletResponse response, String doi) {
         StringBuffer urlBuf = request.getRequestURL();
         String queryStr = request.getQueryString();
-
+        
         queryStr = queryStr.replaceAll("cid=\\d+", "doi="+doi);
         urlBuf.append("?");
         urlBuf.append(queryStr);
@@ -85,13 +85,13 @@ public class RedirectUtils {
         response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
         response.addHeader("Location", urlBuf.toString());
     } //- sendDocumentCIDRedirect
-
+    
     /**
      * Obtain the servers base URL. The use of this method is not recommended
      * since it will return the base URL of the actual server processing the
      * request which could be different of the system URL in many scenarios. For
      * instance load balancing.
-     * <b>This method should be deprecated</b>
+     * <b>This method should be deprecated</b> 
      * @param request
      * @return returns the base URL.
      */
@@ -109,13 +109,13 @@ public class RedirectUtils {
         builder.append(request.getContextPath());
         return builder.toString();
     } //- getBaseUrl
-
+    
     /**
      * Redirects to an external site.
      * @param response
      * @param path
      */
-    public static void externalRedirect(HttpServletResponse response,
+    public static void externalRedirect(HttpServletResponse response, 
             String path) throws IOException {
         response.sendRedirect(path);
     } //- externalRedirect
