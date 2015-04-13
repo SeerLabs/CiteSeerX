@@ -37,12 +37,12 @@ import edu.psu.citeseerx.webutils.RedirectUtils;
 public class CiteChartServlet extends HttpServlet {
 
     /**
-     *
+     * 
      */
     private static final long serialVersionUID = -579137840114667796L;
     private final static String repID = "chartRepository";
     private RepositoryMap repMap = new RepositoryMap();
-
+    
     /* (non-Javadoc)
      * @see javax.servlet.GenericServlet#init()
      */
@@ -53,13 +53,13 @@ public class CiteChartServlet extends HttpServlet {
         map.put(repID, chartRepository);
         repMap.setRepositoryMap(map);
     }
-
+    
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
     public void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-
+        
         String doi = request.getParameter("doi");
         //String repID = request.getParameter("rep");
 
@@ -73,18 +73,18 @@ public class CiteChartServlet extends HttpServlet {
                     "/images/nochart.png");
                 return;
             }
-
+            
             response.reset();
             response.setContentType("image/png");
             //response.setHeader("Content-Disposition",
             //        "attachment; filename=\""+doi+".pdf\"");
-
+            
             FileInputStream in = new FileInputStream(chartFile);
             BufferedInputStream input = new BufferedInputStream(in);
-
+            
             int contentLength = input.available();
             response.setContentLength(contentLength);
-
+        
             BufferedOutputStream output =
                 new BufferedOutputStream(response.getOutputStream());
             while(contentLength-- > 0) {
@@ -96,7 +96,7 @@ public class CiteChartServlet extends HttpServlet {
             RedirectUtils.sendRedirect(request, response,
                     "/images/nochart.png");
         }
-
+        
     }  //- doGet
-
+    
 }  //- class CiteChartServlet
