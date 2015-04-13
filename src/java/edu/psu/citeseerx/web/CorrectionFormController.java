@@ -31,6 +31,7 @@ import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.domain.DocumentFileInfo;
 import edu.psu.citeseerx.domain.ExternalLink;
 import edu.psu.citeseerx.domain.Hub;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.UniqueAuthor;
 import edu.psu.citeseerx.myciteseer.web.utils.FoulWordFilter;
 import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
@@ -44,7 +45,7 @@ import edu.psu.citeseerx.web.domain.DocumentContainer;
 /**
  * Controller used to handle user corrections to papers
  * @author Isaac Councill
- * @version $$Rev$$ $$Date$$
+ * @version $Rev$ $Date$
  */
 public class CorrectionFormController extends SimpleFormController {
 
@@ -53,7 +54,16 @@ public class CorrectionFormController extends SimpleFormController {
     public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
-    
+
+    private RepositoryService repositoryService;
+
+    public RepositoryService getRepositoryService() {
+        return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+       this.repositoryService = repositoryService;
+    }
 
     private CiteClusterDAO citedao;
     
@@ -333,7 +343,10 @@ public class CorrectionFormController extends SimpleFormController {
         model.put("rep", rep);
         model.put("ncites", doc.getNcites());
         model.put("selfCites", doc.getSelfCites());
-        model.put("fileTypes", csxdao.getFileTypes(doi, rep));
+        HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
+        fileTypesQuery.put(Document.DOI_KEY, doi);
+        fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
+        model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
         model.put("elinks", eLinks);
         model.put("hubUrls", hubUrls);
         
