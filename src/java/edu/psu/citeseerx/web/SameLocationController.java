@@ -45,30 +45,31 @@ import edu.psu.citeseerx.webutils.RedirectUtils;
  * @version $Rev $ $Date$
  */
 public class SameLocationController implements Controller {
-
+    
     private CSXDAO csxdao;
+    
+    public void setCSXDAO (CSXDAO csxdao) {
+        this.csxdao = csxdao;
+    } //- setCSXDAO
+    
     private RepositoryService repositoryService;
 
     public RepositoryService getRepositoryService() {
-		return repositoryService;
-	}
+        return repositoryService;
+    }
 
-	public void setRepositoryService(RepositoryService repositoryService) {
-		this.repositoryService = repositoryService;
-	}
-
-	public void setCSXDAO (CSXDAO csxdao) {
-        this.csxdao = csxdao;
-    } //- setCSXDAO
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
 
     private CiteClusterDAO citedao;
-
+    
     public void setCiteClusterDAO(CiteClusterDAO citedao) {
         this.citedao = citedao;
     } //- setCiteClusterDAO
-
+    
     private int nrows = 10;
-
+    
     public void setNrows(int nrows) {
         this.nrows = nrows;
     } //- setNrows
@@ -78,15 +79,15 @@ public class SameLocationController implements Controller {
      */
     public ModelAndView handleRequest(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-
+        
         String doi = null;
         String hUrl = null;
         hUrl = request.getParameter("hurl");
         String cid = request.getParameter("cid");
-
+        
         String errorTitle = "Document not found";
         Map<String, Object> model = new HashMap<String, Object>();
-
+        
         if (cid != null) {
             Long cluster;
             try {
@@ -107,22 +108,22 @@ public class SameLocationController implements Controller {
                 return new ModelAndView("viewDocError", model);
             }
         }
-
+        
         if (doi == null) {
             doi = request.getParameter("doi");
         }
-
+        
         if (doi == null) {
             model.put("pagetitle", errorTitle);
             return new ModelAndView("viewDocError", model);
         }
-
+        
         errorTitle = "Incorrect Parameter";
         if (hUrl == null) {
             model.put("pagetitle", errorTitle);
             return new ModelAndView("viewDocError", model);
         }
-
+        
         String xml = request.getParameter("xml");
         boolean bxml = false;
         try {
@@ -149,7 +150,7 @@ public class SameLocationController implements Controller {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         if (doc == null) {
             model.put("doi", doi);
             model.put("pagetitle", errorTitle);
@@ -158,16 +159,16 @@ public class SameLocationController implements Controller {
 
         ArrayList<UniqueAuthor> uauthors = new ArrayList<UniqueAuthor>();
         String authors = "";
-
+        
         int c = 1;
         for (Author a : doc.getAuthors()) {
             String authorName = a.getDatum(Author.NAME_KEY);
             authors += authorName + ", ";
-
+            
             // convert to unique authors
             UniqueAuthor uauth = new UniqueAuthor();
             uauth.setCanname(authorName);
-            if (a.getClusterID() > 0) {
+            if (a.getClusterID() > 0) {                        
                 uauth.setAid("");
             }
             uauthors.add(uauth);
@@ -179,7 +180,7 @@ public class SameLocationController implements Controller {
             // There is always a final comma.
             authors = authors.substring(0, authors.lastIndexOf(","));
         }
-
+        
         String title = doc.getDatum(Document.TITLE_KEY);
         String abs =  doc.getDatum(Document.ABSTRACT_KEY);
         String venue = doc.getDatum(Document.VENUE_KEY);
@@ -190,25 +191,25 @@ public class SameLocationController implements Controller {
         List<String> urls = getClusterURLs(doc.getClusterID());
 
         Long clusterID = doc.getClusterID();
-
+        
         List<ExternalLink> eLinks = csxdao.getExternalLinks(doi);
-
+        
         // Obtain the hubUrls that points to this document.
         List<Hub> hubUrls = csxdao.getHubs(doi);
-
+        
         // Obtain the paper ids associated to the hubURL.
         Integer start = 0;
         try {
             start = new Integer(request.getParameter("start"));
         } catch (Exception e) { }
-
+        
         List<String> paperIDs = csxdao.getPaperIdsFromHubUrl(hUrl);
         List<ThinDoc> hits = null;
         StringBuffer nextPageParams = new StringBuffer();
         if (paperIDs != null) {
             // Obtain the hits to show.
             hits = getHits(paperIDs, start, doi);
-
+      
             // Calculate the next page param.
             if (start+nrows < paperIDs.size() ) {
                 nextPageParams.append("hurl=");
@@ -220,13 +221,13 @@ public class SameLocationController implements Controller {
                 model.put("nextpageparams", nextPageParams.toString());
             }
         }
-
+        
         model.put("pagetype", "similar");
         model.put("pagetitle", "Documents from same URL: "+title);
         model.put("pagekeywords", authors);
         model.put("pagedescription", "Document Details (Isaac Councill, " +
                 "Lee Giles): " + abs);
-        model.put("title", title);
+        model.put("title", title); 
         model.put("authors", authors);
         model.put("uauthors", uauthors);
         model.put("abstract", abs);
@@ -243,7 +244,6 @@ public class SameLocationController implements Controller {
         fileTypesQuery.put(Document.DOI_KEY, doi);
         fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
         model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
-
         model.put("hubUrls", hubUrls);
         model.put("hurl", hUrl);
         model.put("hits", hits);
@@ -269,13 +269,13 @@ public class SameLocationController implements Controller {
         }
         return urls;
     } //- getClusterURLs
-
-    private List<ThinDoc> getHits(List<String> paperIDs, Integer start,
+    
+    private List<ThinDoc> getHits(List<String> paperIDs, Integer start, 
             String toExclude) {
         List<ThinDoc> hits = new ArrayList<ThinDoc>();
         int skipCounter = 1;
         int toInclude = 0;
-
+  
         // We need to skip start documents which are public.
         for (String paperID : paperIDs) {
             // We don't want the paper the user is viewing in the result
@@ -299,5 +299,5 @@ public class SameLocationController implements Controller {
         }
         return hits;
     } //- getHits
-
+    
 } //- class SameLocationController
