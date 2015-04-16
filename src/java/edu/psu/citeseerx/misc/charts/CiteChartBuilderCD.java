@@ -20,6 +20,9 @@ import edu.psu.citeseerx.dao2.*;
 import edu.psu.citeseerx.dao2.logic.*;
 import edu.psu.citeseerx.domain.*;
 import edu.psu.citeseerx.utility.FileNamingUtils;
+import edu.psu.citeseerx.repository.RepositoryMap;
+import edu.psu.citeseerx.repository.UnknownRepositoryException;
+
 
 /**
  * ChartBuilder implementation using ChartDirector.  Unfortunately,
