@@ -51,13 +51,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-class ResourceNotFoundException extends RuntimeException {
-       public ResourceNotFoundException(String doi) {
-             int httpstatus = 404; 
-       }
-}
-
 /**
  * Provides model objects to document summary view.
  * @author Isaac Councill
