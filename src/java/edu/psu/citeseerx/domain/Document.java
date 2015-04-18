@@ -185,6 +185,13 @@ implements Clusterable, XMLSerializable, XMLTagAttrConstants, Versionable {
     	documentProperties.setDMCA();
     } // - setDMCA
 
+    public boolean isRemoved() {
+        return documentProperties.isRemoved();
+    }
+    public void setRemoved() {
+        documentProperties.setRemoved();
+    }
+
     public boolean isPDFRedirect() {
 	return documentProperties.isPDFRedirect();
     }

@@ -20,12 +20,13 @@ public class DocumentProperties {
 	public static final int IS_RESTRICTED = 3;
 	public static final int IS_TRANSIENT = 4;
 	public static final int IS_PDFREDIRECT = 5;
+	public static final int IS_REMOVED = 6;
 	
     	
 	protected static final int[] states = 
 	{
 		IS_PUBLIC, LOGICAL_DELETE, IS_DMCA, IS_RESTRICTED,
-		IS_TRANSIENT, IS_PDFREDIRECT
+		IS_TRANSIENT, IS_PDFREDIRECT, IS_REMOVED
 	};
 
 	public boolean isPublic() {
@@ -68,6 +69,16 @@ public class DocumentProperties {
 		this.state = IS_DMCA;
 	}
 	
+        public boolean isRemoved() {
+                if(this.state == IS_REMOVED) {
+                        return true;
+                }
+                else { return false; }
+        }
+        public void setRemoved() {
+                this.state = IS_REMOVED;
+        }
+   
 	public boolean isRestricted() {
 		if(this.state == IS_RESTRICTED ) {
 			return true;

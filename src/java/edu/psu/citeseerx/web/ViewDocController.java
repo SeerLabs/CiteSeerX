@@ -34,10 +34,14 @@ import edu.psu.citeseerx.myciteseer.domain.Account;
 import edu.psu.citeseerx.dao2.RepositoryMap;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.ResponseEntity;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.RuntimeException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +50,13 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+class ResourceNotFoundException extends RuntimeException {
+       public ResourceNotFoundException(String doi) {
+             int httpstatus = 404; 
+       }
+}
 
 /**
  * Provides model objects to document summary view.
@@ -172,9 +183,14 @@ public class ViewDocController implements Controller {
 			model.put("pagetitle", dmcaTitle);
 			return new ModelAndView("dmcaPage", model);
 		}
+                else if(doc.isRemoved() == true) {
+                        response.setStatus(404);
+                        return new ModelAndView("null",model);
+                }
 		else if (doc.isPublic() == false) {
 			model.put("doi", doi);
 			model.put("pagetitle", removedTitle);
+                        response.setStatus(404);
 			return new ModelAndView("docRemovedPage", model);
 		}
 

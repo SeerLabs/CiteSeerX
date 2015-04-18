@@ -109,10 +109,16 @@ public class FileDownloadController implements Controller {
                 return new ModelAndView("dmcaPage", model);
 
 	    }
+
+            if (doc.isRemoved() == true) {
+               response.setStatus(404);
+               return new ModelAndView("null",model); 
+            }
             if (doc == null || doc.isPublic() == false) {
                 String errorTitle = "Document Not Found";
                 model.put("doi", doi);
                 model.put("pagetitle", errorTitle);
+                response.setStatus(404);
                 return new ModelAndView("baddoi", model);
             }
             
