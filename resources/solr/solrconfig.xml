@@ -849,7 +849,7 @@
       <str name="wt">json</str>
       <str name="df">text</str>
       <str name="fl">
-        id,doi,incol,title,author,abstract,year,venue,ventype,ncites,scites,url,vtime
+        id,doi,incol,title,author,abstract,year,venue,ncites,scites
       </str>
 
       <str name="defType">edismax</str>
