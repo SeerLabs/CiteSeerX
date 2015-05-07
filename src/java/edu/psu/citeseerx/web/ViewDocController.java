@@ -253,9 +253,6 @@ public class ViewDocController implements Controller {
 
                 String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
 
-		// Obtain citation chart data.
-		String chartData = csxdao.getCiteChartData(doi);
-
 		String bibtex =
 				BiblioTransformer.toBibTeX(DomainTransformer.toThinDoc(doc));
 		bibtex = SafeText.cleanXML(bibtex);
@@ -300,7 +297,6 @@ public class ViewDocController implements Controller {
                 model.put("citationContexts", citationContexts);
 		model.put("elinks", eLinks);
 		model.put("fileTypes", csxdao.getFileTypes(doi, repID));
-		model.put("chartdata", chartData);
 		model.put("hubUrls", hubUrls);
 		model.put("pdfRedirectUrl", pdfRedirectURL);
 		model.put("pdfRedirectLabel", pdfRedirectLabel);
