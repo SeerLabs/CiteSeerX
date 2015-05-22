@@ -28,6 +28,8 @@ import org.json.JSONObject;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -214,9 +216,14 @@ public class SearchController implements Controller {
         Map<String, Object> queryParameters = new HashMap<String, Object>();
 
         String value = null;
-        queryParameters.put(QUERY_PARAMETER,
-                ServletRequestUtils.getStringParameter(request,
-                        QUERY_PARAMETER, null));
+        String queststr = null;
+        String quest_organic = ServletRequestUtils.getStringParameter(request,
+                        QUERY_PARAMETER, null);
+        if (quest_organic != null) {
+            queststr = Jsoup.clean(quest_organic, Whitelist.none());
+        }
+
+        queryParameters.put(QUERY_PARAMETER, queststr);
         queryParameters.put(QUERY_TYPE,
                 ServletRequestUtils.getStringParameter(request, QUERY_TYPE,
                         DOCUMENT_QUERY));
