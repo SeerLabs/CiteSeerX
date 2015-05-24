@@ -89,8 +89,10 @@ public class IndexUpdateManager {
     private URL solrUpdateUrl;
 
     public void setSolrURL(String solrUpdateUrl) throws MalformedURLException {
+        int cpus = Runtime.getRuntime().availableProcessors();
+
         this.solrUpdateUrl = new URL(solrUpdateUrl);
-        this.solrServer = new ConcurrentUpdateSolrServer(solrUpdateUrl, 1000, 16);
+        this.solrServer = new ConcurrentUpdateSolrServer(solrUpdateUrl, indexBatchSize, cpus);
     } //- setSolrURL
 
 
@@ -114,7 +116,9 @@ public class IndexUpdateManager {
     private ExecutorService threadPool;
 
     {
-        threadPool = Executors.newFixedThreadPool(16);
+        int cpus = Runtime.getRuntime().availableProcessors();
+
+        threadPool = Executors.newFixedThreadPool(cpus * 2);
     }
 
     /**
