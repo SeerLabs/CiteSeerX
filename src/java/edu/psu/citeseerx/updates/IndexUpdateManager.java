@@ -290,6 +290,7 @@ public class IndexUpdateManager {
         String year = doc.getDatum(Document.YEAR_KEY, Document.ENCODED);
         String abs = doc.getDatum(Document.ABSTRACT_KEY, Document.ENCODED);
         String text = getText(doc);
+        long vtime = (doc.getVersionTime() != null) ? doc.getVersionTime().getTime() : 0;
         int ncites = doc.getNcites();
         int scites = doc.getSelfCites();
 
@@ -374,6 +375,7 @@ public class IndexUpdateManager {
 
         solrDoc.addField("cites", citesBuffer.toString());
         solrDoc.addField("citedby", citedbyBuffer.toString());
+        solrDoc.addField("vtime", Long.toString(vtime));
 
         return solrDoc;
     } //- buildSolrInputDocument
