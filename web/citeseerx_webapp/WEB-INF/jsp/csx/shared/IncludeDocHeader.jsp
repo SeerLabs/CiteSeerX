@@ -106,6 +106,7 @@
     <div id="docMenu" class="submenu">
     <ul>
       <li <c:if test='${ pagetype == "summary" }'> class="active"</c:if> ><a href="<c:url value="/viewdoc/summary?doi=${ doi }"/>">Summary</a></li>
+      <li <c:if test='${ pagetype == "citations" }'> class="active"</c:if> ><a href="<c:url value="/viewdoc/citations?doi=${ doi }"/>">Citations</a></li>
       <li <c:if test='${ pagetype == "similar" && param.type == "ab" }'> class="active"</c:if> ><a href="<c:url value="/viewdoc/similar?doi=${ doi }&amp;type=ab"/>" title="Documents that cite the same works">Active Bibliography</a></li>
       <li <c:if test='${ pagetype == "similar" && param.type == "cc"}'> class="active"</c:if> ><a href="<c:url value="/viewdoc/similar?doi=${ doi }&amp;type=cc"/>" title="Documents cited by the same works">Co-citation</a></li>
       <li <c:if test='${ pagetype == "similar" && param.type == "sc"}'> class="active"</c:if>><a href="<c:url value="/viewdoc/similar?doi=${ doi }&amp;type=sc"/>" title="Documents in the Same Cluster">Clustered Documents</a></li>

@@ -31,7 +31,6 @@ import edu.psu.citeseerx.utility.GeneratePDFRedirectURL;
 import edu.psu.citeseerx.utility.SafeText;
 import edu.psu.citeseerx.webutils.RedirectUtils;
 import edu.psu.citeseerx.myciteseer.domain.Account;
-import edu.psu.citeseerx.dao2.RepositoryMap;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -53,7 +52,7 @@ import java.util.Map;
  * @author Isaac Councill
  * Version: $Rev$ $Date$
  */
-public class ViewDocController implements Controller {
+public class CitationsController implements Controller {
 
 	private CSXDAO csxdao;
 
@@ -67,21 +66,6 @@ public class ViewDocController implements Controller {
 	public void setCiteClusterDAO(CiteClusterDAO citedao) {
 		this.citedao = citedao;
 	} //- setCiteClusterDAO
-
-
-	private int maxTags = 5;
-
-	public void setMaxTags(int maxTags) {
-		this.maxTags = maxTags;
-	} //- setMaxTags
-
-
-	private RepositoryMap repMap;
-
-	public void setRepositoryMap(RepositoryMap repMap) {
-		this.repMap = repMap;
-	} //- setRepositoryMap
-
 
 	/* (non-Javadoc)
 	 * @see org.springframework.web.servlet.mvc.Controller#handleRequest(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
@@ -158,18 +142,16 @@ public class ViewDocController implements Controller {
 		}
 
 		if (doc == null) {
-			model.put("doi", doi);
 			model.put("pagetitle", errorTitle);
 			return new ModelAndView("baddoi", model);
 		}
 		else if(doc.getState() == DocumentProperties.IS_PDFREDIRECT) {
-			// 
+			//
 			PDFRedirect pdfredirect = csxdao.getPDFRedirect(doi);
 			pdfRedirectURL = this.generateRedirectURL(pdfredirect);
 			pdfRedirectLabel = pdfredirect.getLabel();
 		}
 		else if(doc.isDMCA() == true) {
-			model.put("doi", doi);
 			model.put("pagetitle", dmcaTitle);
 			return new ModelAndView("dmcaPage", model);
 		}
@@ -178,25 +160,9 @@ public class ViewDocController implements Controller {
                         return new ModelAndView("null",model);
                 }
 		else if (doc.isPublic() == false) {
-			model.put("doi", doi);
 			model.put("pagetitle", removedTitle);
                         response.setStatus(404);
 			return new ModelAndView("docRemovedPage", model);
-		}
-
-
-		
-		if (bxml) {
-			response.getWriter().print(
-					"<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			Account account = MCSUtils.getLoginAccount();
-			if (bsysData && account != null && account.isAdmin()) {
-				response.getWriter().print(doc.toXML(true));
-			} else {
-				response.getWriter().print(doc.toXML(false));                
-			}
-			return null;
-			//return new ModelAndView("xml", model);
 		}
 
 		List<UniqueAuthor> uauthors = new ArrayList<UniqueAuthor>();
@@ -210,7 +176,7 @@ public class ViewDocController implements Controller {
 			// convert to unique authors
 			UniqueAuthor uauth = new UniqueAuthor();
 			uauth.setCanname(authorName);
-			if (a.getClusterID() > 0) {                        
+			if (a.getClusterID() > 0) {
 				uauth.setAid("");
 			}
 			uauthors.add(uauth);
@@ -233,6 +199,23 @@ public class ViewDocController implements Controller {
 		List<String> urls = getClusterURLs(doc.getClusterID());
 
 		Long clusterID = doc.getClusterID();
+		List<ThinDoc> citations = null;
+		if (clusterID != null) {
+			citations = citedao.getCitedDocuments(clusterID, 0, 50);
+			for (Object cite : citations) {
+				SolrSelectUtils.prepCitation((ThinDoc)cite);
+			}
+			Collections.sort(citations, new CitationComparator());
+		}
+                List<String> citationContexts = new ArrayList<String>();
+                for (ThinDoc citation : citations){
+                    String context = citedao.getContext(clusterID, citation.getCluster());
+                    if (context != null){
+                        citationContexts.add(context);
+                    } else{
+                        citationContexts.add("");
+                    }
+                }
 
                 String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
 
@@ -244,29 +227,23 @@ public class ViewDocController implements Controller {
 		model.put("bibtex", bibtex);
 
 		String coins =
-				BiblioTransformer.toCOinS(DomainTransformer.toThinDoc(doc), 
+				BiblioTransformer.toCOinS(DomainTransformer.toThinDoc(doc),
 						request.getRequestURL().toString());
 		model.put("coins", coins);
-
-		List<Tag> tags = doc.getTags();
-		if (tags.size() > maxTags) {
-			tags = tags.subList(0, maxTags);
-		}
 
 		List<ExternalLink> eLinks = csxdao.getExternalLinks(doi);
 
 		// Obtain the hubUrls that points to this document.
 		List<Hub> hubUrls = csxdao.getHubs(doi);
 
-		model.put("pagetype", "summary");
+		model.put("pagetype", "citations");
 		model.put("pagetitle", title);
 		model.put("pagedescription", "Document Details (Isaac Councill, " +
 				"Lee Giles, Pradeep Teregowda): " + abs);
 		model.put("pagekeywords", authors);
-		model.put("title", title);            
+		model.put("title", title);
 		model.put("authors", authors);
 		model.put("uauthors", uauthors);
-		model.put("abstract", abs);
 		model.put("venue", venue);
 		model.put("year", year);
 		model.put("urls", urls);
@@ -275,7 +252,8 @@ public class ViewDocController implements Controller {
 		model.put("rep", rep);
 		model.put("ncites", doc.getNcites());
 		model.put("selfCites", doc.getSelfCites());
-		model.put("tags", tags);
+		model.put("citations", citations);
+                model.put("citationContexts", citationContexts);
 		model.put("elinks", eLinks);
 		model.put("fileTypes", csxdao.getFileTypes(doi, repID));
 		model.put("hubUrls", hubUrls);
@@ -287,7 +265,7 @@ public class ViewDocController implements Controller {
 			model.put("banner", banner);
 		}
 
-		return new ModelAndView("viewDoc", model);
+		return new ModelAndView("citations", model);
 	} // handleRequest
 
 	private List<String> getClusterURLs(Long clusterID) {
@@ -310,9 +288,19 @@ public class ViewDocController implements Controller {
 	} //- getClusterURLs
 
 	private String generateRedirectURL(PDFRedirect pdfredirect) {
-		
-		return GeneratePDFRedirectURL.generateURLFromTemplate(pdfredirect.getUrlTemplate(), 
+		return GeneratePDFRedirectURL.generateURLFromTemplate(pdfredirect.getUrlTemplate(),
 				pdfredirect.getExternaldoi());
 	}
-	
-}  //- ViewDocController
+}  //- CitationsController
+
+class CitationComparator implements Comparator<ThinDoc> {
+	public int compare(ThinDoc o1, ThinDoc o2) {
+		if (o1.getNcites() > o2.getNcites()) {
+			return -1;
+		}
+		if (((ThinDoc)o1).getNcites() < ((ThinDoc)o2).getNcites()) {
+			return 1;
+		}
+		return 0;
+	} //- compare
+} //- class CitationComparator
