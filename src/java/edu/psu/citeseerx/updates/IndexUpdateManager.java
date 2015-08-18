@@ -89,8 +89,10 @@ public class IndexUpdateManager {
     private URL solrUpdateUrl;
 
     public void setSolrURL(String solrUpdateUrl) throws MalformedURLException {
+        int cpus = Runtime.getRuntime().availableProcessors();
+
         this.solrUpdateUrl = new URL(solrUpdateUrl);
-        this.solrServer = new ConcurrentUpdateSolrServer(solrUpdateUrl, 1000, 16);
+        this.solrServer = new ConcurrentUpdateSolrServer(solrUpdateUrl, indexBatchSize, cpus);
     } //- setSolrURL
 
 
@@ -114,7 +116,9 @@ public class IndexUpdateManager {
     private ExecutorService threadPool;
 
     {
-        threadPool = Executors.newFixedThreadPool(16);
+        int cpus = Runtime.getRuntime().availableProcessors();
+
+        threadPool = Executors.newFixedThreadPool(cpus * 2);
     }
 
     /**
@@ -286,6 +290,7 @@ public class IndexUpdateManager {
         String year = doc.getDatum(Document.YEAR_KEY, Document.ENCODED);
         String abs = doc.getDatum(Document.ABSTRACT_KEY, Document.ENCODED);
         String text = getText(doc);
+        long vtime = (doc.getVersionTime() != null) ? doc.getVersionTime().getTime() : 0;
         int ncites = doc.getNcites();
         int scites = doc.getSelfCites();
 
@@ -370,6 +375,7 @@ public class IndexUpdateManager {
 
         solrDoc.addField("cites", citesBuffer.toString());
         solrDoc.addField("citedby", citedbyBuffer.toString());
+        solrDoc.addField("vtime", Long.toString(vtime));
 
         return solrDoc;
     } //- buildSolrInputDocument
