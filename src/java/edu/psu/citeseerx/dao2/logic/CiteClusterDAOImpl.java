@@ -844,7 +844,7 @@ implements CiteClusterDAO {
         "select clusters.id, cauth, ctitle, cvenue, cyear, " +
         "cpages, cpublisher, cvol, cnum, ctech, incollection, " +
         "size, firstContext, selfCites, updated from clusters, citegraph where " +
-        "cited=clusters.id and citing=? order by size desc limit ?";
+        "cited=clusters.id and citing=? limit ?";
 
     private class GetCited extends MappingSqlQuery {
         
