@@ -171,7 +171,7 @@
       </div> <%-- sidebar div close --%>
     <div id="abstract">
       <h3>Abstract</h3>
-      <p><c:out value="${ abstract }"/></p>
+      <p><c:out value="${ abstractText }"/></p>
     </div>
     <div id="citations">
       <h3>Citations</h3>

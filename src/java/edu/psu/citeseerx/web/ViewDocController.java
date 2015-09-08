@@ -23,15 +23,16 @@ import edu.psu.citeseerx.domain.DomainTransformer;
 import edu.psu.citeseerx.domain.ExternalLink;
 import edu.psu.citeseerx.domain.Hub;
 import edu.psu.citeseerx.domain.PDFRedirect;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.domain.UniqueAuthor;
 import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
+import edu.psu.citeseerx.repository.RepositoryMap;
 import edu.psu.citeseerx.utility.GeneratePDFRedirectURL;
 import edu.psu.citeseerx.utility.SafeText;
 import edu.psu.citeseerx.webutils.RedirectUtils;
 import edu.psu.citeseerx.myciteseer.domain.Account;
-import edu.psu.citeseerx.dao2.RepositoryMap;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -50,11 +51,21 @@ import java.util.Map;
 /**
  * Provides model objects to document summary view.
  * @author Isaac Councill
- * Version: $Rev$ $Date$
+ * @version $Rev$ $Date$
  */
 public class ViewDocController implements Controller {
 
 	private CSXDAO csxdao;
+
+	private RepositoryService repositoryService;
+
+	public RepositoryService getRepositoryService() {
+		return repositoryService;
+	}
+
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
+	}
 
 	public void setCSXDAO (CSXDAO csxdao) {
 		this.csxdao = csxdao;
@@ -271,7 +282,7 @@ public class ViewDocController implements Controller {
 		model.put("title", title);            
 		model.put("authors", authors);
 		model.put("uauthors", uauthors);
-		model.put("abstract", abs);
+		model.put("abstractText", abs);
 		model.put("venue", venue);
 		model.put("year", year);
 		model.put("urls", urls);
@@ -283,7 +294,10 @@ public class ViewDocController implements Controller {
 		model.put("tags", tags);
 		model.put("citations", citations);
 		model.put("elinks", eLinks);
-		model.put("fileTypes", csxdao.getFileTypes(doi, repID));
+		HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
+		fileTypesQuery.put(Document.DOI_KEY, doi);
+		fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
+		model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
 		model.put("chartdata", chartData);
 		model.put("hubUrls", hubUrls);
 		model.put("pdfRedirectUrl", pdfRedirectURL);

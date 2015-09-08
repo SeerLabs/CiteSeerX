@@ -20,6 +20,7 @@ import edu.psu.citeseerx.domain.DocumentFileInfo;
 import edu.psu.citeseerx.domain.DomainTransformer;
 import edu.psu.citeseerx.domain.ExternalLink;
 import edu.psu.citeseerx.domain.Hub;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.domain.UniqueAuthor;
 import edu.psu.citeseerx.webutils.RedirectUtils;
@@ -55,7 +56,17 @@ import java.util.Set;
 public class SimilarityController implements Controller {
 
     private CSXDAO csxdao;
-    
+
+    private RepositoryService repositoryService;
+
+    public RepositoryService getRepositoryService() {
+        return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
+
     public void setCSXDAO(CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
@@ -229,7 +240,10 @@ public class SimilarityController implements Controller {
         model.put("ncites", doc.getNcites());
         model.put("selfCites", doc.getSelfCites());
         model.put("elinks", eLinks);
-        model.put("fileTypes", csxdao.getFileTypes(doi, rep));
+        HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
+        fileTypesQuery.put(Document.DOI_KEY, doi);
+        fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
+        model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
         model.put("hubUrls", hubUrls);
 
         String banner = csxdao.getBanner();

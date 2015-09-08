@@ -41,6 +41,16 @@ public class VersionController implements Controller {
 
     private CSXDAO csxdao;
     
+    private RepositoryService repositoryService;
+
+    public RepositoryService getRepositoryService() {
+        return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
+
     public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
@@ -221,7 +231,10 @@ public class VersionController implements Controller {
         model.put("selfCites", doc.getSelfCites()); 
         model.put("elinks", eLinks);
         model.put("hubUrls", hubUrls);
-        model.put("fileTypes", csxdao.getFileTypes(doi, rep));
+        HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
+        fileTypesQuery.put(Document.DOI_KEY, doi);
+        fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
+        model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
         model.put("maxversion", new Integer(currentVersion));
         model.put("thisversion", new Integer(version));
         model.put("user", userid);

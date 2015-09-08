@@ -13,8 +13,8 @@
 package edu.psu.citeseerx.ingestion;
 
 import java.io.IOException;
-import edu.psu.citeseerx.dao2.UnknownRepositoryException;
 import edu.psu.citeseerx.domain.Document;
+import edu.psu.citeseerx.repository.UnknownRepositoryException;
 
 /**
  * Generic interface for utilities that import files from some location.

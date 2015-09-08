@@ -21,6 +21,7 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -45,9 +46,11 @@ import edu.psu.citeseerx.domain.Author;
 import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.domain.DocumentFileInfo;
 import edu.psu.citeseerx.domain.DomainTransformer;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.Keyword;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
+import edu.psu.citeseerx.repository.DocumentUnavailableException;
 import edu.psu.citeseerx.utility.SafeText;
 
 /**
@@ -93,6 +96,7 @@ public class IndexUpdateManager {
     
     
     private CSXDAO csxdao;
+    private RepositoryService repositoryService;
     
     public void setCSXDAO(CSXDAO csxdao) {
         this.csxdao = csxdao;
@@ -101,12 +105,20 @@ public class IndexUpdateManager {
     
     private CiteClusterDAO citedao;
     
+    public RepositoryService getRepositoryService() {
+        return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
+
     public void setCiteClusterDAO(CiteClusterDAO citedao) {
         this.citedao = citedao;
     } //- setCiteClusterDAO
     
     public void setredoAll(boolean redoAll) {
-		this.redoAll = redoAll;
+        this.redoAll = redoAll;
     }   
  
     /**
@@ -225,10 +237,10 @@ public class IndexUpdateManager {
 
             List<ThinDoc> docs = new ArrayList<ThinDoc>();
 
-    	    if(redoAll == true) {
-    	        lastUpdate = new  Date((long)0);
-    	    }
-	
+            if(redoAll == true) {
+                lastUpdate = new Date((long)0);
+            }
+
             docs = citedao.getClustersSinceTime(lastUpdate, lastID, 1000);
             if (docs.isEmpty()) {
                 break;
@@ -379,13 +391,13 @@ public class IndexUpdateManager {
         String url = null;
         DocumentFileInfo finfo = doc.getFileInfo();
         if (finfo != null && finfo.getUrls().size() > 0) {
-	    try {
-	    	url = URLEncoder.encode(finfo.getUrls().get(0),"UTF-8"); 
-	    }
-	    catch (UnsupportedEncodingException uee){
-		System.out.println("Failed to encode URL");
-		return;
-	    }
+            try {
+                url = URLEncoder.encode(finfo.getUrls().get(0),"UTF-8");
+            }
+            catch (UnsupportedEncodingException uee){
+                System.out.println("Failed to encode URL");
+                return;
+            }
         }
         
         
@@ -527,25 +539,25 @@ public class IndexUpdateManager {
         buffer.append("<field name=\"");
         buffer.append(fieldName);
         buffer.append("\">");
-       	String newvalue = value; 
+        String newvalue = value;
         // Get rid of XML bad characters. Note: Don't call SafeText.cleanXML
         // since all the values received are already encoded. SafeText could
         // produce things like: &amp;amp; since the text already has &amp;
 
-	/* 
-		Added Pradeep Teregowda (26 May 2009), this should clean up
-		some of the mess ?
-	*/
-	try {
-		byte[] utf8Bytes = value.getBytes("UTF-8");
-		newvalue = new String(utf8Bytes,"UTF-8");
-	}
-	catch(UnsupportedEncodingException e) {
-		e.printStackTrace();
-	}
-	/*
-		Ends addition (new value continues)
-	*/
+        /*
+            Added Pradeep Teregowda (26 May 2009), this should clean up
+            some of the mess ?
+        */
+        try {
+            byte[] utf8Bytes = value.getBytes("UTF-8");
+            newvalue = new String(utf8Bytes,"UTF-8");
+        }
+        catch(UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        /*
+            Ends addition (new value continues)
+        */
         buffer.append(SafeText.stripBadChars(newvalue));
         buffer.append("</field>");
     } //- addElement
@@ -642,43 +654,28 @@ public class IndexUpdateManager {
         if (doi == null) {
             return null;
         }
-        FileInputStream ins = null;
-        BufferedReader reader = null;
         try {
-            ins = csxdao.getFileInputStream(doi,
-                    doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY),
-            "body");
-        } catch (IOException e) { }
-        if (ins == null) {
-            ins = csxdao.getFileInputStream(doi,
-                    doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY),
-            "txt"); 
-        }
-        try {
-            reader = new BufferedReader(new InputStreamReader(ins, "UTF-8"));
-            char[] buffer = new char[maxTextLength];
-            int nread = reader.read(buffer, 0, buffer.length-1);
-            if (nread == buffer.length) {
-                for (int j=buffer.length-1; j>=0; j--) {
-                    if (buffer[j] == ' ') {
-                        break;
-                    } else {
-                        buffer[j] = ' ';
-                    }
-                }
+            HashMap<String,String> parameters = new HashMap<String,String>();
+            parameters.put(Document.DOI_KEY, doi);
+            parameters.put(RepositoryService.FILETYPE,RepositoryService.BODYFILE);
+            String fileContent = new String();
+            try {
+                fileContent = repositoryService.getDocumentContent(parameters);
             }
-            String text = new String(buffer);
-            text = SafeText.cleanXML(text);
+            catch(DocumentUnavailableException e) {
+                parameters.put(RepositoryService.FILETYPE, RepositoryService.TEXTFILE);
+                try {
+                    fileContent = repositoryService.getDocumentContent(parameters);
+                } catch(DocumentUnavailableException f) {}
+            }
 
+            String text = fileContent.substring(0,maxTextLength);
+            text = SafeText.cleanXML(text);
             return text;
             
         } catch (IOException e) {
             throw(e);
-        } finally {
-            try { reader.close(); } catch (Exception e) { }
-	    try { ins.close(); } catch(Exception e) { }
         }
-            
     }  //- getText
     
     

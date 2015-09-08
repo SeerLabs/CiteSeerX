@@ -31,6 +31,7 @@ import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.domain.DocumentFileInfo;
 import edu.psu.citeseerx.domain.ExternalLink;
 import edu.psu.citeseerx.domain.Hub;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.UniqueAuthor;
 import edu.psu.citeseerx.myciteseer.web.utils.FoulWordFilter;
 import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
@@ -44,11 +45,12 @@ import edu.psu.citeseerx.web.domain.DocumentContainer;
 /**
  * Controller used to handle user corrections to papers
  * @author Isaac Councill
- * @version $$Rev$$ $$Date$$
+ * @version $Rev$ $Date$
  */
 public class CorrectionFormController extends SimpleFormController {
 
     private CSXDAO csxdao;
+    private RepositoryService repositoryService;
     
     public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
@@ -320,12 +322,12 @@ public class CorrectionFormController extends SimpleFormController {
 
         model.put("pagetitle", "Correct: "+title);
         model.put("pagedescription", "Document Details (Isaac Councill, " +
-        		"Lee Giles): " + abs);
+                "Lee Giles): " + abs);
         model.put("pagekeywords", authors);
         model.put("title", title);            
         model.put("authors", authors);
         model.put("uauthors", uauthors);
-        model.put("abstract", abs);
+        model.put("abstractText", abs);
         model.put("venue", venue);
         model.put("year", year);
         model.put("urls", urls);
@@ -333,7 +335,10 @@ public class CorrectionFormController extends SimpleFormController {
         model.put("rep", rep);
         model.put("ncites", doc.getNcites());
         model.put("selfCites", doc.getSelfCites());
-        model.put("fileTypes", csxdao.getFileTypes(doi, rep));
+        HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
+        fileTypesQuery.put(Document.DOI_KEY, doi);
+        fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
+        model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
         model.put("elinks", eLinks);
         model.put("hubUrls", hubUrls);
         
@@ -341,7 +346,14 @@ public class CorrectionFormController extends SimpleFormController {
         
     }  //- referenceData
     
-    
+    public RepositoryService getRepositoryService() {
+        return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
+
     /* (non-Javadoc)
      * @see org.springframework.web.servlet.mvc.SimpleFormController#onSubmit(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.validation.BindException)
      */
