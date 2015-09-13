@@ -83,6 +83,7 @@ def overall_history(request):
     in_sys_count = Document.objects.filter(state__exact=1).count()
     todo_count = Document.objects.filter(state__exact=0).count()
     fail_count = Document.objects.filter(state__exact=-1).count()
+    ingested_count = 7412290
     
     data = {
         'host_suffix': '',
@@ -91,7 +92,8 @@ def overall_history(request):
         'day_history': day_history,
         'in_sys_count': in_sys_count,
         'todo_count': todo_count,
-        'fail_count': fail_count
+        'fail_count': fail_count,
+        'ingested_count':ingested_count
         }        
     
     return render_to_response('overall_history.htm', data)  

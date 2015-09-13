@@ -31,12 +31,31 @@ Please track the status of this submission here: [ <a href="/tracking/sub/{{new_
 <div class="error">{{ err }} </div>
 {% endif %}
 
-<h3 class="alt">Submit Documents for Crawling</h3>
+<!-- <h3 class="alt">Submit Documents for Crawling</h3>-->
+<div class="content">
+<h3>Submit Documents for Crawling</h3>
+    <p>Users are encouraged to submit content that they deem appropriate to the CiteSeer<sup>x</sup> collection. It is advisable to check with your co-authors before submission.</p>
 
-<form id="submit_form" name="submit_form" method="post" action="/submit/">
+<p>If you do not want your documents crawled by CiteSeer<sup>x</sup>, please use a robots.txt to disallow our crawler named "citeseerxbot". We require that all content be submitted through links to publicly accessible documents on the Web. Please make sure you have provided relevant permissions and your robots.txt permits documents to be crawled by our bot "citeseerxbot". Once we receive a link submission, that link will be queued for crawling and processed dynamically. Allow several weeks before the documents are indexed by CiteSeerX.</p>
+
+<h3>Overview</h3>
+
+<p>Once a URL is submitted, it will be crawled to a depth of 1 for PDF and PostScript files. These files may be compressed with zip, gzip, or compress formats. Any matching files will be downloaded and queued for processing within our ingestion pipeline, at which point our parsers will attempt to extract the text from the documents, filter the text for relevance, convert to PDF if necessary, and extract metadata from the document headers and reference sections.</p>
+
+<h3>Supported File Formats</h3>
+<ul>
+<li><strong>PDF:</strong> (Recommended) We are generally able to convert PDF documents in such a way as to preserve UTF-8 character codes. Therefore, we recommend submitting content in this format particulary if your files contain characters that cannot be correctly represented within the ASCII character set.</li>
+<li><strong>PS:</strong> We do support PostScript files; however, text conversion will be limited to ASCII-only due to limitations in standard PostScript text extractors.</li>
+<li><strong>ZIP | GZ | Z:</strong> Common compression formats such as zip, gzip, and UNIX compress are all supported.</li>
+</ul>
+
+
+  <p><sup>*</sup>Publishers <a target="_blank" href="http://www.sherpa.ac.uk/romeo/">policy</a> on self-archiving of your publications.</p>
+
+<form id="submit_form" name="submit_form" method="post" action="/submit_pub/">
  
   <table width="678" border="0">
-    <tr>
+    <!--<tr>
       <td width="7%">Url:</td>
       <td width="93%"><input name="url" type="text" size="80" class="text required url"/></td>
     </tr>
@@ -44,15 +63,16 @@ Please track the status of this submission here: [ <a href="/tracking/sub/{{new_
     <tr>
       <td>Email:</td>
       <td><input name="email" type="text" class="text required email" size="80" /></td>
-    </tr>
+    </tr>-->
+{{form.as_table}}
     <tr>
       <td>&nbsp;</td>
       <td><input type="submit" name="Submit" value="Submit" /></td>
     </tr>
   </table>
 
-
 </form>
+
 <br />
 
 {% endblock %}

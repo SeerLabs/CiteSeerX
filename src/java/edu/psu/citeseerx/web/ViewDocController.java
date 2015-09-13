@@ -35,10 +35,14 @@ import edu.psu.citeseerx.webutils.RedirectUtils;
 import edu.psu.citeseerx.myciteseer.domain.Account;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.http.ResponseEntity;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.RuntimeException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -183,9 +187,14 @@ public class ViewDocController implements Controller {
 			model.put("pagetitle", dmcaTitle);
 			return new ModelAndView("dmcaPage", model);
 		}
+                else if(doc.isRemoved() == true) {
+                        response.setStatus(404);
+                        return new ModelAndView("null",model);
+                }
 		else if (doc.isPublic() == false) {
 			model.put("doi", doi);
 			model.put("pagetitle", removedTitle);
+                        response.setStatus(404);
 			return new ModelAndView("docRemovedPage", model);
 		}
 
@@ -246,8 +255,17 @@ public class ViewDocController implements Controller {
 			}
 			Collections.sort(citations, new CitationComparator());
 		}
+                List<String> citationContexts = new ArrayList<String>();
+                for (ThinDoc citation : citations){
+                    String context = citedao.getContext(clusterID, citation.getCluster());
+                    if (context != null){
+                        citationContexts.add(context);
+                    } else{
+                        citationContexts.add("");
+                    }
+                }
 
-		String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
+                String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
 
 		// Obtain citation chart data.
 		String chartData = csxdao.getCiteChartData(doi);
@@ -293,6 +311,7 @@ public class ViewDocController implements Controller {
 		model.put("selfCites", doc.getSelfCites());
 		model.put("tags", tags);
 		model.put("citations", citations);
+                model.put("citationContexts", citationContexts);
 		model.put("elinks", eLinks);
 		HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
 		fileTypesQuery.put(Document.DOI_KEY, doi);

@@ -9,12 +9,16 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'mysql'         # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-DATABASE_NAME = 'crawl_db' # Or path to database file if using sqlite3.
-DATABASE_USER = 'username'             # Not used with sqlite3.
-DATABASE_PASSWORD = 'password'         # Not used with sqlite3.
-DATABASE_HOST = 'host'             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''             # Set to empty string for default. Not used with sqlite3.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'citeseerx_crawl',             # Or path to database file if using sqlite3.
+        'USER': 'user',                      # Not used with sqlite3.
+        'PASSWORD': 'passwd',                  # Not used with sqlite3.
+        'HOST': 'hostname',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -52,8 +56,8 @@ SECRET_KEY = 'kaaz#nk(@(l%u7g6-b^gn%pal_$@z1=@m0-&lhz_feo410ry*+'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.load_template_source',
 )
 
@@ -79,4 +83,5 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.databrowse', 
     'citeseerx_crawl.main_crawl',
+    'captcha',
 )

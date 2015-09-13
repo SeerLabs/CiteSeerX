@@ -19,8 +19,8 @@ if (!$type) {
 
 
 my $doiService = SOAP::Lite
-    ->default_ns('http://doi.citeseerx.psu.edu/xsd')
-    ->uri('http://doi.citeseerx.psu.edu/xsd')
+    ->default_ns('http://doi.citeseerx.psu.edu')
+    ->uri('http://doi.citeseerx.psu.edu')
     ->proxy($url)
     ->on_fault(
 	       sub {

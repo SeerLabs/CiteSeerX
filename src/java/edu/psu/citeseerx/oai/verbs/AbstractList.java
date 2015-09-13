@@ -416,8 +416,8 @@ public abstract class AbstractList extends AbstractVerb {
 	        int metadataFormat) {
 
 	    
-	    List<String> cited = getCitedDocuments(doc.getClusterID());
-	    List<String> citing = getCitingDocuments(doc.getClusterID());
+	    List<String> cited = null; //getCitedDocuments(doc.getClusterID());
+	    List<String> citing = null; //getCitingDocuments(doc.getClusterID());
 	    return OAIUtils.addRecord(toAddTo, getViewDocURL(), cited, citing, 
 	            RIGHTS, doc, contributor, getGranularity(), metadataFormat, 
 	            buildIdentifier(doc.getDatum(Document.DOI_KEY)), 

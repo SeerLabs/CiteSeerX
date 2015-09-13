@@ -1,0 +1,94 @@
+{% extends 'base2.html' %}
+
+{% block title %}Submit Document{% endblock %}
+
+{% block extra-head %}
+<script type="text/javascript" src="/static/js/jquery.validate.pack.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $("#submit_form").validate();
+  });
+</script>
+{% endblock %}
+
+{% block content %}
+
+{% if msg %} 
+<div class="success">
+{{ msg }}
+
+{% if parent %} <br />
+This URL is already in our crawling database and has been crawled before. [ <a href="/tracking/parent/{{parent.id}}">Documents from this URL</a> ] {% endif %}
+{% if old_sub %} <br />
+This URL has already been submitted before. [ <a href="/tracking/sub/{{old_sub.id}}">Documents from this URL</a> ] {% endif %}
+{% if new_sub %} <br />
+Thank you for your submission! You may track the status of this submission here later: [ <a href="/tracking/sub/{{new_sub.id}}">Submission Tracking</a> ] {% endif %}
+</div>
+{% endif %}
+
+{% if err %}
+<div class="error">{{ err }} </div>
+{% endif %}
+
+<!-- <h3 class="alt">Submision Page for Publishsers</h3>-->
+<div class="content">
+
+<h2>Submiting Documents:</h2>
+<h3>Crawling for Authors:</h3>
+<p>Users are encouraged to submit content that they deem appropriate to the CiteSeer<sup>x</sup> collection. CiteSeerX crawls and indexes documents that are freely and publicly available on the Web. </p>
+<p>If you do not want your documents crawled by CiteSeer<sup>x</sup>, please use a <i>robots.txt</i> to disallow our crawler named <i>citeseerxbot</i>.</p>
+<p>We require that all content be submitted through links to publicly accessible documents on the Web. Please make sure you have provided relevant permissions and your <i>robots.txt</i> permits documents to be crawled by our bot <i>citeseerxbot</i>. Once we receive a link submission, that link will be queued for crawling and processed dynamically. Allow several weeks before the documents are indexed by CiteSeer<sup>x</sup>.</p>
+<h3>Crawling for Open-Access Publishers, Venues, and Repositories</h3>
+<p>Thank you for requesting that CiteSeer<sup>x</sup> crawl and index
+your papers. It is important to note that CiteSeer<sup>x</sup> indexes papers, not
+venues. Please insure the following: </p>
+<ul>
+  <li> Make sure that your papers are in PDF. These documents should be
+freely available to anyone that visits your site without any login
+credentials. Currently, CiteSeer<sup>x</sup> only indexes papers written in
+English. </li>
+  <li> In order for CiteSeer to crawl your site, please edit your <i>robots.txt</i> file to allow our crawler to download your papers. The content of <i>robots.txt</i> should be either
+    <blockquote>User-agent:*<br> Disallow:</blockquote>
+to allow any crawler to completely crawl your site or
+    <blockquote>User-agent: citeseerxbot<br> Allow: /yourdirectory/</blockquote>
+The latter will specifically allow our crawler, <i>citeseerxbot</i>, to crawl the files in <i>/yourdirectory/</i>. </li>
+  <li>We prefer a list of URLs that directly link to your PDF files. You can also generate a sitemap which contains URLs of PDF files. This
+speeds up downloads. </li>
+  <li>If you cannot provide direct links to the PDF files, then please provide a <i>direct link URL to the archive(s) of all of your papers</i>.
+  </li>
+  <li>Once crawled, your papers will then have metadata extracted, parsed, and imported into our database and then indexed. Please allow at least a week for your papers to appear in CiteSeer<sup>x</sup>. If you do not see your papers after two weeks, please contact us. </li>
+</ul>
+  <p><sup>*</sup>Publishers <a target="_blank" href="http://www.sherpa.ac.uk/romeo/">policy</a> on self-archiving of your publications.</p>
+<h3>Supported File Formats</h3>
+<ul>
+<li><strong>PDF:</strong> (Recommended) We are generally able to convert PDF documents in such a way as to preserve UTF-8 character codes. Therefore, we recommend submitting content in this format particulary if your files contain characters that cannot be correctly represented within the ASCII character set.</li>
+<li><strong>PS:</strong> We do support PostScript files; however, text conversion will be limited to ASCII-only due to limitations in standard PostScript text extractors.</li>
+<li><strong>ZIP | GZ | Z:</strong> Common compression formats such as zip, gzip, and UNIX compress are all supported.</li>
+</ul>
+
+
+<form id="submit_form" name="submit_form" method="post" action="/submit_pub/">
+ 
+  <table width="678" border="0">
+    <!--<tr>
+      <td width="7%">Url:</td>
+      <td width="93%"><input name="url" type="text" size="80" class="text required url"/></td>
+    </tr>
+
+    <tr>
+      <td>Email:</td>
+      <td><input name="email" type="text" class="text required email" size="80" /></td>
+    </tr>-->
+{{form.as_table}}
+    <tr>
+      <td>&nbsp;</td>
+      <td><input type="submit" name="Submit" value="Submit" /></td>
+    </tr>
+  </table>
+
+</form>
+
+<br />
+
+{% endblock %}

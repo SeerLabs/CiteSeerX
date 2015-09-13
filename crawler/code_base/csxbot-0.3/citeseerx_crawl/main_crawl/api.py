@@ -4,17 +4,27 @@ from xml.dom.minidom import getDOMImplementation
 from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response
 
-from citeseerx_crawl.main_crawl.models import Document,Documentt
+from citeseerx_crawl.main_crawl.models import Document
 import config
 
 def get_docs_xml(request):
-    docs = Document.objects.filter(state__exact=0).order_by('-id')[:config.ingest_limit]
 
     impl = getDOMImplementation()    
     xDoc = impl.createDocument(None, "response", None)
-    root = xDoc.documentElement # why no argument here but Line 19 has?
+    root = xDoc.documentElement
     root.setAttribute("location", config.ingest_rep_dir)
     
+    # I add this block to let user to control number of documents retrieved
+    if 'n' in request.GET:
+        ingest_n = request.GET['n']
+    else:
+        error = 'missing a number'
+        #add_node('error',error)
+        return HttpResponse("Missing a number",mimetype='text/xml')
+
+    # config.ingest_limit was used instead of ingest_n
+    docs = Document.objects.filter(state__exact=0).order_by('-id')[:ingest_n]
+
     def add_node(tag, value):
         node = xDoc.createElement(tag)        
         node.appendChild(xDoc.createTextNode(value))
@@ -39,7 +49,10 @@ def get_docs_xml(request):
         doc_node.setAttribute("id", str(d.id))
         doc_node.appendChild(xDoc.createTextNode(p))
         root.appendChild(doc_node)
-            
+        dd = Document.objects.get(id=d.id)
+        dd.state = 2
+        dd.save()
+
     return HttpResponse(xDoc.toxml(), mimetype='text/xml')
 
 def set_docs_xml(request):

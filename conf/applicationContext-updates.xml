@@ -64,6 +64,7 @@
     <property name="solrURL" value="${solr.updateUrl}"/>
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="redoAll" value="false"/>
   </bean>
 
   <bean id="tableIndexUpdater" class="edu.psu.citeseerx.updates.TableIndexUpdater">

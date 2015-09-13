@@ -12,6 +12,7 @@
     <td nowrap="nowrap" bgcolor="#CCCCCC">Rank</td>
     <td nowrap="nowrap" bgcolor="#CCCCCC"># of Documents </td>
     <td nowrap="nowrap" bgcolor="#CCCCCC"># of Citations </td>
+    <td nowrap="nowrap" bgcolor="#CCCCCC"># of Cites/Doc </td>  <!-- jwu -->
     <td nowrap="nowrap" bgcolor="#CCCCCC">{{ group_by }}</td>
     <td nowrap="nowrap" bgcolor="#CCCCCC">Accumulated # of Docs </td>
     <td nowrap="nowrap" bgcolor="#CCCCCC">Accumulated Percentage </td>
@@ -23,6 +24,7 @@
     <td bgcolor="#FFFFFF">{{ x.order }}</td>
     <td bgcolor="#FFFFFF">{{ x.ndocs }}</td>
     <td bgcolor="#FFFFFF">{{ x.ncites}}</td>
+    <td bgcolor="#FFFFFF">{{ x.citespdoc }}</td>  <!-- jwu -->
     <td bgcolor="#FFFFFF"><a href="/history/{{ group_by }}/{{x.name}}">{{ x.name }}</a></td>
     <td bgcolor="#FFFFFF">{{ x.accu_num }}</td>
     <td bgcolor="#FFFFFF">{{ x.accu_per }}</td>

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CiteSeerX Crawl Policy - {% block title %}{% endblock %}</title>
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/blueprint/screen.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="/static/css/blueprint/print.css" type="text/css" media="print">	
+<link rel="stylesheet" href="/static/css/blueprint/plugins/fancy-type/screen.css" type="text/css"  media="screen, projection">
+
+<!--[if lt IE 8]><link rel="stylesheet" href="/static/css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="/static/js/jquery-1.3.2.min.js"></script>
+{% endblock %}
+
+{% block extra-head %}{% endblock %}
+</head>
+
+<body>
+
+<div class="container">
+	<br />
+	<div class="span-10"><h1><a href="http://citeseer.ist.psu.edu/">CiteSeerX</a> Crawl Policy</h1></div>
+	<div class="span-4">&nbsp;</div>
+	<div class="span-10 last" align="right">
+		<a href="/">Home</a> | <a href="/submit_pub/">Submit</a> | <a href="/query/">Query</a> </div>
+	
+	<hr />
+	{% block content %}{% endblock %}
+	<hr />
+	<div class="span-4">CiteSeerX &copy; 2015</div>
+	<div class="span-12">&nbsp;</div>
+	<div class="span-8 last">&nbsp;
+	</div>
+</div>
+
+
+</body>
+</html>

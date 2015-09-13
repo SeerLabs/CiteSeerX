@@ -22,7 +22,7 @@
             <div class="result">
               <h3>
                 <c:if test="${ hit.inCollection }">
-                  <a class="remove doc_details" href="<c:url value='/viewdoc/summary?doi=${ hit.doi }'/>">
+                  <a class="remove doc_details" href="<c:url value='/viewdoc/summary?doi=${ hit.doi }&rank=${ start + status.count }'/>">
                   <c:if test="${ ! empty hit.title }"><c:out value="${ hit.title }" escapeXml="false"/></c:if>
                   <c:if test="${ empty hit.title }">Unknown Title</c:if></a>
                 </c:if>
@@ -57,7 +57,7 @@
                 <c:if test="${ hit.inCollection }">
                   <c:if test="${ ! empty hit['abstract'] }">
                   <div class="pubabstract">
-                    <c:out value="${ hit['abstract']}"/>
+                    <c:out value="${ hit['abstract']}" escapeXml="false"/>
                   </div>
                   </c:if>
                 </c:if>

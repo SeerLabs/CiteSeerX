@@ -32,7 +32,7 @@
   <target name="compile" depends="init"
       description="compile all java source files">
     <javac srcdir="${src}/java" destdir="${build}"
-           debug="on" debuglevel="lines,vars,source">
+           debug="on" debuglevel="lines,vars,source" includeantruntime="false">
       <classpath refid="project.class.path" />
     </javac>
   </target>
