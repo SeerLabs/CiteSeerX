@@ -12,43 +12,33 @@
  */
 package edu.psu.citeseerx.web;
 
+import edu.psu.citeseerx.dao2.logic.CSXDAO;
+import edu.psu.citeseerx.domain.*;
 import edu.psu.citeseerx.utility.DateUtils;
 import edu.psu.citeseerx.webutils.RedirectUtils;
-import edu.psu.citeseerx.dao2.logic.CSXDAO;
-import edu.psu.citeseerx.domain.Algorithm;
-import edu.psu.citeseerx.domain.Author;
-import edu.psu.citeseerx.domain.BiblioTransformer;
-import edu.psu.citeseerx.domain.Document;
-import edu.psu.citeseerx.domain.Table;
-import edu.psu.citeseerx.domain.ThinDoc;
-import edu.psu.citeseerx.domain.UniqueAuthor;
-
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.client.solrj.SolrServerException;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.servlet.mvc.Controller;
-import org.springframework.web.servlet.ModelAndView;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.Controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.*;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Process user searches by obtaining search parameters and creating the
@@ -182,6 +172,9 @@ public class SearchController implements Controller {
     private static final HashMap<String,String> sortTypes =
         new HashMap<String,String>();
 
+    private static final HashMap<String,String> solrJSortTypes =
+            new HashMap<String,String>();
+
     static {
         /*
          * Note from Solr: If no sort is specified, the default is score desc
@@ -194,6 +187,13 @@ public class SearchController implements Controller {
         sortTypes.put(SORT_ASCDATE, "sort=year+asc");
         sortTypes.put(SORT_TIME, "sort=vtime+desc");
         sortTypes.put(SORT_DOC, "sort=ndocs+desc");
+
+        solrJSortTypes.put(SORT_RLV, "");
+        solrJSortTypes.put(SORT_CITE, "ncites");
+        solrJSortTypes.put(SORT_DATE, "year");
+        solrJSortTypes.put(SORT_ASCDATE, "year");
+        solrJSortTypes.put(SORT_TIME, "vtime");
+        solrJSortTypes.put(SORT_DOC, "ndocs");
     }
 
     private static final String RSS = "rss";
@@ -290,7 +290,7 @@ public class SearchController implements Controller {
         }else{
             queryString.append(feedSize);
         }
-        queryString.append("&start="+queryParameters.get(START));
+        queryString.append("&start=" + queryParameters.get(START));
         // Added fix for disambiguated authors
         if (query.indexOf(':') > 0 || queryParameters.get(UAUTH).equals(UAUTHSET)) {
             queryString.append("&qt="+STANDARD_QUERY);
@@ -310,6 +310,70 @@ public class SearchController implements Controller {
         return queryString.toString();
     } //- buildSolrQuery
 
+    /*
+ * builds the Solr query based on the parameters send by the user.
+ */
+    private SolrQuery buildSolrJQuery(Map<String, Object> queryParameters) {
+        SolrQuery solrQuery = new SolrQuery();
+
+        String query = normalizeQuery(
+                (String)queryParameters.get(QUERY_PARAMETER));
+
+
+
+            // Searching for authors within documents
+            if (queryParameters.get(QUERY_TYPE).equals(AUTHOR_QUERY) &&
+                    !queryParameters.get(UAUTH).equals(UAUTHSET)) {
+                solrQuery.setFields("authorNorms:("+query+")");
+                //query = "authorNorms:("+query+")";
+
+            }
+
+
+        // First, we add all the common parameters
+        solrQuery.setQuery(query);
+        //StringBuffer queryString = new StringBuffer("?q="+query);
+        String sort = (String)queryParameters.get(SORT);
+
+        if (!sort.equals(SORT_RLV)) {
+            // Relevance is the default for Solr that's why we ignored it
+            //queryString.append("&");
+            //queryString.append(sortTypes.get(sort));
+            solrQuery.addSort(solrJSortTypes.get(sort), SolrQuery.ORDER.desc);
+        }
+        //queryString.append("&rows=");
+        if (queryParameters.get(FEED) == null) {
+            //queryString.append(nrows);
+            solrQuery.setRows(nrows);
+        }else{
+            solrQuery.setRows(feedSize);
+            //queryString.append(feedSize);
+        }
+        solrQuery.setStart((Integer) queryParameters.get(START));
+        //queryString.append("&start="+queryParameters.get(START));
+        // Added fix for disambiguated authors
+        if (query.indexOf(':') > 0 || queryParameters.get(UAUTH).equals(UAUTHSET)) {
+            //queryString.append("&qt="+STANDARD_QUERY);
+            solrQuery.set("qt", STANDARD_QUERY);
+        }else{
+            //queryString.append("&qt="+DISMAX_QUERY);
+            solrQuery.set("qt", DISMAX_QUERY);
+        }
+
+        // Standard addons
+        //queryString.append("&hl=true&hl.fragsize=300&wt=json");
+        solrQuery.setHighlight(true);
+        solrQuery.setHighlightFragsize(300);
+
+        // Now, we add specific parameters to each type of search
+        //if (queryType.equals(DOCUMENT_QUERY)) {
+            if ((Boolean)queryParameters.get(INCLUDE_CITATIONS) == false) {
+                //queryString.append("&fq=incol:true");
+                solrQuery.addFilterQuery("incol:true");
+            }
+        //}
+        return solrQuery; //queryString.toString();
+    } //- buildSolrQuery
     /*
      * Executes a query towards a Solr intance unsing the supplied parameters
      */
@@ -389,7 +453,7 @@ public class SearchController implements Controller {
         model.put("timeq", timeQuery);
         model.put("rss", rssUrl);
         model.put("atom", atomUrl);
-        if (newStart < (Integer)model.get("resultsize") &&
+        if (newStart < (Long)model.get("resultsize") &&
                 !(Boolean)model.get("error")) {
             model.put("nextpageparams", nextPageParams.toString());
         }
@@ -432,7 +496,7 @@ public class SearchController implements Controller {
         model.put("start", queryParameters.get(START));
         model.put("nrows", nrows);
         model.put("sorttype", queryParameters.get(SORT));
-        model.put("dblpparams", "author="+q);
+        model.put("dblpparams", "author=" + q);
 
         fillModelWithLinks(model, queryParameters, queryType);
 
@@ -449,13 +513,17 @@ public class SearchController implements Controller {
      * obtains the result from Solr and sends the results back to the user.
      */
     private ModelAndView doGeneralSearch(Map<String, Object> queryParameters) {
+        String urlString = "http://localhost:8000/solr/citeseerx";
+        HttpSolrServer server = new HttpSolrServer(urlString);
 
         Map<String, Object> model = new HashMap<String, Object>();
         Boolean error = false;
         String errMsg = "";
-        Integer numFound = 0;
+        Long numFound = 0l;
         List<ThinDoc> hits = new ArrayList<ThinDoc>();
         List<String> coins = new ArrayList<String>();
+
+        List<ThinDoc> Hits = new ArrayList<ThinDoc>();
 
         Integer start = (Integer)queryParameters.get(START);
         if (start >= maxresults) {
@@ -464,18 +532,35 @@ public class SearchController implements Controller {
             errMsg = errMsg+" Please try a more specific query";
         }else{
 
-            String solrQuery = buildSolrQuery(DOCUMENT_QUERY, queryParameters);
-
+            // String solrQuery = buildSolrQuery(DOCUMENT_QUERY, queryParameters);
+            SolrQuery query = buildSolrJQuery(queryParameters);
+            //SolrQuery query = new SolrQuery();
+            //query.setQuery("security");
             try {
-                JSONObject output = executeSolrQuery(solrSelectUrl, solrQuery);
-                JSONObject responseObject = output.getJSONObject("response");
-                numFound = responseObject.getInt("numFound");
-                hits = SolrSelectUtils.buildHitListJSON(output);
+                QueryResponse response = server.query(query);
+                Hits = response.getBeans(ThinDoc.class);
+                numFound = response.getResults().getNumFound();
+
+                for (ThinDoc hit : hits) {
+                    hit.setCluster(Long.parseLong(hit.getId()));
+                }
+            }
+            catch(SolrServerException e) {
+                e.printStackTrace();
+            }
+            /*
+            try {
+                //JSONObject output = executeSolrQuery(solrSelectUrl, solrQuery);
+                //JSONObject responseObject = output.getJSONObject("response");
+                //numFound = responseObject.getInt("numFound");
+
+
+                //hits = SolrSelectUtils.buildHitListJSON(output);
 
                 // Obtain COinS representation for hits.
-                String url = (systemBaseURL.endsWith("/") ? systemBaseURL :
+                //String url = (systemBaseURL.endsWith("/") ? systemBaseURL :
                     systemBaseURL + "/") + "viewdoc/summary";
-                coins = BiblioTransformer.toCOinS(hits, url);
+                //coins = BiblioTransformer.toCOinS(hits, url);
 
             } catch (SolrException e) {
                 error = true;
@@ -496,14 +581,14 @@ public class SearchController implements Controller {
             }catch (Exception e) {
                 /*
                  *  A problem retrieving the results happen.
-                 */
+
                 error = true;
                 errMsg = "<p>Error obtaining the query results.</p>" +
                     "Try your query again and, if the problem persists, " +
                     "contact an admin for assistance.</p>";
                 System.err.println("Query: " + solrQuery);
                 e.printStackTrace();
-            }
+            }*/
         }
 
         model.put("error", error);
@@ -512,8 +597,8 @@ public class SearchController implements Controller {
 
         fillModel(model, queryParameters, DOCUMENT_QUERY);
 
-        model.put("hits", (!error) ? hits : new ArrayList<ThinDoc>());
-        model.put("coins", (!error) ? coins : new ArrayList<String>());
+        model.put("hits", (!error) ? Hits : new ArrayList<ThinDoc>());
+        //model.put("coins", (!error) ? coins : new ArrayList<String>());
 
         String feed = (String)queryParameters.get(FEED);
         if (feed != null) {

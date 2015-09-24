@@ -15,7 +15,7 @@ package edu.psu.citeseerx.domain;
 import java.io.Serializable;
 import java.util.Date;
 import edu.psu.citeseerx.utility.DateUtils;
-
+import org.apache.solr.client.solrj.beans.Field;
 /**
  * Light-weight bean container for document, citation, or cluster metadata.
  *
@@ -28,27 +28,39 @@ public class ThinDoc implements Serializable {
      * 
      */
     private static final long serialVersionUID = 8919839426733776073L;
-    
+
+    @Field
     private String doi;
     private Long cluster;
     private String authors;
+    @Field
     private String title;
+    @Field("abstract")
     private String abs;
+    @Field
     private String venue;
+    @Field("ventype")
     private String ventype;
     private int year = -1;
+    @Field
     private String pages;
     private int vol = -1;
     private int num = -1;
+    @Field
     private String publisher;
+    @Field
     private String tech;
     private int ncites = 0;
     private int selfCites = 0;
     private String snippet;
+    @Field
     private String url;
+    @Field("incol")
     private boolean inCollection; 
     private String observations;
     private Date updateTime;
+
+    private String id;
     
     public String getAuthors() {
         return authors;
@@ -173,10 +185,16 @@ public class ThinDoc implements Serializable {
     public Date getUpdateTime() {
         return updateTime;
     } //- getUpdateTime
+    public void setId(String id) {
+        this.id = id;
+    } //- setId
+    public String getId() {
+        return id;
+    } //- getId
+
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     } //- setUpdateTime
-    
     public String getRfc822Time() {
         return DateUtils.formatRFC822(updateTime);
     } //- getRfc822Time
