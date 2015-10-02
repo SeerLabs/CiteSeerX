@@ -201,7 +201,7 @@ public class CitationsController implements Controller {
 		Long clusterID = doc.getClusterID();
 		List<ThinDoc> citations = null;
 		if (clusterID != null) {
-			citations = citedao.getCitedDocuments(clusterID, 0, 50);
+			citations = citedao.getCitedDocuments(clusterID, 0, 100);
 			for (Object cite : citations) {
 				SolrSelectUtils.prepCitation((ThinDoc)cite);
 			}
