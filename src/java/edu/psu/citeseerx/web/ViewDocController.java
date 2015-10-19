@@ -34,14 +34,11 @@ import edu.psu.citeseerx.myciteseer.domain.Account;
 import edu.psu.citeseerx.dao2.RepositoryMap;
 import org.springframework.web.servlet.mvc.Controller;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.http.ResponseEntity;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.RuntimeException;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.io.IOException;
 import java.util.ArrayList;
