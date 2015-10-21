@@ -89,10 +89,10 @@
           </div>
         </c:if>
       </div> <%-- sidebar div close --%>
-    <div id="abstract">
-      <h3>Abstract</h3>
-      <p><c:out value="${ abstract }"/></p>
-    </div>
+      <div id="abstract">
+        <h3>Abstract</h3>
+        <p><c:out value="${ abstract }"/></p>
+      </div>
     </div>
   </div><%-- viewContent close div --%>
   <div class="clear"></div>
