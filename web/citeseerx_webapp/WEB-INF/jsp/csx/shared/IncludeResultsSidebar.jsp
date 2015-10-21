@@ -18,18 +18,22 @@
 
   <div id="qother">Try your query at:
     <c:url value='http://scholar.google.com/scholar' var="googleScholar"><c:param name='q' value='${ param.q }'/><c:param name='hl' value='en' /><c:param name='btnG' value='Search'/></c:url>
-    <c:url value='http://search.yahoo.com/search' var='yahoo'><c:param name='p' value='${ param.q }'/></c:url>
+    <c:url value='http://s2.allenai.org/search' var='s2'><c:param name='q' value='${ param.q }'/></c:url>
     <c:url value='http://dblp.uni-trier.de/search' var='dblp'><c:param name='q' value='${ param.q }'/></c:url>
     <c:url value='http://www.bing.com/search' var="Bing"><c:param name="q" value='${ param.q }'/></c:url>
-    <c:url value='http://liinwww.ira.uka.de/csbib/index' var="CBS"><c:param name="query" value='${ param.q }'/><c:param name="submit" value='Search'/></c:url>
+    <c:url value='https://www.google.com/search' var="Google"><c:param name="q" value='${ param.q }'/></c:url>
     <c:url value='http://academic.research.microsoft.com/Search.aspx' var="Academic"><c:param name="query" value='${ param.q }'/><c:param name="submit" value='Search'/></c:url>
     <table border="0" cellspacing="5" cellpadding="5" >
-      <tr><td><a href="<c:out value='${ googleScholar }' escapeXml="true"/>" title="Google Scholar search engine">Scholar</a></td>
-        <td><a href="<c:out value='${ yahoo }' escapeXml="true"/>" title="Yahoo Web Search">Yahoo!</a></td>
-        <td><a href="<c:out value='${ dblp }' escapeXml="true"/>" title="DBLP Computer Science Bibliography">DBLP</a></td></tr>
-      <tr><td><a href="<c:out value='${ Bing }' escapeXml="true"/>" title="Live Search is evolving">Bing</a></td>
-        <td><a href="<c:out value='${ CBS }' escapeXml="true"/>" title="Collection of Computer Science Bibliographies">CSB</a></td>
-        <td><a href="<c:out value='${ Academic }' escapeXml="true"/>" title="Microsoft Academic Search">Academic</a></td></tr>
+      <tr>
+          <td><a href="<c:out value='${ s2 }' escapeXml="true"/>" title="AllenAI Semantic Scholar"><img src="<c:url value="/images/ai2_icon.png"/>" alt="Semantic Scholar" height="30" width="30"/></a></td>
+          <td><a href="<c:out value='${ googleScholar }' escapeXml="true"/>" title="Google Scholar"><img src="<c:url value="/images/googlescholar_icon.png"/>" alt="Scholar" height="24" width="24"/></a></td>
+          <td><a href="<c:out value='${ Academic }' escapeXml="true"/>" title="Microsoft Academic Search"><img src="<c:url value="/images/microsoftacademicsearch_icon.jpg"/>" alt="Academic" height="24" width="24"/></a></td>
+      </tr>
+      <tr>
+          <td><a href="<c:out value='${ Google }' escapeXml="true"/>" title="Google"><img src="<c:url value="/images/google_icon.png"/>" alt="Google" height="24" width="24"/></a></td>
+          <td><a href="<c:out value='${ Bing }' escapeXml="true"/>" title="Bing"><img src="<c:url value="/images/bing_icon.ico"/>" alt="Bing" height="24" width="24"/></a></td>
+          <td><a href="<c:out value='${ dblp }' escapeXml="true"/>" title="DBLP Computer Science Bibliography"><img src="<c:url value="/images/dblp_icon.png"/>" alt="DBLP" height="30" width="30"/></a></td>
+      </tr>
     </table>
   </div>
 </div>
