@@ -804,6 +804,14 @@ public class CSXDAOImpl implements CSXDAO {
             throws DataAccessException {
         return docDAO.getLastDocuments(lastDOI, amount);
     } //- getLastDocuments
+    
+    /* (non-Javadoc)
+     * @see edu.psu.citeseerx.dao2.DocumentDAO#getKeyphrase(java.lang.String)
+     */
+    public List<String> getKeyphrase(String doi)
+            throws DataAccessException {
+        return docDAO.getKeyphrase(doi);
+    } //- getKeyPhrase
 
     ///////////////////////////////////////////////////////
     //  File DAO                               

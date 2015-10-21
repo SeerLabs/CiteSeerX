@@ -173,6 +173,14 @@
       <h3>Abstract</h3>
       <p><c:out value="${ abstract }"/></p>
     </div>
+    <div id="keywords">
+      <h3>Keyphrases</h3>
+      <p>
+        <c:forEach items="${ keyphrases }" var="keyphrase">
+        <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;&nbsp;&nbsp;
+        </c:forEach>
+      </p>
+    </div>
     <div id="citations">
       <h3>Citations</h3>
       <c:if test="${empty citations}"><p>No citations identified.</p></c:if>

@@ -148,4 +148,12 @@ public interface DocumentDAO {
      */
     public List<String> getLastDocuments(String lastDOI, int amount)
     throws DataAccessException;
+    /**
+     * 
+     * @param doi
+     * @return Returns a list of keyphrases of the document with doi
+     * @throws DataAccessException
+     */
+    public List<String> getKeyphrase(String doi)
+    throws DataAccessException;
 } //- interface DocumentDAO
