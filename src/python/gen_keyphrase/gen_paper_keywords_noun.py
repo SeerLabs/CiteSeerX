@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python2.7
 
 import nltk
 import sys
@@ -10,7 +10,8 @@ import mysql_util
 
 def leaves(tree):
   """Finds NP (nounphrase) leaf nodes of a chunk tree."""
-  for subtree in tree.subtrees(filter = lambda t: t.node=='NP'):
+#  for subtree in tree.subtrees(filter = lambda t: t.node=='NP'):
+  for subtree in tree.subtrees(filter = lambda t: t.label()=='NP'):
     yield subtree.leaves()
 
 def normalize(word, lemmatizer):
@@ -34,9 +35,9 @@ def get_terms(tree, lemmatizer, stopwords):
 def gen_keyphrases(text):
   # Used when tokenizing words
   sentence_re = r'''(?x)    # set flag to allow verbose regexps
-    ([A-Z])(\.[A-Z])+\.?  # abbreviations, e.g. U.S.A.
-    | \w+(-\w+)*      # words with optional internal hyphens
-    | \$?\d+(\.\d+)?%?    # currency and percentages, e.g. $12.40, 82%
+    (?:[A-Z])(?:\.[A-Z])+\.?  # abbreviations, e.g. U.S.A.
+    | \w+(?:-\w+)*      # words with optional internal hyphens
+    | \$?\d+(?:\.\d+)?%?    # currency and percentages, e.g. $12.40, 82%
     | \.\.\.        # ellipsis
     | [][.,;"'?():-_`]    # these are separate tokens
   '''
@@ -129,5 +130,3 @@ class TestAll():
     assert_equal(d3['b'], 6)
     assert_equal(d3['c'], 2)
     assert_equal(d3['d'], 10)
-
-

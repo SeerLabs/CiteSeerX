@@ -45,7 +45,7 @@ def get_db_info():
 
 def does_db_exist(db, cursor, db_name):
   cursor.execute("""SELECT schema_name FROM information_schema.schemata """ + \
-     """WHERE schema_name = %s""", (db_name))
+     """WHERE schema_name = %s""", (db_name,))
   row = cursor.fetchone()
   return row != None
 
