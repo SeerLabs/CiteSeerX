@@ -78,13 +78,15 @@ def merge_dictionary(a, b):
   return dict((n, a.get(n,0)+b.get(n,0)) for n in set(a)|set(b))
 
 def save_to_tbl(db, cursor, pid, term_ctr):
-  for ngram in term_ctr:
-    try:
+  try:
+    cursor.execute("""DELETE FROM paper_keywords_noun WHERE paper_id=%s""", (pid,))
+    for ngram in term_ctr:
       cursor.execute("""INSERT INTO paper_keywords_noun (paper_id, ngram, count) VALUES (%s, %s, %s)""", (pid, ngram.decode('utf-8'), term_ctr[ngram]))
-      db.commit()
-    except:
-      sys.stdout.write("\nError in inserting paperkeyords_wiki of paper_id %s, ngram %s, and count %d\n" % (pid, ngram, term_ctr[ngram]))
-      db.rollback()
+    db.commit()
+  except Exception as e:
+    sys.stdout.write("\nError in inserting keyphrases of paper_id %s to paper_keywords_noun\n" % (pid,))
+    print e
+    db.rollback()
 
 def main(argv):
   db, cursor = mysql_util.init_db()
