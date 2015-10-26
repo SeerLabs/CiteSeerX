@@ -92,12 +92,14 @@
         <p><c:out value="${ abstract }"/></p>
       </div>
       <div id="keywords">
-        <h3>Keyphrases</h3>
-        <p>
-          <c:forEach items="${ keyphrases }" var="keyphrase">
-          <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;&nbsp;&nbsp;
-          </c:forEach>
-        </p>
+        <c:if test="${!empty keyphrases}">
+          <h3>Keyphrases</h3>
+          <p>
+            <c:forEach items="${ keyphrases }" var="keyphrase">
+            <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;&nbsp;&nbsp;
+            </c:forEach>
+          </p>
+        </c:if>
       </div>
     </div>
   </div><%-- viewContent close div --%>
