@@ -37,6 +37,7 @@
           <h3>Bookmark</h3>
           <table border="0" cellspacing="0" cellpadding="5">
             <tr>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=facebook"/>" title="Facebook"><img src="<c:url value="/images/facebook_icon.png"/>" alt="Facebook"/></a></td>
               <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=citeulike"/>" title="CiteULike"><img src="<c:url value="/images/citeulike.png"/>" alt="citeulike"/></a></td>
               <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;site=connotea"/>" title="Connotea"><img src="<c:url value="/images/connotea.png"/>" alt="Connotea"/></a></td>
               <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;site=bibsonomy&amp;title=${title}"/>" title="BibSonomy"><img src="<c:url value="/images/bibsonomy.png"/>" alt="Bibsonomy"/></a></td>
