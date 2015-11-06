@@ -1,5 +1,6 @@
 #!/usr/bin/python2.7
 
+import multiprocessing
 import nltk
 import sys
 
@@ -88,34 +89,94 @@ def save_to_tbl(db, cursor, pid, term_ctr):
     print e
     db.rollback()
 
-def main(argv):
+def calc_term_ctr(paper_info):
+  pid, title, abstract = paper_info
+
+  term_ctr = {}
+  if title is not None:
+    term_ctr = gen_term_ctr(title, 3)
+  if abstract is not None:
+    term_ctr = merge_dictionary(term_ctr, gen_term_ctr(abstract, 1))
+
+  return (pid, term_ctr)
+
+def worker(worker_id, cmd_queue, job_queue):
   db, cursor = mysql_util.init_db()
-  if not mysql_util.does_table_exist(db, cursor, 'paper_keywords_noun'):
-    cursor.execute('CREATE TABLE paper_keywords_noun ('
-        'id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, '
-        'paper_id varchar(100), '
-        'ngram varchar(255), '
-        'count int(11))')
 
-  sys.stdout.write("Generating paper_keyphrase\n")
-  cursor.execute("""SELECT id, title, abstract FROM papers""")
-  rows = cursor.fetchall()
-  for i, paper_info in enumerate(rows):
-    sys.stdout.write("\r%d / %d" % (i+1, len(rows)))
-    pid = paper_info[0]
-    title = paper_info[1]
-    abstract = paper_info[2]
+  try:
+    while True:
+      # get data to process
+      cmd_queue.put(('GET', None))
+      paper_info = job_queue.get()
+      if paper_info == None:
+        break
 
-    term_ctr = {}
-    if title is not None:
-      term_ctr = gen_term_ctr(title, 3)
-    if abstract is not None:
-      term_ctr = merge_dictionary(term_ctr, gen_term_ctr(abstract, 1))
+      # process data
+      pid, term_ctr = calc_term_ctr(paper_info)
+      save_to_tbl(db, cursor, pid, term_ctr)
 
-    save_to_tbl(db, cursor, pid, term_ctr)
-  print ''
+      # report the the dispatcher that we have done one
+      cmd_queue.put(('DONE', pid))
+  except KeyboardInterrupt as e:
+    pass
+  finally:
+    mysql_util.close_db(db, cursor)
+    print
+    print 'Worker %d leaves' % worker_id
 
-  mysql_util.close_db(db, cursor)
+def dispatch_work(papers):
+  NUM_PROCESSES = multiprocessing.cpu_count() * 2
+
+  cmd_queue = multiprocessing.Queue()
+  job_queue = multiprocessing.Queue()
+
+  print "Create %d workers..." % NUM_PROCESSES
+  for i in range(NUM_PROCESSES):
+    multiprocessing.Process(target=worker, args=(i, cmd_queue, job_queue)).start()
+
+  print "Generating keyphrases..."
+  num_done = 0
+  dispatched_index = 0
+  while num_done < len(papers):
+    # waiting for worker's command (or report)
+    cmd, data = cmd_queue.get()
+    if cmd == 'DONE':
+      # worker finished one paper
+      num_done += 1
+      print "\r%s (%d / %d)" % (data, num_done, len(papers)),
+      sys.stdout.flush()
+    elif cmd == 'GET':
+      # worker wants a paper to process
+      if dispatched_index < len(papers):
+        paper_info = papers[dispatched_index]
+        dispatched_index +=1
+        job_queue.put(paper_info)
+      else:
+        job_queue.put(None) # signal the worker to leave
+
+  job_queue.put(None) # signal the last worker to leave
+
+def main(argv):
+  # fetch data from database
+  db, cursor = mysql_util.init_db()
+  try:
+    if not mysql_util.does_table_exist(db, cursor, 'paper_keywords_noun'):
+      cursor.execute('CREATE TABLE paper_keywords_noun ('
+          'id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, '
+          'paper_id varchar(100), '
+          'ngram varchar(255), '
+          'count int(11))')
+
+    print "Fetching papers from database..."
+    cursor.execute("""SELECT id, title, abstract FROM papers""")
+    papers = cursor.fetchall()
+
+    dispatch_work(papers)
+  except KeyboardInterrupt as e:
+    pass
+  finally:
+    mysql_util.close_db(db, cursor)
+    print "Main process leaves"
 
 if __name__ == "__main__":
   main(sys.argv)
