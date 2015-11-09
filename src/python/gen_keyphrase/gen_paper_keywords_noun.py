@@ -165,7 +165,8 @@ def main(argv):
           'id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, '
           'paper_id varchar(100), '
           'ngram varchar(255), '
-          'count int(11))')
+          'count int(11), '
+          'INDEX (paper_id))')
 
     print "Fetching papers from database..."
     cursor.execute("""SELECT id, title, abstract FROM papers""")
