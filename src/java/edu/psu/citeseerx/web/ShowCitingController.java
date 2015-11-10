@@ -221,8 +221,9 @@ public class ShowCitingController implements Controller {
         boolean error = false;
         String errMsg = null;
 
-        List<ThinDoc> citing = new ArrayList<ThinDoc>();
+        List<ThinDoc> citings = new ArrayList<ThinDoc>();
         List<String>  coinsCit = null;
+        List<String> citationContexts = new ArrayList<String>();
         Integer numFound = new Integer(0);
         StringBuffer urlBuffer = new StringBuffer();
         try {
@@ -257,14 +258,23 @@ public class ShowCitingController implements Controller {
             
             numFound = responseObj.getInt("numFound");
 
-            citing = SolrSelectUtils.buildHitListJSON(output); 
+            citings = SolrSelectUtils.buildHitListJSON(output);
             
-            // Obtains the COins info for each element in citing.
+            // Obtains the COins info for each element in citings.
             String url = request.getRequestURL().toString();
             url = url.replace("showciting", "viewdoc/summary");
-            coinsCit = BiblioTransformer.toCOinS(citing, url);
+            coinsCit = BiblioTransformer.toCOinS(citings, url);
             
-            //citing = citedao.getCitingDocuments(cluster, start, rows);
+            // Get citation contexts
+            for (ThinDoc citing: citings){
+                String context = citedao.getContext(citing.getCluster(), cluster);
+                if (context != null){
+                    citationContexts.add(context);
+                } else{
+                    citationContexts.add("");
+                }
+            }
+
         } catch (SolrException e) {
             error = true;
             int code = e.getStatusCode();
@@ -356,8 +366,9 @@ public class ShowCitingController implements Controller {
         if (start+nrows < numFound && !error) {
             model.put("nextpageparams", nextPageParams.toString());
         }
-        model.put("hits", citing);
+        model.put("hits", citings);
         model.put("coins", coinsCit);
+        model.put("citationContexts", citationContexts);
         model.put("elinks", eLinks);
         model.put("error", error);
         model.put("errorMsg", errMsg);

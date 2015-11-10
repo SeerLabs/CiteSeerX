@@ -27,6 +27,11 @@
     <property name="repositoryMap" ref="repositoryMap"/>
   </bean>
   
+  <bean name="/citations" class="edu.psu.citeseerx.web.CitationsController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+  </bean>
+  
   <bean name="/similar" class="edu.psu.citeseerx.web.SimilarityController">
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
