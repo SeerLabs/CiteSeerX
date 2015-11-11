@@ -39,10 +39,10 @@
             <tr>
               <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=facebook"/>" title="Facebook"><img src="<c:url value="/images/facebook_icon.png"/>" alt="Facebook"/></a></td>
               <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=twitter"/>" title="Twitter"><img src="<c:url value="/images/twitter_icon.png"/>" alt="Twitter"/></a></td>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=reddit"/>" title="Reddit"><img src="<c:url value="/images/reddit_icon.png"/>" alt="Reddit"/></a></td>
               <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;site=bibsonomy&amp;title=${title}"/>" title="BibSonomy"><img src="<c:url value="/images/bibsonomy.png"/>" alt="Bibsonomy"/></a></td>
               <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=delicious"/>" title="del.icio.us"><img src="<c:url value="/images/delicious.gif"/>" alt="Del.icio.us"/></a></td>
               <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=digg"/>" title="Digg it"><img src="<c:url value="/images/digg.png"/>" alt="Digg"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=reddit"/>" title="Reddit"><img src="<c:url value="/images/reddit.gif"/>" alt="Reddit"/></a></td>
               </tr>
 	      <tr>
 		<td colspan="6">
