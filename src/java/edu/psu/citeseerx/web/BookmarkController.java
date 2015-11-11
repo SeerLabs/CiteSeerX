@@ -32,8 +32,6 @@ import edu.psu.citeseerx.webutils.RedirectUtils;
  */
 public class BookmarkController implements Controller {
 
-    private final static String CITEULIKE = 
-        "http://www.citeulike.org/posturl?url=";
     private final static String BIBSONOMY = 
         "http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=";
     private final static String DELICIOUS = "http://del.icio.us/save?url=";
@@ -91,9 +89,7 @@ public class BookmarkController implements Controller {
         
         String csxURL = URLEncoder.encode(summaryPage + "?doi=" + doi, "UTF-8");
         title = URLEncoder.encode(title, "UTF-8");
-        if ("citeulike".equalsIgnoreCase(bookmarkSite)) {
-            url = CITEULIKE + csxURL + "&title=" + title; 
-        }else if ("bibsonomy".equalsIgnoreCase(bookmarkSite)) {
+        if ("bibsonomy".equalsIgnoreCase(bookmarkSite)) {
             url = BIBSONOMY + csxURL + "&description=" + title;
         }else if ("delicious".equalsIgnoreCase(bookmarkSite)) {
             url = DELICIOUS + csxURL + "&title=" + title;
