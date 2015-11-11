@@ -34,7 +34,7 @@
           </div> <!-- End content box -->
         </c:if>
         <div id="bookmark" class="block">
-          <h3>Bookmark</h3>
+          <h3>Share</h3>
           <table border="0" cellspacing="0" cellpadding="5">
             <tr>
               <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=facebook"/>" title="Facebook"><img src="<c:url value="/images/facebook_icon.png"/>" alt="Facebook"/></a></td>
