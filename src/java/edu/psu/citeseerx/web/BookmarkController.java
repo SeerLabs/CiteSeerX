@@ -89,8 +89,6 @@ public class BookmarkController implements Controller {
         title = URLEncoder.encode(title, "UTF-8");
         if ("bibsonomy".equalsIgnoreCase(bookmarkSite)) {
             url = BIBSONOMY + csxURL + "&description=" + title;
-        }else if ("digg".equalsIgnoreCase(bookmarkSite)) {
-            url =  DIGG + csxURL + "&title=" + title;
         }else if ("reddit".equalsIgnoreCase(bookmarkSite)) {
             url = REDDIT + csxURL + "&title=" + title;
         }else if ("facebook".equalsIgnoreCase(bookmarkSite)) {
