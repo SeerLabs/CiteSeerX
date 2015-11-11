@@ -34,8 +34,6 @@ public class BookmarkController implements Controller {
 
     private final static String CITEULIKE = 
         "http://www.citeulike.org/posturl?url=";
-    private final static String CONNOTEA = 
-        "http://www.connotea.org/addpopup?uri=";
     private final static String BIBSONOMY = 
         "http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=";
     private final static String DELICIOUS = "http://del.icio.us/save?url=";
@@ -95,8 +93,6 @@ public class BookmarkController implements Controller {
         title = URLEncoder.encode(title, "UTF-8");
         if ("citeulike".equalsIgnoreCase(bookmarkSite)) {
             url = CITEULIKE + csxURL + "&title=" + title; 
-        }else if ("connotea".equalsIgnoreCase(bookmarkSite)) {
-            url = CONNOTEA + csxURL;
         }else if ("bibsonomy".equalsIgnoreCase(bookmarkSite)) {
             url = BIBSONOMY + csxURL + "&description=" + title;
         }else if ("delicious".equalsIgnoreCase(bookmarkSite)) {
