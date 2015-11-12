@@ -34,15 +34,13 @@
           </div> <!-- End content box -->
         </c:if>
         <div id="bookmark" class="block">
-          <h3>Bookmark</h3>
+          <h3>Share</h3>
           <table border="0" cellspacing="0" cellpadding="5">
             <tr>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=citeulike"/>" title="CiteULike"><img src="<c:url value="/images/citeulike.png"/>" alt="citeulike"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;site=connotea"/>" title="Connotea"><img src="<c:url value="/images/connotea.png"/>" alt="Connotea"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;site=bibsonomy&amp;title=${title}"/>" title="BibSonomy"><img src="<c:url value="/images/bibsonomy.png"/>" alt="Bibsonomy"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=delicious"/>" title="del.icio.us"><img src="<c:url value="/images/delicious.gif"/>" alt="Del.icio.us"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=digg"/>" title="Digg it"><img src="<c:url value="/images/digg.png"/>" alt="Digg"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=reddit"/>" title="Reddit"><img src="<c:url value="/images/reddit.gif"/>" alt="Reddit"/></a></td>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=facebook"/>" title="Facebook"><img src="<c:url value="/images/facebook_icon.png"/>" alt="Facebook"/></a></td>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=twitter"/>" title="Twitter"><img src="<c:url value="/images/twitter_icon.png"/>" alt="Twitter"/></a></td>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=reddit"/>" title="Reddit"><img src="<c:url value="/images/reddit_icon.png"/>" alt="Reddit"/></a></td>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;site=bibsonomy&amp;title=${title}"/>" title="BibSonomy"><img src="<c:url value="/images/bibsonomy_icon.png"/>" alt="Bibsonomy"/></a></td>
               </tr>
 	      <tr>
 		<td colspan="6">

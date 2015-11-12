@@ -32,14 +32,8 @@ import edu.psu.citeseerx.webutils.RedirectUtils;
  */
 public class BookmarkController implements Controller {
 
-    private final static String CITEULIKE = 
-        "http://www.citeulike.org/posturl?url=";
-    private final static String CONNOTEA = 
-        "http://www.connotea.org/addpopup?uri=";
     private final static String BIBSONOMY = 
         "http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=";
-    private final static String DELICIOUS = "http://del.icio.us/save?url=";
-    private final static String DIGG = "http://digg.com/submit?url=";
     private final static String REDDIT = "http://www.reddit.com/submit?url=";
     private final static String FACEBOOK = 
         "http://www.facebook.com/sharer.php?u=";
@@ -93,16 +87,8 @@ public class BookmarkController implements Controller {
         
         String csxURL = URLEncoder.encode(summaryPage + "?doi=" + doi, "UTF-8");
         title = URLEncoder.encode(title, "UTF-8");
-        if ("citeulike".equalsIgnoreCase(bookmarkSite)) {
-            url = CITEULIKE + csxURL + "&title=" + title; 
-        }else if ("connotea".equalsIgnoreCase(bookmarkSite)) {
-            url = CONNOTEA + csxURL;
-        }else if ("bibsonomy".equalsIgnoreCase(bookmarkSite)) {
+        if ("bibsonomy".equalsIgnoreCase(bookmarkSite)) {
             url = BIBSONOMY + csxURL + "&description=" + title;
-        }else if ("delicious".equalsIgnoreCase(bookmarkSite)) {
-            url = DELICIOUS + csxURL + "&title=" + title;
-        }else if ("digg".equalsIgnoreCase(bookmarkSite)) {
-            url =  DIGG + csxURL + "&title=" + title;
         }else if ("reddit".equalsIgnoreCase(bookmarkSite)) {
             url = REDDIT + csxURL + "&title=" + title;
         }else if ("facebook".equalsIgnoreCase(bookmarkSite)) {
