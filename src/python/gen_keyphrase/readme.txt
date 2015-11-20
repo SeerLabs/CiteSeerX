@@ -4,10 +4,10 @@
 2. Install NLTK dependencies for python
 
     ~# python
-    >> import ntlk (if this fails then pip install nltk first)
+    >> import nltk (if this fails then pip install nltk first)
     >> nltk.download()
     Downloader> d (for download)
-    Identifier> wordnet stopwords maxent_treebank_pos_tagger
+    Identifier> wordnet stopwords maxent_treebank_pos_tagger averaged_perceptron_tagger
 
 3. Run 
    $ ./gen_paper_keywords_noun.py
