@@ -47,6 +47,7 @@ h6 {font-size:1em;font-weight:bold;}
 	border: 1px solid #ccc;
 	width: 340px;
 	padding: 4px;
+	vertical-align: bottom;
 }
 
 #search .s_button {
@@ -54,6 +55,7 @@ h6 {font-size:1em;font-weight:bold;}
 	background: transparent;
 	font-size: 1.5em;
 	cursor: pointer;
+	vertical-align: bottom;
 }
 
 #search a {
