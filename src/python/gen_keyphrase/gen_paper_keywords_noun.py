@@ -124,16 +124,7 @@ def worker(worker_id, cmd_queue, job_queue):
     print
     print 'Worker %d leaves' % worker_id
 
-def dispatch_work(papers):
-  NUM_PROCESSES = multiprocessing.cpu_count() * 2
-
-  cmd_queue = multiprocessing.Queue()
-  job_queue = multiprocessing.Queue()
-
-  print "Create %d workers..." % NUM_PROCESSES
-  for i in range(NUM_PROCESSES):
-    multiprocessing.Process(target=worker, args=(i, cmd_queue, job_queue)).start()
-
+def dispatch_work(cmd_queue, job_queue, papers):
   print "Generating keyphrases..."
   num_done = 0
   dispatched_index = 0
@@ -157,6 +148,15 @@ def dispatch_work(papers):
   job_queue.put(None) # signal the last worker to leave
 
 def main(argv):
+  NUM_PROCESSES = multiprocessing.cpu_count() * 2
+
+  cmd_queue = multiprocessing.Queue()
+  job_queue = multiprocessing.Queue()
+
+  print "Create %d workers..." % NUM_PROCESSES
+  for i in range(NUM_PROCESSES):
+    multiprocessing.Process(target=worker, args=(i, cmd_queue, job_queue)).start()
+
   # fetch data from database
   db, cursor = mysql_util.init_db()
   try:
@@ -172,7 +172,7 @@ def main(argv):
     cursor.execute("""SELECT id, title, abstract FROM papers""")
     papers = cursor.fetchall()
 
-    dispatch_work(papers)
+    dispatch_work(cmd_queue, job_queue, papers)
   except KeyboardInterrupt as e:
     pass
   finally:
