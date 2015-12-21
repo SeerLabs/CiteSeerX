@@ -2,7 +2,9 @@
 
 import multiprocessing
 import nltk
+import random
 import sys
+import time
 
 from collections import defaultdict
 import mysql_util
@@ -79,15 +81,23 @@ def merge_dictionary(a, b):
   return dict((n, a.get(n,0)+b.get(n,0)) for n in set(a)|set(b))
 
 def save_to_tbl(db, cursor, pid, term_ctr):
-  try:
-    cursor.execute("""DELETE FROM paper_keywords_noun WHERE paper_id=%s""", (pid,))
-    for ngram in term_ctr:
-      cursor.execute("""INSERT INTO paper_keywords_noun (paper_id, ngram, count) VALUES (%s, %s, %s)""", (pid, ngram.decode('utf-8'), term_ctr[ngram]))
-    db.commit()
-  except Exception as e:
-    sys.stdout.write("\nError in inserting keyphrases of paper_id %s to paper_keywords_noun\n" % (pid,))
-    print e
-    db.rollback()
+  retries = 1
+  while True:
+    try:
+      cursor.execute("""DELETE FROM paper_keywords_noun WHERE paper_id=%s""", (pid,))
+      for ngram in term_ctr:
+        cursor.execute("""INSERT INTO paper_keywords_noun (paper_id, ngram, count) VALUES (%s, %s, %s)""", (pid, ngram.decode('utf-8'), term_ctr[ngram]))
+      db.commit()
+    except Exception as e:
+      sys.stdout.write("\nError in inserting keyphrases of paper_id %s to paper_keywords_noun\n" % (pid,))
+      print e
+      db.rollback()
+      # wait for a while then retry
+      retries -= 1
+      if retries >= 0:
+        time.sleep(random.randint(1, 10))
+        continue
+    break
 
 def calc_term_ctr(paper_info):
   pid, title, abstract = paper_info
