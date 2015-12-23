@@ -53,6 +53,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
     private GetSetDOICount getSetDOICount;
     private GetCrawledDOIs getCrawledDOIs;
     private GetLatestDocuments getLatestDocuments;
+    private GetKeyphrase getKeyphrase;
     
     /* (non-Javadoc)
      * @see org.springframework.dao.support.DaoSupport#initDao()
@@ -78,6 +79,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         getSetDOICount = new GetSetDOICount(getDataSource());
         getCrawledDOIs = new GetCrawledDOIs(getDataSource());
         getLatestDocuments = new GetLatestDocuments(getDataSource());
+        getKeyphrase = new GetKeyphrase(getDataSource());
     } //- initMappingSqlQueries
     
     
@@ -227,7 +229,13 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         return getLatestDocuments.run(lastDOI, amount);
     } //- getLastDocuments
 
-
+    /* (non-Javadoc)
+     * @see edu.psu.citeseerx.dao2.DocumentDAO#getKeyphrase(java.util.Date, java.util.Date, java.lang.String, int)
+     */
+    public List<String> getKeyphrase(String doi)
+	    throws DataAccessException {
+        return getKeyphrase.run(doi);
+    } //- getKeyphrase
 
     private static final String DEF_GET_DOC_QUERY =
         "select id, version, cluster, title, abstract, year, venue, " +
@@ -299,6 +307,29 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         
     }  //- class GetDoc
     
+    private static final String DEF_GET_KEYPHRASE_QUERY =
+        "select ngram from paper_keywords_noun " + 
+	      "where paper_id=? order by count desc";
+
+    private class GetKeyphrase extends MappingSqlQuery {
+        
+        public GetKeyphrase(DataSource dataSource) {
+            setDataSource(dataSource);
+            setSql(DEF_GET_KEYPHRASE_QUERY);
+            declareParameter(new SqlParameter(Types.VARCHAR));
+            compile();
+        } //- GetKeyphrase.GetKeyphrase
+        
+        public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return rs.getString("ngram");
+        } //- GetKeyphrase.mapRow
+
+        public List<String> run(String doi) {
+            Object[] params = new Object[] { doi };
+            return execute(params);
+        } //- GetKeyphrase.run
+        
+    }  //- class GetKeyphrase
     
     private static final String DEF_GET_DOC_SRC_QUERY =
         "select title, abstract, year, venue, venueType, pages, volume, " +
