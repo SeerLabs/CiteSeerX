@@ -37,6 +37,7 @@ import edu.psu.citeseerx.myciteseer.web.utils.FoulWordFilter;
 import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
 import edu.psu.citeseerx.myciteseer.domain.logic.MyCiteSeerFacade;
 import edu.psu.citeseerx.myciteseer.domain.MCSConfiguration;
+import edu.psu.citeseerx.repository.RepositoryUtilities;
 import edu.psu.citeseerx.updates.UpdateManager;
 import edu.psu.citeseerx.web.domain.AuthorContainer;
 import edu.psu.citeseerx.web.domain.DocumentContainer;
@@ -335,10 +336,7 @@ public class CorrectionFormController extends SimpleFormController {
         model.put("rep", rep);
         model.put("ncites", doc.getNcites());
         model.put("selfCites", doc.getSelfCites());
-        HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
-        fileTypesQuery.put(Document.DOI_KEY, doi);
-        fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
-        model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
+        model.put("fileTypes", RepositoryUtilities.getFileTypes(repositoryService, doi, rep));
         model.put("elinks", eLinks);
         model.put("hubUrls", hubUrls);
         

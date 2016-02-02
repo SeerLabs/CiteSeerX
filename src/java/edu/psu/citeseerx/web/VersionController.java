@@ -29,6 +29,7 @@ import edu.psu.citeseerx.domain.*;
 import edu.psu.citeseerx.myciteseer.domain.Account;
 import edu.psu.citeseerx.myciteseer.domain.AuthorVersion;
 import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
+import edu.psu.citeseerx.repository.RepositoryUtilities;
 import edu.psu.citeseerx.webutils.RedirectUtils;
 import edu.psu.citeseerx.utility.CSXConstants;
 
@@ -220,7 +221,7 @@ public class VersionController implements Controller {
         model.put("title", title);            
         model.put("authors", authors);
         model.put("uauthors", uauthors);
-        model.put("abstract", abs);
+        model.put("abstractText", abs);
         model.put("venue", venue);
         model.put("year", year);
         model.put("urls", urls);
@@ -231,10 +232,7 @@ public class VersionController implements Controller {
         model.put("selfCites", doc.getSelfCites()); 
         model.put("elinks", eLinks);
         model.put("hubUrls", hubUrls);
-        HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
-        fileTypesQuery.put(Document.DOI_KEY, doi);
-        fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
-        model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
+        model.put("fileTypes", RepositoryUtilities.getFileTypes(repositoryService, doi, rep));
         model.put("maxversion", new Integer(currentVersion));
         model.put("thisversion", new Integer(version));
         model.put("user", userid);

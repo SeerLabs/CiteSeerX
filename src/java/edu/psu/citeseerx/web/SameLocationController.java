@@ -37,6 +37,7 @@ import edu.psu.citeseerx.domain.Hub;
 import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.domain.UniqueAuthor;
+import edu.psu.citeseerx.repository.RepositoryUtilities;
 import edu.psu.citeseerx.webutils.RedirectUtils;
 
 /**
@@ -229,7 +230,7 @@ public class SameLocationController implements Controller {
         model.put("title", title); 
         model.put("authors", authors);
         model.put("uauthors", uauthors);
-        model.put("abstract", abs);
+        model.put("abstractText", abs);
         model.put("venue", venue);
         model.put("year", year);
         model.put("urls", urls);
@@ -239,10 +240,7 @@ public class SameLocationController implements Controller {
         model.put("ncites", doc.getNcites());
         model.put("selfCites", doc.getSelfCites());
         model.put("elinks", eLinks);
-        HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
-        fileTypesQuery.put(Document.DOI_KEY, doi);
-        fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
-        model.put("fileTypes", repositoryService.fileTypes(fileTypesQuery));
+        model.put("fileTypes", RepositoryUtilities.getFileTypes(repositoryService, doi, rep));
         model.put("hubUrls", hubUrls);
         model.put("hurl", hUrl);
         model.put("hits", hits);

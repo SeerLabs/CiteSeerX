@@ -30,6 +30,7 @@
   <bean name="/citations" class="edu.psu.citeseerx.web.CitationsController">
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="repositoryService" ref="RESTrepo"/>
   </bean>
   
   <bean name="/similar" class="edu.psu.citeseerx.web.SimilarityController">
