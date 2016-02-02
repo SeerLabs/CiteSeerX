@@ -61,6 +61,7 @@ import edu.psu.citeseerx.domain.Keyword;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.repository.DocumentUnavailableException;
+import edu.psu.citeseerx.repository.RepositoryUtilities;
 import edu.psu.citeseerx.utility.SafeText;
 
 /**
@@ -85,18 +86,6 @@ public class IndexUpdateManager {
 
     protected final Log logger = LogFactory.getLog(getClass());
     private boolean redoAll;
-
-    int maxTextLength = 28000;
-    
-    /**
-     * Sets the maximum number of characters that will be indexed from
-     * document full text.
-     * @param maxTextLength (default 28000)
-     */
-    public void setMaxTextLength(int maxTextLength) {
-        this.maxTextLength = maxTextLength;
-    } //- setMaxTextLength
-
     private SolrServer solrServer;
     private long lastIndexedCluster;
     private final int indexBatchSize = 1000;
@@ -508,25 +497,20 @@ public class IndexUpdateManager {
             return null;
         }
         try {
-            HashMap<String,String> parameters = new HashMap<String,String>();
-            parameters.put(Document.DOI_KEY, doi);
-            parameters.put(RepositoryService.FILETYPE,RepositoryService.BODYFILE);
             String fileContent = new String();
             try {
-                fileContent = repositoryService.getDocumentContent(parameters);
+                fileContent = RepositoryUtilities.getDocumentText(repositoryService, doi, true);
             }
             catch(DocumentUnavailableException e) {
-                parameters.put(RepositoryService.FILETYPE, RepositoryService.TEXTFILE);
                 try {
-                    fileContent = repositoryService.getDocumentContent(parameters);
-                } catch(DocumentUnavailableException f) {}
+                    fileContent = RepositoryUtilities.getDocumentText(repositoryService, doi, false);
+                }
+                catch(DocumentUnavailableException due) {} 
             }
-
-            String text = fileContent.substring(0, maxTextLength);
-            text = SafeText.cleanXML(text);
+            String text = SafeText.cleanXML(fileContent);
             return text;
             
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw(e);
         }
     }  //- getText

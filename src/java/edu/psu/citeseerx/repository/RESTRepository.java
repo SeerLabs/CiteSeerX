@@ -61,8 +61,7 @@ public class RESTRepository implements RepositoryService {
         p.put(REPOSITORYID, repID);
         p.put(Document.DOI_KEY, doi);
         p.put(VERSIONKEY, Integer.toString(doc.getVersion()));
-                // add a key to p
-                p.put(RepositoryService.FILETYPE, RepositoryService.XMLFILE);
+        p.put(RepositoryService.FILETYPE, RepositoryService.XMLFILE);
         File tXMLFile = File.createTempFile("citeseerx", "xml");
         FileOutputStream out = new FileOutputStream(tXMLFile);
         doc.toXML(out, Document.INCLUDE_SYS_DATA);

@@ -178,10 +178,6 @@ public class FileDownloadController implements Controller {
                 try {
                     InputStream in = repositoryService.getDocument(p);
                     input = new BufferedInputStream(in);
-
-                    // FileInputStream in = csxdao.getFileInputStream(doi, rep, type);
-                    // input = new BufferedInputStream(in);
-
                     output = new BufferedOutputStream(response.getOutputStream());
                     byte[] buffer = new byte[8192];
                     int got = 0;
