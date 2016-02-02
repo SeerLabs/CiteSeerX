@@ -158,7 +158,7 @@ public class FileDownloadController implements Controller {
                 if (type.equalsIgnoreCase("pdf")) {
                     response.setContentType("application/pdf");
                     response.setHeader("Content-Disposition",
-                            "attachment; filename=\""+doi+".pdf\"");
+                            "inline; filename=\""+doi+".pdf\"");
                 }else if(type.equalsIgnoreCase("ps")) {
                     response.setContentType("application/ps");
                     response.setHeader("Content-Disposition",
