@@ -507,8 +507,7 @@ public class IndexUpdateManager {
                 }
                 catch(DocumentUnavailableException due) {} 
             }
-            String text = SafeText.cleanXML(fileContent);
-            return text;
+            return fileContent;
             
         } catch (Exception e) {
             throw(e);

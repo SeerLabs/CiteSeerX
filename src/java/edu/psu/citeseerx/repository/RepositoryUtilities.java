@@ -23,6 +23,10 @@ public class RepositoryUtilities {
         else {
             parameters.put(RepositoryService.FILETYPE, RepositoryService.TEXTFILE);
         }
-        return repositoryService.getDocumentContent(parameters);
+        String text = repositoryService.getDocumentContent(parameters);
+        text = SafeText.stripBadChars(text);
+        text = CharMatcher.JAVA_ISO_CONTROL.replaceFrom(text, " ");
+        
+        return text;
     }
 }

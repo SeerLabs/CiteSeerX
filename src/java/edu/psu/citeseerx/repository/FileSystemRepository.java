@@ -330,8 +330,6 @@ public class FileSystemRepository implements RepositoryService {
             StringWriter sw = new StringWriter();
             IOUtils.copy(reader, sw);
             String text = sw.toString();
-            text = SafeText.cleanXML(text);
-
             return text;
 
         } catch (IOException e) {
