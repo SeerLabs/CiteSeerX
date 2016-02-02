@@ -2,6 +2,9 @@ package edu.psu.citeseerx.repository;
 
 import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.domain.RepositoryService;
+import edu.psu.citeseerx.utility.SafeText;
+
+import com.google.common.base.CharMatcher;
 
 import java.io.IOException;
 import java.util.HashMap;
