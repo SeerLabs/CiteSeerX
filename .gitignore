@@ -1,3 +1,7 @@
+.*
+
+!.gitignore
+
 # Java
 *.class
 *~

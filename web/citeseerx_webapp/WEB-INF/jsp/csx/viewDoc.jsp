@@ -33,96 +33,14 @@
             <p><c:out value="${ bibtex }" escapeXml="false"/></p>
           </div> <!-- End content box -->
         </c:if>
-        <c:if test="${ ! empty chartdata }">
-          <div id="citechart" class="block">
-            <h3>Years of Citing Articles</h3>
-			<div id="fig">
-                <script type="text/javascript+protovis">
-
-					/* Sizing and scales. */
-					var w = 240,
-						h = 200,
-						x = pv.Scale.linear(chartdata, function(d) d.year).range(0, w),
-						y = pv.Scale.linear(chartdata, function(d) d.ccount).range(0, h);
-					
-					/* The root panel. */
-					var vis = new pv.Panel()
-						.def("i", -1)
-						.width(w + 10)
-						.height(h +20)
-						.bottom(20)
-						.left(20)
-						.right(10)
-						.top(5)
-						.overflow('visible');
-					
-					var line = vis.add(pv.Line)
-						.data(chartdata)
-						.left(function(d) x(d.year))
-						.bottom(function(d) y(d.ccount))
-						.lineWidth(2);
-					
-					/* Y-axis and ticks. */
-					vis.add(pv.Rule)
-						.data(y.ticks(5))
-						.bottom(y)
-						.strokeStyle(function(d) d ? "#eee" : "#000")
-					  .anchor("left").add(pv.Label)
-						.text(y.tickFormat);
-					
-					/* X-axis and ticks. */
-					vis.add(pv.Rule)
-						.data(x.ticks(6))
-						.visible(function(d) d)
-						.left(x)
-						.bottom(-5)
-						.height(5)
-					  .anchor("bottom").add(pv.Label);
-					
-					vis.add(pv.Line)
-						.data(chartdata)
-						.left(function(d) x(d.year))
-						.bottom(function(d) y(d.ccount))
-						.lineWidth(2);
-					
-					var dot = line.add(pv.Dot)
-						.visible(function() i >= 0)
-						.data(function() [chartdata[i]])
-						.fillStyle(function() line.strokeStyle())
-						.strokeStyle("#000")
-						.size(20)
-						.lineWidth(3).anchor("top").add(pv.Label).font("bold 14px sans-serif").text(function(d) d.ccount.toFixed(0));
-					
-					vis.add(pv.Bar)
-						.fillStyle("rgba(0,0,0,.001)")
-						.event("mouseout", function() {
-							i = -1;
-							return vis;
-						  })
-						.event("mousemove", function() {
-							var mx = x.invert(vis.mouse().x);
-							i = pv.search(chartdata.map(function(d) d.year), mx);
-							i = i < 0 ? (-i - 2) : i;
-							return vis;
-						  });
-					
-					
-					vis.render();
-
-			    </script>
-            </div>
-          </div> <!-- End content box -->
-        </c:if>
         <div id="bookmark" class="block">
-          <h3>Bookmark</h3>
+          <h3>Share</h3>
           <table border="0" cellspacing="0" cellpadding="5">
             <tr>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=citeulike"/>" title="CiteULike"><img src="<c:url value="/images/citeulike.png"/>" alt="citeulike"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;site=connotea"/>" title="Connotea"><img src="<c:url value="/images/connotea.png"/>" alt="Connotea"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;site=bibsonomy&amp;title=${title}"/>" title="BibSonomy"><img src="<c:url value="/images/bibsonomy.png"/>" alt="Bibsonomy"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=delicious"/>" title="del.icio.us"><img src="<c:url value="/images/delicious.gif"/>" alt="Del.icio.us"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=digg"/>" title="Digg it"><img src="<c:url value="/images/digg.png"/>" alt="Digg"/></a></td>
-              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=reddit"/>" title="Reddit"><img src="<c:url value="/images/reddit.gif"/>" alt="Reddit"/></a></td>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=facebook"/>" title="Facebook"><img src="<c:url value="/images/facebook_icon.png"/>" alt="Facebook"/></a></td>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=twitter"/>" title="Twitter"><img src="<c:url value="/images/twitter_icon.png"/>" alt="Twitter"/></a></td>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;title=${title}&amp;site=reddit"/>" title="Reddit"><img src="<c:url value="/images/reddit_icon.png"/>" alt="Reddit"/></a></td>
+              <td><a href="<c:url value="/viewdoc/bookmark?doi=${doi}&amp;site=bibsonomy&amp;title=${title}"/>" title="BibSonomy"><img src="<c:url value="/images/bibsonomy_icon.png"/>" alt="Bibsonomy"/></a></td>
               </tr>
 	      <tr>
 		<td colspan="6">
@@ -169,40 +87,23 @@
           </div>
         </c:if>
       </div> <%-- sidebar div close --%>
-    <div id="abstract">
-      <h3>Abstract</h3>
-      <p><c:out value="${ abstractText }"/></p>
-    </div>
-    <div id="citations">
-      <h3>Citations</h3>
-      <c:if test="${empty citations}"><p>No citations identified.</p></c:if>
-      <c:if test="${!empty citations}">
-        <table class="refs" border="0" cellspacing="5" cellpadding="5">
-          <c:forEach var="citation" items="${ citations }" varStatus="theCount">
-            <tr><td class="title"><c:if test="${ citation.ncites > 0 }"><c:out value="${ citation.ncites }"/></c:if></td>
-              <td><c:if test="${ citation.inCollection }"><a href="<c:url value="/viewdoc/summary?cid=${ citation.cluster }"/>"><c:out value="${ citation.title }" escapeXml="true" /></a></c:if>
-                <c:if test="${ ! citation.inCollection }"><a class="citation_only" href="<c:url value="/showciting?cid=${ citation.cluster }"/>"><c:out value="${ citation.title }" escapeXml="true" /></a></c:if>
-                - <c:out value="${ citation.authors }"/>
-                <c:if test="${ citation.year > 0 }"> - <c:out value="${ citation.year }"/></c:if>
-		<c:choose>
-		  <c:when test="${citationContexts[theCount.index] != ''}">
-		  <a href="" onclick="toggleCitation('citation<c:out value="${theCount.index}" />'); return false;">(Show Context)</a>
-		  <div id="citation<c:out value="${theCount.index}" />" style="display:none">
-		    <p class='citationContextHeader'>Citation Context</p>
-		    <p class='citationContext'>...<c:out value="${ citationContexts[theCount.index] }" />...</p>
-		  </div>
-		  </c:when>
-		</c:choose>
-              </td></tr>
+      <div id="abstract">
+        <h3>Abstract</h3>
+        <p><c:out value="${ abstractText }"/></p>
+      </div>
+      <div id="keywords">
+        <c:if test="${!empty keyphrases}">
+          <h3>Keyphrases</h3>
+          <p>
+            <c:forEach items="${ keyphrases }" var="keyphrase">
+            <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;&nbsp;&nbsp;
             </c:forEach>
-        </table>
-      </c:if>
-    </div><%-- citations close div --%>
+          </p>
+        </c:if>
+      </div>
     </div>
   </div><%-- viewContent close div --%>
   <div class="clear"></div>
 </div>
-
-
 
 <%@ include file="../shared/IncludeFooter.jsp" %>

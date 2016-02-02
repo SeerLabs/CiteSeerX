@@ -94,6 +94,15 @@
           </div>
         </c:if>
       </div>
+      <c:choose>
+        <c:when test="${citationContexts[status.index] != ''}">
+        <a href="" onclick="toggleCitation('citation<c:out value="${status.index}" />'); return false;">(Show Context)</a>
+        <div id="citation<c:out value="${status.index}" />" style="display:none">
+          <p class='citationContextHeader'>Citation Context</p>
+          <p class='citationContext'>...<c:out value="${ citationContexts[status.index] }" />...</p>
+        </div>
+        </c:when>
+      </c:choose>
       <div class="pubtools">
         <c:if test="${ ! empty coins[status.index]}"><span class="Z3988" title="<c:out value='${coins[status.index]}' />"></span></c:if>
       </div>

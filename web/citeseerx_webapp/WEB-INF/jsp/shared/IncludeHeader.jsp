@@ -5,6 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head profile="http://www.w3.org/2005/11/profile http://a9.com/-/spec/opensearch/1.1/">
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta property="og:image" content="/images/csx_logo_front.png" />
    
     <title><fmt:message key="app.name"/><c:if test="${ ! empty pagetitle }"> &mdash; <c:out value="${ pagetitle }" escapeXml="false"/></c:if></title>
   
@@ -45,6 +46,7 @@
 	<script type="text/javascript" src="<c:url value='/js/correctionutils.js'/>"></script>
 	<script type="text/javascript" src="<c:url value='/js/checkboxes.js'/>"></script>
 	<script type="text/javascript" src="<c:url value='/js/ga.js'/>"></script>
+	<script type="text/javascript" src="<c:url value='/js/s2button.js'/>"></script>
 	<%-- Data for charts if available --%>
 	<c:if test="${! empty chartdata }">
     <script type="text/javascript" src="<c:url value='/js/protovis-r3.2.js'/>"></script>
