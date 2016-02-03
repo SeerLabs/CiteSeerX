@@ -8,7 +8,7 @@
        <div id="downloads">
 	<c:choose>
 		<c:when test="${ empty pdfRedirectUrl }">
-        		<h3>Cached</h3>
+        		<h3>View PDF</h3>
         		<ul id="clinks">
         		<c:forEach var="type" items="${ fileTypes }" varStatus="status">
 				<c:if test="${ status.count > 1 }">&nbsp;</c:if>
@@ -18,12 +18,12 @@
 				<c:param name="type" value="${ type }"/></c:url>
           			<c:if test="${type == 'pdf'}">
             				<li><a href="<c:out value="${downloadUrl}" escapeXml="true"/>" title="View or Download this document as PDF">
-						<img src="<c:url value="/images/pdf_icon.gif"/>" alt="Download as a PDF"/> 
+						<img src="<c:url value="/images/pdf_icon.png"/>" alt="Download as a PDF"/>
 					</a></li>
           			</c:if>
           			<c:if test="${type == 'ps'}">
             				<li><a href="<c:out value="${downloadUrl}" escapeXml="true"/>" title="View or Download this document as PS">
-					<img src="<c:url value="/images/ps_icon.gif"/>" alt="Download as a PS"/> 
+					<img src="<c:url value="/images/ps_icon.png"/>" alt="Download as a PS"/>
 					</a></li>
           			</c:if>
         		</c:forEach>
