@@ -4,8 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.domain.DocumentFileInfo;
@@ -49,7 +54,31 @@ public class RESTRepository implements RepositoryService {
         p.put(RepositoryService.QUERY, "filetypes");
         String c = HttpRESTUtils.getFromHost(repositoryEndPoint, p);
         String []types = c.trim().split(",");
-        return types;
+
+       List<String> validTypes = new ArrayList<String>();
+
+        for (String type : types) {
+            if (typeLookup.contains(type.toUpperCase())) {
+                validTypes.add(type);
+            }
+        }
+        Collections.sort(validTypes);
+        String list[] = new String[validTypes.size()];
+        validTypes.toArray(list);
+
+        return list;
+    }
+
+    public static final String[] supportedTypes = new String[] {
+            "PDF", "PS", "DOC", "RTF"
+    };
+
+    public static final Set<String> typeLookup = new HashSet<String>();
+
+    static {
+        for (String str : supportedTypes) {
+            typeLookup.add(str);
+        }
     }
 
     @Override
