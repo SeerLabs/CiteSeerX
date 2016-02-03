@@ -68,3 +68,5 @@ out/*
 
 # Source control
 .svn
+
+*.pyc
