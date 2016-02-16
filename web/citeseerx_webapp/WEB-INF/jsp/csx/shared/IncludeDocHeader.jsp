@@ -7,7 +7,7 @@
     <div id="downloads">
       <c:choose>
         <c:when test="${ empty pdfRedirectUrl }">
-          <h3>View PDF</h3>
+          <h3>Cached</h3>
           <ul id="clinks">
           <c:forEach var="type" items="${ fileTypes }" varStatus="status">
             <c:if test="${ status.count > 1 }">&nbsp;</c:if>
