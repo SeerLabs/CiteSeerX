@@ -4,7 +4,8 @@
       <form method="get" action="<c:url value='/search'/>" enctype="application/x-www-form-urlencoded">
         <label>Documents:</label>
         <input class="s_field" type="text" name="q" value="<c:out value='${ query }'/>" />
-		<input class="s_button" type="submit" name="submit" value="Search" alt="Search" />
+		<input class="s_button" type="image" name="submit" value="Search" alt="Search" src="<c:url value='/images/search_icon.png' />" />
+		<input class="s_button" type="image" name="s2" value="Semantic Scholar" alt="Semantic Scholar" src="<c:url value='/images/s2_icon.png' />" />
 		<div class="opts">
           <a href="<c:url value='/advanced_search'/>" title="Search full text, title, abstract, date, author name, author affiliation, etc.">Advanced Search</a>
           <input class="c_box" type="checkbox" name="ic" value="1" <c:if test='${ ! empty param.ic }'>checked="checked"</c:if> /> Include Citations
@@ -43,7 +44,8 @@
 	   <form method="get" action="<c:url value='/search'/>" enctype="application/x-www-form-urlencoded">
 	   	<label>Documents:</label>
 	     <input class="s_field" type="text" name="q" value="<c:out value='${ query }'/>" />
-	     <input class="s_button" type="submit" name="submit" value="Search" alt="Search" />
+	     <input class="s_button" type="image" name="submit" value="Search" alt="Search" src="<c:url value='/images/search_icon.png' />" onclick='this.form.action="<c:url value='/search' />"; return true;' />
+	     <input class="s_button" type="image" name="s2" value="Semantic Scholar" alt="Semantic Scholar" src="<c:url value='/images/s2_icon.png' />" onclick="this.form.action='http://s2.allenai.org/search'; return true;" />
 			 <div class="opts">
 		     <a href="<c:url value='/advanced_search'/>" title="Search full text, title, abstract, date, author name, author affiliation, etc.">Advanced Search</a>
 		     <input class="c_box" type="checkbox" name="ic" value="1" <c:if test='${ ! empty param.ic }'>checked="checked"</c:if> /> Include Citations

@@ -44,6 +44,7 @@ body {
   border: 1px solid #ccc;
   width: 340px;
   padding: 6px;
+  vertical-align: bottom;
 }
 
 #search_box .s_button {
@@ -51,6 +52,7 @@ body {
   background: transparent;
   font-size: 1.5em;
   cursor: pointer;
+  vertical-align: bottom;
 }
 
 #search_box a {

@@ -18,6 +18,7 @@
 	<script type="text/javascript" src="<c:url value='/js/topnav.js'/>"></script>
 	<script type="text/javascript" src="<c:url value='/js/citeseerx.js'/>"></script>
 	<script type="text/javascript" src="<c:url value='/js/ga.js'/>"></script>
+	<script type="text/javascript" src="<c:url value='/js/s2button.js'/>"></script>
 </head>
 
 <body class="front">

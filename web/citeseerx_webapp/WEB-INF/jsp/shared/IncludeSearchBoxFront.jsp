@@ -6,7 +6,8 @@
         <label>Documents:</label>
         <div class="searchFields">
           <input class="s_field" type="text" name="q" value="<c:out value='${ query }'/>" />
-          <input class="s_button" type="submit" name="submit" value="Search" alt="Search" />
+          <input class="s_button" type="image" name="submit" value="Search" alt="Search" src="<c:url value='/images/search_icon.png' />" />
+          <input class="s_button" type="image" name="s2" value="Semantic Scholar" alt="Semantic Scholar" src="<c:url value='/images/s2_icon.png' />" />
         </div>
         <div class="opts">
           <a href="<c:url value='/advanced_search'/>" title="Search full text, title, abstract, date, author name, author affiliation, etc.">Advanced Search</a>
