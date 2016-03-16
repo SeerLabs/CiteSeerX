@@ -18,6 +18,7 @@
     <property name="url" value="${jdbc.csx.url}"/>
     <property name="username" value="${jdbc.csx.username}"/>
     <property name="password" value="${jdbc.csx.password}"/>
+    <property name="initialSize" value="10"/>
   </bean>
   
   <bean id="repositoryMap" class="edu.psu.citeseerx.dao2.RepositoryMap">
@@ -158,6 +159,7 @@
     <property name="url" value="${jdbc.citegraph.url}"/>
     <property name="username" value="${jdbc.citegraph.username}"/>
     <property name="password" value="${jdbc.citegraph.password}"/>
+    <property name="initialSize" value="10"/>
   </bean>
 
 </beans>
