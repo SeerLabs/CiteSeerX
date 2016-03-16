@@ -18,6 +18,7 @@ class Document(models.Model):
     parent = models.ForeignKey('ParentUrl', null=True, db_index=True)
     state = models.IntegerField(null=True, db_index=True) # 0=crawled 1=ingeted -1=failed to ingest
     submission_id = models.IntegerField(null=True,db_index=True)
+    priority = models.IntegerField()
 
 ##class Documentt(models.Model):
 ##    url = models.CharField(max_length=255, unique=True)
