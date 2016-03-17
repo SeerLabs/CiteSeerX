@@ -18,7 +18,8 @@
 
   <div id="qother">Try your query at:
     <c:url value='http://scholar.google.com/scholar' var="googleScholar"><c:param name='q' value='${ param.q }'/><c:param name='hl' value='en' /><c:param name='btnG' value='Search'/></c:url>
-    <c:url value='http://s2.allenai.org/search' var='s2'><c:param name='q' value='${ param.q }'/></c:url>
+    <%-- <c:url value='http://s2.allenai.org/search' var='s2'><c:param name='q' value='${ param.q }'/></c:url> --%>
+    <c:redirect url='http://s2.allenai.org/search' var='s2'><c:param name='q' value='${ param.q }'/></c:redirect>
     <c:url value='http://dblp.uni-trier.de/search' var='dblp'><c:param name='q' value='${ param.q }'/></c:url>
     <c:url value='http://www.bing.com/search' var="Bing"><c:param name="q" value='${ param.q }'/></c:url>
     <c:url value='https://www.google.com/search' var="Google"><c:param name="q" value='${ param.q }'/></c:url>
