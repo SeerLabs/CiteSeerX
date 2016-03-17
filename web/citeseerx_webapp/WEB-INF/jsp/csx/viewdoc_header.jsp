@@ -53,7 +53,7 @@
           <a href="<c:out value="${ fromHub }" escapeXml="true"/>" title="More Documents from: <c:out value="${ hub.url }"/>">
             <c:out value="${ fn:substring(hub.url,0,50) }"/></a>
         </c:forEach>
-        </c:if> -->
+        </c:if> --%>
       </div> <!-- End downloads -->
       <div class="char_increased char_indented char_mediumvalue padded">
         by
