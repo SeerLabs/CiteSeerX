@@ -44,7 +44,7 @@
             <a href="<c:out value="${downloadUrl}" escapeXml="true"/>" title="View or Download this document as PS"><img src="<c:url value="/icons/ps.gif"/>" alt="Download as a PS"/> </a>
           </c:if>
         </c:forEach>
-        <c:if test="${ !empty hubUrls }">
+<%--         <c:if test="${ !empty hubUrls }">
         <br/>
         <span class="dlspan" title="Other Documents From">From:</span><br/>
         <c:forEach var="hub" items="${ hubUrls }" varStatus="status">
@@ -53,7 +53,7 @@
           <a href="<c:out value="${ fromHub }" escapeXml="true"/>" title="More Documents from: <c:out value="${ hub.url }"/>">
             <c:out value="${ fn:substring(hub.url,0,50) }"/></a>
         </c:forEach>
-        </c:if>
+        </c:if> --%>
       </div> <!-- End downloads -->
       <div class="char_increased char_indented char_mediumvalue padded">
         by
