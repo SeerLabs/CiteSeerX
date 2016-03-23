@@ -12,8 +12,8 @@
  */
 package edu.psu.citeseerx.ingestion;
 
-import edu.psu.citeseerx.dao2.RepositoryMap;
-import edu.psu.citeseerx.dao2.UnknownRepositoryException;
+import edu.psu.citeseerx.repository.RepositoryMap;
+import edu.psu.citeseerx.repository.UnknownRepositoryException;
 import edu.psu.citeseerx.utility.*;
 import edu.psu.citeseerx.domain.*;
 import java.io.*; 

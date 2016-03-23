@@ -17,12 +17,12 @@ import java.io.FileInputStream;
 import java.sql.SQLException;
 import java.util.List;
 
-import edu.psu.citeseerx.dao2.RepositoryMap;
 import edu.psu.citeseerx.dao2.logic.CSXDAO;
 
 import edu.psu.citeseerx.domain.Algorithm;
 import edu.psu.citeseerx.domain.AlgorithmSet;
 import edu.psu.citeseerx.domain.CheckSum;
+import edu.psu.citeseerx.repository.RepositoryMap;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 import edu.psu.citeseerx.utility.FileUtils;
 import edu.psu.citeseerx.utility.XMLFileNameFilter;

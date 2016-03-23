@@ -19,6 +19,8 @@ import ChartDirector.*;
 import edu.psu.citeseerx.dao2.*;
 import edu.psu.citeseerx.dao2.logic.*;
 import edu.psu.citeseerx.domain.*;
+import edu.psu.citeseerx.repository.RepositoryMap;
+import edu.psu.citeseerx.repository.UnknownRepositoryException;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 
 /**

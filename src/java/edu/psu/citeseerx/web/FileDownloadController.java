@@ -15,6 +15,8 @@ package edu.psu.citeseerx.web;
 import edu.psu.citeseerx.dao2.logic.CSXDAO;
 import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.domain.DocumentFileInfo;
+import edu.psu.citeseerx.domain.RepositoryService;
+import edu.psu.citeseerx.repository.DocumentUnavailableException;
 import edu.psu.citeseerx.webutils.RedirectUtils;
 
 import org.springframework.web.servlet.mvc.Controller;
@@ -36,12 +38,22 @@ import java.net.URISyntaxException;
  * Process a request to download a file, sending the file to the user. If for 
  * some reason the file is not found and Internal error is generated.
  * @author Isaac Councill
- * @version $Rev: 81 $ $Date: 2011-01-14 17:37:35 -0500 (Fri, 14 Jan 2011) $
+ * @version $Rev$ $Date$
  */
 public class FileDownloadController implements Controller {
     
     private CSXDAO csxdao;
-    
+
+    private RepositoryService repositoryService;
+
+    public RepositoryService getRepositoryService() {
+        return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
+
     public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
@@ -101,19 +113,18 @@ public class FileDownloadController implements Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
-	    if (doc.isDMCA() == true) {
-        	String dmcaTitle = "DMCA Notice";
+            if (doc.isDMCA() == true) {
+                String dmcaTitle = "DMCA Notice";
                 model.put("doi", doi);
                 model.put("pagetitle", dmcaTitle);
                 return new ModelAndView("dmcaPage", model);
-
-	    }
+            }
 
             if (doc.isRemoved() == true) {
                response.setStatus(404);
                return new ModelAndView("null",model); 
             }
+
             if (doc == null || doc.isPublic() == false) {
                 String errorTitle = "Document Not Found";
                 model.put("doi", doi);
@@ -142,7 +153,7 @@ public class FileDownloadController implements Controller {
                 RedirectUtils.externalRedirect(response, url);
 
             }else{
-		
+
                 response.reset();
                 if (type.equalsIgnoreCase("pdf")) {
                     response.setContentType("application/pdf");
@@ -159,18 +170,24 @@ public class FileDownloadController implements Controller {
                     model.put("pagetitle", errorTitle);
                     return new ModelAndView("baddoi", model);
                 }
-            
-                FileInputStream in = csxdao.getFileInputStream(doi, rep, type);
-                input = new BufferedInputStream(in);
-            
-                int contentLength = input.available();
-                response.setContentLength(contentLength);
-            
-                output = new BufferedOutputStream(response.getOutputStream());
-                while(contentLength-- > 0) {
-                    output.write(input.read());
+
+                HashMap<String,String> p = new HashMap<String,String>();
+                p.put(Document.DOI_KEY, doi);
+                p.put(RepositoryService.REPOSITORYID, rep);
+                p.put(RepositoryService.FILETYPE, type);
+                try {
+                    InputStream in = repositoryService.getDocument(p);
+                    input = new BufferedInputStream(in);
+                    output = new BufferedOutputStream(response.getOutputStream());
+                    byte[] buffer = new byte[8192];
+                    int got = 0;
+                    while((got = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, got);
+                    }
+                    output.flush();
+                } catch(DocumentUnavailableException e) {
+                    return null;
                 }
-                output.flush();
             }
         } catch (IOException e) {
             e.printStackTrace();

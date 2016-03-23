@@ -10,24 +10,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.psu.citeseerx.misc.charts;
+package edu.psu.citeseerx.repository;
 
-import edu.psu.citeseerx.repository.UnknownRepositoryException;
+import java.io.IOException;
 
-/**
- * Generic interface for building citation histograms.
- *
- * @author Isaac Councill
- * @version $Rev$ $Date$
- */
-public interface ChartBuilder {
-
-    /**
-     * Builds histograms for all documents in the collection.  Only documents
-     * whose citation counts have changed since the last update (or 
-     * documents that are new) will be processed.
-     * @throws UnknownRepositoryException
-     */
-    public void buildAll() throws UnknownRepositoryException;
+public class UnknownRepositoryException extends IOException {
     
-} //- interface ChartBuilder
+    private static final long serialVersionUID = -4323186349426798672L;
+
+    public UnknownRepositoryException(String msg) {
+        super(msg);
+    } //- UnknownRepositoryException
+    
+} //- class UnknownRepositoryException

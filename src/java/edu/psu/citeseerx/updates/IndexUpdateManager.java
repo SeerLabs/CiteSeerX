@@ -20,6 +20,7 @@ import java.sql.SQLException;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -55,9 +56,12 @@ import edu.psu.citeseerx.domain.Author;
 import edu.psu.citeseerx.domain.Document;
 import edu.psu.citeseerx.domain.DocumentFileInfo;
 import edu.psu.citeseerx.domain.DomainTransformer;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.Keyword;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
+import edu.psu.citeseerx.repository.DocumentUnavailableException;
+import edu.psu.citeseerx.repository.RepositoryUtilities;
 import edu.psu.citeseerx.utility.SafeText;
 
 /**
@@ -98,23 +102,32 @@ public class IndexUpdateManager {
 
     private CSXDAO csxdao;
 
+    private RepositoryService repositoryService;
+    
     public void setCSXDAO(CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
 
 
     private CiteClusterDAO citedao;
+    
+    public RepositoryService getRepositoryService() {
+        return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
 
     public void setCiteClusterDAO(CiteClusterDAO citedao) {
         this.citedao = citedao;
     } //- setCiteClusterDAO
 
     public void setredoAll(boolean redoAll) {
-        this.redoAll = redoAll;
+        this.redoAll = redoAll; 
     }
 
     private ExecutorService threadPool;
-
     {
         int cpus = Runtime.getRuntime().availableProcessors();
 
@@ -483,24 +496,22 @@ public class IndexUpdateManager {
         if (doi == null) {
             return null;
         }
-
-        String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
-        FileInputStream ins;
         try {
+            String fileContent = new String();
             try {
-                ins = csxdao.getFileInputStream(doi, repID, "body");
-            } catch (IOException e) {
-                ins = csxdao.getFileInputStream(doi, repID, "txt");
+                fileContent = RepositoryUtilities.getDocumentText(repositoryService, doi, true);
             }
-        } catch (IOException e) {
-            return null;
+            catch(DocumentUnavailableException e) {
+                try {
+                    fileContent = RepositoryUtilities.getDocumentText(repositoryService, doi, false);
+                }
+                catch(DocumentUnavailableException due) {} 
+            }
+            return fileContent;
+            
+        } catch (Exception e) {
+            throw(e);
         }
-
-        String text = IOUtils.toString(ins, "UTF-8");
-        text = SafeText.stripBadChars(text);
-        text = CharMatcher.JAVA_ISO_CONTROL.replaceFrom(text, " ");
-        try { ins.close(); } catch (IOException e) { }
-        return text;
     }  //- getText
 
     private void processDeletions(Date currentTime) throws IOException, SolrServerException {

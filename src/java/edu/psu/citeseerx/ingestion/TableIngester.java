@@ -1,10 +1,10 @@
 package edu.psu.citeseerx.ingestion;
 
-import edu.psu.citeseerx.dao2.RepositoryMap;
 import edu.psu.citeseerx.dao2.logic.CSXDAO;
 import edu.psu.citeseerx.domain.CheckSum;
 import edu.psu.citeseerx.domain.Table;
 import edu.psu.citeseerx.domain.TableSet;
+import edu.psu.citeseerx.repository.RepositoryMap;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 import edu.psu.citeseerx.utility.FileUtils;
 

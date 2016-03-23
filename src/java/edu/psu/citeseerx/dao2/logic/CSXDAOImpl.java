@@ -14,8 +14,6 @@ package edu.psu.citeseerx.dao2.logic;
 
 import org.springframework.dao.DataAccessException;
 
-import com.lowagie.text.pdf.PdfReader;
-
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.util.Date;
@@ -54,10 +52,12 @@ import edu.psu.citeseerx.domain.Hub;
 import edu.psu.citeseerx.domain.Keyword;
 import edu.psu.citeseerx.domain.LinkType;
 import edu.psu.citeseerx.domain.PDFRedirect;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.Table;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.domain.UniqueAuthor;
+import edu.psu.citeseerx.repository.DocumentUnavailableException;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 
 
@@ -83,12 +83,21 @@ public class CSXDAOImpl implements CSXDAO {
     private LegacyIDDAO legacyIDDAO;
     private TagDAO tagDAO;
     private UniqueAuthorDAO uauthDAO;
-	private UniqueAuthorVersionDAO uauthVersionDAO;
+    private UniqueAuthorVersionDAO uauthVersionDAO;
     private VersionDAO versionDAO;
     private ExternalLinkDAO externalLinkDAO;
     private TableDAO tableDAO;
     private AlgorithmDAO algorithmDAO;
     private RedirectPDFDAO redirectPDFDAO;
+    private RepositoryService repositoryService;
+
+    public RepositoryService getRepositoryService() {
+    return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+    this.repositoryService = repositoryService;
+    }
     
     public void setAckDAO(AckDAO ackDAO) {
         this.ackDAO = ackDAO;
@@ -159,8 +168,8 @@ public class CSXDAOImpl implements CSXDAO {
     } //- setTableDAO
     
     public void setGeneralStatistics(GeneralStatistics generalStatistics) {
-    	this.generalStatistics = generalStatistics;
-    }
+        this.generalStatistics = generalStatistics;
+    } // - setGeneralStatisticsDAO
     
     public void setAlgorithmDAO(AlgorithmDAO algorithmDAO) {
         this.algorithmDAO = algorithmDAO;
@@ -168,7 +177,8 @@ public class CSXDAOImpl implements CSXDAO {
     
     public void setRedirectPDFDAO(RedirectPDFDAO redirectPDFDAO) {
         this.redirectPDFDAO = redirectPDFDAO;
-    }
+    } // - setRedirectPDFDAO
+
     
     ///////////////////////////////////////////////////////
     //  CSX Operations                               
@@ -219,7 +229,7 @@ public class CSXDAOImpl implements CSXDAO {
             tagDAO.addTag(doi, tag.getTag());
         }
 
-        fileSysDAO.writeXML(doc);
+        repositoryService.writeXML(doc);
 
     }  //- importDocument
 
@@ -312,7 +322,9 @@ public class CSXDAOImpl implements CSXDAO {
         Document doc = docDAO.getDocument(doi, false);
         String repID = doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY);
         String relPath = FileNamingUtils.buildXMLPath(doi);
-        return fileSysDAO.getDocFromXML(repID, relPath);
+        try {
+            return repositoryService.getDocFromXML(repID, relPath);
+        } catch(DocumentUnavailableException e) { return null; }
 
     }  //- getDocumentFromXML
 
@@ -676,18 +688,18 @@ public class CSXDAOImpl implements CSXDAO {
     }  //- deleteCitationContexts
     
     /* (non-Javadoc)
-	 * @see edu.psu.citeseerx.dao2.CitationDAO#getNumberOfCitationsRecords()
-	 */
-	public Integer getNumberOfCitationsRecords() throws DataAccessException {
-		return citeDAO.getNumberOfCitationsRecords();
-	} //- getNumberOfCitationsRecords
+     * @see edu.psu.citeseerx.dao2.CitationDAO#getNumberOfCitationsRecords()
+     */
+    public Integer getNumberOfCitationsRecords() throws DataAccessException {
+        return citeDAO.getNumberOfCitationsRecords();
+    } //- getNumberOfCitationsRecords
 
 
     ///////////////////////////////////////////////////////
     //  Document DAO                               
     ///////////////////////////////////////////////////////
 
-	/* (non-Javadoc)
+    /* (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.DocumentDAO#getDocument(java.lang.String, boolean)
      */
     @Override
@@ -773,12 +785,12 @@ public class CSXDAOImpl implements CSXDAO {
     }  //- getDOIs
 
     /* (non-Javadoc)
-	 * @see edu.psu.citeseerx.dao2.DocumentDAO#getSetDOIs(java.util.Date, java.util.Date, java.lang.String, int)
-	 */
-	public List<DOIInfo> getSetDOIs(Date start, Date end, String prev, 
-			int amount) throws DataAccessException {
-		return docDAO.getSetDOIs(start, end, prev, amount);
-	} //- getSetDOIs
+     * @see edu.psu.citeseerx.dao2.DocumentDAO#getSetDOIs(java.util.Date, java.util.Date, java.lang.String, int)
+     */
+    public List<DOIInfo> getSetDOIs(Date start, Date end, String prev,
+            int amount) throws DataAccessException {
+        return docDAO.getSetDOIs(start, end, prev, amount);
+    } //- getSetDOIs
 
 
     /* (non-Javadoc)
@@ -786,7 +798,7 @@ public class CSXDAOImpl implements CSXDAO {
      */
     public Integer getSetDOICount(Date start, Date end, String prev) 
     throws DataAccessException {
-    	return docDAO.getSetDOICount(start, end, prev);
+        return docDAO.getSetDOICount(start, end, prev);
     } //- getSetDOICount
 
     /* (non-Javadoc)
@@ -985,7 +997,8 @@ public class CSXDAOImpl implements CSXDAO {
     throws DataAccessException, IOException {
         
         versionDAO.insertVersion(doc);
-        fileSysDAO.writeVersion(doc);
+        repositoryService.writeVersion(doc);
+
         return true;
         
     }  //- createNewVersion
@@ -1084,70 +1097,6 @@ public class CSXDAOImpl implements CSXDAO {
         return fileSysDAO.getDocVersion(doi, name);
     }  //- getDocVersion
     
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileInputStream(java.lang.String, java.lang.String, java.lang.String)
-     */
-    @Override
-    public FileInputStream getFileInputStream(String doi, String repID,
-            String type) throws IOException {
-        return fileSysDAO.getFileInputStream(doi, repID, type);
-    } //- getFileInputStream
-    
-    /* (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getPdfReader(java.lang.String, java.lang.String)
-     */
-    public PdfReader getPdfReader(String doi, String repID)
-            throws IOException {
-        return fileSysDAO.getPdfReader(doi, repID);
-    } //- getPdfReader
-
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#writeXML(edu.psu.citeseerx.domain.Document)
-     */
-    @Override
-    public void writeXML(Document doc) throws IOException {
-        fileSysDAO.writeXML(doc);
-    } //- writeXML
-    
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#writeVersion(edu.psu.citeseerx.domain.Document)
-     */
-    @Override
-    public void writeVersion(Document doc) throws IOException {
-        fileSysDAO.writeVersion(doc);
-    } //- writeVersion
-    
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getDocFromXML(java.lang.String, java.lang.String)
-     */
-    @Override
-    public Document getDocFromXML(String repID, String relPath)
-    throws IOException {
-        return fileSysDAO.getDocFromXML(repID, relPath);
-    } //- getDocFromXML
-    
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getFileTypes(java.lang.String, java.lang.String)
-     */
-    @Override
-    public List<String> getFileTypes(String doi, String repID)
-    throws IOException {
-        return fileSysDAO.getFileTypes(doi, repID);
-    } //- getFileTypes
-
-    /*
-     * (non-Javadoc)
-     * @see edu.psu.citeseerx.dao2.FileSysDAO#getRepositoryID(java.lang.String)
-     */
-    @Override
-    public String getRepositoryID(String doi) {
-        return fileSysDAO.getRepositoryID(doi);
-    } //- getRepositoryID
     
     ///////////////////////////////////////////////////////
     //  Hub DAO                               
@@ -1497,7 +1446,7 @@ public class CSXDAOImpl implements CSXDAO {
      */
     @Override
     public void insertTable(Table tobj) throws DataAccessException {
-    	tableDAO.insertTable(tobj);
+        tableDAO.insertTable(tobj);
     } //- insertTable
     
     /*
@@ -1506,8 +1455,8 @@ public class CSXDAOImpl implements CSXDAO {
      */
     @Override
     public void deleteTable(Long id) throws DataAccessException {
-    	tableDAO.deleteTable(id);
-	} //- deleteTable
+        tableDAO.deleteTable(id);
+    } //- deleteTable
     
     /*
      * (non-Javadoc)
@@ -1515,7 +1464,7 @@ public class CSXDAOImpl implements CSXDAO {
      */
     @Override
     public void updateTableIndexTime() throws DataAccessException {
-    	tableDAO.updateTableIndexTime();
+        tableDAO.updateTableIndexTime();
     } //- updateTableIndexTime
     
     /*
@@ -1525,7 +1474,7 @@ public class CSXDAOImpl implements CSXDAO {
     @Override
     public List<Table> getUpdatedTables(java.sql.Date dt)
     throws DataAccessException {
-    	return tableDAO.getUpdatedTables(dt);
+        return tableDAO.getUpdatedTables(dt);
     } //- getUpdatedTables
     
     /*
@@ -1535,7 +1484,7 @@ public class CSXDAOImpl implements CSXDAO {
     @Override
     public List<Table> getTables(String id, boolean idtype)
     throws DataAccessException {
-    	return tableDAO.getTables(id, idtype);
+        return tableDAO.getTables(id, idtype);
     } //- getTables
     
     /*
@@ -1544,7 +1493,7 @@ public class CSXDAOImpl implements CSXDAO {
      */
     @Override
     public java.sql.Date lastTableIndexTime() throws DataAccessException {
-    	return tableDAO.lastTableIndexTime();
+        return tableDAO.lastTableIndexTime();
     } //-lastTableIndexTime
     
     ///////////////////////////////////////////////////////
@@ -1593,60 +1542,60 @@ public class CSXDAOImpl implements CSXDAO {
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthorRecords(java.lang.String, java.util.List<java.lang.Integer>)
      */
-    @Override	
-	public List<Integer> getAuthorRecords(String aid) throws DataAccessException {
-		return uauthDAO.getAuthorRecords(aid);
-	} //- getAuthorsByPapers
+    @Override
+    public List<Integer> getAuthorRecords(String aid) throws DataAccessException {
+        return uauthDAO.getAuthorRecords(aid);
+    } //- getAuthorsByPapers
 
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#getAuthorRecordsByPapers(java.lang.String, java.util.List<java.lang.Integer>)
      */
-    @Override	
-	public List<Integer> getAuthorRecordsByPapers(String aid, List<Integer> papers) throws DataAccessException {
-		return uauthDAO.getAuthorRecordsByPapers(aid, papers);
-	} //- getAuthorsByPapers
+    @Override
+    public List<Integer> getAuthorRecordsByPapers(String aid, List<Integer> papers) throws DataAccessException {
+        return uauthDAO.getAuthorRecordsByPapers(aid, papers);
+    } //- getAuthorsByPapers
 
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#updateAuthNdocs(java.lang.String)
      */
-	public void updateAuthNdocs(String aid) throws DataAccessException {
-		uauthDAO.updateAuthNdocs(aid);
-	} //- updateAuthNdocs
+    public void updateAuthNdocs(String aid) throws DataAccessException {
+        uauthDAO.updateAuthNdocs(aid);
+    } //- updateAuthNdocs
 
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#updateAuthNcites(java.lang.String)
      */
-	public void updateAuthNcites(String aid) throws DataAccessException {
-		uauthDAO.updateAuthNcites(aid);
-	} //- updateAuthNcites
+    public void updateAuthNcites(String aid) throws DataAccessException {
+        uauthDAO.updateAuthNcites(aid);
+    } //- updateAuthNcites
 
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#updateAuthInfo(edu.psu.citeseerx.domain.UniqueAuthor)
      */
-	public void updateAuthInfo(UniqueAuthor uauth) throws DataAccessException {
-		uauthDAO.updateAuthInfo(uauth);
-	} //- updateAuthInfo
+    public void updateAuthInfo(UniqueAuthor uauth) throws DataAccessException {
+        uauthDAO.updateAuthInfo(uauth);
+    } //- updateAuthInfo
 
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#removeAuthor(java.lang.String)
      */
-	public void removeAuthor(String aid) throws DataAccessException {
-		uauthDAO.removeAuthor(aid);
-	} //- removeAuthor
+    public void removeAuthor(String aid) throws DataAccessException {
+        uauthDAO.removeAuthor(aid);
+    } //- removeAuthor
 
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.UniqueAuthorDAO#moveAuthorRecord(java.lang.String, java.util.List<java.lang.String>)
      */
-	public void moveAuthorRecords(String target_aid, List<Integer> author_records) throws DataAccessException {
-		uauthDAO.moveAuthorRecords(target_aid, author_records);
-	} //- moveAuthorRecords
-		
+    public void moveAuthorRecords(String target_aid, List<Integer> author_records) throws DataAccessException {
+        uauthDAO.moveAuthorRecords(target_aid, author_records);
+    } //- moveAuthorRecords
+
 
     ///////////////////////////////////////////////////////
     //  UniqueAuthorVersion DAO                               
@@ -1657,30 +1606,30 @@ public class CSXDAOImpl implements CSXDAO {
      * @see edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO#updateUauthorInfo(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-	public void updateUauthorInfo(String userid, String aid, String new_canname, String new_affil) 
-		throws DataAccessException {
-		uauthVersionDAO.updateUauthorInfo(userid, aid, new_canname, new_affil);
-	} //- updateUauthorInfo
+    public void updateUauthorInfo(String userid, String aid, String new_canname, String new_affil)
+        throws DataAccessException {
+        uauthVersionDAO.updateUauthorInfo(userid, aid, new_canname, new_affil);
+    } //- updateUauthorInfo
 
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO#mergeUauthors(java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-	public void mergeUauthors(String userid, String aid1, String aid2)
-		throws DataAccessException {
-		uauthVersionDAO.mergeUauthors(userid, aid1, aid2);
-	} //- mergeUauthors
+    public void mergeUauthors(String userid, String aid1, String aid2)
+        throws DataAccessException {
+        uauthVersionDAO.mergeUauthors(userid, aid1, aid2);
+    } //- mergeUauthors
 
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.UniqueAuthorVersionDAO#removeUauthorPapers(java.lang.String, java.lang.String, java.util.List<java.lang.Integer>)
      */
     @Override
-	public void removeUauthorPapers(String userid, String aid, List<Integer> papers) 
-		throws DataAccessException {
-		uauthVersionDAO.removeUauthorPapers(userid, aid, papers);
-	} //- removeUauthorPapers
+    public void removeUauthorPapers(String userid, String aid, List<Integer> papers)
+        throws DataAccessException {
+        uauthVersionDAO.removeUauthorPapers(userid, aid, papers);
+    } //- removeUauthorPapers
 
     ///////////////////////////////////////////////////////
     //  AlgorithmDAO                               
@@ -1735,11 +1684,11 @@ public class CSXDAOImpl implements CSXDAO {
     public void updateAlgorithmIndexTime() throws DataAccessException {
         algorithmDAO.updateAlgorithmIndexTime();
     } //- updateAlgorithmIndexTime
-    
+
     ///////////////////////////////////////////////////////
     //  GeneralStatistics                               
     ///////////////////////////////////////////////////////
-    
+
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getAuthorsInCollection()
@@ -1748,85 +1697,89 @@ public class CSXDAOImpl implements CSXDAO {
     public long getAuthorsInCollection() {
         return generalStatistics.getAuthorsInCollection();
     } //- getAuthorsInCollection
-    
+
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getCitationsInCollection()
      */
     @Override
     public long getCitationsInCollection() {
-    	return generalStatistics.getCitationsInCollection();
+        return generalStatistics.getCitationsInCollection();
     } //- getCitationsInCollection
-    
+
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getDocumentsInCollection()
      */
     @Override
     public long getDocumentsInCollection() {
-    	return generalStatistics.getDocumentsInCollection();
+        return generalStatistics.getDocumentsInCollection();
     } //- getDocumentsInCollection
-    
+
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getPublicDocumentsInCollection()
      */
     @Override
     public long getPublicDocumentsInCollection() {
-    	return generalStatistics.getPublicDocumentsInCollection();
+        return generalStatistics.getPublicDocumentsInCollection();
     } //- getPublicDocumentsInCollection
-    
+
     /*
      * (non-Javadoc)
      * @see edu.psu.citeseerx.dao2.GeneralStatistics#getDisambiguatedAuthorsInCollection()
      */
     @Override
     public long getDisambiguatedAuthorsInCollection() {
-    	return generalStatistics.getDisambiguatedAuthorsInCollection();
+        return generalStatistics.getDisambiguatedAuthorsInCollection();
     } //- getDisambiguatedAuthorsInCollection
-    
+
     @Override
     public long getUniqueAuthorsInCollection() {
-    	return generalStatistics.getUniqueAuthorsInCollection();
+        return generalStatistics.getUniqueAuthorsInCollection();
     } //- getUniqueAuthorsInCollection
-    
+
     @Override
     public long getNumberofUniquePublicDocuments() {
-    	return generalStatistics.getNumberofUniquePublicDocuments();
+        return generalStatistics.getNumberofUniquePublicDocuments();
     } //- getNumberofUniquePublicDocuments
-    
+
     @Override
     public long getUniqueEntitiesInCollection() {
-    	return generalStatistics.getUniqueEntitiesInCollection();
+        return generalStatistics.getUniqueEntitiesInCollection();
     } //- getUniqueEntitiesInCollection
 
     
     ///////////////////////////////////////////////////////
     //  RedirectPDFDAO                               
     ///////////////////////////////////////////////////////
-	@Override
-	public PDFRedirect getPDFRedirect(String doi) throws DataAccessException {
-		return redirectPDFDAO.getPDFRedirect(doi);
-	}
+    @Override
+    public PDFRedirect getPDFRedirect(String doi) throws DataAccessException {
+        return redirectPDFDAO.getPDFRedirect(doi);
+    }
 
-	@Override
-	public void insertPDFRedirect(PDFRedirect pdfredirect)
-			throws DataAccessException {
-		
-		redirectPDFDAO.insertPDFRedirect(pdfredirect);
-	}
+    @Override
+    public void insertPDFRedirect(PDFRedirect pdfredirect)
+            throws DataAccessException {
+        redirectPDFDAO.insertPDFRedirect(pdfredirect);
+    }
 
-	@Override
-	public void updatePDFRedirect(String doi, PDFRedirect pdfredirect)
-			throws DataAccessException {
-		redirectPDFDAO.updatePDFRedirect(doi, pdfredirect);
-		
-	}
+    @Override
+    public void updatePDFRedirect(String doi, PDFRedirect pdfredirect)
+            throws DataAccessException {
+        redirectPDFDAO.updatePDFRedirect(doi, pdfredirect);
+    }
 
-	@Override
-	public void updatePDFRedirectTemplate(String label, String urltemplate)
-			throws DataAccessException {
-		 redirectPDFDAO.updatePDFRedirectTemplate(label, urltemplate);
-	}
-    
+    @Override
+    public void updatePDFRedirectTemplate(String label, String urltemplate)
+            throws DataAccessException {
+         redirectPDFDAO.updatePDFRedirectTemplate(label, urltemplate);
+    }
+
+    @Override
+    public String getRepositoryID(String doi) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }  //- class CSXDAOImpl

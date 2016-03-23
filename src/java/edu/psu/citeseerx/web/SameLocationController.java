@@ -34,19 +34,30 @@ import edu.psu.citeseerx.domain.DocumentFileInfo;
 import edu.psu.citeseerx.domain.DomainTransformer;
 import edu.psu.citeseerx.domain.ExternalLink;
 import edu.psu.citeseerx.domain.Hub;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.domain.UniqueAuthor;
+import edu.psu.citeseerx.repository.RepositoryUtilities;
 import edu.psu.citeseerx.webutils.RedirectUtils;
 
 /**
  * Provides model objects to documents from same location view
  * @author JuanPablo Fernandez Ramirez
- * @version $Rev $ $Date$
+ * @version $Rev$ $Date$
  */
 public class SameLocationController implements Controller {
     
     private CSXDAO csxdao;
+    private RepositoryService repositoryService;
     
+    public RepositoryService getRepositoryService() {
+        return repositoryService;
+    }
+
+    public void setRepositoryService(RepositoryService repositoryService) {
+        this.repositoryService = repositoryService;
+    }
+
     public void setCSXDAO (CSXDAO csxdao) {
         this.csxdao = csxdao;
     } //- setCSXDAO
@@ -219,7 +230,7 @@ public class SameLocationController implements Controller {
         model.put("title", title); 
         model.put("authors", authors);
         model.put("uauthors", uauthors);
-        model.put("abstract", abs);
+        model.put("abstractText", abs);
         model.put("venue", venue);
         model.put("year", year);
         model.put("urls", urls);
@@ -229,7 +240,7 @@ public class SameLocationController implements Controller {
         model.put("ncites", doc.getNcites());
         model.put("selfCites", doc.getSelfCites());
         model.put("elinks", eLinks);
-        model.put("fileTypes", csxdao.getFileTypes(doi, rep));
+        model.put("fileTypes", RepositoryUtilities.getFileTypes(repositoryService, doi, rep));
         model.put("hubUrls", hubUrls);
         model.put("hurl", hUrl);
         model.put("hits", hits);

@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package edu.psu.citeseerx.dao2;
+package edu.psu.citeseerx.repository;
 
 import java.util.Map;
 
@@ -21,17 +21,21 @@ public class RepositoryMap {
     public void setRepositoryMap(Map<String, String> map) {
         this.repositoryMap = map;
     }
-    
+
+    public Map<String, String> getRepositoryMap() {
+        return this.repositoryMap;
+    }
+
     public String buildFilePath(String repID, String relPath)
     throws UnknownRepositoryException {
         String repPath = (String)repositoryMap.get(repID);
         if (repPath == null) {
             throw new UnknownRepositoryException(repID);
         }
-        return repPath + System.getProperty("file.separator")+relPath;        
+        return repPath + System.getProperty("file.separator")+relPath;
     }  //- buildFilePath
-    
-    
+
+
     public String getRepositoryPath(String repID)
     throws UnknownRepositoryException {
         String repPath = (String)repositoryMap.get(repID);
@@ -40,6 +44,5 @@ public class RepositoryMap {
         }
         return repPath;
     }  //- getRepositoryPath
-    
-    
+
 }  //- class RepositoryMap

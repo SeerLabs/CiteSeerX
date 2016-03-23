@@ -60,3 +60,13 @@ web/citeseerx_webapp/WEB-INF/lib/citeseerx.jar
 *.vrb
 *.xdy
 *.tdo
+
+# Intelij
+.idea/*
+*.iml
+out/*
+
+# Source control
+.svn
+
+*.pyc

@@ -24,22 +24,25 @@
   <bean name="/summary" class="edu.psu.citeseerx.web.ViewDocController">
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
-    <property name="repositoryMap" ref="repositoryMap"/>
+    <property name="repositoryService" ref="RESTrepo"/>
   </bean>
   
   <bean name="/citations" class="edu.psu.citeseerx.web.CitationsController">
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="repositoryService" ref="RESTrepo"/>
   </bean>
   
   <bean name="/similar" class="edu.psu.citeseerx.web.SimilarityController">
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
     <property name="solrSelectUrl" value="${solr.selectUrl}"/>
+    <property name="repositoryService" ref="RESTrepo"/>
   </bean>
   
   <bean name="/download" class="edu.psu.citeseerx.web.FileDownloadController">
     <property name="CSXDAO" ref="citeseerx"/>
+    <property name="repositoryService" ref="RESTrepo"/>
   </bean>
   
   <bean name="/redirect" class="edu.psu.citeseerx.web.RedirectExternalLinkController">
@@ -49,6 +52,7 @@
   <bean name="/versions" class="edu.psu.citeseerx.web.VersionController">
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="repositoryService" ref="RESTrepo"/>
   </bean>
   
   <bean name="/bookmark" class="edu.psu.citeseerx.web.BookmarkController">
@@ -60,6 +64,7 @@
   </bean>
   
   <!--
+>>>>>>> master
   <bean name="/slocation" class="edu.psu.citeseerx.web.SameLocationController">
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
