@@ -20,6 +20,7 @@ public class RepositoryUtilities {
     public static String getDocumentText(RepositoryService repositoryService, String doi, boolean bodyFile) throws DocumentUnavailableException, IOException {
         HashMap<String,String> parameters = new HashMap<String,String>();
         parameters.put(Document.DOI_KEY, doi);
+        parameters.put(RepositoryService.REPOSITORYID, doc.getVersionRepID());
         if (bodyFile) {
             parameters.put(RepositoryService.FILETYPE, RepositoryService.BODYFILE);
         }
