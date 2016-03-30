@@ -305,7 +305,7 @@ public class FileSystemRepository implements RepositoryService {
 
     @Override
     public String getDocumentContent(Map<String, String> p)
-            throws IOException {
+            throws DocumentUnavailableException, IOException {
         if(!(p.containsKey(Document.DOI_KEY) || p.containsKey(RepositoryService.REPOSITORYID)))
             return null;
 
@@ -315,28 +315,15 @@ public class FileSystemRepository implements RepositoryService {
         }
         FileInputStream ins = null;
         BufferedReader reader = null;
-        try {
-            ins = (FileInputStream)getDocument(p);
-
-        } catch (DocumentUnavailableException e) { // No body file
-            p.put(RepositoryService.FILETYPE, RepositoryService.TEXTFILE);
-            try {
-                ins = (FileInputStream)getDocument(p);
-            }
-            catch(DocumentUnavailableException f) {} // No text file either - we give up
-        }
-        try {
-            reader = new BufferedReader(new InputStreamReader(ins, "UTF-8"));
-            StringWriter sw = new StringWriter();
-            IOUtils.copy(reader, sw);
-            String text = sw.toString();
-            return text;
-
-        } catch (IOException e) {
-            throw(e);
-        } finally {
-            try { reader.close(); } catch (Exception e) { }
-            try { ins.close(); } catch(Exception e) { }
-        }
+        ins = (FileInputStream)getDocument(p);
+        reader = new BufferedReader(new InputStreamReader(ins, "UTF-8"));
+        StringWriter sw = new StringWriter();
+        IOUtils.copy(reader, sw);
+        String text = sw.toString();
+        
+        try { reader.close(); } catch (Exception e) { e.printStackTrace(); }
+        try { ins.close(); } catch(Exception e) { e.printStackTrace(); }
+        
+        return text;
     }
 }

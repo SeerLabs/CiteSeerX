@@ -100,7 +100,6 @@ public class RESTRepository implements RepositoryService {
 
     @Override
     public void writeXML(Document doc) throws IOException {
-        // TODO Auto-generated method stub
         HashMap<String,String> p = new HashMap<String,String>();
         p.put(RepositoryService.FILETYPE, RepositoryService.XMLFILE);
         p.put(Document.DOI_KEY, doc.getDatum(Document.DOI_KEY, Document.UNENCODED));
