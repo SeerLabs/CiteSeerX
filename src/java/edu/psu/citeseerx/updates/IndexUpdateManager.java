@@ -499,11 +499,11 @@ public class IndexUpdateManager {
         try {
             String fileContent = new String();
             try {
-                fileContent = RepositoryUtilities.getDocumentText(repositoryService, doi, true);
+                fileContent = RepositoryUtilities.getDocumentText(repositoryService, doc, true);
             }
             catch(DocumentUnavailableException e) {
                 try {
-                    fileContent = RepositoryUtilities.getDocumentText(repositoryService, doi, false);
+                    fileContent = RepositoryUtilities.getDocumentText(repositoryService, doc, false);
                 }
                 catch(DocumentUnavailableException due) {} 
             }

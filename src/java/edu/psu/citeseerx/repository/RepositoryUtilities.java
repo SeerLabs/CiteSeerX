@@ -10,15 +10,17 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class RepositoryUtilities {
-    public static String[] getFileTypes(RepositoryService repositoryService, String doi, String rep) throws IOException{
+    public static String[] getFileTypes(RepositoryService repositoryService, Document doc, String rep) throws IOException {
+        String doi = doc.getDatum(Document.DOI_KEY);
         HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
         fileTypesQuery.put(Document.DOI_KEY, doi);
         fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);
         return repositoryService.fileTypes(fileTypesQuery);
     }
 
-    public static String getDocumentText(RepositoryService repositoryService, String doi, boolean bodyFile) throws DocumentUnavailableException, IOException {
+    public static String getDocumentText(RepositoryService repositoryService, Document doc, boolean bodyFile) throws DocumentUnavailableException, IOException {
         HashMap<String,String> parameters = new HashMap<String,String>();
+        String doi = doc.getDatum(Document.DOI_KEY);
         parameters.put(Document.DOI_KEY, doi);
         parameters.put(RepositoryService.REPOSITORYID, doc.getVersionRepID());
         if (bodyFile) {
