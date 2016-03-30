@@ -287,8 +287,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
             finfo.setDatum(DocumentFileInfo.CRAWL_DATE_KEY,
                     DateFormat.getDateInstance().format(
                             rs.getTimestamp("crawlDate")));
-            finfo.setDatum(DocumentFileInfo.REP_ID_KEY,
-                    rs.getString("repositoryID"));
+            finfo.setDatum(DocumentFileInfo.REP_ID_KEY, rs.getString("repositoryID"));
             finfo.setDatum(DocumentFileInfo.CONV_TRACE_KEY,
                     rs.getString("conversionTrace"));
             doc.setFileInfo(finfo);

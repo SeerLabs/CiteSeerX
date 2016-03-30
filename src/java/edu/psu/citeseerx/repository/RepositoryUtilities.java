@@ -1,6 +1,7 @@
 package edu.psu.citeseerx.repository;
 
 import edu.psu.citeseerx.domain.Document;
+import edu.psu.citeseerx.domain.DocumentFileInfo;
 import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.utility.SafeText;
 
@@ -22,7 +23,7 @@ public class RepositoryUtilities {
         HashMap<String,String> parameters = new HashMap<String,String>();
         String doi = doc.getDatum(Document.DOI_KEY);
         parameters.put(Document.DOI_KEY, doi);
-        parameters.put(RepositoryService.REPOSITORYID, doc.getVersionRepID());
+        parameters.put(RepositoryService.REPOSITORYID, doc.getFileInfo().getDatum(DocumentFileInfo.REP_ID_KEY));
         if (bodyFile) {
             parameters.put(RepositoryService.FILETYPE, RepositoryService.BODYFILE);
         }
