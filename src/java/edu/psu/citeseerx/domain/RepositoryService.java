@@ -20,14 +20,14 @@ public interface RepositoryService {
 	
 	// Constants used in most implementations	
 	public static final String FILETYPE ="type";
-	public static final String TEXTFILE = "TXT";
-	public static final String PDFFILE = "PDF";
-	public static final String PSFILE = "PS";
-	public static final String RICHTEXT = "RTF";
-	public static final String MSWORD = "DOC";
-	public static final String XMLFILE = "XML";
+	public static final String TEXTFILE = "txt";
+	public static final String PDFFILE = "pdf";
+	public static final String PSFILE = "ps";
+	public static final String RICHTEXT = "rtf";
+	public static final String MSWORD = "doc";
+	public static final String XMLFILE = "xml";
 	public static final String REPOSITORYID = "repid";
-	public static final String BODYFILE = "BODY";
+	public static final String BODYFILE = "body";
 	public static final String QUERY = "q";
 	public static final String FILEQUERY = "file";
 	public static final String VERSIONKEY = "version";
