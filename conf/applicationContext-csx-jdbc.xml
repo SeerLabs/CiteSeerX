@@ -31,8 +31,19 @@
   <bean id="RESTrepo" class="edu.psu.citeseerx.repository.RESTRepository">
       <property name="repositoryEndPoint" ref="restEndpoint"/>
   </bean>
-        
 
+  <!-- Use the following bean in a regular filesystem setup: !-->
+  <bean id="FSrepo" class="edu.psu.citeseerx.repository.FileSystemRepository">
+    <property name="repMap" ref="repositoryMap"/>
+  </bean>
+
+  <bean id="repositoryMap" class="edu.psu.citeseerx.repository.RepositoryMap">
+    <property name="repositoryMap">
+      <map>
+        <entry key="rep1" value="${repository.path}"/>
+      </map>
+    </property>
+  </bean>
 
   <!-- =================== BUSINESS OBJECT DEFS ==================== -->
   
