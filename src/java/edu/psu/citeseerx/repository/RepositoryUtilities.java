@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class RepositoryUtilities {
-    public static String[] getFileTypes(RepositoryService repositoryService, Document doc, String rep) throws IOException {
-        String doi = doc.getDatum(Document.DOI_KEY);
+    public static String[] getFileTypes(RepositoryService repositoryService, String doi, String rep) throws IOException {
         HashMap<String,String> fileTypesQuery = new HashMap<String,String>();
         fileTypesQuery.put(Document.DOI_KEY, doi);
         fileTypesQuery.put(RepositoryService.REPOSITORYID, rep);

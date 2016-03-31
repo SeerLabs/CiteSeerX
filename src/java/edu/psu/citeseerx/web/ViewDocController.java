@@ -293,7 +293,7 @@ public class ViewDocController implements Controller {
 		model.put("selfCites", doc.getSelfCites());
 		model.put("tags", tags);
 		model.put("elinks", eLinks);
-		model.put("fileTypes", RepositoryUtilities.getFileTypes(repositoryService, doc, rep));
+		model.put("fileTypes", RepositoryUtilities.getFileTypes(repositoryService, doi, rep));
 		model.put("hubUrls", hubUrls);
 		model.put("pdfRedirectUrl", pdfRedirectURL);
 		model.put("pdfRedirectLabel", pdfRedirectLabel);
