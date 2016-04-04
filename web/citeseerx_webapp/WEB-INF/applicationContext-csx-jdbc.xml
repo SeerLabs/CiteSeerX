@@ -29,12 +29,12 @@
     <property name="POST" value="true"/>
   </bean>
   
-  <bean id="RESTrepo" class="edu.psu.citeseerx.repository.RESTRepository">
+  <!--<bean id="RESTrepo" class="edu.psu.citeseerx.repository.RESTRepository">
     <property name="repositoryEndPoint" ref="restEndpoint"/>
-  </bean>
+  </bean>-->
 
-  <!-- Use the following bean in a regular filesystem setup:
-  <bean id="FSrepo" class="edu.psu.citeseerx.repository.FileSystemRepository">
+  <!-- Use the following bean in a regular filesystem setup: -->
+  <bean id="RESTrepo" class="edu.psu.citeseerx.repository.FileSystemRepository">
     <property name="repMap" ref="repositoryMap"/>
   </bean>
 
@@ -46,7 +46,6 @@
     </property>
   </bean>
 
-  !-->
 
 
   <!-- =================== BUSINESS OBJECT DEFS ==================== -->
