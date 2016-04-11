@@ -22,7 +22,7 @@
 
   <!-- Use the following bean for REST based repositories !-->
   <bean id="restEndpoint" class="edu.psu.citeseerx.domain.RepositoryEndPoint">
-    <property name="url" value="localhost:8000"/>
+    <property name="url" value="csxrepo01.ist.psu.edu"/>
     <property name="schema" value="http"/>
     <property name="path" value="/document"/>
     <property name="GET" value="true"/>
