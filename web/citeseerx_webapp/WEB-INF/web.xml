@@ -689,8 +689,45 @@
     <url-pattern>/search</url-pattern>
   </filter-mapping>
   
+  <filter>
+    <filter-name>Pageview Limit Filter</filter-name>
+    <filter-class>edu.psu.citeseerx.webutils.SimplePageviewLimitFilter</filter-class>
+    <init-param>
+      <param-name>redirectUrl</param-name>
+      <param-value>/messages/pageviewsexceeded.html</param-value>
+    </init-param>
+    <init-param>
+      <param-name>limit</param-name>
+      <param-value>5000</param-value>
+    </init-param>
+    <init-param>
+      <param-name>allowedUserAgents</param-name>
+      <param-value>googlebot</param-value>
+    </init-param>
+    <init-param>
+      <!-- Time in milliseconds between consecutive hits from the same ip to the same
+           URL. All hits which currentTime-lastHitTime <= time are
+           rejected and logged in -->
+      <param-name>timeLimit</param-name>
+      <param-value>3000</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ipLogFile</param-name>
+      <param-value>/WEB-INF/pageviewFilter.txt</param-value>
+    </init-param>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>Pageview Limit Filter</filter-name>
+    <url-pattern>/viewdoc/summary</url-pattern>
+    <url-pattern>/showciting</url-pattern>
+    <url-pattern>/citations</url-pattern>
+    <url-pattern>/similar</url-pattern>
+    <url-pattern>/versions</url-pattern>
+  </filter-mapping>
+
   <session-config>
-    <session-timeout>30</session-timeout>
+    <session-timeout>15</session-timeout>
   </session-config>
   
   <welcome-file-list>
