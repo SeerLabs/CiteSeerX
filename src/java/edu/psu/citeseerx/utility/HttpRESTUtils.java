@@ -33,6 +33,7 @@ public class HttpRESTUtils {
 
     public static String getFromHost(RepositoryEndPoint repEP, Map<String,String> parameters) {
         HttpGet get = new HttpGet();
+        get.setHeader("Connection", "close");
         URIBuilder ub = new URIBuilder();
 
         ub.setScheme(repEP.getSchema()).setHost(repEP.getUrl()).setPath(repEP.getPath());
