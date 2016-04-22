@@ -212,7 +212,7 @@ public class SearchController implements Controller {
      * All parameters will have a valid value to be used by the other methods.
      */
     private Map<String, Object> collectQueryParam(
-            HttpServletRequest request) {
+            HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String, Object> queryParameters = new HashMap<String, Object>();
 
         String value = null;
@@ -221,6 +221,7 @@ public class SearchController implements Controller {
                         QUERY_PARAMETER, null);
         if (quest_organic != null) {
             queststr = Jsoup.clean(quest_organic, Whitelist.none());
+             
         }
 
         queryParameters.put(QUERY_PARAMETER, queststr);
@@ -266,6 +267,9 @@ public class SearchController implements Controller {
                 (String)queryParameters.get(QUERY_PARAMETER));
 
         if (queryType.equals(DOCUMENT_QUERY)) {
+
+            // encode query string, neglecting chars before the first ":"
+            query = encodeQuery(query);
 
             // Searching for authors within documents
             if (queryParameters.get(QUERY_TYPE).equals(AUTHOR_QUERY) &&
@@ -482,13 +486,23 @@ public class SearchController implements Controller {
                 int code = e.getStatusCode();
                 if (code == 400) {
                     errMsg = "Invalid query type.  " +
-                            "Please check your syntax.";
+                            "Please check your syntax." + 
+                            " Query: " + solrQuery + 
+                            "Error: ";
+                    for (StackTraceElement s : e.getStackTrace()) {
+                        errMsg += s.toString()+"\n";
+                    }
+ 
                 } else {
                     errMsg = "<p>Error processing query.</p>" +
                             "<p>The most likely cause of this condition " +
                             "is a malformed query. Please check your query  " +
                             "syntax and, if the problem persists, " +
-                            "contact an admin for assistance.</p>";
+                            "contact an admin for assistance.</p>" +
+                            "Query: " + solrQuery + "\n";
+                    for (StackTraceElement s : e.getStackTrace()) {
+                        errMsg += s.toString()+"\n";
+                    }
                 }
                 System.err.println("Query: " + solrQuery);
                 e.printStackTrace();
@@ -868,6 +882,30 @@ public class SearchController implements Controller {
         return modelView;
 
     }  //- handleRequest
+
+    /* only encode the text part of the query, e.g., if the query is 
+       author: lee giles, encode "lee giles" only
+    */
+    private static String encodeQuery(String q) {
+        String encodedString = null;
+        if (q.contains(":")) {
+            try {
+                String[] qs = q.split(":",2);
+                qs[1] = URLEncoder.encode(qs[1],"UTF-8");
+                encodedString = qs[0]+":"+qs[1];
+             } catch (UnsupportedEncodingException e) {
+                return null;
+             } 
+        } else {
+            try {
+                encodedString = URLEncoder.encode(q,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                return null;
+            }
+        }
+        return encodedString;
+        
+    } //- encodeQuery
 
     private static String normalizeQuery(String q) {
         q = q.replaceAll("author\\:", "authorNorms:");
