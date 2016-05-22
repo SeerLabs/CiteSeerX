@@ -8,6 +8,7 @@ import argparse
 import logging
 import os
 import sys
+import subprocess
 
 logging.basicConfig(level=logging.INFO)
 parser = argparse.ArgumentParser()
@@ -19,8 +20,14 @@ except:
     logging.error("sitemap dir not set. run python generate_sitemap.py -h")
     sys.exit(0)
    
+# clear sitemapdir if it is there already
+if os.path.exists(sitemapdir):
+    subprocess.call(['rm','-rfv',sitemapdir+"/*"])
+else:
+    os.makedirs(sitemapdir)
+
 MAX_PER_FILE = 49999
-db = MySQLdb.connect(host="csxdb03", user="csx-prod", passwd="csx-prod", db="citeseerx")
+db = MySQLdb.connect(host="dbhost", user="dbuser", passwd="dbpass", db="citeseerx")
 cur = db.cursor()
 i = 0
 file = 1
@@ -29,12 +36,9 @@ header = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.site
 cur.execute("SELECT id FROM papers WHERE public = 1")
 for row in cur.fetchall():
     if i == 0:
-        try:
-            f = open(os.path.join(sitemapdir,"sitemap%d.xml" % file), 'w+')
-        except IOError:
-            os.makedirs()
+        f = open(os.path.join(sitemapdir,"sitemap%d.xml" % file), 'w+')
         f.write(header)
-    f.write('<url>\n\t<loc>http://citeseerx.ist.psu.edu/viewdoc/download?doi=%s&rep=rep1&type=pdf</loc>\n</url>\n' % row[0])
+    f.write('<url>\n\t<loc>http://citeseerx.ist.psu.edu/viewdoc/download?doi=%s&amp;rep=rep1&amp;type=pdf</loc>\n</url>\n' % row[0])
     i = i + 1
     if i == MAX_PER_FILE:
         file = file + 1
