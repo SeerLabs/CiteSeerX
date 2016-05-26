@@ -4,7 +4,7 @@ import config
 
 import os
 import sys
-import md5
+from hashlib import md5
 import re
 import urlparse
 
@@ -134,7 +134,7 @@ def load_ncites_data(ncites_file_path):
     for line in f:
         parts = line[:-1].split('\t')
         url = get_canonical_url(parts[0])
-        code = md5.new(url).hexdigest()
+        code = md5(url).hexdigest()
         cite_num = int(parts[1])
         if code not in ncites:
             ncites[code] = cite_num
