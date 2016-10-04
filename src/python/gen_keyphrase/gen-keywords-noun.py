@@ -1,6 +1,7 @@
 #!/usr/bin/python2.7
 
 import nltk
+import io
 import os
 import sys
 
@@ -75,7 +76,7 @@ def gen_term_ctr(text, addend):
     for term in terms:
         if 1 < len(term) <= 5:
             term_ctr[' '.join(term)] += addend
-    return term_ctr
+    return dict(term_ctr)
 
 
 def calc_term_ctr(contents):
@@ -91,8 +92,11 @@ def main(argv):
     for f in os.listdir(article_folder):
         if not os.path.isfile(os.path.join(article_folder, f)):
             continue
-        contents = open(os.path.join(article_folder, f)).read()
-        print calc_term_ctr(contents)
+        contents = io.open(os.path.join(article_folder, f), encoding="utf-8").read()
+        print '===Keyphrases of %s===' % (os.path.join(article_folder, f))
+        #print calc_term_ctr(contents)
+        for term, ctr in calc_term_ctr(contents).iteritems():
+            print term, ':', ctr
 
 
 if __name__ == "__main__":
