@@ -1,12 +1,15 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+# Hung-Hsuan Chen <hhchen@ncu.edu.tw>
+# Creation Date : 10-06-2016
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import collections
 import nltk
-import io
-import os
-import sys
-
-from collections import defaultdict
-
 
 def leaves(tree):
     """Finds NP (nounphrase) leaf nodes of a chunk tree."""
@@ -70,35 +73,10 @@ def gen_keyphrases(text):
 
 
 def gen_term_ctr(text, addend):
-    term_ctr = defaultdict(int)
+    term_ctr = collections.defaultdict(int)
 
     terms = gen_keyphrases(text)
     for term in terms:
         if 1 < len(term) <= 5:
             term_ctr[' '.join(term)] += addend
     return dict(term_ctr)
-
-
-def calc_term_ctr(contents):
-    term_ctr = {}
-    if contents is not None:
-        term_ctr = gen_term_ctr(contents, 1)
-    return term_ctr
-
-
-def main(argv):
-    article_folder = './articles'
-    print "Fetching papers from folder '%s'..." % (article_folder)
-    for f in os.listdir(article_folder):
-        if not os.path.isfile(os.path.join(article_folder, f)):
-            continue
-        contents = io.open(os.path.join(article_folder, f), encoding="utf-8").read()
-        print '===Keyphrases of %s===' % (os.path.join(article_folder, f))
-        #print calc_term_ctr(contents)
-        for term, ctr in calc_term_ctr(contents).iteritems():
-            print term, ':', ctr
-
-
-if __name__ == "__main__":
-    main(sys.argv)
-
