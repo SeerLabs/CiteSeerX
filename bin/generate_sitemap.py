@@ -9,6 +9,7 @@ import logging
 import os
 import sys
 import subprocess
+from config import db
 
 logging.basicConfig(level=logging.INFO)
 parser = argparse.ArgumentParser()
@@ -27,7 +28,7 @@ else:
     os.makedirs(sitemapdir)
 
 MAX_PER_FILE = 49999
-db = MySQLdb.connect(host="dbhost", user="dbuser", passwd="dbpass", db="citeseerx")
+db = MySQLdb.connect(host=db["dbhost"], user=db["dbuser"], passwd=db["dbpass"], db="citeseerx")
 cur = db.cursor()
 i = 0
 file = 1
