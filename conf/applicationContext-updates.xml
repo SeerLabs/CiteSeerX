@@ -63,7 +63,7 @@
     <property name="solrURL" value="${solr.updateUrl}"/>
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
-    <property name="repositoryService" ref="FSrepo"/>
+    <property name="repositoryService" ref="RESTrepo"/>
     <property name="redoAll" value="false"/>
   </bean>
 
