@@ -132,6 +132,7 @@
 	<property name="docDAO" ref="docDAO"/>
 	<property name="fileDAO" ref="fileDAO"/>
 	<property name="fileSysDAO" ref="fileSysDAO"/>
+	<property name="repositoryService" ref="RESTrepo"/>
 	<property name="hubDAO" ref="hubDAO"/>
 	<property name="keywordDAO" ref="keywordDAO"/>
 	<property name="legacyIDDAO" ref="legacyIDDAO"/>
