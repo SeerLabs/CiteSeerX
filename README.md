@@ -1,4 +1,4 @@
-#CiteSeerX
+# CiteSeerX
 
 This is the source code for the [CiteSeerX academic digital library.](http://citeseerx.ist.psu.edu) 
 
