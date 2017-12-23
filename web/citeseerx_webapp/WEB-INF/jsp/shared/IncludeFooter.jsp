@@ -15,7 +15,7 @@
       <li><a href="http://csxstatic.ist.psu.edu/contact" target="_blank">Contact Us</a></li>
     </ul>
   	<p class="info">Developed at and hosted by <a href="http://ist.psu.edu">The College of Information Sciences and Technology</a></p>
-  	<p>&copy; 2007-2016 <a href="http://www.psu.edu">The Pennsylvania State University</a></p>
+  	<p>&copy; 2007-2018 <a href="http://www.psu.edu">The Pennsylvania State University</a></p>
   </div>
 </div> <%-- Closing Div for Wrapper --%>
 

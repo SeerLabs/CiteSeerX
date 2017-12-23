@@ -26,6 +26,7 @@
 		<%@ include file="shared/IncludeTopNav.jsp" %>
 		<%@ include file="shared/IncludeSearchBoxFront.jsp" %>
     <div id="statsLinks">
-      Most Cited: <a href="<c:url value="/stats/articles"/>">Documents</a> , <a href="<c:url value="/stats/citations"/>">Citations</a> , <a href="<c:url value="/stats/authors"/>">Authors</a> , <a href="<c:url value="/stats/venues"/>">Venue Impact Rating</a> 
+      <%--Most Cited: <a href="<c:url value="/stats/articles"/>">Documents</a> , <a href="<c:url value="/stats/citations"/>">Citations</a> , <a href="<c:url value="/stats/authors"/>">Authors</a> , <a href="<c:url value="/stats/venues"/>">Venue Impact Rating</a> --%>
+      Most Cited: <a href="<c:url value="/stats/articles"/>">Documents</a> | <a href="<c:url value="/stats/citations"/>">Citations</a> 
     </div>
 	  <%@ include file="shared/IncludeFooter.jsp"%>
