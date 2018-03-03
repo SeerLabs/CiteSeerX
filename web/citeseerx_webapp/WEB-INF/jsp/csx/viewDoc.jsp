@@ -93,13 +93,16 @@
       </div>
       <div id="keywords">
         <c:if test="${!empty keyphrases}">
-          <h3>Keyphrases</h3>
+          <h3>TEST</h3>
           <p>
             <c:forEach items="${ keyphrases }" var="keyphrase">
             <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;&nbsp;&nbsp;
             </c:forEach>
           </p>
         </c:if>
+      </div>
+      <div id="keywords">
+	<h3>TEST2</h3>
       </div>
     </div>
   </div><%-- viewContent close div --%>
