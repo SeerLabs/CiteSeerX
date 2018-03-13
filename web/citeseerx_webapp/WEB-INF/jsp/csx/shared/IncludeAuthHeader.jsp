@@ -12,7 +12,7 @@
     <c:if test="${ ! empty uauth.affil }"> --%>
       <tr><td class="title">Affiliation</td>
         <td><c:out value="${ uauth.affil }"/></td>
-      </tr></c:if>
+      </tr><%-- </c:if> --%>
     <c:if test="${ ! empty uauth.address }">
       <tr><td class="title">Address</td>
         <td><c:out value="${ uauth.address }"/></td>
