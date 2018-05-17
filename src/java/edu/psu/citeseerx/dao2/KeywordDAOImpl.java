@@ -17,6 +17,9 @@ import edu.psu.citeseerx.domain.Keyword;
 import java.util.List;
 // branch keyphrasevote
 import java.util.HashSet;
+import java.util.Set;
+import java.util.ArrayList;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -80,10 +83,10 @@ public class KeywordDAOImpl extends JdbcDaoSupport implements KeywordDAO {
                 keyword.setSource(Keyword.KEYWORD_KEY, getKeySrc.run(keyword));
             }
         }
-        Set<Keyword> keywordset = new HashSet<String>(keywords);
-        keywords = new List<Keyword>(keywordset);
+        Set<Keyword> keywordset = new HashSet<Keyword>(keywords);
+        List<Keyword> keywordstwo = new ArrayList<>(keywordset);
 
-        return keywords;
+        return keywordstwo;
     } //- getKeywords
 
     
