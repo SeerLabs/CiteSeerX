@@ -15,6 +15,8 @@ package edu.psu.citeseerx.dao2;
 import edu.psu.citeseerx.domain.Keyword;
 
 import java.util.List;
+// branch keyphrasevote
+import java.util.HashSet;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -78,6 +80,9 @@ public class KeywordDAOImpl extends JdbcDaoSupport implements KeywordDAO {
                 keyword.setSource(Keyword.KEYWORD_KEY, getKeySrc.run(keyword));
             }
         }
+        Set<Keyword> keywordset = new HashSet<String>(keywords);
+        keywords = new List<Keyword>(keywordset);
+
         return keywords;
     } //- getKeywords
 
@@ -122,9 +127,13 @@ public class KeywordDAOImpl extends JdbcDaoSupport implements KeywordDAO {
         deleteKeywords.run(doi);
     }  //- deleteKeywords
     
-    
+    //keyphrasevote branch deletion
+    //private static final String DEF_GET_KEYWORD_QUERY =
+    //    "select id, keyword from keywords where paperid=?";
+
+    //keyphrasevote branch addition
     private static final String DEF_GET_KEYWORD_QUERY =
-        "select id, keyword from keywords where paperid=?";
+        "select id, keyphrase from paper_keyphrases_multimodel where paperid=?";
 
     private class GetKeywords extends MappingSqlQuery {
         
