@@ -77,12 +77,12 @@ public class KeywordDAOImpl extends JdbcDaoSupport implements KeywordDAO {
     public List<Keyword> getKeywords(String doi, boolean getSource)
     throws DataAccessException {
         List<Keyword> keywords = getKeywords.run(doi);
-        if (getSource) {
+        /*if (getSource) {
             for (Object o : keywords) {
                 Keyword keyword = (Keyword)o;
                 keyword.setSource(Keyword.KEYWORD_KEY, getKeySrc.run(keyword));
             }
-        }
+        }*/
         Set<Keyword> keywordset = new HashSet<Keyword>(keywords);
         List<Keyword> keywordstwo = new ArrayList<>(keywordset);
 
