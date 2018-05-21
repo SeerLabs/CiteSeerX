@@ -16,6 +16,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+
+import java.util.Set;
+import java.util.stream.*;
+import java.util.ArrayList;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -234,7 +239,12 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
      */
     public List<String> getKeyphrase(String doi)
 	    throws DataAccessException {
-        return getKeyphrase.run(doi);
+        List<String> keyphrases = getKeyphrase.run(doi);
+        Set<String> keyphrasestwo = keyphrases.stream().collect(Collectors.toSet());
+        List<String> keyphrasesthree = new ArrayList<String>(keyphrasestwo);
+
+
+        return keyphrasesthree;
     } //- getKeyphrase
 
     private static final String DEF_GET_DOC_QUERY =
