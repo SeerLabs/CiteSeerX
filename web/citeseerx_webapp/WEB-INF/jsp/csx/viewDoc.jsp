@@ -97,6 +97,8 @@
           <p>
             <c:forEach items="${ keyphrases }" var="keyphrase">
             <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;&nbsp;&nbsp;
+            <img src="<c:url value="/images/thumbs_up.jpg"/>"/>
+            <img src="<c:url value="/images/thumbs_down.jpg"/>"/>
             </c:forEach>
           </p>
         </c:if>
