@@ -15,11 +15,6 @@ package edu.psu.citeseerx.dao2;
 import edu.psu.citeseerx.domain.Keyword;
 
 import java.util.List;
-// branch keyphrasevote
-import java.util.HashSet;
-import java.util.Set;
-import java.util.ArrayList;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -77,16 +72,13 @@ public class KeywordDAOImpl extends JdbcDaoSupport implements KeywordDAO {
     public List<Keyword> getKeywords(String doi, boolean getSource)
     throws DataAccessException {
         List<Keyword> keywords = getKeywords.run(doi);
-        /*if (getSource) {
+        if (getSource) {
             for (Object o : keywords) {
                 Keyword keyword = (Keyword)o;
                 keyword.setSource(Keyword.KEYWORD_KEY, getKeySrc.run(keyword));
             }
-        }*/
-        Set<Keyword> keywordset = new HashSet<Keyword>(keywords);
-        List<Keyword> keywordstwo = new ArrayList<>(keywordset);
-
-        return keywordstwo;
+        }
+        return keywords;
     } //- getKeywords
 
     
@@ -130,13 +122,9 @@ public class KeywordDAOImpl extends JdbcDaoSupport implements KeywordDAO {
         deleteKeywords.run(doi);
     }  //- deleteKeywords
     
-    //keyphrasevote branch deletion
-    //private static final String DEF_GET_KEYWORD_QUERY =
-    //    "select id, keyword from keywords where paperid=?";
-
-    //keyphrasevote branch addition
+   
     private static final String DEF_GET_KEYWORD_QUERY =
-        "select id, keyphrase from paper_keyphrases_multimodel where paperid=?";
+        "select id, keyword from keywords where paperid=?";
 
     private class GetKeywords extends MappingSqlQuery {
         

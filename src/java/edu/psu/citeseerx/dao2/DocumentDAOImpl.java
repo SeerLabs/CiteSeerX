@@ -306,9 +306,18 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         
     }  //- class GetDoc
     
+
+    /*  
+    branch keyphrasevote
     private static final String DEF_GET_KEYPHRASE_QUERY =
         "select ngram from paper_keywords_noun " + 
 	      "where paper_id=? order by count desc";
+    */
+
+    private static final String DEF_GET_KEYPHRASE_QUERY =
+        "select keyphrase from paper_keyphrases_multimodel where paperid=?";
+
+
 
     private class GetKeyphrase extends MappingSqlQuery {
         
@@ -320,7 +329,7 @@ public class DocumentDAOImpl extends JdbcDaoSupport implements DocumentDAO {
         } //- GetKeyphrase.GetKeyphrase
         
         public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return rs.getString("ngram");
+            return rs.getString("keyphrase");
         } //- GetKeyphrase.mapRow
 
         public List<String> run(String doi) {
