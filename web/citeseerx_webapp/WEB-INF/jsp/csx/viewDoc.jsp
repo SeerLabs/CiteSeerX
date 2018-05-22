@@ -115,9 +115,10 @@
   </div><%-- viewContent close div --%>
   <div class="clear"></div>
 </div>
-<script type = "application/javascript">
+<script>
   $(document).ready(function()
   {
+    console.log("ready");
     $('id^="buttonupvote_"').click(function () 
     {
       console.log("worked");
