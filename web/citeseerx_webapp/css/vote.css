@@ -3,3 +3,9 @@
   height: 10px;
   background-image: url("/images/thumbs_up.jpg");
 }
+
+#downvotebefore {
+  width: 10px;
+  height: 10px;
+  background-image: url("/images/thumbs_down.jpg");
+}
