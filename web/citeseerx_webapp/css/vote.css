@@ -1,0 +1,5 @@
+#upvotebefore {
+  width: 10px;
+  height: 10px;
+  background-image: <c:url value="/images/thumbs_up.jpg"/>;
+}
