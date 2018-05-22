@@ -98,6 +98,7 @@
             <c:forEach items="${ keyphrases }" var="keyphrase" varStatus = "keyphraseindex">
             <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;
             <button id = "keyphraseupvote(${keyphraseindex.index})" class = "upvotebefore">
+            </button>
            <%-- <img src="<c:url value="/images/thumbs_up.jpg"/>" width = "10" height = "10"/>
             <img src="<c:url value="/images/thumbs_down.jpg"/>" width = "10" height = "10"/>&nbsp; --%>
             </c:forEach>
