@@ -8,6 +8,7 @@
 @import url('results.css');
 @import url('view.css');
 @import url('corrections.css');
+@import url('vote.css');
 
 .clear {
   clear:both;
