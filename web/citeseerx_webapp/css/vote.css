@@ -1,11 +1,13 @@
 .upvotebefore {	
-  background-image: url("/images/thumbs_up.jpg");
+  background-image: url("/images/thumbs_up_after.jpg");
   width: 10px;
   height: 10px;
+  margin-top: -3px;
 }
 
 .downvotebefore {
   width: 10px;
   height: 10px;
   background-image: url("/images/thumbs_down.jpg");
+  margin-top: -3px;
 }
