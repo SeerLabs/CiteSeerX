@@ -97,11 +97,11 @@
           <p>
             <c:forEach items="${ keyphrases }" var="keyphrase" varStatus = "keyphraseindex">
             <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;
-            <button id = "keyphraseupvote(${keyphraseindex.index})" class = "upvotebefore">
-              <img src="<c:url value="/images/thumbs_up.jpg"/>" width = "10" height = "10"/>
+            <button id = "buttonupvote(${keyphraseindex.index})">
+              <img id = "upvoteimg(${keyphraseindex.index})" src="<c:url value="/images/thumbs_up.jpg"/>" width = "10" height = "10"/>
             </button>
-            <button id = "keyphrasedownvote(${keyphraseindex.index})" class = "downvotebefore">
-              <img src="<c:url value="/images/thumbs_down.jpg"/>" width = "10" height = "10"/>
+            <button id = "buttondownvote(${keyphraseindex.index})">
+              <img id = "downvoteimg(${keyphraseindex.index})" src="<c:url value="/images/thumbs_down.jpg"/>" width = "10" height = "10"/>
             </button>&nbsp;
            
             </c:forEach>
@@ -115,5 +115,13 @@
   </div><%-- viewContent close div --%>
   <div class="clear"></div>
 </div>
-
+<script type = "application/javascript">
+  $(document).ready(function()
+  {
+    $('id^="buttonupvote_"').click(function () 
+    {
+      console.log("worked");
+    });
+  });
+</script>
 <%@ include file="../shared/IncludeFooter.jsp" %>
