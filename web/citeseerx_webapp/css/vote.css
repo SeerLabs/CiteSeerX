@@ -1,10 +1,10 @@
-#upvotebefore {
+.upvotebefore {	
+  background-image: url("/images/thumbs_up.jpg");
   width: 10px;
   height: 10px;
-  background-image: url("/images/thumbs_up.jpg");
 }
 
-#downvotebefore {
+.downvotebefore {
   width: 10px;
   height: 10px;
   background-image: url("/images/thumbs_down.jpg");
