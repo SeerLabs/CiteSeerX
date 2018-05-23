@@ -119,7 +119,7 @@
   function changepicture(buttonid) {
     var comparestring = buttonid.slice(0, 9);
     var idstring = buttonid.slice(9);
-    console.log(document.getElementById("(" + idstring + ")").value);
+    console.log(document.getElementById(idstring).value);
 
     if (comparestring == "buttonupb")
     {
