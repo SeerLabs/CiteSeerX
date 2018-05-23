@@ -134,7 +134,7 @@
       {
         $.ajax({
           type: "POST",
-          url: "vote.jsp"
+          url: "vote.jsp",
           contentType: "application/json",
           data: {
             doi: doi, 
