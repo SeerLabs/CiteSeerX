@@ -135,6 +135,7 @@
         $.ajax({
           type: "POST",
           url: "vote.jsp", 
+          dataType: 'text',
           data: {
             doi: doi, 
             keyphrase: document.getElementById(idstring).text
