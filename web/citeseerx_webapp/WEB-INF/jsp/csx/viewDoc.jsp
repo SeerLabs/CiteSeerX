@@ -123,7 +123,9 @@
 
     console.log(document.getElementById(idstring));
 
-    console.log($(idstring).text());
+    console.log(document.getElementById(idstring).innerHTML);
+    console.log(document.getElementById(idstring).innerText);
+    console.log(document.getElementById(idstring).text);
 
     if (comparestring == "buttonupb")
     {
