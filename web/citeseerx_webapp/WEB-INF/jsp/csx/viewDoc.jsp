@@ -124,8 +124,6 @@
     var keyphrase = document.getElementById(idstring).text;
     var doi = "<c:out value= "${ doi }"/>";
 
-    console.log(doi);
-
     if (comparestring == "buttonupb")
     {
       if(document.getElementById("buttondna" + idstring))
