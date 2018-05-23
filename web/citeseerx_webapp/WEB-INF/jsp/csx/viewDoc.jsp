@@ -120,7 +120,6 @@
     var idstring = buttonid.slice(9);
     var keyphrase = document.getElementById(idstring).text;
     var doi = "${ doi }";
-    console.log(doi);
 
     if (comparestring == "buttonupb")
     {
@@ -133,7 +132,7 @@
       }
       else
       {
-        /*$.ajax({
+        $.ajax({
           type: "post",
           url: "vote.jsp", 
           data: {
@@ -144,7 +143,7 @@
           {
             console.log("worked");
           }
-        });*/
+        });
 
         document.getElementById(buttonid).id = "buttonupa" + idstring;
         document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up_after.jpg"/>"
