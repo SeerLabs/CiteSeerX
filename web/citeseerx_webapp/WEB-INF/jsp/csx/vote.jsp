@@ -9,10 +9,10 @@
 	PreparedStatement ps = null;
 	Statement sm = null;
 
-	
+
 %>
 
-<%--<script>
+<script>
 	$(document).ready(function()
 	{
 		console.log("vote.jsp");
@@ -20,6 +20,6 @@
 		console.log(doi);
 	});
 
-</script> --%>
+</script> 
 
 
