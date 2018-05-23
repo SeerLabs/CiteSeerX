@@ -97,10 +97,10 @@
           <p>
             <c:forEach items="${ keyphrases }" var="keyphrase" varStatus = "keyphraseindex">
             <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;
-            <button id = "buttonupvote(${keyphraseindex.index})" onclick = "changepicture(this.id)">
+            <button id = "buttonupb(${keyphraseindex.index})" onclick = "changepicture(this.id)">
               <img id = "upvoteimg(${keyphraseindex.index})" src="<c:url value="/images/thumbs_up.jpg"/>" width = "10" height = "10"/>
             </button>
-            <button id = "buttondownvote(${keyphraseindex.index})" onclick = "changepicture(this.id)">
+            <button id = "buttondnb(${keyphraseindex.index})" onclick = "changepicture(this.id)">
               <img id = "downvoteimg(${keyphraseindex.index})" src="<c:url value="/images/thumbs_down.jpg"/>" width = "10" height = "10"/>
             </button>&nbsp;
            
@@ -117,17 +117,19 @@
 </div>
 <script>
   function changepicture(buttonid) {
+    var comparestring = buttonid.slice(0, 9);
+    if (comparestring == "buttonupb")
+    {
+      console.log(comparestring);
+    }
+    else if (comparestring == "buttondnb")
+    {
+      console.log(comparestring);
+    }
+
+
     console.log(buttonid);
   }
 
-
-  $(document).ready(function()
-  {
-    console.log("ready");
-    $('id^="buttonupvote_"').click(function () 
-    {
-      console.log("worked");
-    });
-  });
 </script>
 <%@ include file="../shared/IncludeFooter.jsp" %>
