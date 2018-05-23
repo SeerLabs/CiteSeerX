@@ -145,7 +145,7 @@
             keyphrase: document.getElementById(idstring).text
           },
           success: console.log("worked");
-        })
+        });
 
         document.getElementById(buttonid).id = "buttonupa" + idstring;
         document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up_after.jpg"/>"
