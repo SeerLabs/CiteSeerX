@@ -133,7 +133,7 @@
       else
       {
         $.ajax({
-          type: "post",
+          type: "POST",
           url: "vote.jsp", 
           data: {
             doi: doi, 
@@ -142,6 +142,10 @@
           success: function()
           {
             console.log("worked");
+          }, 
+          error: function()
+          {
+            alert('Error');
           }
         });
 

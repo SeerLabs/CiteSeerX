@@ -1,10 +1,18 @@
+<%@ page language="java"
+	import="javax.naming.*,javax.rmi.PortableRemoteObject,java.util.*,java.io.*,java.sql.*,java.lang.*" %>
+<%
 
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	String doi = request.getParameter("doi"); 
+	String keyphrase = request.getParameter("keyphrase");
+	Connection con = null;
+	ResultSet rs = null;
+	PreparedStatement ps = null;
+	Statement sm = null;
 
+	
+%>
 
-<% String doi = request.getParameter("doi"); %>
-
-<script>
+<%--<script>
 	$(document).ready(function()
 	{
 		console.log("vote.jsp");
@@ -12,5 +20,6 @@
 		console.log(doi);
 	});
 
-</script>
+</script> --%>
+
 
