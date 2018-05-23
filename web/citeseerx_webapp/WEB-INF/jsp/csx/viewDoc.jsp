@@ -134,13 +134,13 @@
       {
         $.ajax({
           type: "POST",
-          url: "vote.jsp", 
-          dataType: 'text',
+          url: "vote.jsp"
+          contentType: "application/json",
           data: {
             doi: doi, 
             keyphrase: document.getElementById(idstring).text
           },
-          success: function(response)
+          success: function(data)
           {
             console.log("worked");
           }, 
