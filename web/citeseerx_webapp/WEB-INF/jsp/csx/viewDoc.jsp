@@ -108,9 +108,6 @@
           </p>
         </c:if>
       </div>
-      <div id="keywords">
-	<h3>TEST2</h3>
-      </div>
     </div>
   </div><%-- viewContent close div --%>
   <div class="clear"></div>
@@ -122,7 +119,8 @@
     var comparestring = buttonid.slice(0, 9);
     var idstring = buttonid.slice(9);
     var keyphrase = document.getElementById(idstring).text;
-    var doi = "<c:out value= "${ doi }"/>";
+    var doi = "${ doi }";
+    console.log(doi);
 
     if (comparestring == "buttonupb")
     {
