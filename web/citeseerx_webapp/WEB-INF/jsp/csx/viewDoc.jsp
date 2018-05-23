@@ -118,17 +118,19 @@
 <script>
   function changepicture(buttonid) {
     var comparestring = buttonid.slice(0, 9);
+    var idstring = buttonid.slice(9);
     if (comparestring == "buttonupb")
     {
-      console.log(comparestring);
+      document.getElementById(buttonid).id = "buttonupa" + idstring;
+      document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up_after.jpg"/>"
     }
     else if (comparestring == "buttondnb")
     {
-      console.log(comparestring);
+      document.getElementById(buttonid).id = "buttondna" + idstring;
+      document.getElementById("downvoteimg" + idstring).src = "<c:url value="/images/thumbs_down_after.jpg"/>"
     }
 
 
-    console.log(buttonid);
   }
 
 </script>
