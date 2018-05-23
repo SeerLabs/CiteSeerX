@@ -119,13 +119,36 @@
   function changepicture(buttonid) {
     var comparestring = buttonid.slice(0, 9);
     var idstring = buttonid.slice(9);
+
+
     if (comparestring == "buttonupb")
     {
-      document.getElementById(buttonid).id = "buttonupa" + idstring;
-      document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up_after.jpg"/>"
+      if(document.getElementById("buttondna" + idstring))
+      {
+        document.getElementById(buttonid).id = "buttonupa" + idstring;
+        document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up_after.jpg"/>"
+        document.getElementById("buttondna" + idstring).id = "buttondnb" + idstring;
+        document.getElementById("downvoteimg" + idstring).src = "<c:url value="/images/thumbs_down.jpg"/>"
+      }
+      else
+      {
+        document.getElementById(buttonid).id = "buttonupa" + idstring;
+        document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up_after.jpg"/>"
+      }
+
     }
     else if (comparestring == "buttondnb")
     {
+
+      if(document.getElementById("buttonupa" + idstring))
+      {
+        document.getElementById(buttonid).id = "buttondna" + idstring;
+        document.getElementById("downvoteimg" + idstring).src = "<c:url value="/images/thumbs_down_after.jpg"/>"
+        document.getElementById("buttonupa" + idstring).id = "buttonupb" + idstring;
+        document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up.jpg"/>"
+      }
+
+
       document.getElementById(buttonid).id = "buttondna" + idstring;
       document.getElementById("downvoteimg" + idstring).src = "<c:url value="/images/thumbs_down_after.jpg"/>"
     }
