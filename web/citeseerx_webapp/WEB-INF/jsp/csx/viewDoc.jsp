@@ -119,13 +119,10 @@
   function changepicture(buttonid) {
     var comparestring = buttonid.slice(0, 9);
     var idstring = buttonid.slice(9);
-    console.log(idstring);
+    var keyphrase = document.getElementById(idstring).text;
+    var doi = "<c:out value= "${ doi }"/>";
 
-    console.log(document.getElementById(idstring));
-
-    console.log(document.getElementById(idstring).innerHTML);
-    console.log(document.getElementById(idstring).innerText);
-    console.log(document.getElementById(idstring).text);
+    console.log(doi);
 
     if (comparestring == "buttonupb")
     {
@@ -140,8 +137,10 @@
       {
         /*$.ajax({
           type: "post",
-          url: 
+          url: "vote.jsp:", 
+          data: "doi=" + doi + "keyphrase=" + document.getElementById(idstring).text;
         })*/
+
         document.getElementById(buttonid).id = "buttonupa" + idstring;
         document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up_after.jpg"/>"
       }
