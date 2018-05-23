@@ -137,7 +137,7 @@
       {
         /*$.ajax({
           type: "post",
-          url: "vote.jsp:", 
+          url: "vote.jsp", 
           data: {
             doi: doi, 
             keyphrase: document.getElementById(idstring).text
