@@ -144,7 +144,10 @@
             doi: doi, 
             keyphrase: document.getElementById(idstring).text
           },
-          success: console.log("worked");
+          success: function()
+          {
+            console.log("worked");
+          }
         });
 
         document.getElementById(buttonid).id = "buttonupa" + idstring;
