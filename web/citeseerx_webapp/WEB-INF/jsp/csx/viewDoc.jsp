@@ -123,7 +123,7 @@
 
     console.log(document.getElementById(idstring));
 
-    console.log(document.getElementById(idstring).text());
+    console.log(document.getElementById(idstring.text()));
 
     if (comparestring == "buttonupb")
     {
