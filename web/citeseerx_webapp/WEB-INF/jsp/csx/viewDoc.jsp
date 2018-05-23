@@ -140,7 +140,7 @@
             doi: doi, 
             keyphrase: document.getElementById(idstring).text
           },
-          success: function()
+          success: function(response)
           {
             console.log("worked");
           }, 
