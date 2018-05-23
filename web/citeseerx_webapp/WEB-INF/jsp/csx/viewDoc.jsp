@@ -129,6 +129,17 @@
       document.getElementById(buttonid).id = "buttondna" + idstring;
       document.getElementById("downvoteimg" + idstring).src = "<c:url value="/images/thumbs_down_after.jpg"/>"
     }
+    else if (comparestring == "buttonupa")
+    {
+      document.getElementById(buttonid).id = "buttonupb" + idstring;
+      document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up.jpg"/>"
+    }
+    else if (comparestring == "buttondna")
+    {
+      document.getElementById(buttonid).id = "buttondnb" + idstring;
+      document.getElementById("downvoteimg" + idstring).src = "<c:url value="/images/thumbs_down.jpg"/>"
+    }
+
 
 
   }
