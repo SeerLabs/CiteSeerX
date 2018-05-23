@@ -97,10 +97,10 @@
           <p>
             <c:forEach items="${ keyphrases }" var="keyphrase" varStatus = "keyphraseindex">
             <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;
-            <button id = "buttonupvote(${keyphraseindex.index})">
+            <button id = "buttonupvote(${keyphraseindex.index})" onclick = "changepicture(this.id)">
               <img id = "upvoteimg(${keyphraseindex.index})" src="<c:url value="/images/thumbs_up.jpg"/>" width = "10" height = "10"/>
             </button>
-            <button id = "buttondownvote(${keyphraseindex.index})">
+            <button id = "buttondownvote(${keyphraseindex.index})" onclick = "changepicture(this.id)">
               <img id = "downvoteimg(${keyphraseindex.index})" src="<c:url value="/images/thumbs_down.jpg"/>" width = "10" height = "10"/>
             </button>&nbsp;
            
@@ -116,6 +116,11 @@
   <div class="clear"></div>
 </div>
 <script>
+  function changepicture(buttonid) {
+    console.log(buttonid);
+  }
+
+
   $(document).ready(function()
   {
     console.log("ready");
