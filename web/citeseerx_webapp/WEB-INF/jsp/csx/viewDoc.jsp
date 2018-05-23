@@ -96,7 +96,7 @@
           <h3>TEST</h3>
           <p>
             <c:forEach items="${ keyphrases }" var="keyphrase" varStatus = "keyphraseindex">
-            <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;
+            <a id = "(${keyphraseindex.index})" href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;
             <button id = "buttonupb(${keyphraseindex.index})" onclick = "changepicture(this.id)">
               <img id = "upvoteimg(${keyphraseindex.index})" src="<c:url value="/images/thumbs_up.jpg"/>" width = "10" height = "10"/>
             </button>
@@ -119,7 +119,7 @@
   function changepicture(buttonid) {
     var comparestring = buttonid.slice(0, 9);
     var idstring = buttonid.slice(9);
-
+    console.log(document.getElementById("(" + idstring + ")").value);
 
     if (comparestring == "buttonupb")
     {
@@ -132,6 +132,10 @@
       }
       else
       {
+        /*$.ajax({
+          type: "post",
+          url: 
+        })*/
         document.getElementById(buttonid).id = "buttonupa" + idstring;
         document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up_after.jpg"/>"
       }
