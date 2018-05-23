@@ -134,8 +134,7 @@
       {
         $.ajax({
           type: "POST",
-          url: "vote.jsp",
-          contentType: "application/json",
+          url: "<c:url value="vote.jsp"/>",
           data: {
             doi: doi, 
             keyphrase: document.getElementById(idstring).text
