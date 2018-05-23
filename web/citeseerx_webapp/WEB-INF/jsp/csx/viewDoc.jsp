@@ -115,6 +115,8 @@
   </div><%-- viewContent close div --%>
   <div class="clear"></div>
 </div>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+
 <script>
   function changepicture(buttonid) {
     var comparestring = buttonid.slice(0, 9);
@@ -135,11 +137,15 @@
       }
       else
       {
-        /*$.ajax({
+        $.ajax({
           type: "post",
           url: "vote.jsp:", 
-          data: "doi=" + doi + "keyphrase=" + document.getElementById(idstring).text;
-        })*/
+          data: {
+            doi: doi, 
+            keyphrase: document.getElementById(idstring).text
+          },
+          success: console.log("worked");
+        })
 
         document.getElementById(buttonid).id = "buttonupa" + idstring;
         document.getElementById("upvoteimg" + idstring).src = "<c:url value="/images/thumbs_up_after.jpg"/>"
