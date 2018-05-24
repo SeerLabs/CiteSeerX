@@ -20,6 +20,12 @@
   </bean>
   
   <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+
+  <bean name="/vote" class="edu.psu.citeseerx.web.VoteController">
+    <property name="CSXDAO" ref="citeseerx"/>
+    <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="repositoryService" ref="RESTrepo"/>
+  </bean>
   
   <bean name="/summary" class="edu.psu.citeseerx.web.ViewDocController">
     <property name="CSXDAO" ref="citeseerx"/>

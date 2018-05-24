@@ -1,3 +1,4 @@
+<%@ include file="shared/IncludeDocHeader.jsp" %>
 <%@ page language="java"
 	import="javax.naming.*,javax.rmi.PortableRemoteObject,java.util.*,java.io.*,java.sql.*,java.lang.*" %>
 <%
@@ -11,7 +12,7 @@
 
 
 %>
-
+testworked
 <script>
 	$(document).ready(function()
 	{
@@ -21,5 +22,5 @@
 	});
 
 </script> 
-
+<%@ include file="../shared/IncludeFooter.jsp" %>
 
