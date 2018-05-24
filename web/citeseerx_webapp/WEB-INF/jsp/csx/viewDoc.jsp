@@ -134,7 +134,7 @@
       {
         $.ajax({
           type: "POST",
-          url: "vote.jsp",
+          url: "/vote.jsp",
           data: {
             doi: doi, 
             keyphrase: document.getElementById(idstring).text
@@ -143,9 +143,9 @@
           {
             console.log("worked");
           }, 
-          error: function()
+          error: function(ts)
           {
-            alert('Error');
+            alert(ts.responseText);
           }
         });
 
