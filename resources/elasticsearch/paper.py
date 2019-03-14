@@ -114,7 +114,7 @@ class paper:
 
 		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-		ssh.connect('csxrepo02.ist.psu.edu', username='swp5504',password='p4B02en3N7ndd')
+		ssh.connect('csxrepo02.ist.psu.edu', username='swp5504',password='password')
 
 		d_path = self.paper_id.split('.')
 
