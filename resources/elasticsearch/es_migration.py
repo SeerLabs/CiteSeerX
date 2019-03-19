@@ -43,7 +43,7 @@ if __name__ == "__main__":
 		paper1.keywords_table_fields(citeseerx_db_cur)
 		paper1.csx_citegraph_query(csx_citegraph_cur)
 		paper1.retrieve_full_text()
-		pprint.pprint(paper1.values_dict)
+		#pprint.pprint(paper1.values_dict)
 
 	
 

@@ -68,7 +68,7 @@ class paper:
 
 		cur.execute(statement)
 
-		result_tuple = cur.fetchall()[0]
+		result_tuple = cur.fetchall()
 
 		print(result_tuple)
 		
