@@ -1,6 +1,7 @@
 import MySQLdb
 from paper import paper
 import pprint
+import getpass
 
 #returns the first 'n' number of paper ids from the SQL db in the form of a list
 def get_ids(cur, n):	
