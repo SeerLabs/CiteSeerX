@@ -117,10 +117,10 @@ class paper:
 		ssh.connect('csxrepo02.ist.psu.edu', username='swp5504',password=password)
 
 		d_path = self.paper_id.split('.')
-
-		stdin, stdout, stderr = ssh.exec_command(f'cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;')
-		outlines = stdout.readlines()
-		resp = ''.join(outlines)
+		print(f'cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;')
+		#stdin, stdout, stderr = ssh.exec_command(f'cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;')
+		#outlines = stdout.readlines()
+		#resp = ''.join(outlines)
 
 
 
