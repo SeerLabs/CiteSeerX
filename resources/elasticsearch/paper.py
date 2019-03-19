@@ -78,7 +78,9 @@ class paper:
 							"cluster": str(author[2]).split('L')[0] 
 						}
 			self.values_dict['authors'].append(temp_dict)
-
+		
+		del self.values_dict['authors'][0]
+	
 		print(self.values_dict['authors'])
 
 	#this function queries the keywords table and adds a list to the values_dict
