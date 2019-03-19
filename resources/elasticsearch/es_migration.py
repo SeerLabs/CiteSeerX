@@ -36,13 +36,15 @@ if __name__ == "__main__":
 
 	list_of_paper_ids = get_ids(citeseerx_db_cur,2)
 
+	password_string = getpass.getpass("Please enter the csxrepo02 password: ")
+
 	for paper_id in list_of_paper_ids:
 		paper1 = paper(paper_id)
 		paper1.paper_table_fields(citeseerx_db_cur)
 		paper1.authors_table_fields(citeseerx_db_cur)
 		paper1.keywords_table_fields(citeseerx_db_cur)
 		paper1.csx_citegraph_query(csx_citegraph_cur)
-		paper1.retrieve_full_text()
+		paper1.retrieve_full_text(password_string)
 		#pprint.pprint(paper1.values_dict)
 
 	

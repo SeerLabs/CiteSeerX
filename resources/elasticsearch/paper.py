@@ -1,5 +1,6 @@
 import MySQLdb
 import paramiko
+import getpass
 
 class paper:
 
@@ -14,7 +15,8 @@ class paper:
 			"authors": [
 				{
 				"name": None, #string of authors name,
-				"author_id": None #string of numerical value
+				"author_id": None, #string of numerical value
+				"cluster": None #cluster the author belongs to 
 				}
 			], #list of dictionaries contain author name and author_id
 			"keywords": [
@@ -70,9 +72,14 @@ class paper:
 
 		result_tuple = cur.fetchall()
 
-		print(result_tuple)
-		
-		self.values_dict['authors'] = result_tuple
+		for author in result_tuple:
+			temp_dict = {	"name": author[0], 
+							"author_id": author[1], 
+							"cluster": author[2] 
+						}
+			self.values_dict['authors'].append(temp_dict)
+
+		print(self.values_dict['authors'])
 
 	#this function queries the keywords table and adds a list to the values_dict
 	def keywords_table_fields(self, cur):
@@ -106,13 +113,11 @@ class paper:
 		self.values_dict['citedby'] = result_citedby_tuple
 		self.values_dict['cites'] = result_cites_tuple
 
-	def retrieve_full_text(self):
+	def retrieve_full_text(self, password_string):
 
 		ssh = paramiko.SSHClient()
 
 		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-		password_string =raw_input("Please enter the csxrepo02 password: ")
 
 		ssh.connect('csxrepo02.ist.psu.edu', username='swp5504', password=password_string)
 
