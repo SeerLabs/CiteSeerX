@@ -1,9 +1,6 @@
 import MySQLdb
 import paramiko
 
-
-
-
 class paper:
 
 
@@ -13,6 +10,7 @@ class paper:
 
 			"paper_id": self.paper_id,	#unique paper_id
 			"title": None,	#string of title of paper
+			"cluster": None, #clusterID
 			"authors": [
 				{
 				"name": None, #string of authors name,
@@ -49,13 +47,11 @@ class paper:
 	#this function queries the paper table for all the info pertaining to that paper_id
 	def paper_table_fields(self, cur):
 
-		statement = "SELECT title, abstract, year, venue, ncites, selfCites FROM papers WHERE id='" + self.paper_id + "';"
+		statement = "SELECT title, abstract, year, venue, ncites, selfCites, cluster FROM papers WHERE id='" + self.paper_id + "';"
 
 		cur.execute(statement)
 
 		result_tuple = cur.fetchall()[0]
-		
-		print(type(result_tuple[2]))
 
 		self.values_dict['title'] = result_tuple[0]
 		self.values_dict['abstract'] = result_tuple[1]
@@ -63,15 +59,18 @@ class paper:
 		self.values_dict['venue'] = result_tuple[3]
 		self.values_dict['ncites'] = result_tuple[4]
 		self.values_dict['selfCites'] = result_tuple[5]
+		selv.values_dict['cluster'] = result_tuple[6]
 
 	#this function queries the authors table for author ids and names related to a paper_id
 	def authors_table_fields(self, cur):
 
-		statement = "SELECT name, id FROM authors WHERE paperid='" + self.paper_id + "';"
+		statement = "SELECT name, id, cluster FROM authors WHERE paperid='" + self.paper_id + "';"
 
 		cur.execute(statement)
 
-		result_tuple = cur.fetchall()
+		result_tuple = cur.fetchall()[0]
+
+		print(result_tuple)
 		
 		self.values_dict['authors'] = result_tuple
 
@@ -90,7 +89,6 @@ class paper:
 	#this function queries the csx_citegraph database for relevant information
 	def csx_citegraph_query(self, cur):
 		
-
 		#this statement grabs the citing data from the citegraph table
 		statement = "SELECT id, paperid FROM citations WHERE cluster IN (SELECT citing FROM citegraph WHERE id IN (SELECT id FROM citations WHERE paperid='" + self.paper_id + "'));"
 
@@ -114,15 +112,15 @@ class paper:
 
 		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-		ssh.connect('csxrepo02.ist.psu.edu', username='swp5504',password='password')
+		password = input("Please enter the csxrepo02 password: ")
+
+		ssh.connect('csxrepo02.ist.psu.edu', username='swp5504',password=password)
 
 		d_path = self.paper_id.split('.')
 
 		stdin, stdout, stderr = ssh.exec_command(f'cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;')
 		outlines = stdout.readlines()
 		resp = ''.join(outlines)
-		print('this is the full text:')
-		print(resp)
 
 
 

@@ -21,3 +21,27 @@ class author:
 			"email": None #email address of the author
 
 		}
+
+	def authors_table_fields(self, cur):
+
+		statement = "SELECT name, affiliation, address, email FROM papers WHERE id='" + self.author_id + "';"
+
+		cur.execute(statement)
+
+		result_tuple = cur.fetchall()[0]
+		
+		print(type(result_tuple[2]))
+
+		self.values_dict['name'] = result_tuple[0]
+		self.values_dict['affiliation'] = result_tuple[1]
+		self.values_dict['address'] = result_tuple[2]
+		self.values_dict['email'] = result_tuple[3]
+
+
+	def additional_table_data(self, cur):
+		pass
+
+
+
+
+

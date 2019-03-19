@@ -18,3 +18,18 @@ class cluster:
 			]
 
 		}
+
+	def cluster_table_fields(self, cur):
+		pass
+
+	def get_papers(self, cur):
+		pass
+
+	def get_authors(self, cur):
+		pass          
+
+
+
+
+
+
