@@ -74,8 +74,8 @@ class paper:
 
 		for author in result_tuple:
 			temp_dict = {	"name": author[0], 
-							"author_id": author[1], 
-							"cluster": author[2] 
+							"author_id": str(author[1]).split('L')[0], 
+							"cluster": str(author[2]).split('L')[0] 
 						}
 			self.values_dict['authors'].append(temp_dict)
 
