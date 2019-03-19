@@ -59,7 +59,7 @@ class paper:
 		self.values_dict['venue'] = result_tuple[3]
 		self.values_dict['ncites'] = result_tuple[4]
 		self.values_dict['selfCites'] = result_tuple[5]
-		selv.values_dict['cluster'] = result_tuple[6]
+		self.values_dict['cluster'] = result_tuple[6]
 
 	#this function queries the authors table for author ids and names related to a paper_id
 	def authors_table_fields(self, cur):
@@ -112,13 +112,13 @@ class paper:
 
 		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-		password = input("Please enter the csxrepo02 password: ")
+		password_string =raw_input("Please enter the csxrepo02 password: ")
 
-		ssh.connect('csxrepo02.ist.psu.edu', username='swp5504',password=password)
+		ssh.connect('csxrepo02.ist.psu.edu', username='swp5504', password=password_string)
 
 		d_path = self.paper_id.split('.')
-		print(f'cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;')
-		#stdin, stdout, stderr = ssh.exec_command(f'cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;')
+		#print(f"cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;")
+		stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
 		#outlines = stdout.readlines()
 		#resp = ''.join(outlines)
 
