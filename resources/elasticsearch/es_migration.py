@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
 	csx_citegraph_cur = connect_to_csx_citegraph()
 
-	list_of_paper_ids = get_ids(citeseerx_db_cur, 50)
+	list_of_paper_ids = get_ids(citeseerx_db_cur, 5)
 
 	password_string = getpass.getpass("Please enter the csxrepo02 password: ")
 

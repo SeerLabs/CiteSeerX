@@ -62,7 +62,8 @@ class paper:
 		self.values_dict['ncites'] = result_tuple[4]
 		self.values_dict['selfCites'] = result_tuple[5]
 		self.values_dict['cluster'] = result_tuple[6]
-		self.values_dict['vtime'] = result_tuple[7]
+		self.values_dict['vtime'] = result_tuple[7].strftime('%Y-%m-%d %H:%M:%S')
+
 
 	#this function queries the authors table for author ids and names related to a paper_id
 	def authors_table_fields(self, cur):
