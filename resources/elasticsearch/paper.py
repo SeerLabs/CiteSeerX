@@ -98,15 +98,15 @@ class paper:
 	#this function queries the csx_citegraph database for relevant information
 	def csx_citegraph_query(self, cur):
 		
-		#this statement grabs the citing data from the citegraph table
-		statement = "SELECT id, paperid FROM citations WHERE cluster IN (SELECT citing FROM citegraph WHERE id IN (SELECT id FROM citations WHERE paperid='" + self.paper_id + "'));"
+		#this statement grabs the cluster ids who have cited this cluster
+		statement = "SELECT citing FROM citegraph WHERE cited='" + self.values_dict['cluster'] + "'));"
 
 		cur.execute(statement)
 
 		result_citedby_tuple = cur.fetchall()
 
-		#this statement grabs the cited data from teh citegraph table
-		statement2 = "SELECT id, paperid FROM citations WHERE cluster IN (SELECT cited FROM citegraph WHERE id IN (SELECT id FROM citations WHERE paperid='" + self.paper_id + "'));"
+		#this statement grabs the cluster ids who are cited by this cluster
+		statement2 = "SELECT cited FROM citegraph WHERE citing='" + self.values_dict['cluster'] + "'));"
 
 		cur.execute(statement2)
 
