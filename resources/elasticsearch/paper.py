@@ -81,7 +81,7 @@ class paper:
 		
 		del self.values_dict['authors'][0]
 	
-		print(self.values_dict['authors'])
+		#print(self.values_dict['authors'])
 
 	#this function queries the keywords table and adds a list to the values_dict
 	def keywords_table_fields(self, cur):
@@ -126,8 +126,9 @@ class paper:
 		d_path = self.paper_id.split('.')
 		#print(f"cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;")
 		stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
-		#outlines = stdout.readlines()
-		#resp = ''.join(outlines)
+		outlines = stdout.readlines()
+		resp = ''.join(outlines)
+		self.values_dict['text'] = resp
 
 
 

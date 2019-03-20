@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
 	csx_citegraph_cur = connect_to_csx_citegraph()
 
-	list_of_paper_ids = get_ids(citeseerx_db_cur,10)
+	list_of_paper_ids = get_ids(citeseerx_db_cur, 50)
 
 	password_string = getpass.getpass("Please enter the csxrepo02 password: ")
 
@@ -46,7 +46,7 @@ if __name__ == "__main__":
 		paper1.keywords_table_fields(citeseerx_db_cur)
 		paper1.csx_citegraph_query(csx_citegraph_cur)
 		paper1.retrieve_full_text(password_string)
-		#pprint.pprint(paper1.values_dict)
+		pprint.pprint(paper1.values_dict)
 
 	
 
