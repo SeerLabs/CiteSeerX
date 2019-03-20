@@ -99,14 +99,14 @@ class paper:
 	def csx_citegraph_query(self, cur):
 		
 		#this statement grabs the cluster ids who have cited this cluster
-		statement = "SELECT citing FROM citegraph WHERE cited='" + self.values_dict['cluster'] + "'));"
-
+		statement = "SELECT citing FROM citegraph WHERE cited=" + str(self.values_dict['cluster']) + ";"
+		print(statement)
 		cur.execute(statement)
 
 		result_citedby_tuple = cur.fetchall()
 
 		#this statement grabs the cluster ids who are cited by this cluster
-		statement2 = "SELECT cited FROM citegraph WHERE citing='" + self.values_dict['cluster'] + "'));"
+		statement2 = "SELECT cited FROM citegraph WHERE citing=" + str(self.values_dict['cluster']) + ";"
 
 		cur.execute(statement2)
 
