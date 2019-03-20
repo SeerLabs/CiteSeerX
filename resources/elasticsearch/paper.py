@@ -49,7 +49,7 @@ class paper:
 	#this function queries the paper table for all the info pertaining to that paper_id
 	def paper_table_fields(self, cur):
 
-		statement = "SELECT title, abstract, year, venue, ncites, selfCites, cluster FROM papers WHERE id='" + self.paper_id + "';"
+		statement = "SELECT title, abstract, year, venue, ncites, selfCites, cluster, versionTime FROM papers WHERE id='" + self.paper_id + "';"
 
 		cur.execute(statement)
 
@@ -62,6 +62,7 @@ class paper:
 		self.values_dict['ncites'] = result_tuple[4]
 		self.values_dict['selfCites'] = result_tuple[5]
 		self.values_dict['cluster'] = result_tuple[6]
+		self.values_dict['vtime'] = result_tuple[7]
 
 	#this function queries the authors table for author ids and names related to a paper_id
 	def authors_table_fields(self, cur):
