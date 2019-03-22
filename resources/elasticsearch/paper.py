@@ -46,6 +46,7 @@ class paper:
 
 		}
 
+
 	#this function queries the paper table for all the info pertaining to that paper_id
 	def paper_table_fields(self, cur):
 

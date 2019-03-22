@@ -22,6 +22,8 @@ class author:
 
 		}
 
+
+
 	def authors_table_fields(self, cur):
 
 		statement = "SELECT name, affiliation, address, email FROM papers WHERE id='" + self.author_id + "';"
@@ -30,7 +32,7 @@ class author:
 
 		result_tuple = cur.fetchall()[0]
 		
-		print(type(result_tuple[2]))
+		print(type(result_tuple[2]))d
 
 		self.values_dict['name'] = result_tuple[0]
 		self.values_dict['affiliation'] = result_tuple[1]
