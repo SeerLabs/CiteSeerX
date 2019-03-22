@@ -94,8 +94,14 @@ class paper:
 		cur.execute(statement)
 
 		result_tuple = cur.fetchall()
-		
-		self.values_dict['keywords'] = result_tuple
+
+		for keyword in result_tuple:
+			temp_dict = {	"keyword": keyword[0], #string
+							"keyword_id": str(keyword[1]).split('L')[0] #string of numerical value
+						}
+			self.values_dict['keywords'].append(temp_dict)
+
+		del self.values_dict['keywords'][0]
 
 
 	#this function queries the csx_citegraph database for relevant information
