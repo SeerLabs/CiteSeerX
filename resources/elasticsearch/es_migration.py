@@ -37,9 +37,9 @@ if __name__ == "__main__":
 
 	csx_citegraph_cur = connect_to_csx_citegraph()
 
-	es = establish_ES_connection()
+	es = elasticpython.establish_ES_connection()
 
-	test_ES_connection()
+	elasticpython.test_ES_connection()
 
 	list_of_paper_ids = get_ids(citeseerx_db_cur, 5)
 
@@ -58,8 +58,10 @@ if __name__ == "__main__":
 		paper1.retrieve_full_text(password_string)
 
 		#Load the paper JSON data into ElasticSearch
+		
+		pprint.pprint(paper1.values_dict)
 
-		create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
+		elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
 
 
 		#pprint.pprint(paper1.values_dict)

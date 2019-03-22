@@ -7,7 +7,7 @@ class author:
 		self.values_dict = {
 
 			"author_id": self.author_id, #disambiguated author ID
-			"name": None #name of the author
+			"name": None, #name of the author
 			"included_clusters": [ #list of cluster_ids which include this author name
 				None,
 				None
@@ -32,7 +32,7 @@ class author:
 
 		result_tuple = cur.fetchall()[0]
 		
-		print(type(result_tuple[2]))d
+		print(type(result_tuple[2]))
 
 		self.values_dict['name'] = result_tuple[0]
 		self.values_dict['affiliation'] = result_tuple[1]
