@@ -10,30 +10,30 @@ class paper:
 		self.values_dict = {
 
 			"paper_id": self.paper_id,	#unique paper_id
-			"title": None,	#string of title of paper
-			"cluster": None, #clusterID
+			"title": '',	#string of title of paper
+			"cluster": '', #clusterID
 			"authors": [
 				{
-				"name": None, #string of authors name,
-				"author_id": None, #string of numerical value
-				"cluster": None #cluster the author belongs to 
+				"name": '', #string of authors name,
+				"author_id": '', #string of numerical value
+				"cluster": '' #cluster the author belongs to 
 				}
 			], #list of dictionaries contain author name and author_id
 			"keywords": [
 				{
-					"keyword": None, #string
-					"keyword_id": None #string of numerical value
+					"keyword": '', #string
+					"keyword_id": '' #string of numerical value
 				}
 			], #list of dictionaries of keywords
-			"abstract": None, #string
-			"year": None, #integer value
-			"venue": None, #string 
-			"ncites": None, #integer value
-			"scites": None, #integer value
-			"doi": None, #string ????????????????????????
+			"abstract": '', #string
+			"year": 0, #integer value
+			"venue": '', #string 
+			"ncites": 0, #integer value
+			"scites": 0, #integer value
+			"doi": '', #string ????????????????????????
 			"incol": None, #boolean value
 			"authorNorms": None, #???????????????????????????????
-			"text": None, #string, full text of paper to be indexed
+			"text": '', #string, full text of paper to be indexed
 			"cites": [	#list of cluster_ids that this paper cites
 					None,
 					None
@@ -55,9 +55,13 @@ class paper:
 		cur.execute(statement)
 
 		result_tuple = cur.fetchall()[0]
+		
+		whitelist = set(',.;:?\'\"/!@#$%^*abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+                cleaned_abstract = ''.join(filter(whitelist.__contains__, str(result_tuple[1])))
+
 
 		self.values_dict['title'] = result_tuple[0]
-		self.values_dict['abstract'] = result_tuple[1]
+		self.values_dict['abstract'] = cleaned_abstract
 		self.values_dict['year'] = result_tuple[2]
 		self.values_dict['venue'] = result_tuple[3]
 		self.values_dict['ncites'] = result_tuple[4]
@@ -76,7 +80,13 @@ class paper:
 		result_tuple = cur.fetchall()
 
 		for author in result_tuple:
-			temp_dict = {	"name": author[0], 
+	
+			
+			whitelist = set('abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+			cleaned_author = ''.join(filter(whitelist.__contains__, str(author[0])))
+
+	
+			temp_dict = {	"name": cleaned_author, 
 							"author_id": str(author[1]).split('L')[0], 
 							"cluster": str(author[2]).split('L')[0] 
 						}
