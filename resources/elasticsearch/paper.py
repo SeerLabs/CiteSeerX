@@ -60,9 +60,9 @@ class paper:
 		self.values_dict['abstract'] = result_tuple[1]
 		self.values_dict['year'] = result_tuple[2]
 		self.values_dict['venue'] = result_tuple[3]
-		self.values_dict['ncites'] = result_tuple[4]
-		self.values_dict['selfCites'] = result_tuple[5]
-		self.values_dict['cluster'] = result_tuple[6]
+		self.values_dict['ncites'] = int(result_tuple[4])
+		self.values_dict['selfCites'] = int(result_tuple[5])
+		self.values_dict['cluster'] = int(result_tuple[6])
 		self.values_dict['vtime'] = result_tuple[7].strftime('%Y-%m-%d %H:%M:%S')
 
 
@@ -78,8 +78,8 @@ class paper:
 		for author in result_tuple:
 	
 			temp_dict = {	"name": author[0], 
-							"author_id": author[1], 
-							"cluster": author[2] 
+							"author_id": int(author[1]), 
+							"cluster": int(author[2]) 
 						}
 			self.values_dict['authors'].append(temp_dict)
 		
@@ -98,7 +98,7 @@ class paper:
 
 		for keyword in result_tuple:
 			temp_dict = {	"keyword": keyword[0], #string
-							"keyword_id": keyword[1] #string of numerical value
+							"keyword_id": int(keyword[1]) #string of numerical value
 						}
 			self.values_dict['keywords'].append(temp_dict)
 
@@ -122,8 +122,8 @@ class paper:
 
 		result_cites_tuple = cur.fetchall()
 
-		self.values_dict['citedby'] = result_citedby_tuple
-		self.values_dict['cites'] = result_cites_tuple
+		self.values_dict['citedby'] = [int(cite[0]) for cite in result_citedby_tuple]
+		self.values_dict['cites'] = [int(cite[0]) for cite in result_cites_tuple]
 
 	def retrieve_full_text(self, password_string):
 
