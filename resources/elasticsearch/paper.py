@@ -58,9 +58,9 @@ class paper:
 		
 		whitelist = set(',.;:?\'\"/!@#$%^*abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ')
                 cleaned_abstract = ''.join(filter(whitelist.__contains__, str(result_tuple[1])))
+		cleaned_title = ''.join(filter(whitelist.__contains__, str(result_tuple[0])))
 
-
-		self.values_dict['title'] = result_tuple[0]
+		self.values_dict['title'] = cleaned_title
 		self.values_dict['abstract'] = cleaned_abstract
 		self.values_dict['year'] = result_tuple[2]
 		self.values_dict['venue'] = result_tuple[3]

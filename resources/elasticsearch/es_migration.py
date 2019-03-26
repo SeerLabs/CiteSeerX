@@ -41,7 +41,7 @@ if __name__ == "__main__":
 
 	elasticpython.test_ES_connection()
 
-	list_of_paper_ids = get_ids(citeseerx_db_cur, 5)
+	list_of_paper_ids = get_ids(citeseerx_db_cur, 100)
 
 	password_string = getpass.getpass("Please enter the csxrepo02 password: ")
 
