@@ -59,9 +59,10 @@ if __name__ == "__main__":
 
 		#Load the paper JSON data into ElasticSearch
 		
+
 		pprint.pprint(paper1.values_dict)
 
-		elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
+		#elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
 
 
 		#pprint.pprint(paper1.values_dict)

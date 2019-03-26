@@ -55,13 +55,9 @@ class paper:
 		cur.execute(statement)
 
 		result_tuple = cur.fetchall()[0]
-		
-		whitelist = set(',.;:?\'\"/!@#$%^*abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-                cleaned_abstract = ''.join(filter(whitelist.__contains__, str(result_tuple[1])))
-		cleaned_title = ''.join(filter(whitelist.__contains__, str(result_tuple[0])))
 
-		self.values_dict['title'] = cleaned_title
-		self.values_dict['abstract'] = cleaned_abstract
+		self.values_dict['title'] = result_tuple[0]
+		self.values_dict['abstract'] = result_tuple[1]
 		self.values_dict['year'] = result_tuple[2]
 		self.values_dict['venue'] = result_tuple[3]
 		self.values_dict['ncites'] = result_tuple[4]
@@ -81,14 +77,9 @@ class paper:
 
 		for author in result_tuple:
 	
-			
-			whitelist = set('abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-			cleaned_author = ''.join(filter(whitelist.__contains__, str(author[0])))
-
-	
-			temp_dict = {	"name": cleaned_author, 
-							"author_id": str(author[1]).split('L')[0], 
-							"cluster": str(author[2]).split('L')[0] 
+			temp_dict = {	"name": author[0], 
+							"author_id": author[1], 
+							"cluster": author[2] 
 						}
 			self.values_dict['authors'].append(temp_dict)
 		
@@ -107,7 +98,7 @@ class paper:
 
 		for keyword in result_tuple:
 			temp_dict = {	"keyword": keyword[0], #string
-							"keyword_id": str(keyword[1]).split('L')[0] #string of numerical value
+							"keyword_id": keyword[1] #string of numerical value
 						}
 			self.values_dict['keywords'].append(temp_dict)
 
@@ -149,6 +140,7 @@ class paper:
 		resp = ''.join(outlines)
 		self.values_dict['text'] = resp
 
-
-
+	#This function takes an input string and encodes it properly for Elastic to ingest
+	def fix_encoding(self, string):
+		pass
 
