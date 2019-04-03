@@ -32,6 +32,21 @@ def connect_to_csx_citegraph():
 
 	return db.cursor()
 
+def authorTypeUpsert(paper):
+
+	for author in paper.values_dict['authors']:
+
+			author_data_dict = {
+				'author_id': author['author_id'],
+				'cluster': author['cluster'],
+				'name': author['name']
+				'papers': paper.values_dict['paper_id']
+			}
+
+		elasticpython.update_document(es, index='citeseerx', doc_id=author_data_dict['author_id'],
+										doc_type='author', data=author_data_dict)
+
+
 if __name__ == "__main__":
 	
 
@@ -61,11 +76,14 @@ if __name__ == "__main__":
 
 		#Load the paper JSON data into ElasticSearch
 		
-
 		pprint.pprint(paper1.values_dict)
-
 		elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
 
+		#We also need to update the other types located in our index such as author and cluster
+		#By using the update and upserts command in ElasticSearch, we can do this easily
+		authorTypeUpsert(paper1)
+
+		#now it is time to test whether the cluster or author exists yet in ElasticSearch
 
 		#pprint.pprint(paper1.values_dict)
 

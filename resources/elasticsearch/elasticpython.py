@@ -32,6 +32,18 @@ def document_exists(es, index, doc_id, doc_type):
 
 #If the document exists already, update the document where the doc_id's are the same
 def update_document(es, index, doc_id, doc_type, data):
+	
+	#Need to add this argument to solve update/upsert issues if document does not exist
+	data['doc_as_upsert'] = True
+
+	#We also need to add a script to the JSON to check and add the associated data appropriately
+	data['script'] = {
+					"source": "ctx._source.tags.add(params.papers)",
+					"lang": "painless",
+					"params": {
+						"papers": data['papers']
+					}
+	}
 
 	#Update the specific document located by the ID
 	update1 = es.update(index=index, doc_type=doc_type, id=doc_id,
