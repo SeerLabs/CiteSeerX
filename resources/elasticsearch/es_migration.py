@@ -18,7 +18,8 @@ def connect_to_citeseerx_db():
 	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
                         user="csx-prod",
                         passwd="csx-prod",
-                        db="citeseerx")
+                        db="citeseerx",
+			charset='utf8')
 
 	return db.cursor()
 
@@ -26,7 +27,8 @@ def connect_to_csx_citegraph():
 	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
                         user="csx-prod",
                         passwd="csx-prod",
-                        db="csx_citegraph")
+                        db="csx_citegraph",
+			charset='utf8')
 
 	return db.cursor()
 
@@ -41,7 +43,7 @@ if __name__ == "__main__":
 
 	elasticpython.test_ES_connection()
 
-	list_of_paper_ids = get_ids(citeseerx_db_cur, 100)
+	list_of_paper_ids = get_ids(citeseerx_db_cur, 20000)
 
 	password_string = getpass.getpass("Please enter the csxrepo02 password: ")
 
@@ -62,7 +64,7 @@ if __name__ == "__main__":
 
 		pprint.pprint(paper1.values_dict)
 
-		#elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
+		elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
 
 
 		#pprint.pprint(paper1.values_dict)

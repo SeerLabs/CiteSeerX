@@ -42,7 +42,7 @@ def update_document(es, index, doc_id, doc_type, data):
 def create_document(es, index, doc_id, doc_type, data):
 
 	#Begin indexing the data in the correct index
-
+	
 	index1 = es.index(index=index, id=doc_id, doc_type=doc_type, body=data)
 	print(index1)
 

@@ -1,6 +1,10 @@
 import MySQLdb
 import paramiko
 import getpass
+import sys
+
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 class paper:
 
@@ -56,10 +60,12 @@ class paper:
 
 		result_tuple = cur.fetchall()[0]
 
-		self.values_dict['title'] = result_tuple[0].decode('utf-8')
-		self.values_dict['abstract'] = result_tuple[1].decode('utf-8')
-		self.values_dict['year'] = result_tuple[2]
-		self.values_dict['venue'] = result_tuple[3].decode('utf-8')
+		self.values_dict['title'] = str(result_tuple[0])
+		self.values_dict['abstract'] = str(result_tuple[1])
+		print(result_tuple[2])
+		if result_tuple[2]:
+			self.values_dict['year'] = int(result_tuple[2])
+		self.values_dict['venue'] = str(result_tuple[3])
 		self.values_dict['ncites'] = int(result_tuple[4])
 		self.values_dict['selfCites'] = int(result_tuple[5])
 		self.values_dict['cluster'] = int(result_tuple[6])
@@ -77,7 +83,7 @@ class paper:
 
 		for author in result_tuple:
 	
-			temp_dict = {	"name": author[0].decode('utf-8'), 
+			temp_dict = {	"name": str(author[0]), 
 							"author_id": int(author[1]), 
 							"cluster": int(author[2]) 
 						}
@@ -97,7 +103,7 @@ class paper:
 		result_tuple = cur.fetchall()
 
 		for keyword in result_tuple:
-			temp_dict = {	"keyword": keyword[0].decode('utf-8'), #string
+			temp_dict = {	"keyword": str(keyword[0]), #string
 							"keyword_id": int(keyword[1]) #string of numerical value
 						}
 			self.values_dict['keywords'].append(temp_dict)
@@ -110,7 +116,6 @@ class paper:
 		
 		#this statement grabs the cluster ids who have cited this cluster
 		statement = "SELECT citing FROM citegraph WHERE cited=" + str(self.values_dict['cluster']) + ";"
-		print(statement)
 		cur.execute(statement)
 
 		result_citedby_tuple = cur.fetchall()
@@ -138,7 +143,7 @@ class paper:
 		stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
 		outlines = stdout.readlines()
 		resp = ''.join(outlines)
-		self.values_dict['text'] = resp.decode('utf-8')
+		self.values_dict['text'] = str(resp)
 
 	#This function takes an input string and encodes it properly for Elastic to ingest
 	def fix_encoding(self, string):
