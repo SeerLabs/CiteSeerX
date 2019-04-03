@@ -39,11 +39,11 @@ def authorTypeUpsert(paper):
 			author_data_dict = {
 				'author_id': author['author_id'],
 				'cluster': author['cluster'],
-				'name': author['name']
+				'name': author['name'],
 				'papers': paper.values_dict['paper_id']
 			}
 
-		elasticpython.update_document(es, index='citeseerx', doc_id=author_data_dict['author_id'],
+			elasticpython.update_document(es, index='citeseerx', doc_id=author_data_dict['author_id'],
 										doc_type='author', data=author_data_dict)
 
 

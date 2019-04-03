@@ -1,6 +1,9 @@
 import requests
 import json
 from elasticsearch import Elasticsearch
+from pprint import pprint
+import yaml
+import ast
 
 #This function connects to ElasticSearch on the localhost on port 9200
 def establish_ES_connection():
@@ -33,21 +36,36 @@ def document_exists(es, index, doc_id, doc_type):
 #If the document exists already, update the document where the doc_id's are the same
 def update_document(es, index, doc_id, doc_type, data):
 	
+	new_data = {}
+
 	#Need to add this argument to solve update/upsert issues if document does not exist
-	data['doc_as_upsert'] = True
+	#new_data['scripted_upsert'] = True
 
 	#We also need to add a script to the JSON to check and add the associated data appropriately
-	data['script'] = {
-					"source": "ctx._source.tags.add(params.papers)",
+	new_data['script'] = {
+					"source": "ctx._source.papers.add(params.new_papers)",
 					"lang": "painless",
 					"params": {
-						"papers": data['papers']
+						"new_papers": data['papers']
 					}
+	 }
+
+	new_data['upsert'] = {
+					"papers": data['papers'],
+					"author_id": data['author_id'],
+                                        "cluster": data['cluster'],
+                                        "name": data['name']
+
 	}
 
 	#Update the specific document located by the ID
+	
+	new_data = ast.literal_eval(json.dumps(new_data))	
+
+	pprint(new_data)
+
 	update1 = es.update(index=index, doc_type=doc_type, id=doc_id,
-						body={"doc": data})
+						body=new_data)
 	print(update1)
 
 #If the document does not exist, create it in the proper index
