@@ -2,6 +2,9 @@ import MySQLdb
 import paramiko
 import getpass
 import sys
+from socket import error as socket_error
+import time
+
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -132,18 +135,33 @@ class paper:
 
 	def retrieve_full_text(self, password_string):
 
-		ssh = paramiko.SSHClient()
+		try:
 
-		ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+			ssh = paramiko.SSHClient()
 
-		ssh.connect('csxrepo02.ist.psu.edu', username='swp5504', password=password_string)
+			ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-		d_path = self.paper_id.split('.')
-		#print(f"cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;")
-		stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
-		outlines = stdout.readlines()
-		resp = ''.join(outlines)
-		self.values_dict['text'] = str(resp)
+			ssh.connect('csxrepo02.ist.psu.edu', username='swp5504', password=password_string)
+
+			d_path = self.paper_id.split('.')
+			#print(f"cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;")
+			stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
+			outlines = stdout.readlines()
+			resp = ''.join(outlines)
+			self.values_dict['text'] = str(resp)
+
+		except socket_error as serr:
+
+			if serr.errno != errno.ECONNREFUSED:
+
+				time.sleep(3)
+
+				print('Paramiko Connection Lost... trying to reconnect')
+
+				retrieve_full_text(self, password_string)
+
+
+
 
 	#This function takes an input string and encodes it properly for Elastic to ingest
 	def fix_encoding(self, string):
