@@ -32,19 +32,20 @@ def connect_to_csx_citegraph():
 
 	return db.cursor()
 
-def authorTypeUpsert(paper):
+def authorHelperUpsert(paper, citeseerx_db_cur):
 
-	for author in paper.values_dict['authors']:
+	for auth in paper.values_dict['authors']:
 
-			author_data_dict = {
-				'author_id': author['author_id'],
-				'cluster': author['cluster'],
-				'name': author['name'],
-				'papers': [paper.values_dict['paper_id']]
-			}
+			author1 = author(auth['author_id'])
 
-			elasticpython.update_document(es, index='authors', doc_id=author_data_dict['author_id'],
-										doc_type='author', data=author_data_dict)
+			author1.values_dict['clusters'] = [auth['clusters']]
+			author1.values_dict['name'] = auth['name']
+			author1.values_dict['papers'] = [paper.values_dict['paper_id']]
+
+			author1.authors_table_fields(citeseerx_db_cur)
+
+			elasticpython.update_authors_document(es, index='authors', doc_id=author1.values_dict['author_id'],
+										doc_type='author', data=author1.values_dict)
 
 
 if __name__ == "__main__":
@@ -79,9 +80,10 @@ if __name__ == "__main__":
 		pprint.pprint(paper1.values_dict)
 		elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
 
+
 		#We also need to update the other types located in our index such as author and cluster
 		#By using the update and upserts command in ElasticSearch, we can do this easily
-		authorTypeUpsert(paper1)
+		authorTypeUpsert(paper1, citeseerx_db_cur)
 
 		#now it is time to test whether the cluster or author exists yet in ElasticSearch
 

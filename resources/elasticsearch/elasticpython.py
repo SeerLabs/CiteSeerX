@@ -34,7 +34,7 @@ def document_exists(es, index, doc_id, doc_type):
 	pass
 
 #If the document exists already, update the document where the doc_id's are the same
-def update_document(es, index, doc_id, doc_type, data):
+def update_authors_document(es, index, doc_id, doc_type, data):
 	
 	new_data = {}
 
@@ -43,10 +43,11 @@ def update_document(es, index, doc_id, doc_type, data):
 
 	#We also need to add a script to the JSON to check and add the associated data appropriately
 	new_data['script'] = {
-					"source": "ctx._source.papers.add(params.new_papers)",
+					"source": "ctx._source.papers.add(params.new_papers); ctx._source.papers.add(params.new_clusters)",
 					"lang": "painless",
 					"params": {
 						"new_papers": data['papers'][0]
+						"new_clusters": data['cluster'][0]
 					}
 	 }
 
