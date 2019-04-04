@@ -24,7 +24,7 @@ class author:
 
 	def authors_table_fields(self, cur):
 
-		statement = "SELECT affiliation, address, email FROM papers WHERE id='" + self.author_id + "';"
+		statement = "SELECT affil, address, email FROM authors WHERE id='" + str(self.author_id) + "';"
 
 		cur.execute(statement)
 

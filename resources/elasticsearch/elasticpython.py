@@ -46,22 +46,25 @@ def update_authors_document(es, index, doc_id, doc_type, data):
 					"source": "ctx._source.papers.add(params.new_papers); ctx._source.papers.add(params.new_clusters)",
 					"lang": "painless",
 					"params": {
-						"new_papers": data['papers'][0]
-						"new_clusters": data['cluster'][0]
+						"new_papers": data['papers'][0],
+						"new_clusters": data['clusters'][0]
 					}
 	 }
 
 	new_data['upsert'] = {
 					"papers": data['papers'],
 					"author_id": data['author_id'],
-                                        "cluster": data['cluster'],
-                                        "name": data['name']
+                                        "cluster": data['clusters'],
+                                        "name": data['name'],
+					"affiliation": data['affiliation'],
+					"address": data['address'],
+					"email": data['email']
 
 	}
 
 	#Update the specific document located by the ID
 	
-	new_data = ast.literal_eval(json.dumps(new_data))	
+	#new_data = ast.literal_eval(json.dumps(new_data))	
 
 	pprint(new_data)
 
