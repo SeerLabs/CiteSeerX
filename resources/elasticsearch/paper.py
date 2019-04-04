@@ -4,7 +4,7 @@ import getpass
 import sys
 from socket import error as socket_error
 import time
-
+import errno
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -158,7 +158,7 @@ class paper:
 
 				print('Paramiko Connection Lost... trying to reconnect')
 
-				retrieve_full_text(self, password_string)
+				self.retrieve_full_text(password_string)
 
 
 
