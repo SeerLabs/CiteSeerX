@@ -46,7 +46,7 @@ def update_document(es, index, doc_id, doc_type, data):
 					"source": "ctx._source.papers.add(params.new_papers)",
 					"lang": "painless",
 					"params": {
-						"new_papers": data['papers']
+						"new_papers": data['papers'][0]
 					}
 	 }
 
