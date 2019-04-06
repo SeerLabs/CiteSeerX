@@ -36,6 +36,7 @@
 	<link rel="alternate" type="application/rss+xml" title="CiteSeerX Search Results - RSS" href="<c:out value='${ rssFeed }' escapeXml="true"/>" />
 
 	<%-- Put all CSS first then JS imports here --%>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<link type="text/css" rel="stylesheet" href="<c:url value='/css/main.css' />" />
 	<script type="text/javascript" src="<c:url value='/js/jquery-1.4.2.min.js'/>"></script>
   <script type="text/javascript" src="<c:url value='/js/jquery-ui-1.8.custom.min.js'/>"></script>

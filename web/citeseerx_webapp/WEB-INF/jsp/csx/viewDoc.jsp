@@ -1,4 +1,8 @@
 <%@ include file="shared/IncludeDocHeader.jsp" %>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
   <div id="viewContent" class="sidebar">
     <div id="viewContent-inner">
       <div id="viewSidebar">
@@ -24,7 +28,99 @@
                   </ul>
                 </c:if>
               </div>
-            <% } %>
+            <% 
+		
+		Connection con = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		Statement sm = null;
+		try {
+			String mysqluser = "csx-prod"; //temp web server login creds
+			String mysqlpass = "csx-prod"; //temp web server login creds
+			String url = "jdbc:mysql://localhost/citeseerx";
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			con = DriverManager.getConnection(url, mysqluser.toLowerCase(),mysqlpass.toLowerCase());
+
+		if (request.getParameter("upvote") != null) {
+			//add 1 upvote to keyphrase_voting table
+			String upvoteKeyphrase = request.getParameter("upvote");
+			String upvoteQuery = ("UPDATE keyphrase_voting SET upvote = upvote + 1, lastvotetime = CURRENT_TIMESTAMP WHERE keyphrase = '"+upvoteKeyphrase+"'");
+			sm = con.createStatement();
+			sm.executeUpdate(upvoteQuery);
+			//add upvote event to keyphrase_action table
+			String getUpvoteID = ("SELECT id FROM keyphrase_voting WHERE keyphrase = '"+upvoteKeyphrase+"'");
+			rs = sm.executeQuery(getUpvoteID);
+			while (rs.next()) {
+				Statement sm2 = null;
+				sm2 = con.createStatement();
+				String upvoteID = rs.getString("id");
+				String upvoteIDQuery = ("INSERT INTO `keyphrase_action` (`id`, `actiontime`, `action`, `keyphrase_voting_id`) VALUES (NULL, CURRENT_TIMESTAMP, 'up', '"+upvoteID+"')");
+				sm2.executeUpdate(upvoteIDQuery);
+			}
+		}
+
+		if (request.getParameter("downvote") != null) {
+			//add 1 downvote to keyphrase_voting table
+			String downvoteKeyphrase = request.getParameter("downvote");
+			String downvoteQuery = ("UPDATE keyphrase_voting SET downvote = downvote + 1, lastvotetime = CURRENT_TIMESTAMP WHERE keyphrase = '"+downvoteKeyphrase+"'");
+			sm = con.createStatement();
+			sm.executeUpdate(downvoteQuery);
+			//add downvote event to keyphrase_action table
+			String getDownvoteID = ("SELECT id FROM keyphrase_voting WHERE keyphrase = '"+downvoteKeyphrase+"'");
+			rs = sm.executeQuery(getDownvoteID);
+			while (rs.next()) {
+				Statement sm3 = null;
+				sm3 = con.createStatement();
+				String downvoteID = rs.getString("id");
+				String downvoteIDQuery = ("INSERT INTO `keyphrase_action` (`id`, `actiontime`, `action`, `keyphrase_voting_id`) VALUES (NULL, CURRENT_TIMESTAMP, 'down', '"+downvoteID+"')");
+				sm3.executeUpdate(downvoteIDQuery);
+			}
+		}
+
+		if (request.getParameter("undoUpvote") != null) {
+			//remove upvote
+			String undoUpvoteKeyphrase = request.getParameter("undoUpvote");
+			String undoUpvoteQuery = ("UPDATE keyphrase_voting SET upvote = upvote - 1, lastvotetime = CURRENT_TIMESTAMP WHERE keyphrase = '"+undoUpvoteKeyphrase+"'");
+			sm = con.createStatement();
+			sm.executeUpdate(undoUpvoteQuery);
+			
+			//remove upvote event to keyphrase_action table
+			String getUpvoteID = ("SELECT id FROM keyphrase_voting WHERE keyphrase = '"+undoUpvoteKeyphrase+"'");
+			rs = sm.executeQuery(getUpvoteID);
+			while (rs.next()) {
+				Statement sm4 = null;
+				sm4 = con.createStatement();
+				String upvoteID = rs.getString("id");
+				String upvoteIDQuery = ("INSERT INTO `keyphrase_action` (`id`, `actiontime`, `action`, `keyphrase_voting_id`) VALUES (NULL, CURRENT_TIMESTAMP, 'undoUp', '"+upvoteID+"')");
+				sm4.executeUpdate(upvoteIDQuery);
+			}
+		}
+		
+		if (request.getParameter("undoDownvote") != null) {
+			//remove downvote
+			String undoDownvoteKeyphrase = request.getParameter("undoDownvote");
+			String undoDownvoteQuery = ("UPDATE keyphrase_voting SET downvote = downvote - 1, lastvotetime = CURRENT_TIMESTAMP WHERE keyphrase = '"+undoDownvoteKeyphrase+"'");
+			sm = con.createStatement();
+			sm.executeUpdate(undoDownvoteQuery);
+			
+			//remove downvote event to keyphrase_action table
+			String getDownvoteID = ("SELECT id FROM keyphrase_voting WHERE keyphrase = '"+undoDownvoteKeyphrase+"'");
+			rs = sm.executeQuery(getDownvoteID);
+			while (rs.next()) {
+				Statement sm5 = null;
+				sm5 = con.createStatement();
+				String downvoteID = rs.getString("id");
+				String downvoteIDQuery = ("INSERT INTO `keyphrase_action` (`id`, `actiontime`, `action`, `keyphrase_voting_id`) VALUES (NULL, CURRENT_TIMESTAMP, 'undoDown', '"+downvoteID+"')");
+				sm5.executeUpdate(downvoteIDQuery);
+			}
+		}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+
+
+		}%>
         <% } %>
         
         <c:if test="${ ! empty bibtex }">
@@ -44,7 +140,7 @@
               </tr>
 	      <tr>
 		<td colspan="6">
-		<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+		<script src="http://widgets.twimg.com/j/2/widget.js"></script>	
 		<script>
 			var doi;
 			doi="<c:out value= "${ doi }"/>";
@@ -75,6 +171,79 @@
     		behavior: 'default'
  		 }
 		}).render().start();
+
+		function upvote(x) {
+			$.ajax({
+				type: "POST",
+				data: {"upvote": x}
+			
+			}); 
+		}
+
+		function downvote(x) {
+			$.ajax({
+				type: "POST",
+				data: {"downvote": x}
+			});
+		}
+		
+		function undoUpvote(x) {
+			$.ajax({
+				type: "POST",
+				data: {"undoUpvote": x}
+			});
+		}
+
+		function undoDownvote(x) {
+			$.ajax({
+				type: "POST",
+				data: {"undoDownvote": x}
+			});
+		}		
+
+		$(document).ready(function(){
+			$('button.upvote').click(function(){
+				var upvoteClass = this.className;				
+				var keyphrase = event.currentTarget.attributes.value.nodeValue;
+				
+
+				var value = $("button.downvoted[value='"+keyphrase+"']");
+				
+				if (upvoteClass == 'upvote'){
+					upvote(keyphrase);
+					$(this).toggleClass('upvote upvoted');
+				} else if (upvoteClass == 'upvoted') {
+					undoUpvote(keyphrase);
+					$(this).toggleClass('upvoted upvote');
+				}
+
+				if (value[0].className == 'downvoted'){
+					undoDownvote(keyphrase);
+					value.toggleClass('downvoted downvote');	
+				}
+			});
+
+			$('button.downvote').click(function(){
+				var downvoteClass = this.className;
+				var keyphrase = event.currentTarget.attributes.value.nodeValue;
+				
+				var value = $("button.upvoted[value='"+keyphrase+"']");
+
+				if (downvoteClass == 'downvote'){
+					downvote(keyphrase);
+					$(this).toggleClass('downvote downvoted');
+				} else if (downvoteClass == 'downvoted') {
+					undoDownvote(keyphrase);
+					$(this).toggleClass('downvoted downvote');
+				}
+				
+				if (value[0].className == 'upvoted'){
+					undoUpvote(keyphrase);
+					value.toggleClass('upvoted upvote');
+				}
+			});		
+		});
+
 		</script>	
 		</td>
 	      </tr>
@@ -96,7 +265,7 @@
           <h3>Keyphrases</h3>
           <p>
             <c:forEach items="${ keyphrases }" var="keyphrase">
-            <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;&nbsp;&nbsp;
+            <a href="<c:url value="/search?q=${keyphrase}&submit=Search&sort=rlv&t=doc"/>"><c:out value="${keyphrase}"/></a>&nbsp;<%if (account != null) {%><button name="upvote" value="${keyphrase}" class="upvote"><i class="fas fa-thumbs-up"></i></button>&nbsp;<button name="downvote" value="${keyphrase}" class="downvote"><i class="fas fa-thumbs-down"></i></button>&nbsp;&nbsp;&nbsp;<%}%>
             </c:forEach>
           </p>
         </c:if>
