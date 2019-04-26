@@ -133,32 +133,33 @@ class paper:
 		self.values_dict['citedby'] = [int(cite[0]) for cite in result_citedby_tuple]
 		self.values_dict['cites'] = [int(cite[0]) for cite in result_cites_tuple]
 
-	def retrieve_full_text(self, password_string):
+	def retrieve_full_text(self):
 
-		try:
+		#try:
 
-			ssh = paramiko.SSHClient()
+		#ssh = paramiko.SSHClient()
 
-			ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+		#ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-			ssh.connect('csxrepo02.ist.psu.edu', username='swp5504', password=password_string)
+		#ssh.connect('csxrepo02.ist.psu.edu', username='swp5504', password=password_string)
 
-			d_path = self.paper_id.split('.')
-			#print(f"cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;")
-			stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
-			outlines = stdout.readlines()
+		d_path = self.paper_id.split('.')
+		#print(f"cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;")
+		with text_file as open(("home/swp5504/rep1/%s/%s/%s/%s/%s/%s.body" % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id)), "r")
+			#stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
+			contents = text_file.read()
 			resp = ''.join(outlines)
 			self.values_dict['text'] = str(resp)
 
-		except socket_error as serr:
+		#except socket_error as serr:
 
-			if serr.errno != errno.ECONNREFUSED:
+			#if serr.errno != errno.ECONNREFUSED:
 
-				time.sleep(3)
+				#time.sleep(3)
 
-				print('Paramiko Connection Lost... trying to reconnect')
+				#print('Paramiko Connection Lost... trying to reconnect')
 
-				self.retrieve_full_text(password_string)
+				#self.retrieve_full_text(password_string)
 
 
 

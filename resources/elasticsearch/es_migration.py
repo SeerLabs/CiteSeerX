@@ -73,7 +73,7 @@ if __name__ == "__main__":
 		paper1.authors_table_fields(citeseerx_db_cur)
 		paper1.keywords_table_fields(citeseerx_db_cur)
 		paper1.csx_citegraph_query(csx_citegraph_cur)
-		paper1.retrieve_full_text(password_string)
+		paper1.retrieve_full_text()
 
 		#Load the paper JSON data into ElasticSearch
 		
