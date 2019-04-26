@@ -1,9 +1,9 @@
 import MySQLdb
 from paper import paper
 import pprint
-import getpass
 import elasticpython
 from author import author
+from cluster import cluster
 
 #returns the first 'n' number of paper ids from the SQL db in the form of a list
 def get_ids(cur, n):	
@@ -48,6 +48,21 @@ def authorHelperUpsert(paper, citeseerx_db_cur):
 										doc_type='author', data=author1.values_dict)
 
 
+def clusterHelperUpsert(paper):
+
+	cluster1 = cluster(paper.values_dict['cluster'])
+
+	cluster1.values_dict['included_papers'] = [paper.values_dict['paper_id']]
+
+	list_of_author_names = [auth['name'] for auth in paper.values_dict['authors']]
+
+	cluster1.values_dict['included_authors'] =list_of_author_names
+
+	elasticpython.update_clusters_document(es, index='clusters', doc_id=cluster1.values_dict['cluster_id'],
+											doc_type='cluster', data=cluster1.values_dict)
+
+
+
 if __name__ == "__main__":
 	
 
@@ -61,7 +76,6 @@ if __name__ == "__main__":
 
 	list_of_paper_ids = get_ids(citeseerx_db_cur, 20000)
 
-	password_string = getpass.getpass("Please enter the csxrepo02 password: ")
 
 	#iterate through each of the paper_ids selected and add them to the index
 	for paper_id in list_of_paper_ids:

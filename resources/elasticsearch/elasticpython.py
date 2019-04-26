@@ -72,6 +72,33 @@ def update_authors_document(es, index, doc_id, doc_type, data):
 						body=new_data)
 	print(update1)
 
+def update_clusters_document(es, index, doc_id, doc_type, data):
+
+	new_data = {}
+
+	new_data['script'] = {
+					"source": "ctx._source.included_papers.add(params.new_papers); ctx._source.included_authors.add(params.new_authors)",
+					"lang": "painless",
+					"params": {
+						"new_papers": data['included_papers'][0],
+						"new_authors": data['included_authors']
+					}
+	}
+
+
+	new_data['upsert'] = {
+					"cluster_id": data['cluster_id'],
+					"included_papers": data['included_papers'],
+					"included_authors": data['included_authors']
+	}
+
+	pprint(new_data)
+
+	update1 = es.updated(index=index, doc_type=doc_type, doc_id=doc_id, body=new_data)
+
+	print(update1)
+	
+
 #If the document does not exist, create it in the proper index
 def create_document(es, index, doc_id, doc_type, data):
 

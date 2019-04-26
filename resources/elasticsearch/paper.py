@@ -1,8 +1,5 @@
 import MySQLdb
-import paramiko
-import getpass
 import sys
-from socket import error as socket_error
 import time
 import errno
 
