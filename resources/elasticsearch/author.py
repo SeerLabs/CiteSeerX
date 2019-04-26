@@ -29,8 +29,6 @@ class author:
 		cur.execute(statement)
 
 		result_tuple = cur.fetchall()[0]
-		
-		print(type(result_tuple[2]))
 
 		self.values_dict['affiliation'] = result_tuple[0]
 		self.values_dict['address'] = result_tuple[1]

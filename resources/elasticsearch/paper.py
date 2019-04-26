@@ -62,7 +62,6 @@ class paper:
 
 		self.values_dict['title'] = str(result_tuple[0])
 		self.values_dict['abstract'] = str(result_tuple[1])
-		print(result_tuple[2])
 		if result_tuple[2]:
 			self.values_dict['year'] = int(result_tuple[2])
 		self.values_dict['venue'] = str(result_tuple[3])

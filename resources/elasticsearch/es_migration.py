@@ -77,9 +77,13 @@ if __name__ == "__main__":
 	list_of_paper_ids = get_ids(citeseerx_db_cur, 20000)
 
 
+	paper_count = 0
+
 	#iterate through each of the paper_ids selected and add them to the index
 	for paper_id in list_of_paper_ids:
 
+		if paper_count % 10:
+			print('Total paper count: ', str(paper_count))
 
 		#extract all the fields neccessary for the paper type from the MySQL DBs
 		paper1 = paper(paper_id)
@@ -91,7 +95,6 @@ if __name__ == "__main__":
 
 		#Load the paper JSON data into ElasticSearch
 		
-		pprint.pprint(paper1.values_dict)
 		elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
 
 
@@ -103,7 +106,7 @@ if __name__ == "__main__":
 
 		#pprint.pprint(paper1.values_dict)
 
-	
+		paper_count += 1
 
 
 

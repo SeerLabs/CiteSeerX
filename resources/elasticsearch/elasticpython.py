@@ -66,11 +66,8 @@ def update_authors_document(es, index, doc_id, doc_type, data):
 	
 	#new_data = ast.literal_eval(json.dumps(new_data))	
 
-	pprint(new_data)
-
 	update1 = es.update(index=index, doc_type=doc_type, id=doc_id,
 						body=new_data)
-	print(update1)
 
 def update_clusters_document(es, index, doc_id, doc_type, data):
 
@@ -92,11 +89,8 @@ def update_clusters_document(es, index, doc_id, doc_type, data):
 					"included_authors": data['included_authors']
 	}
 
-	pprint(new_data)
 
 	update1 = es.updated(index=index, doc_type=doc_type, doc_id=doc_id, body=new_data)
-
-	print(update1)
 	
 
 #If the document does not exist, create it in the proper index
@@ -105,7 +99,6 @@ def create_document(es, index, doc_id, doc_type, data):
 	#Begin indexing the data in the correct index
 	
 	index1 = es.index(index=index, id=doc_id, doc_type=doc_type, body=data)
-	print(index1)
 
 
 
