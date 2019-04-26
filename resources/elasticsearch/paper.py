@@ -145,21 +145,31 @@ class paper:
 
 		d_path = self.paper_id.split('.')
 		#print(f"cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;")
-		with text_file as open(("home/swp5504/rep1/%s/%s/%s/%s/%s/%s.body" % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id)), "r")
+		text_file_path = "home/swp5504/rep1/%s/%s/%s/%s/%s/%s.body" % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[4], self.paper_id)
+		
+		try:
+
+
+			with open(text_file_path, "r") as text_file:
+	
 			#stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
-			contents = text_file.read()
-			resp = ''.join(outlines)
-			self.values_dict['text'] = str(resp)
+				contents = text_file.read()
+				resp = ''.join(outlines)
+				self.values_dict['text'] = str(resp)
 
-		#except socket_error as serr:
 
-			#if serr.errno != errno.ECONNREFUSED:
 
-				#time.sleep(3)
+		except IOError:
+			print("full text file could not be found")
+			#except socket_error as serr:
 
-				#print('Paramiko Connection Lost... trying to reconnect')
+				#if serr.errno != errno.ECONNREFUSED:
 
-				#self.retrieve_full_text(password_string)
+					#time.sleep(3)
+
+					#print('Paramiko Connection Lost... trying to reconnect')
+
+					#self.retrieve_full_text(password_string)
 
 
 
