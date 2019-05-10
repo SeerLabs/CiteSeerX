@@ -90,7 +90,7 @@ def update_clusters_document(es, index, doc_id, doc_type, data):
 	}
 
 
-	update1 = es.updated(index=index, doc_type=doc_type, doc_id=doc_id, body=new_data)
+	update1 = es.update(index=index, doc_type=doc_type, id=doc_id, body=new_data)
 	
 
 #If the document does not exist, create it in the proper index
