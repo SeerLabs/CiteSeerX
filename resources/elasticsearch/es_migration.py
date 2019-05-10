@@ -74,8 +74,13 @@ if __name__ == "__main__":
 
 	elasticpython.test_ES_connection()
 
-	list_of_paper_ids = get_ids(citeseerx_db_cur, 20000)
+	list_of_paper_ids = get_ids(citeseerx_db_cur, 200000)
 
+	with open('paper_ids_text_file.txt', 'w') as f:
+		for item in list_of_paper_ids:
+			f.write("%s\n" % item)
+
+	print("just wrote text file")	
 
 	paper_count = 0
 
