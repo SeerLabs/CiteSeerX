@@ -14,6 +14,7 @@ def get_ids(cur, n):
 
 	return [tup[0] for tup in cur.fetchall()]
 
+#connects to the citeseerx database and returns cursor
 def connect_to_citeseerx_db():
 	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
                         user="csx-prod",
@@ -23,6 +24,7 @@ def connect_to_citeseerx_db():
 
 	return db.cursor()
 
+#connects to the citegraph database and returns cursor
 def connect_to_csx_citegraph():
 	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
                         user="csx-prod",
@@ -32,6 +34,8 @@ def connect_to_csx_citegraph():
 
 	return db.cursor()
 
+#prepares the data to be upserted into the authors index in elasticsearch
+#Upserting means insert if it doesn't exist and update if it does
 def authorHelperUpsert(paper, citeseerx_db_cur):
 
 	for auth in paper.values_dict['authors']:
@@ -48,6 +52,8 @@ def authorHelperUpsert(paper, citeseerx_db_cur):
 										doc_type='author', data=author1.values_dict)
 
 
+#prepares the data to be upserted into the clusters index in elasticsearch
+#Upserting means insert if it doesn't exist and update if it does
 def clusterHelperUpsert(paper):
 
 	cluster1 = cluster(paper.values_dict['cluster'])
@@ -63,6 +69,7 @@ def clusterHelperUpsert(paper):
 
 
 
+#Main function in script 
 if __name__ == "__main__":
 	
 
@@ -76,11 +83,11 @@ if __name__ == "__main__":
 
 	list_of_paper_ids = get_ids(citeseerx_db_cur, 200000)
 
-	with open('paper_ids_text_file.txt', 'w') as f:
-		for item in list_of_paper_ids:
-			f.write("%s\n" % item)
+	#with open('paper_ids_text_file.txt', 'w') as f:
+		#for item in list_of_paper_ids:
+			#f.write("%s\n" % item)
 
-	print("just wrote text file")	
+	#print("just wrote text file")	
 
 	paper_count = 0
 
@@ -106,7 +113,7 @@ if __name__ == "__main__":
 		#We also need to update the other types located in our index such as author and cluster
 		#By using the update and upserts command in ElasticSearch, we can do this easily
 		authorHelperUpsert(paper1, citeseerx_db_cur)
-		
+
 		clusterHelperUpsert(paper1)
 
 		#pprint.pprint(paper1.values_dict)
