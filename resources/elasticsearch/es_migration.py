@@ -56,7 +56,7 @@ def clusterHelperUpsert(paper):
 
 	list_of_author_names = [auth['name'] for auth in paper.values_dict['authors']]
 
-	cluster1.values_dict['included_authors'] =list_of_author_names
+	cluster1.values_dict['included_authors'] = list_of_author_names
 
 	elasticpython.update_clusters_document(es, index='clusters', doc_id=cluster1.values_dict['cluster_id'],
 											doc_type='cluster', data=cluster1.values_dict)
@@ -106,8 +106,8 @@ if __name__ == "__main__":
 		#We also need to update the other types located in our index such as author and cluster
 		#By using the update and upserts command in ElasticSearch, we can do this easily
 		authorHelperUpsert(paper1, citeseerx_db_cur)
-
-		#now it is time to test whether the cluster or author exists yet in ElasticSearch
+		
+		clusterHelperUpsert(paper1)
 
 		#pprint.pprint(paper1.values_dict)
 
