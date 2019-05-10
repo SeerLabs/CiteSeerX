@@ -141,7 +141,7 @@ class paper:
 
 		d_path = self.paper_id.split('.')
 		#print(f"cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;")
-		text_file_path = "home/swp5504/rep1/%s/%s/%s/%s/%s/%s.body" % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[4], self.paper_id)
+		text_file_path = "/home/swp5504/rep1/%s/%s/%s/%s/%s/%s.txt" % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[4], self.paper_id)
 		
 		try:
 
@@ -150,7 +150,7 @@ class paper:
 	
 			#stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
 				contents = text_file.read()
-				resp = ''.join(outlines)
+				resp = ''.join(contents)
 				self.values_dict['text'] = str(resp)
 
 
