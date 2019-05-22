@@ -1,12 +1,25 @@
+# Import SQL capabilities
 import MySQLdb
-from paper import paper
+
+# Import pretty print JSON for testing purposes
 import pprint
+
+# Import ElasticSearch capabilities
 import elasticpython
+
+# Import each of the schemas and associated methods for each index
+from paper import paper
 from author import author
 from cluster import cluster
 
-#returns the first 'n' number of paper ids from the SQL db in the form of a list
+
+
 def get_ids(cur, n):	
+	''' Input: Database cursor (database connection), n number of papers to retrieve
+		Output: Returns a list of first 'n' number of paper ids from the SQL DB 
+		Method: Queries the database for the paper ids and returns a list of length 'n'
+
+	'''
 
 	statement = "SELECT id FROM papers LIMIT %d;" % (n)
 
@@ -14,8 +27,14 @@ def get_ids(cur, n):
 
 	return [tup[0] for tup in cur.fetchall()]
 
-#connects to the citeseerx database and returns cursor
+
 def connect_to_citeseerx_db():
+	''' Input: None
+		Output: Returns the cursor (connection) to the citeseerx database
+		Method: Using the python MySQL API, establishes a connection with the citeseerx DB
+
+	'''
+
 	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
                         user="csx-prod",
                         passwd="csx-prod",
@@ -24,8 +43,14 @@ def connect_to_citeseerx_db():
 
 	return db.cursor()
 
-#connects to the citegraph database and returns cursor
+
 def connect_to_csx_citegraph():
+	''' Input: None
+		Output: Returns the cursor (connection) to the csx_citegraph DB
+		Method: Using the python MySQL API, connects to the csx_citegraph database
+
+	'''
+
 	db = MySQLdb.connect(host="csxdb02.ist.psu.edu",
                         user="csx-prod",
                         passwd="csx-prod",
@@ -34,9 +59,15 @@ def connect_to_csx_citegraph():
 
 	return db.cursor()
 
-#prepares the data to be upserted into the authors index in elasticsearch
-#Upserting means insert if it doesn't exist and update if it does
+
 def authorHelperUpsert(paper, citeseerx_db_cur):
+	''' Input: Paper object with it's values dictionary, and citeseerx database connection
+		Output: None
+		Method: Iterate through each author on a given paper, prepare the dictionary
+				for upsertion into the authors index in ElasticSearch. 
+				Upserting means insert if the object doesn't already exist, update if it does
+		
+	'''
 
 	for auth in paper.values_dict['authors']:
 
@@ -52,9 +83,12 @@ def authorHelperUpsert(paper, citeseerx_db_cur):
 										doc_type='author', data=author1.values_dict)
 
 
-#prepares the data to be upserted into the clusters index in elasticsearch
-#Upserting means insert if it doesn't exist and update if it does
 def clusterHelperUpsert(paper):
+	''' Input: Paper object with it's values dictionary
+		Output: None
+		Method: Prepare the clusters dictionary for upsertion into ElasticSearch
+
+	'''
 
 	cluster1 = cluster(paper.values_dict['cluster'])
 
@@ -69,37 +103,39 @@ def clusterHelperUpsert(paper):
 
 
 
-#Main function in script 
+
 if __name__ == "__main__":
-	
+	''' Main Method
+		Method: Call all above methods then sets the number of papers to index.
+				Iterates through each paper and indexes the paper, all authors, and the cluster
+				of said paper.
 
+
+	'''
+
+	# Establish connections to databases and ElasticSearch
 	citeseerx_db_cur = connect_to_citeseerx_db()
-
 	csx_citegraph_cur = connect_to_csx_citegraph()
-
 	es = elasticpython.establish_ES_connection()
-
 	elasticpython.test_ES_connection()
 
+	# Set the number of papers to index by this migration script
 	number_of_papers_to_index = 200000
 
+	# Retrieve the list of paper ids
 	list_of_paper_ids = get_ids(citeseerx_db_cur, number_of_papers_to_index)
 
-	#with open('paper_ids_text_file.txt', 'w') as f:
-		#for item in list_of_paper_ids:
-			#f.write("%s\n" % item)
-
-	#print("just wrote text file")	
-
+	# Set counter so we can keep track of how many papers have migrated in real-time
 	paper_count = 0
 
-	#iterate through each of the paper_ids selected and add them to the index
+	# Iterate through each of the paper_ids selected and add them to the index
 	for paper_id in list_of_paper_ids:
 
-		if paper_count % 10:
+		# Every 100 papers print out our current progress
+		if paper_count % 100 == 0:
 			print('Total paper count: ', str(paper_count))
 
-		#extract all the fields neccessary for the paper type from the MySQL DBs
+		# Extract all the fields neccessary for the paper type from the MySQL DBs
 		paper1 = paper(paper_id)
 		paper1.paper_table_fields(citeseerx_db_cur)
 		paper1.authors_table_fields(citeseerx_db_cur)
@@ -107,20 +143,15 @@ if __name__ == "__main__":
 		paper1.csx_citegraph_query(csx_citegraph_cur)
 		paper1.retrieve_full_text()
 
-		#Load the paper JSON data into ElasticSearch
-		
+		# Load the paper JSON data into ElasticSearch
 		elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
 
-
-		#We also need to update the other types located in our index such as author and cluster
-		#By using the update and upserts command in ElasticSearch, we can do this easily
+		# We also need to update the other indices like author and cluster
+		# By using the update and upserts command in ElasticSearch, we can do this easily
 		authorHelperUpsert(paper1, citeseerx_db_cur)
-
 		clusterHelperUpsert(paper1)
 
-		#pprint.pprint(paper1.values_dict)
-
+		# Increment counter so we can keep track of migration progress
 		paper_count += 1
-
 
 
