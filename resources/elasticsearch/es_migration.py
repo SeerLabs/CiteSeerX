@@ -81,7 +81,9 @@ if __name__ == "__main__":
 
 	elasticpython.test_ES_connection()
 
-	list_of_paper_ids = get_ids(citeseerx_db_cur, 200000)
+	number_of_papers_to_index = 200000
+
+	list_of_paper_ids = get_ids(citeseerx_db_cur, number_of_papers_to_index)
 
 	#with open('paper_ids_text_file.txt', 'w') as f:
 		#for item in list_of_paper_ids:
