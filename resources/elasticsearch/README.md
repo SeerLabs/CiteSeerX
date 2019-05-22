@@ -23,3 +23,90 @@ In order to understand how the JSON schemas are organized, it is important to kn
 | author.py | Defines the author index schema, interfaces with MySQL DB to get author fields |
 | cluster.py | Defines the cluster index schema, interfaces with the MySQL DB to get cluster fields  |
 
+Based off of this table then, it is easy to see that to change the schema of the paper index, author index, or cluster index, then we must edit paper.py, author.py, and cluster.py, respectively. In each of these files, the data schema is implemented in a dictionary that is an attribute of the respective class (paper, author, or cluster). The dictionary is easy to change but some other code in other files may need to change occordingly. The data schemas as they are used in Python and inserted into ElasticSearch are as follows:
+
+Paper Index Schema:
+
+```python
+    {
+			"paper_id": self.paper_id,	#unique paper_id
+			"title": '',	#string of title of paper
+			"cluster": '', #clusterID
+			"authors": [
+				{
+				"name": '', #string of authors name,
+				"author_id": '', #string of numerical value
+				"cluster": '' #cluster the author belongs to 
+				}
+			], #list of dictionaries contain author name and author_id
+			"keywords": [
+				{
+					"keyword": '', #string
+					"keyword_id": '' #string of numerical value
+				}
+			], #list of dictionaries of keywords
+			"abstract": '', #string
+			"year": 0, #integer value
+			"venue": '', #string 
+			"ncites": 0, #integer value
+			"scites": 0, #integer value
+			"doi": '', #string ????????????????????????
+			"incol": None, #boolean value
+			"authorNorms": None, #???????????????????????????????
+			"text": '', #string, full text of paper to be indexed
+			"cites": [	#list of cluster_ids that this paper cites
+					None,
+					None
+			], 
+			"citedby":[	#list of cluster_ids that cites this paper
+					None,
+					None
+			], 
+			"vtime": None, #string version time
+
+		}
+```
+
+Authors Index Schema:
+ 
+ ```python
+ {
+
+			"author_id": self.author_id, #disambiguated author ID
+			"name": None, #name of the author
+			"clusters": [ #list of cluster_ids which include this author name
+				
+			],
+			"papers": [ #list of paper_ids that this author has written
+				
+			],
+			"affiliation": None, #the department or affiliation of author
+			"address": None, #address of the author
+			"email": None #email address of the author
+
+		}
+```
+
+Clusters Index Schema:
+
+```python
+{
+
+			"cluster_id": self.cluster_id, #unique cluster ID
+			"included_papers": [ #list of paper_ids which are included in this cluster
+				None,
+				None
+			],
+			"included_authors": [ #list of authors included in this cluster
+				None,
+				None
+			]
+
+		}
+```
+
+The last parameter that must be fine-tuned is the variable named number_of_papers_to_index which is currently on line 84 of es_migration.py.
+```python
+number_of_papers_to_index = 200000 # CHANGE ME!
+```
+By specifying the number assigned to this variable, we are changing the number of papers to be indexed by ElasticSearch.
