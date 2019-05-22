@@ -11,4 +11,15 @@ The steps to migrate the data from MySQL to ElasticSearch are listed below:
 3. Run the Migration Script (could do through the Docker container)
 4. Check on the Migration and watch it realtime in Kibana
 
-### Running the ElasticSearch Instance
+### Ensuring Correct Schema and Parameters
+
+In order to understand how the JSON schemas are organized, it is important to know what each of the Python files (and other files) in this directory are used for. The table below illustrates this:
+
+| Filename        | Use         |
+| ------------- |:-------------:|
+| es_migration.py      | Main migration script, establishes connections to databases, determines how many papers to migrate |
+| elasticpython.py      | Is the only file to connect to and interface with ElasticSearch     |
+| paper.py | Defines the paper index schema, traverses through directories to retrieve full text of papers, interfaces with MySQL databases      |
+| author.py | Defines the author index schema, interfaces with MySQL DB to get author fields |
+| cluster.py | Defines the cluster index schema, interfaces with the MySQL DB to get cluster fields  |
+
