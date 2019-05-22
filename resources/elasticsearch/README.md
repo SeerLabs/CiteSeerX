@@ -11,7 +11,7 @@ The steps to migrate the data from MySQL to ElasticSearch are listed below:
 3. Run the Migration Script (could do through the Docker container)
 4. Check on the Migration and watch it realtime in Kibana
 
-### Ensuring Correct Schema and Parameters
+## Ensuring Correct Schema and Parameters
 
 In order to understand how the JSON schemas are organized, it is important to know what each of the Python files (and other files) in this directory are used for. The table below illustrates this:
 
@@ -110,3 +110,20 @@ The last parameter that must be fine-tuned is the variable named number_of_paper
 number_of_papers_to_index = 200000 # CHANGE ME!
 ```
 By specifying the number assigned to this variable, we are changing the number of papers to be indexed by ElasticSearch.
+
+## Running the ElasticSearch Instance
+
+Currently, the ElasticSearch instance and config files run out of the directory /home/swp5504/elasticsearch-6.2.4 on csxindex01.ist.psu.edu.
+
+The config file, incase anything needs to be changed or updated for ElasticSearch, is located in the file /home/swp5504/elasticsearch-6.2.4/config/elasticsearch.yml
+
+The executable of ElasticSearch is located in the /home/swp5504/elasticsearch-6.2.4/bin subdirectory and it can be correctly run as a daemon service by using this command once you have successfully changed directories to this bin folder:
+
+```bash
+./elasticsearch -d
+```
+After you run this, use the following command to ensure that ElasticSearch is running properly on this machine:
+
+```bash
+top
+```
