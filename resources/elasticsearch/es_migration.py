@@ -1,9 +1,6 @@
 # Import SQL capabilities
 import MySQLdb
 
-# Import pretty print JSON for testing purposes
-import pprint
-
 # Import ElasticSearch capabilities
 import elasticpython
 
