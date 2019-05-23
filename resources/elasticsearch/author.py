@@ -2,6 +2,10 @@
 class author:
 
 	def __init__(self, author_id):
+		''' Input: The specific author ID of an author
+			Output: None
+			Method: Build a value dictionary with all of the relevant schema information
+		'''
 
 		self.author_id = author_id
 		self.values_dict = {
@@ -23,6 +27,13 @@ class author:
 
 
 	def authors_table_fields(self, cur):
+		''' Input: MySQL database connection
+			Output: None
+			Method: Query the MySQL database (authors table specifically) for a specific 
+			authorID and properly organize the author data returned 
+			in the values_dict data structure. 
+
+		'''
 
 		statement = "SELECT affil, address, email FROM authors WHERE id='" + str(self.author_id) + "';"
 
@@ -34,9 +45,6 @@ class author:
 		self.values_dict['address'] = result_tuple[1]
 		self.values_dict['email'] = result_tuple[2]
 
-
-	def additional_table_data(self, cur):
-		pass
 
 
 
