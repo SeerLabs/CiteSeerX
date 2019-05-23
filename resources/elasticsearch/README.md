@@ -127,3 +127,21 @@ After you run this, use the following command to ensure that ElasticSearch is ru
 ```bash
 top
 ```
+
+## Running the Migration Script
+
+
+
+## Use Kibana to Check on Migration
+
+Kibana is a web-based visualization tool that integrates well with ElasticSearch and will allow us to see how many documents are indexed in real-time. To start Kibana, connect to csxindex01.ist.psu.edu and navigate to the directory /home/swp5504/kibana-6.2.4-linux-x86_64/bin and run the following command to start Kibana. To change the configuration of Kibana, edit the file located at /home/swp5504/kibana-6.2.4-linux-x86_64/config/kibana.yml.
+
+Command to start Kibana:
+
+```bash
+./kibana
+```
+Then, on your own local machine and in a web browser, navigate to the URL here: https://svg.up.ist.psu.edu and proceed to login with your PSU login credentials.
+
+Once you are logged onto the virtual machine, open up the Chrome web browser and go to the url citeseerx.ist.psu.edu:5601 where you can now use and navigate Kibana!
+
