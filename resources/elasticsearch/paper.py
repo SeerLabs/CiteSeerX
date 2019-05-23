@@ -1,15 +1,25 @@
+# Import SQL capabilities
 import MySQLdb
+
+# Import basic system libraries
 import sys
 import time
-import errno
-
+ 
+# Reload sys to make sure everything is working properly and make sure the encoding
+# is set properly to utf8
 reload(sys)
 sys.setdefaultencoding('utf8')
 
 class paper:
-
-
+''' Defines class paper
+	
+'''
 	def __init__(self, paper_id):
+		''' Input: The specific paper ID of a paper
+			Output: None
+			Method: Build a value dictionary with all of the relevant schema information
+		'''
+
 		self.paper_id = paper_id
 		self.values_dict = {
 
@@ -51,8 +61,13 @@ class paper:
 		}
 
 
-	#this function queries the paper table for all the info pertaining to that paper_id
 	def paper_table_fields(self, cur):
+		''' Input: MySQL database connection
+			Output: None
+			Method: Query the MySQL database for a specific paperID and properly organize 
+					the data returned in the values_dict data structure. 
+
+		'''
 
 		statement = "SELECT title, abstract, year, venue, ncites, selfCites, cluster, versionTime FROM papers WHERE id='" + self.paper_id + "';"
 
@@ -71,8 +86,14 @@ class paper:
 		self.values_dict['vtime'] = result_tuple[7].strftime('%Y-%m-%d %H:%M:%S')
 
 
-	#this function queries the authors table for author ids and names related to a paper_id
 	def authors_table_fields(self, cur):
+		''' Input: MySQL database connection
+			Output: None
+			Method: Query the MySQL database (authors table specifically) for a specific 
+			paperID and properly organize the author data returned 
+			in the values_dict data structure. 
+
+		'''
 
 		statement = "SELECT name, id, cluster FROM authors WHERE paperid='" + self.paper_id + "';"
 
@@ -90,10 +111,15 @@ class paper:
 		
 		del self.values_dict['authors'][0]
 	
-		#print(self.values_dict['authors'])
 
-	#this function queries the keywords table and adds a list to the values_dict
 	def keywords_table_fields(self, cur):
+		''' Input: MySQL database connection
+			Output: None
+			Method: Query the MySQL database (keywords table specifically) for a specific 
+			paperID and properly organize the keyword data returned 
+			in the values_dict data structure. 
+
+		'''
 
 		statement = "SELECT keyword, id FROM keywords WHERE paperid='" + self.paper_id + "';"
 
@@ -110,8 +136,13 @@ class paper:
 		del self.values_dict['keywords'][0]
 
 
-	#this function queries the csx_citegraph database for relevant information
 	def csx_citegraph_query(self, cur):
+		''' Input: MySQL database connection for the csx_citegraph database
+			Output: None
+			Method: Query the MySQL database for the citegraph data based off of
+			clusterID.
+
+		'''
 		
 		#this statement grabs the cluster ids who have cited this cluster
 		statement = "SELECT citing FROM citegraph WHERE cited=" + str(self.values_dict['cluster']) + ";"
@@ -129,48 +160,29 @@ class paper:
 		self.values_dict['citedby'] = [int(cite[0]) for cite in result_citedby_tuple]
 		self.values_dict['cites'] = [int(cite[0]) for cite in result_cites_tuple]
 
+
 	def retrieve_full_text(self):
+		''' Input: None
+			Output: None
+			Method: We traverse through the local filesystem to find the full text
+					.txt file. Then, we open this file and populate the values
+					dictionary with the full text.
 
-		#try:
-
-		#ssh = paramiko.SSHClient()
-
-		#ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-		#ssh.connect('csxrepo02.ist.psu.edu', username='swp5504', password=password_string)
+		'''
 
 		d_path = self.paper_id.split('.')
-		#print(f"cd data/repository/rep1/{d_path[0]}/{d_path[1]}/{d_path[2]}/{d_path[3]}/{d_path[0]}; cat {self.paper_id}.body;")
+	
 		text_file_path = "/home/swp5504/rep1/%s/%s/%s/%s/%s/%s.txt" % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[4], self.paper_id)
 		
 		try:
 
-
 			with open(text_file_path, "r") as text_file:
 	
-			#stdin, stdout, stderr = ssh.exec_command('cd data/repository/rep1/%s/%s/%s/%s/%s; cat %s.body;' % (d_path[0], d_path[1], d_path[2], d_path[3], d_path[0], self.paper_id))
 				contents = text_file.read()
 				resp = ''.join(contents)
 				self.values_dict['text'] = str(resp)
 
-
-
 		except IOError:
 			print("full text file could not be found")
-			#except socket_error as serr:
 
-				#if serr.errno != errno.ECONNREFUSED:
-
-					#time.sleep(3)
-
-					#print('Paramiko Connection Lost... trying to reconnect')
-
-					#self.retrieve_full_text(password_string)
-
-
-
-
-	#This function takes an input string and encodes it properly for Elastic to ingest
-	def fix_encoding(self, string):
-		pass
 
