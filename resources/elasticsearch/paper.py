@@ -11,9 +11,9 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 class paper:
-''' Defines class paper
+	''' Defines class paper
 	
-'''
+	'''
 	def __init__(self, paper_id):
 		''' Input: The specific paper ID of a paper
 			Output: None
