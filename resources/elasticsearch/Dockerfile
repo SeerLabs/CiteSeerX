@@ -8,6 +8,6 @@ WORKDIR /migration_app
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ['python']
+ENTRYPOINT ["python"]
 
 CMD ["es_migration.py"]
