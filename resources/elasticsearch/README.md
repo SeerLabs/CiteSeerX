@@ -127,10 +127,34 @@ After you run this, use the following command to ensure that ElasticSearch is ru
 ```bash
 top
 ```
+Here, you are looking for a process named 'java' which was started by your username. This is ElasticSearch!
 
 ## Running the Migration Script
 
+Since we have installed and configured Docker, this part of the documentation will walk you through how to correctly build and run the Docker container with this migration script. After the repository is accurately up to date using the command:
 
+```bash
+git pull
+```
+then it is time to build the Docker image. Run the following command, being sure to name the image whatever you would like:
+
+```bash
+docker build -t migration-app . 
+```
+Now our image is built! It is so easy and this is one of the perks to using Docker.
+
+Next, we must update one quick setting in ElasticSearch before we run the script. Run this curl command on the machine that is running the ElasticSearch instance to ensure the script runs error free:
+
+```bash
+curl -XPUT -H "Content-Type: application/json" http://localhost:9200/_all/_settings -d '{"index.blocks.read_only_allow_delete": null}'
+```
+
+Okay, now eveything is setup. It is time to run the Docker container. Depending on if you want to run the container as a daemon service, you can use the '-d' flag. To run the container, use the command below:
+
+```bash
+docker run --network="host"  migration-app
+```
+This is it! Now the script can run and it will display whether or not it was able to retrieve the full text of the papers.
 
 ## Use Kibana to Check on Migration
 
