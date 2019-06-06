@@ -147,8 +147,8 @@ if __name__ ==  "__main__":
     parser.add_argument("-v","--verbose",help="increase output verbosity",action="store_true",dest="verbose",default=False)
     parser.add_argument("-d","--dry-run",help="check file availability without actually transferring them",action="store_true",dest="dryrun",default=False)
     parser.add_argument("-l","--hierarchy",help="output files are organized in hierachical order, e.g., 123.234.345.pdf saved to 123/234/345/123.234.345.pdf",action="store_true",dest="hierarchy",default=False)
-    parser.add_argument("-e","--extension",type=str,help="extension to append to csxdois",dest="ext",default="pdf")
-    parser.add_argument("-g","--logdir",type=str,help="a directory to save log files",dest="logdir",default="~/Downloads/logs")
+    parser.add_argument("-e","--extension",type=str,help="extension to append to csxdois .pdf by default.",dest="ext",default="pdf")
+    parser.add_argument("-g","--logdir",type=str,help="a directory to save log files. ~/Downloads/logs by default.",dest="logdir",default="~/Downloads/logs")
 
     args = parser.parse_args()
 
