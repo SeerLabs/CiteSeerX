@@ -17,6 +17,7 @@ crawler/cdi/black_list.dat
 crawler/cdi/runconfig.py
 crawler/cdi/settings.py
 crawler/cdi/config.py
+crawler/cdi/conf.py
 web/citeseerx_oaiwebapp/WEB-INF/csx-oai.config.properties
 web/citeseerx_webapp/WEB-INF/csx.config.properties
 src/perl/BatchExtractor/bin/batchExtract.pl
