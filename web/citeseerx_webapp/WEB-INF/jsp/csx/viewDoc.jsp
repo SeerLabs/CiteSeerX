@@ -40,6 +40,7 @@
 			String url = "jdbc:mysql://localhost/citeseerx";
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			con = DriverManager.getConnection(url, mysqluser.toLowerCase(),mysqlpass.toLowerCase());
+		System.out.println("DB connection established");
 
 		if (request.getParameter("upvote") != null) {
 			//add 1 upvote to keyphrase_voting table
@@ -117,6 +118,7 @@
 		
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("Unable to make database connection");
 		}	
 
 
@@ -171,7 +173,8 @@
     		behavior: 'default'
  		 }
 		}).render().start();
-
+		</script>
+		<script>
 		function upvote(x) {
 			$.ajax({
 				type: "POST",
