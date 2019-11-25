@@ -92,7 +92,7 @@ public class BatchMapper {
             if (child.getName().equals("algorithm")) {
                 if (child.getAttributeValue("name").equals("SVM HeaderParse") || child.getAttributeValue("name").contains("GROBID")) {
                     ParsHedMapper.map(doc, child);
-                }else if (child.getAttributeValue("name").equals("ParsCit")) {
+                } else if (child.getAttributeValue("name").equals("ParsCit")) {
                     ParscitMapper.map(doc, child);
                 }else {
                     System.err.println("WARNING : Algorithm name attribute is not what " +
