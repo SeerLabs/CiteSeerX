@@ -79,10 +79,10 @@ public class ParsHedMapper {
     public static void map(Document doc, Element root)
     throws MappingException {
         
-        if (!root.getAttributeValue("name").equals(ALG_NAME)) {
+        if (!root.getAttributeValue("name").equals(ALG_NAME) && !root.getAttributeValue("name").contains("GROBID")) {
             throw new MappingException("Root name attribute is not what " +
                     "was expected: found "+root.getAttributeValue("name")+
-                    ", expected "+ALG_NAME);
+                    ", expected "+ALG_NAME + " or GROBID");
         }
         buildDoc(doc, root);
 
