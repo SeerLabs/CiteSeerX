@@ -12,10 +12,11 @@ from citeseerx_crawl.main_crawl.models import HostStat, DomainStat, TldStat
 
 import config
 
+# only get the first 10000 rankings for domains (full list contains 300,000+)
 def ndocs_rank(request, group_by):
     if group_by == 'domain':        
         total_docs = DomainStat.objects.all().aggregate(total_docs=Sum('ndocs'))['total_docs']
-        items = DomainStat.objects.order_by('-ndocs')
+        items = DomainStat.objects.order_by('-ndocs')[:10000]
     elif group_by == 'tld':
         total_docs = TldStat.objects.all().aggregate(total_docs=Sum('ndocs'))['total_docs']
         items = TldStat.objects.order_by('-ndocs')
@@ -72,11 +73,12 @@ def ndocs_rank(request, group_by):
     f.close()
     
     return HttpResponse(html)
-    
+
+# only get the first 10000 rankings for domains (full list contains 300,000+)    
 def ncites_rank(request, group_by):  
     if group_by == 'domain':        
         total_cites = DomainStat.objects.all().aggregate(total_cites=Sum('ncites'))['total_cites']
-        items = DomainStat.objects.filter(ncites__gt=0).order_by('-ncites')
+        items = DomainStat.objects.filter(ncites__gt=0).order_by('-ncites')[:10000]
     elif group_by == 'tld':
         total_cites = TldStat.objects.all().aggregate(total_cites=Sum('ncites'))['total_cites']
         items = TldStat.objects.filter(ncites__gt=0).order_by('-ncites')

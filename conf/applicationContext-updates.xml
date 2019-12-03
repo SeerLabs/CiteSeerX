@@ -9,7 +9,6 @@
     <property name="location" value="classpath:csx.config.properties"/>
   </bean>
 
-
   <!-- =================== UPDATER OBJECT DEFS ==================== -->
 
   <bean id="versionManager" class="edu.psu.citeseerx.updates.VersionManager">
@@ -64,6 +63,7 @@
     <property name="solrURL" value="${solr.updateUrl}"/>
     <property name="CSXDAO" ref="citeseerx"/>
     <property name="citeClusterDAO" ref="citegraph"/>
+    <property name="repositoryService" ref="RESTrepo"/>
     <property name="redoAll" value="false"/>
   </bean>
 

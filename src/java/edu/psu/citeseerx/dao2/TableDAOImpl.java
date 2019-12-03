@@ -131,7 +131,7 @@ public class TableDAOImpl extends JdbcDaoSupport implements TableDAO {
         
         public GetTableById(DataSource ds) {
             super(ds, DEF_GET_TABLE_QUERY);            
-            declareParameter(new SqlParameter(Types.BIGINT));
+            declareParameter(new SqlParameter(Types.VARCHAR));
             compile();
         } //- GetTableByIdMapping.GetTableByIdMapping
         

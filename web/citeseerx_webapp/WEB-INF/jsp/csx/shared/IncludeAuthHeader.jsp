@@ -6,13 +6,13 @@
 <div id="viewHeader" class="viewAuth">
   <h2><c:out value="${ uauth.canname }"/> <font size="-2"><a href="../authmerge?aid=<c:out value="${ uauth.aid }" />">edit</a></font></h2> 
   <table id="authInfo" class="info">
-    <tr><td class="title">Homepage</td>
+    <%-- <tr><td class="title">Homepage</td>
       <td><c:if test="${ ! empty uauth.url }"><a href='<c:out value="${ uauth.url }"/>'><c:out value="${ uauth.url }"/></a></c:if>
           <c:if test="${ empty uauth.url }"><a href='<c:url value="${hpslink}"/>'>Not found. Submit a homepage</a></c:if></td></tr>
-    <c:if test="${ ! empty uauth.affil }">
+    <c:if test="${ ! empty uauth.affil }"> --%>
       <tr><td class="title">Affiliation</td>
         <td><c:out value="${ uauth.affil }"/></td>
-      </tr></c:if>
+      </tr><%-- </c:if> --%>
     <c:if test="${ ! empty uauth.address }">
       <tr><td class="title">Address</td>
         <td><c:out value="${ uauth.address }"/></td>

@@ -689,6 +689,7 @@
     <url-pattern>/search</url-pattern>
   </filter-mapping>
   
+  <!--
   <filter>
     <filter-name>Pageview Limit Filter</filter-name>
     <filter-class>edu.psu.citeseerx.webutils.SimplePageviewLimitFilter</filter-class>
@@ -705,9 +706,6 @@
       <param-value>googlebot</param-value>
     </init-param>
     <init-param>
-      <!-- Time in milliseconds between consecutive hits from the same ip to the same
-           URL. All hits which currentTime-lastHitTime <= time are
-           rejected and logged in -->
       <param-name>timeLimit</param-name>
       <param-value>3000</param-value>
     </init-param>
@@ -725,9 +723,10 @@
     <url-pattern>/similar</url-pattern>
     <url-pattern>/versions</url-pattern>
   </filter-mapping>
-
+  -->
+  
   <session-config>
-    <session-timeout>30</session-timeout>
+    <session-timeout>15</session-timeout>
   </session-config>
   
   <welcome-file-list>

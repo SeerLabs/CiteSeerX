@@ -46,16 +46,16 @@ class Counter(object):
     header = header.format(title0='Counter',title1='Value')
     horizontal_line = '+'+'-'*(field_length+2)+'+'+'-'*22+'+'
 
-    print horizontal_line
-    print header
-    print horizontal_line
+    print(horizontal_line)
+    print(header)
+    print(horizontal_line)
     for ct in self.counternames:
       entry_row = '| {counter:<'+str(field_length)+'} | {value:<20} |' 
       entry_row = entry_row.format(counter=ct,value=getattr(self,ct))
       horizontal_line = '+'+'-'*(field_length+2)+'+'+'-'*22+'+'
 
-      print entry_row
-      print horizontal_line
+      print(entry_row)
+      print(horizontal_line)
  
   def printCountertoFile(self,filename):
       allnames = list(self.counternames)
@@ -68,5 +68,5 @@ class Counter(object):
       for ct in self.counternames:
           entry_row = '{counter:<'+str(field_length)+'} {value:<20}\n'
           entry_row = entry_row.format(counter=ct,value=getattr(self,ct))
-	  f.write(entry_row)
+          f.write(entry_row)
       f.close()

@@ -29,6 +29,7 @@
   
   <bean id="correctionController" class="edu.psu.citeseerx.web.CorrectionFormController">
     <property name="CSXDAO" ref="citeseerx"/>
+    <property name="repositoryService" ref="RESTrepo"/>
     <property name="citeClusterDAO" ref="citegraph"/>
     <property name="myCiteSeer" ref="myCiteSeer"/>
     <property name="updateManager" ref="updateManager"/>

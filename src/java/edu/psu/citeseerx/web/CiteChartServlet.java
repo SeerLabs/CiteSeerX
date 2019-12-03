@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.psu.citeseerx.dao2.RepositoryMap;
+import edu.psu.citeseerx.repository.RepositoryMap;
 import edu.psu.citeseerx.utility.FileNamingUtils;
 import edu.psu.citeseerx.webutils.RedirectUtils;
 

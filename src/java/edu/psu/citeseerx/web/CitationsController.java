@@ -23,10 +23,12 @@ import edu.psu.citeseerx.domain.DomainTransformer;
 import edu.psu.citeseerx.domain.ExternalLink;
 import edu.psu.citeseerx.domain.Hub;
 import edu.psu.citeseerx.domain.PDFRedirect;
+import edu.psu.citeseerx.domain.RepositoryService;
 import edu.psu.citeseerx.domain.Tag;
 import edu.psu.citeseerx.domain.ThinDoc;
 import edu.psu.citeseerx.domain.UniqueAuthor;
 import edu.psu.citeseerx.myciteseer.web.utils.MCSUtils;
+import edu.psu.citeseerx.repository.RepositoryUtilities;
 import edu.psu.citeseerx.utility.GeneratePDFRedirectURL;
 import edu.psu.citeseerx.utility.SafeText;
 import edu.psu.citeseerx.webutils.RedirectUtils;
@@ -53,6 +55,16 @@ import java.util.Map;
  * Version: $Rev$ $Date$
  */
 public class CitationsController implements Controller {
+
+	private RepositoryService repositoryService;
+
+	public RepositoryService getRepositoryService() {
+		return repositoryService;
+	}
+
+	public void setRepositoryService(RepositoryService repositoryService) {
+		this.repositoryService = repositoryService;
+	}
 
 	private CSXDAO csxdao;
 
@@ -255,7 +267,7 @@ public class CitationsController implements Controller {
 		model.put("citations", citations);
                 model.put("citationContexts", citationContexts);
 		model.put("elinks", eLinks);
-		model.put("fileTypes", csxdao.getFileTypes(doi, repID));
+		model.put("fileTypes", RepositoryUtilities.getFileTypes(repositoryService, doi, rep));
 		model.put("hubUrls", hubUrls);
 		model.put("pdfRedirectUrl", pdfRedirectURL);
 		model.put("pdfRedirectLabel", pdfRedirectLabel);

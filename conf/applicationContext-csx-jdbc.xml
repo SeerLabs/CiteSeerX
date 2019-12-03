@@ -18,17 +18,31 @@
     <property name="url" value="${jdbc.csx.url}"/>
     <property name="username" value="${jdbc.csx.username}"/>
     <property name="password" value="${jdbc.csx.password}"/>
+    <property name="initialSize" value="10"/>
   </bean>
-  
-  <bean id="repositoryMap" class="edu.psu.citeseerx.dao2.RepositoryMap">
+
+  <bean id="restEndpoint" class="edu.psu.citeseerx.domain.RepositoryEndPoint">
+      <property name="url" value="csxrepository01.ist.psu.edu:8080"/>
+      <property name="schema" value="http"/>
+      <property name="path" value = "/document"/>
+      <property name="GET" value="true"/>
+  </bean>
+
+  <!--<bean id="RESTrepo" class="edu.psu.citeseerx.repository.RESTRepository">
+      <property name="repositoryEndPoint" ref="restEndpoint"/>
+  </bean>-->
+
+  <bean id="RESTrepo" class="edu.psu.citeseerx.repository.FileSystemRepository">
+    <property name="repMap" ref="repositoryMap"/>
+  </bean>
+
+  <bean id="repositoryMap" class="edu.psu.citeseerx.repository.RepositoryMap">
     <property name="repositoryMap">
       <map>
         <entry key="rep1" value="${repository.path}"/>
       </map>
     </property>
   </bean>
-        
-
 
   <!-- =================== BUSINESS OBJECT DEFS ==================== -->
   
@@ -62,7 +76,6 @@
 
   <bean id="fileSysDAO" class="edu.psu.citeseerx.dao2.FileSysDAOImpl" lazy-init="true">
     <property name="dataSource" ref="csxDataSource"/>
-    <property name="repositoryMap" ref="repositoryMap"/>
   </bean>
 
   <bean id="hubDAO" class="edu.psu.citeseerx.dao2.HubDAOImpl" lazy-init="true">
@@ -119,6 +132,7 @@
 	<property name="docDAO" ref="docDAO"/>
 	<property name="fileDAO" ref="fileDAO"/>
 	<property name="fileSysDAO" ref="fileSysDAO"/>
+	<property name="repositoryService" ref="RESTrepo"/>
 	<property name="hubDAO" ref="hubDAO"/>
 	<property name="keywordDAO" ref="keywordDAO"/>
 	<property name="legacyIDDAO" ref="legacyIDDAO"/>
@@ -158,6 +172,7 @@
     <property name="url" value="${jdbc.citegraph.url}"/>
     <property name="username" value="${jdbc.citegraph.username}"/>
     <property name="password" value="${jdbc.citegraph.password}"/>
+    <property name="initialSize" value="10"/>
   </bean>
 
 </beans>

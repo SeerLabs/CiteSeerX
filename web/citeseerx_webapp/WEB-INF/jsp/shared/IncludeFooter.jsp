@@ -1,8 +1,9 @@
   <div id="footer">
   	<div id="sponsors">
-  	<a href="http://www.nsf.gov"><img src="<c:url value='/images/nsf_logo.png' />" alt="The National Science Foundation"/></a>
-  	<br />
-  	<a href="http://lucene.apache.org/solr/"><img src="<c:url value='/images/solrlogo1.png' />" alt="Apache Solr" height="20%" width="20%"/></a>
+  	<%-- <a href="http://www.nsf.gov"><img src="<c:url value='/images/nsf_logo.gif' />" alt="The National Science Foundation" height="8%" width="8%"/></a>
+  	<br /> --%>
+        Powered by:
+  	<a href="http://lucene.apache.org/solr/"><img src="<c:url value='/images/solrlogo1.png' />" alt="Apache Solr" height="8%" width="8%"/></a>
   	</div>
     <ul class="links">
       <li><a href="http://csxstatic.ist.psu.edu/about" target="_blank">About <fmt:message key='app.name' /></a></li>
@@ -14,7 +15,7 @@
       <li><a href="http://csxstatic.ist.psu.edu/contact" target="_blank">Contact Us</a></li>
     </ul>
   	<p class="info">Developed at and hosted by <a href="http://ist.psu.edu">The College of Information Sciences and Technology</a></p>
-  	<p>&copy; 2007-2015 <a href="http://www.psu.edu">The Pennsylvania State University</a></p>
+  	<p>&copy; 2007-2018 <a href="http://www.psu.edu">The Pennsylvania State University</a></p>
   </div>
 </div> <%-- Closing Div for Wrapper --%>
 

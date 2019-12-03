@@ -12,7 +12,7 @@
  */
 package edu.psu.citeseerx.misc.charts;
 
-import edu.psu.citeseerx.dao2.UnknownRepositoryException;
+import edu.psu.citeseerx.repository.UnknownRepositoryException;
 
 /**
  * Generic interface for building citation histograms.

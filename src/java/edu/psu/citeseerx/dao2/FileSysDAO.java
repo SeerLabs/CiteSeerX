@@ -37,27 +37,6 @@ public interface FileSysDAO {
      * @return A CiteSeerX document from a XML file.
      * @throws IOException
      */
-    public Document getDocFromXML(String repID, String relPath)
-    throws IOException;
-    
-    /**
-     * Writes an XML representation of the specified document to
-     * persistent storage.
-     * @param doc
-     * @throws IOException
-     */
-    public void writeXML(Document doc) throws IOException;
-    
-    /**
-     * Retrieve a Document object at the version specified.  If the version
-     * does not exist, a null value will be returned.
-     * @param doi
-     * @param version
-     * @return A specific version of the document or null if that version does
-     * not exist.
-     * @throws DataAccessException
-     * @throws IOException
-     */
     public Document getDocVersion(String doi, int version) throws IOException;
 
     /**
@@ -72,50 +51,6 @@ public interface FileSysDAO {
      */
     public Document getDocVersion(String doi, String name) throws IOException;
     
-    /**
-     * Stores version data for a Document object.  The version number and name
-     * will be read from the Document.
-     * @param doc
-     * @throws IOException
-     */
-    public void writeVersion(Document doc) throws IOException;
-    
-    /**
-     * Retrieves a FileInputStream for a file with the specified extension
-     * (type) located on the specified repository.
-     * @param doi the ID of the document whose file is to be retrieved.
-     * @param repID the ID of the repository on which to search.
-     * @param type the file extension.
-     * @return A FileInputStream for the given parameters
-     * @throws IOException If the file is not found within the repository
-     */
-    public FileInputStream getFileInputStream(String doi, String repID,
-            String type) throws IOException;
-    
-    /**
-     * Retrieves a com.lowagie.text.pdf.PDFReader representing a PDF document
-     * located on the specified repository.
-     * The intended used of this method is to allow PDF manipulation. For
-     * instance, returning only a page instead of the whole document.
-     * @param doi the ID of the document whose file is to be retrieved.
-     * @param repID the ID of the repository on which to search.
-     * @return A com.lowagie.text.pdf.PDFReader for the given parameters
-     * @throws IOException If the file is not found within the repository
-     */
-    public PdfReader getPdfReader(String doi, String repID)
-    throws IOException;
-    
-    /**
-     * Returns a list of file extensions available for a specific document
-     * within a specific repository. 
-     * @param doi
-     * @param repID
-     * @return All the file extensions for a specific document
-     * @throws IOException
-     */
-    public List<String> getFileTypes(String doi, String repID)
-    throws IOException;
-
     /**
      * @param doi
      * @return the ID of the repository on which a given document is stored.
