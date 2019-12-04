@@ -22,7 +22,7 @@ def load_json_to_dict(path):
 
 def get_ID(path):
 	first = path.split('.tei')[0]
-	second = first.split('son/')[1]
+	second = first.split('ory/')[1]
 	return second
 
 
@@ -110,7 +110,7 @@ def write_file(dictionary):
 
 if __name__ == '__main__':
 
-	files = find_all_json('/data/swp5504/results_json/')
+	files = find_all_json('/Users/seanparsons/Desktop/directory/')
 	
 	paper_ID_count = 0
 	title_count = 0
