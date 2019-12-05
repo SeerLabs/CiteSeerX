@@ -4,6 +4,9 @@ import MySQLdb
 # Import ElasticSearch capabilities
 import elasticpython
 
+# Import MongoDB capabilities
+import mongo
+
 # Import each of the schemas and associated methods for each index
 from paper import paper
 from author import author
@@ -142,6 +145,9 @@ if __name__ == "__main__":
 
 		# Load the paper JSON data into ElasticSearch
 		elasticpython.create_document(es, index='citeseerx', doc_id=paper1.values_dict['paper_id'], doc_type='paper', data=paper1.values_dict)
+
+		# THIS IS WHERE THE MONGO INGESTION TAKES PLACE
+
 
 		# We also need to update the other indices like author and cluster
 		# By using the update and upserts command in ElasticSearch, we can do this easily
